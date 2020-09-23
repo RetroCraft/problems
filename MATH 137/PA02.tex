@@ -1,0 +1,161 @@
+\documentclass[11pt]{article}
+\input{../header}
+
+\title{MATH 137 Fall 2020: Practice Assignment 2}
+
+\begin{document}
+\parindent=0pt
+\thispagestyle{firstpage}
+
+\textbf{\@title}
+
+\textbf{Q01.}
+Use the formal definition of limits to prove each statement below:
+
+\begin{enumerate}[(a)]
+
+  \item $\dilim{n}\frac{2n}{n+1}=2$
+        \begin{proof}
+          Let $\epsilon>0$.
+          We have to find $N$ such that $n\geq N$ implies $\frac{2n}{n+1}\in(2-\epsilon,2+\epsilon)$, or $\abs{\frac{2n}{n+1}-2}<\epsilon$.
+          Simplifying:
+          \[ \abs{\frac{2n}{n+1}-2} = \abs{\frac{2n-2(n+1)}{n+1}} = \abs{\frac{2}{n+1}} = \frac{2}{n+1} < \epsilon \]
+
+          Now, take $N=\frac2\epsilon$.
+          Then, $n\geq N\implies n\geq\frac2\epsilon\implies n+1>\frac2\epsilon\implies\frac2{n+1}<\epsilon$
+        \end{proof}
+
+  \item $\dilim{n}\frac{6n-3n^2-2}{(n-1)^2}=-3$
+        \begin{proof}
+          Let $\epsilon>0$. We must find $N$ such that $n\geq N\implies \abs{\frac{6n-3n^2-2}{(n-1)^2}-(-3)}<\epsilon$. Again, simplifying:
+          \[ \abs{\frac{-3n^2+6n-2}{(n-1)^2}+3} = \abs{\frac{3n^2-6n+2}{(n-1)^2}-3} = \abs{\frac{-1}{(n-1)^2}}= \frac{1}{(n-1)^2} < \epsilon \]
+
+          Let $N=\sqrt{\frac1\epsilon}+2$. Then, $n\geq N$ implies that $n\geq\sqrt{\frac1\epsilon}+2 \implies (n-1)^2>\frac1\epsilon\implies\frac{1}{(n-1)^2}<\epsilon$
+        \end{proof}
+
+  \item $\dilim{n}1-2^n=-\infty$
+        \begin{proof}
+          Let $M<0$. We have to find $N$ such that $n\geq N$ implies $1-2^n<M$. Notice that since $2^n>0$ for all $n$, this can be rewritten as $2^n>1-M$. Let $N=\log_2(1-M)+1$. This is valid since $M$ is defined to be negative, so $1-M$ is always positive. Now, $n\geq N\implies n>\log_2(1-M)\implies 2^n>1-M\implies1-2^n<M$
+        \end{proof}
+
+\end{enumerate}
+
+
+
+\textbf{Q02.}
+Determine if the following statements are true or false. If true, argue your case mathematically, if false, provide a counterexample.
+
+\begin{enumerate}[(a)]
+
+  \item If $\dilim{n}a_n=\dilim{n}b_n=\infty$, then $\dilim{n}(a_n+b_n)=\infty$
+        \begin{proof}
+          Let $M>0$. If $a_n\to\infty$, then there exists an $N_1$ such that $n\geq N_1$ implies $a_n>\frac{M}{2}$. Likewise, if $b_n\to\infty$, then there exists an $N_2$ such that $n\geq N_2$ implies $b_n>\frac{M}{2}$.
+
+          Let $N=\max \{N_1,N_2\}$. If $n\geq N$, then $a_n+b_n>\frac{M}{2}+\frac{M}{2}=M$.
+          Therefore, $a_n+b_n$ diverges to infinity.
+        \end{proof}
+
+  \item If $\dilim{n}a_n=\dilim{n}b_n=\infty$, then $\dilim{n}(a_n-b_n)=0$
+        \begin{proof}
+          Let $a_n=n$ and $b_n=2n$. Both diverge to positive infinity. However, $a_n-b_n=-n$, which diverges to negative infinity. Therefore, by counterexample, the statement is false.
+        \end{proof}
+
+  \item If $a_n \leq b_n \leq c_n$ for all $n$, $\dilim{n}a_n=L$ and $\dilim{n}c_n=M$, then $\dilim{n}b_n=K$ with $L \leq K \leq M$
+        \begin{proof}
+          Consider the similar proof presented below as Q05.
+          Since $a_n \leq b_n \leq c_n \equiv a_n \leq b_n \land b_n \leq c_n$, we can apply that proof twice to show that $L \leq K$ and $K \leq M$, which is just $L \leq K \leq M$.
+        \end{proof}
+
+\end{enumerate}
+
+
+
+\textbf{Q03.}
+Consider the sequence
+\[
+  a_n=\begin{cases}
+    1           & \textrm{when $n$ is a perfect square} \\
+    \frac{1}{n} & \textrm{otherwise}
+  \end{cases}
+\]
+Use the definition of convergence to show this sequence does not have a limit of 0. Hint: consider building a contradiction.
+\begin{proof}
+  Note that $a_n>0$ for all $n$.
+  If the statement is false and $a_n\to 0$, then, for any $\epsilon>0$, we can find a $N>0$ such that $n\geq N$ implies $a_n<\epsilon$.
+  Alternatively stated, there is a tail of $\{a_n\}$ consisting only of numbers less than $\epsilon$.
+  Select $\epsilon<1$. Since $a_n=1$ if $\sqrt{n}\in\N$, the corresponding tail given by $N$ must contain no square numbers.
+  However, $N^2\in\N$ and $N^2>N$. Therefore, no such $N$ can exist, and the limit of $a_n$ cannot be zero.
+\end{proof}
+
+
+
+\textbf{Q04.}
+Show that if a sequence $\{a_n\}$ converges to $L$ then there are infinitely many terms of the sequence that can be made arbitrarily close to one another.
+Specifically, show that eventually $|a_n-a_m|$ can be made arbitrarily small (i.e.\ for $n,m$ past a certain point)
+Note that $m$ and $n$ are not necessarily consecutive integers.
+Such sequences are called \emph{Cauchy Sequences}.
+\begin{proof}
+  For any $a_i$, by the definition of the limit, we can write it as $L+\epsilon_i$ for some $|\epsilon_i|>0$.
+  Now, rewrite $|a_n-a_m|$ as $|L+\epsilon_n-L-\epsilon_m|=|\epsilon_n-\epsilon_m|$.
+  Since it is guaranteed by the definition of the limit that $\epsilon$ can be made arbitrarily small, the quantity $|\epsilon_n-\epsilon_m|$ can also be made arbitrarily small.
+\end{proof}
+
+
+
+\textbf{Q05.}
+In this question we will prove the following:
+\begin{center}
+  If $\dilim{n}a_n=L$, $\dilim{n}b_n=M$ and $a_n \leq b_n$ for all $n$, then it must be the case that $L \leq M$
+\end{center}
+
+\begin{enumerate}[(a)]
+  \item Use the definition of limits to show that for all $\epsilon$, eventually
+        \[ L-\epsilon < a_n \leq b_n < M+\epsilon \]
+        (the word ``eventually'' is meant to take the place of the statement ``for all $n$ greater than some $N$'')
+        \begin{proof}
+          Let $\epsilon>0$. Then, by the definition of the limit, there is an $N_1$ such that for all $n\geq N_1$, $|a_n-L|<\epsilon \implies a_n > L-\epsilon$.
+          Likewise, there is an $N_2$ such that for all $n\geq N_2$, $|b_n-M|<\epsilon \implies b_n < M+\epsilon$.
+          Given that $a_n\leq b_n$ for all $n$, we can combine these inequalities by taking $n\geq\max \{N_1,N_2\} \implies L-\epsilon < a_n \leq b_n < M+\epsilon$
+        \end{proof}
+
+  \item Since $\epsilon$ is arbitrary, the inequality above might help you ``feel'' that $L \leq M$.
+        That is, we can make $\epsilon$ so small that ``basically $L \leq M$''.
+        One way of showing this mathematically is to assume that $L > M$ and come up with a contradiction.
+        That is, let $L=M+d$ for some positive number $d$.
+        Use this to arrive at a contradiction and thus deduce $L \leq M$.
+        \begin{proof}
+          If $L>M$, we can let $L=M+d$ for some $d>0$.
+          Repeat the conclusion from part (a), $M+d-\epsilon < M+\epsilon$,
+          and add $\epsilon$ to both sides: $M+d < M+2\epsilon$.
+          Since $d$ is defined, we can let $\epsilon<\frac{d}{2}$.
+          Because $\frac{d}{2}>0$, this is a valid choice of $\epsilon$.
+          However, the inequality now reads $M+d < M+d$, which is clearly false.
+          We can conclude that the inequality is false, so its negation $L \leq M$, is true.
+        \end{proof}
+\end{enumerate}
+
+
+
+\textbf{Q06.}
+Prove (using the definition) that if $a_n>0$ for all $n$ and $\dilim{n}a_n=L$, then  $\dilim{n}\sqrt{a_n}=\sqrt{L}$.
+  [Hint: Consider the cases $L=0$ and $L\neq0$ separately.]
+\begin{proof}
+  Consider the case where $L=0$.
+  Let $\epsilon > 0$, which implies $\epsilon^2>0$.
+  Given the known limit $\ilim{n}a_n=0$, we can find an $N$ such that $n \geq N$ implies $|a_n-0|=a_n<\epsilon^2$.
+  Taking the square roots of both sides, $\sqrt{a_n}<\epsilon$ as required.
+
+  Consider when $L\neq0$.
+  Because $\sqrt{L}$ exists, $L > 0$.
+  Let $\epsilon > 0$.
+  Given the known limit, we can find an $N$ such that $n \geq N$ implies $|a_n-L| < \epsilon$.
+  Notice that we can use $a_n-L$ to create an expression for $\sqrt{a_n}-\sqrt{L}$:
+  \begin{align*}
+    |a_n-L|                   & =\abs{(\sqrt{a_n}-\sqrt{L})(\sqrt{a_n}+\sqrt{L})}                                       \\
+                              & =\abs{\sqrt{a_n}-\sqrt{L}}\abs{\sqrt{a_n}+\sqrt{L}}                                     \\
+    \abs{\sqrt{a_n}-\sqrt{L}} & = \frac{|a_n-L|}{\sqrt{a_n}+\sqrt{L}} < \frac{\epsilon}{\sqrt{a_n}+\sqrt{L}} < \epsilon
+  \end{align*}
+  (since the denominator is a sum of two positive numbers) as required.
+\end{proof}
+
+\end{document}

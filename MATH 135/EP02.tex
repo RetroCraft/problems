@@ -1,0 +1,166 @@
+\documentclass[11pt]{article}
+\input{../header}
+
+\title{MATH 135 Fall 2020: Extra Practice 2}
+
+\begin{document}
+\parindent=0pt
+\thispagestyle{firstpage}
+
+\textbf{\@title}
+
+\textbf{WE01.} Let $A$, $B$ and $C$ be statement variables. Determine the truth table of $(A \land B) \implies \lnot C$.
+\begin{center}
+  \begin{tabular}{C|C|C|C|C|C}
+    A & B & C & A \land B & \lnot C & (A \land B) \implies \lnot C \\ \hline
+    T & T & T & T         & F       & F                            \\
+    T & T & F & T         & T       & T                            \\
+    T & F & T & F         & F       & T                            \\
+    T & F & F & F         & T       & T                            \\
+    T & T & T & T         & F       & F                            \\
+    T & T & F & T         & T       & T                            \\
+    T & F & T & F         & F       & T                            \\
+    T & F & F & F         & T       & T                            \\
+    F & T & T & F         & F       & T                            \\
+    F & T & F & F         & T       & T                            \\
+    F & F & T & F         & F       & T                            \\
+    F & F & F & F         & T       & T                            \\
+    F & T & T & F         & F       & T                            \\
+    F & T & F & F         & T       & T                            \\
+    F & F & T & F         & F       & T                            \\
+    F & F & F & F         & T       & T                            \\
+  \end{tabular}
+\end{center}
+
+
+\textbf{WE02.} State the contrapositive and the converse of the following implication: If Jane is a doctor, then she went to medical school.
+
+\emph{Converse}: If Jane went to medical school, then she is a doctor.
+\emph{Contrapositive}: If Jane did not go to medical school, then she is not a doctor.
+
+
+
+\textbf{RP01.} For each of the following statements, identify the four parts of the quantified statement (quantifier, variables, domain, and open sentence).
+Next, express the statement in symbolic form using as few words as possible and then write down the negation of the statement
+(when possible, without using any negative words such as “not” or the $\lnot$ symbol, but negative math symbols like $\neq$ are okay).
+Finally determine if the original statement is true or false. No justification is needed.
+
+\begin{enumerate}[(a)]
+  \item For all real numbers $x$ and $y$, $x \neq y$ implies that $x^2 + y^2 > 0$.
+
+        \emph{Quantifier}: $\forall$, \emph{Domain}: $\R$, \emph{Variables}: $x$, $y$, \emph{Sentence}: $x \neq y \implies x^2 + y^2 > 0$.
+
+        \emph{Symbolically}, $\forall x,y\in\R, x\neq y\implies x^2+y^2>0$.
+
+        \emph{Negation}: $\exists x,y\in\R, x\neq y \land (x^2+y^2\leq 0)$.
+
+        The statement is false.
+
+  \item For every even integer $a$ and odd integer $b$, a rational number $c$ can always be found such that $a < c < b$ or $b < c < a$.
+
+        \emph{Quantifier}: $\forall\exists$, \emph{Domain}: $\Z$, $\Q$, \emph{Variables}: $a$, $b$, $c$, \emph{Sentence}: $2a < c < 2b+1 \lor 2b+1 < c < 2a$.
+
+        \emph{Symbolically}, $\forall a,b\in\Z, \exists c\in\Q, 2a < c < 2b+1 \lor 2b+1 < c < 2a$.
+
+        \emph{Negation}: $\exists a,b\in\Z, \forall c\in\Q, (c \geq 2a \land c \geq 2b+1) \lor (c \leq 2a \land c \leq 2b+1)$.
+
+        The statement is true.
+\end{enumerate}
+
+
+\textbf{RP02.} Let $A$ and $B$ be statement variables. Prove that $(\lnot A) \lor B$ is logically equivalent to $\lnot(A \land \lnot B)$.
+\begin{proof}
+  Apply De Morgan's law: $(\lnot A) \lor B \equiv \lnot(A \land \lnot B)$.
+\end{proof}
+
+
+\textbf{RP03.} Let $A$ and $B$ be statement variables. Determine whether $A \implies B$ is logically equivalent to $(\lnot A) \lor B$.
+\begin{proof}
+  $A \implies B$ is defined as $\lnot(A \land \lnot B)$.
+  This is easily verifiable by noticing that an implication is only false when the hypothesis is true but the conclusion is false.
+  Expand using De Morgan's law: $\lnot(A \land \lnot B) \equiv (\lnot A \lor B)$.
+\end{proof}
+
+
+\textbf{RP04.} Assume that it has been established that the following implication is true:
+\begin{center}
+  If I don’t see my advisor today, then I will see her tomorrow.
+\end{center}
+For each of the sentences below, determine if it is true or false. No justification is needed.
+If you can’t determine the truth value of the sentence, explain why.
+\begin{enumerate}[(a)]
+  \item I don’t meet my advisor both today and tomorrow. (This is arguably an ambiguous English sentence. Answer the problem using both interpretations.)
+
+        For the case of not today and not tomorrow, the statement is contradictory.
+        For the case of today or tomorrow, exclusive, see (c).
+
+  \item I meet my advisor both today and tomorrow.
+
+        Not contradictory, but the truth value is indeterminate because we do not know about meeting ``today''.
+
+  \item I meet my advisor either today or tomorrow (but not on both days).
+
+        Not contradictory, but the truth value is indeterminate because we do not know about meeting ``today''.
+\end{enumerate}
+
+
+\textbf{RP05.} Let $A$, $B$ and $C$ be statement variables.
+Prove the following logical equivalence using a chain of logical equivalences as in Chapter 2.3 of the notes.
+\begin{equation*}
+  (A \land C) \lor (B \land C) \equiv \lnot((A \lor B) \implies \lnot C)
+\end{equation*}
+
+\begin{proof}
+  Begin by considering the implication on the right-hand side.
+  Recall the definition of an implication $X \implies Y \equiv \lnot X \lor Y$.
+  Apply this and simplify:
+  \begin{align*}
+    \lnot((A \lor B) \implies \lnot C) & \equiv \lnot(\lnot (A \lor B) \lor \lnot C)                                           \\
+                                       & \equiv \lnot(\lnot (A \lor B)) \land \lnot(\lnot C) & \text{De Morgan's law}          \\
+                                       & \equiv (A \lor B) \land C                           & \text{Double negation}          \\
+                                       & \equiv (A \land C) \lor (B \land C)                 & \text{Distributive conjunction}
+  \end{align*}
+  Hence, the left side is logically equivalent to the right side, so the equivalency holds.
+\end{proof}
+
+
+\textbf{RP06.} Four friends: Alex, Ben, Gina and Dana are having a discussion about going to the movies.
+Ben says that he will go to the movies if Alex goes as well.
+Gina says that if Ben goes to the movies, then she will join.
+Dana says that she will go to the movies if Gina does.
+That afternoon, exactly two of the four friends watch a movie at the theatre.
+Deduce which two people went to the movies.
+\begin{proof}
+  For each friend, let $A$, $B$, $G$, and $D$ be if they go to the movies, respectively.
+  We can write our statements as implications: $A \implies B$, $B \implies G$, and $G \implies D$.
+  By the transitivity of the implication, $A \implies G$, $A \implies D$, and $B \implies D$.
+  Recall that only two of $A$, $B$, $G$, and $D$ are allowed to be simultaneously true.
+  If $A$ is true, then all of $B$, $G$, and $D$ are true, which is a contradiction.
+  Therefore, $A$ is false.
+  If $B$ is true, then both $G$ and $D$ are true, which is a contradiction.
+  Therefore, $B$ is false.
+  This leaves $G$ (which implies $D$) and $D$ to be true, which satisfies our exclusivity condition.
+  Therefore, Gina and Dana atttended the movies.
+\end{proof}
+
+
+\textbf{RP07.} Consider the following statement.
+\begin{center}
+  For all $x\in\R$, if $x^6 + 3x^4 - 3x < 0$, then $0 < x < 1$
+\end{center}
+\begin{enumerate}
+  \item Rewrite the given statement in symbolic form. \\
+        $\forall x\in\R, x^6 + 3x^4 - 3x < 0 \implies 0 < x < 1$
+  \item State the hypothesis of the implication within the given statement. \\
+        $x^6 + 3x^4 - 3x < 0$
+  \item State the conclusion of the implication within the given statement. \\
+        $0 < x < 1$
+  \item State the converse of the implication within the given statement. \\
+        $0 < x < 1 \implies x^6 + 3x^4 - 3x < 0$
+  \item State the contrapositive of the implication within the given statement. \\
+        $x \leq 0 \lor x \geq 1 \implies x^6 + 3x^4 - 3x \geq 0$
+  \item State the negation of the given statement without using the word ``not'' or the $\lnot$ symbol (but symbols such as $\neq$, $\nmid$, etc.\ are fine). \\
+        $\exists x\in\R, x^6 + 3x^4 - 3x < 0 \land (x \leq 0 \lor x \geq 1)$
+\end{enumerate}
+
+\end{document}
