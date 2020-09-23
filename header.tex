@@ -1,0 +1,51 @@
+\usepackage{physics}
+\usepackage{amsfonts,amsmath,amssymb,amsthm}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+
+\headheight 13.6pt
+\setlength{\headsep}{10pt}
+\textwidth 15cm 
+\textheight 24.3cm
+\evensidemargin 6mm
+\oddsidemargin 6mm
+\topmargin -1.1cm
+\setlength{\parskip}{1.5ex}
+
+\author{James Ah Yong}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[c]{\thepage}
+\makeatletter
+\lhead{\@title}
+\rhead{\@author}
+
+\fancypagestyle{firstpage}{
+    \fancyhf{}
+    \rhead{\@author}
+    \fancyfoot[c]{\thepage}
+}
+
+% Sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+% Functions
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\im}{im}
+
+% Operators
+\newcommand{\Rarr}{\Rightarrow}
+\newcommand{\Larr}{\Leftarrow}
+
+% Typesetting
+\usepackage{array}   % for \newcolumntype macro
+\newcolumntype{C}{>{$}c<{$}} % math version of "C" column type
+\newcommand{\dlim}{\displaystyle\lim} % totally not \dfrac ripoff
+\newcommand{\dilim}[1]{\dlim_{#1\to\infty}} % infinite limits
+\newcommand{\ilim}[1]{\lim_{#1\to\infty}}
+\usepackage{cancel}
