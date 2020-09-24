@@ -10,5 +10,8 @@
     "**/*.fls": true,
     "**/*.log": true,
     "**/*.synctex.gz": true,
-  }
+  },
+  "latex-workshop.view.pdf.trim": 2,
+  "editor.fontSize": 14,
+  "editor.rulers": [ 100 ]
 }
