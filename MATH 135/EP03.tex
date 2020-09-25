@@ -13,83 +13,83 @@
 
 \question Prove the following two quantified statements.
 \begin{enumerate}[(a)]
-    \item $\forall n \in \N, n+1 \geq 2$
-    \begin{proof}
-        Let $n \in \N$.
-        Recall that 1 is the smallest natural.
-        $n \geq 1 \iff n+1 \geq 2$.
-    \end{proof}
-    
-    \item $\exists n \in \Z, \frac{5n-6}{3} \in \Z$
-    \begin{proof}
-        Select $n=3$. Then, $\frac{5n-6}{3}=\frac{15-6}{3}=\frac{9}{3}=3 \in \Z$.
-    \end{proof}
+  \item $\forall n \in \N, n+1 \geq 2$
+        \begin{proof}
+          Let $n \in \N$.
+          Recall that 1 is the smallest natural.
+          $n \geq 1 \iff n+1 \geq 2$.
+        \end{proof}
+
+  \item $\exists n \in \Z, \frac{5n-6}{3} \in \Z$
+        \begin{proof}
+          Select $n=3$. Then, $\frac{5n-6}{3}=\frac{15-6}{3}=\frac{9}{3}=3 \in \Z$.
+        \end{proof}
 \end{enumerate}
 
 
 \question Prove that for all $k \in \Z$, if $k$ is odd, then $4k + 7$ is odd.
 \begin{proof}
-    Let $k$ be an odd integer.
-    $4k+7$ is odd if and only if it may be written as $2n+1$ for some integer $n$.
-    Let $n=2k+3$.
-    Then, $2n+1=2(2k+3)+1=4k+6+1=4k+7$, as required.
+  Let $k$ be an odd integer.
+  $4k+7$ is odd if and only if it may be written as $2n+1$ for some integer $n$.
+  Let $n=2k+3$.
+  Then, $2n+1=2(2k+3)+1=4k+6+1=4k+7$, as required.
 \end{proof}
 
 
 \question Consider the following proposition
 \begin{center}
-    \emph{For all $a,b\in\Z$, if $a^3 \mid b^3$, then $a \mid b$.}
+  \emph{For all $a,b\in\Z$, if $a^3 \mid b^3$, then $a \mid b$.}
 \end{center}
 We now give three erroneous proofs of this proposition. Identify the major error in each proof, and explain why it is an error.
 \begin{enumerate}[(a)]
-    \item \emph{Consider $a = 2$, $b = 4$. Then $a^3 = 8$ and $b^3 = 64$. We see that $a^3 \mid b^3$ since $8 \mid 64$. Since $2 \mid 4$, we have $a \mid b$.}
-    
-    This proof is erroneous as it only considers one specific case of $a$ and $b$ and not the general case of integer $a$ and $b$.
-    
-    \item \emph{Since $a \mid b$, there exists $k\in\Z$ such that $b=ka$. By cubing both sides, we get $b^3 = k^3a^3$. Since $k^3\in\Z$, then $a^3\mid b^3$.}
-    
-    This proof supposes the conclusion instead of the hypothesis.
-    
-    \item \emph{Since $a^3 \mid b^3$, there exists $k\in\Z$ such that $b^3=ka^3$. Then $b=(ka^2/b^2)a$, hence $a \mid b$.}
-    
-    The proof does not guarantee that $\frac{ka^2}{b^2}$ is an integer.
+  \item \emph{Consider $a = 2$, $b = 4$. Then $a^3 = 8$ and $b^3 = 64$. We see that $a^3 \mid b^3$ since $8 \mid 64$. Since $2 \mid 4$, we have $a \mid b$.}
+
+        This proof is erroneous as it only considers one specific case of $a$ and $b$ and not the general case of integer $a$ and $b$.
+
+  \item \emph{Since $a \mid b$, there exists $k\in\Z$ such that $b=ka$. By cubing both sides, we get $b^3 = k^3a^3$. Since $k^3\in\Z$, then $a^3\mid b^3$.}
+
+        This proof supposes the conclusion instead of the hypothesis.
+
+  \item \emph{Since $a^3 \mid b^3$, there exists $k\in\Z$ such that $b^3=ka^3$. Then $b=(ka^2/b^2)a$, hence $a \mid b$.}
+
+        The proof does not guarantee that $\frac{ka^2}{b^2}$ is an integer.
 \end{enumerate}
 
 
 \question Let $x$ be a real number. Prove that if $x^3-5x^2+3x \neq 15$, then $x \neq 5$.
 \begin{proof}
-    Suppose for the contrapositive that $x=5$.
-    Then, $x^3-5x^2+3x=(5)^3-5(5)^2+3(5)=15$, as required.
-    Since the contrapositive is true, the original implication must be true.
+  Suppose for the contrapositive that $x=5$.
+  Then, $x^3-5x^2+3x=(5)^3-5(5)^2+3(5)=15$, as required.
+  Since the contrapositive is true, the original implication must be true.
 \end{proof}
 
 
 \question Prove that there do not exist integers $x$ and $y$ such that $2x + 4y = 3$.
 \begin{proof}
-    For the sake of contradiction, suppose the negation is true.
-    
-    Consider the negation of the statement: there exist integers $x$ and $y$ such that $2x + 4y = 3$.
-    Let $x$ and $y$ be such integers.
-    Then, $x+2y$ is an integer.
-    Therefore, $2x+4y=2(x+2y)$ is even.
-    However, 3 is odd.
-    An integer cannot be both even and odd, therefore, the negation is false, and the original statement is true.
+  For the sake of contradiction, suppose the negation is true.
+
+  Consider the negation of the statement: there exist integers $x$ and $y$ such that $2x + 4y = 3$.
+  Let $x$ and $y$ be such integers.
+  Then, $x+2y$ is an integer.
+  Therefore, $2x+4y=2(x+2y)$ is even.
+  However, 3 is odd.
+  An integer cannot be both even and odd, therefore, the negation is false, and the original statement is true.
 \end{proof}
 
 
 \question Prove that an integer is even if and only if its square is an even integer.
 \begin{proof}
-    ($\Rarr$) Let $n$ be an even integer.
-    Then, $n=2k$ for some integer $k$.
-    $n^2=(2k)^2=4k^2=2(2k^2)$.
-    Since $2k^2$ is an integer, $n^2$ is even.
-    
-    ($\Larr$) Let $n$ be an even square integer.
-    Then, $n=2k$ for some integer $k$ and $n=x\cdot x$ for some integer $x$.
-    Since $2k=x\cdot x$, and 2 is prime, 2 must divide $x$.
-    Therefore, $x=2y$ for some integer $y$, which is the definition of being even.
-    
-    Since the implication is true in both directions, the biconditional is true.
+  ($\Rarr$) Let $n$ be an even integer.
+  Then, $n=2k$ for some integer $k$.
+  $n^2=(2k)^2=4k^2=2(2k^2)$.
+  Since $2k^2$ is an integer, $n^2$ is even.
+
+  ($\Larr$) Let $n$ be an even square integer.
+  Then, $n=2k$ for some integer $k$ and $n=x\cdot x$ for some integer $x$.
+  Since $2k=x\cdot x$, and 2 is prime, 2 must divide $x$.
+  Therefore, $x=2y$ for some integer $y$, which is the definition of being even.
+
+  Since the implication is true in both directions, the biconditional is true.
 \end{proof}
 
 
@@ -98,118 +98,221 @@ We now give three erroneous proofs of this proposition. Identify the major error
 
 \question Prove that $x^2 + 9 \geq 6x$ for all real numbers $x$.
 \begin{proof}
-    Let $x$ be a real number.
-    $x^2+9 \geq 6x \iff x^2-6x+9 \geq 0 \iff (x-3)^2 \geq 0$.
-    Since the square of a real is always non-negative, the statements are true.
+  Let $x$ be a real number.
+  $x^2+9 \geq 6x \iff x^2-6x+9 \geq 0 \iff (x-3)^2 \geq 0$.
+  Since the square of a real is always non-negative, the statements are true.
 \end{proof}
 
 
 \question Prove that for all $r\in\R$ where $r\neq -1$ and $r\neq -2$,
 \begin{equation*}
-    \frac{2^{r+1}}{r+2}-\frac{2^r}{r+1}=\frac{r(2^r)}{(r+1)(r+2)}
+  \frac{2^{r+1}}{r+2}-\frac{2^r}{r+1}=\frac{r(2^r)}{(r+1)(r+2)}
 \end{equation*}
 \begin{proof}
-    Let $r$ be a real number that is neither $-1$ nor $-2$.
-    Then,
-    \begin{align*}
-        LHS &= \frac{2^{r+1}}{r+2}-\frac{2^r}{r+1} \\
-        &= \frac{2^{r+1}(r+1) - 2^r(r+2)}{(r+1)(r+2)} \\
-        &= \frac{r2^{r+1} + 2^{r+1} - r2^r - 2\cdot 2^r}{(r+1)(r+2)} \\
-        &= \frac{r2^{r+1} + \cancel{2^{r+1}} - r2^r - \cancel{2^{r+1}}}{(r+1)(r+2)} \\
-        &= \frac{r(2^{r+1} - 2^r)}{(r+1)(r+2)} \\
-        &= \frac{r(2^r\cdot 2 - 2^r)}{(r+1)(r+2)} \\
-        &= \frac{r(2^r + \cancel{2^r} - \cancel{2^r})}{(r+1)(r+2)} \\
-        &= \frac{r(2^r)}{(r+1)(r+2)} \\
-        &= RHS
-    \end{align*}
-    Since the left side equals the right side, the equality is true.
+  Let $r$ be a real number that is neither $-1$ nor $-2$.
+  Then,
+  \begin{align*}
+    LHS & = \frac{2^{r+1}}{r+2}-\frac{2^r}{r+1}                                      \\
+        & = \frac{2^{r+1}(r+1) - 2^r(r+2)}{(r+1)(r+2)}                               \\
+        & = \frac{r2^{r+1} + 2^{r+1} - r2^r - 2\cdot 2^r}{(r+1)(r+2)}                \\
+        & = \frac{r2^{r+1} + \cancel{2^{r+1}} - r2^r - \cancel{2^{r+1}}}{(r+1)(r+2)} \\
+        & = \frac{r(2^{r+1} - 2^r)}{(r+1)(r+2)}                                      \\
+        & = \frac{r(2^r\cdot 2 - 2^r)}{(r+1)(r+2)}                                   \\
+        & = \frac{r(2^r + \cancel{2^r} - \cancel{2^r})}{(r+1)(r+2)}                  \\
+        & = \frac{r(2^r)}{(r+1)(r+2)}                                                \\
+        & = RHS
+  \end{align*}
+  Since the left side equals the right side, the equality is true.
 \end{proof}
 
 
 \question Prove that there exists a real number $x$ such that $x^2 - 6x + 11 \leq 2$.
 \begin{proof}
-    Let $x=3$.
-    $x^2-6x+11=(3)^2-6(3)+11=9-18+11=2 \leq 2$, as required.
-    Since 3 is a real number, the statement is true.
+  Let $x=3$.
+  $x^2-6x+11=(3)^2-6(3)+11=9-18+11=2 \leq 2$, as required.
+  Since 3 is a real number, the statement is true.
 \end{proof}
 
 
 \question Prove or disprove each of the following statements.
 \begin{enumerate}[(a)]
-    \item $\forall n\in\Z$, $\frac{5n-6}{3}$ is an integer.
-    \begin{proof}
-        Let $n=1$ as a counter-example.
-        Then, $\frac{5n-6}{3}=\frac{5-6}{3}=-\frac{1}{3}$, which is not an integer.
-        Therefore, the statement is false.
-    \end{proof}
-    
-    \item $\forall a\in\Z$, $a^3+a+2$ is even.
-    \begin{proof}
-        Let $a$ be an integer. Then, $a$ is either even or odd.
-        Suppose that $a$ is even and can be written as $a=2k$ for an integer $k$.
-        Then, $a^3+a+2=(2k)^3+2k+2=8k^3+2k+2=2(4k^3+k+1)$, an even number.
-        
-        Suppose $a$ is odd and can be written as $a=2k+1$ for an integer $k$.
-        Then, $a^3+a+2 = (2k+1)^3 + (2k+1) + 2 = 2k^3 + 12k^2 + 2k + 4 = 2(k^3 + 6k^2 + k + 2)$, an even number.
-        
-        Therefore, the statement is true.
-    \end{proof}
-    
-    \item For every prime number $p$, $p + 7$ is composite.
-    \begin{proof}
-        Let $p$ be a prime number. % TODO
-    \end{proof}
-    
-    \item For all $x \in \R$, $|x-3| + |x-7| \geq 10$.
-    \begin{proof}
-        Let $x=3$ as a counter-example.
-        Then, $|x-3|+|x-7|=|(3)-3|+|(3)-7|=0+4=4 \not\geq 10$.
-        Therefore, the statement is false.
-    \end{proof}
-    
-    \item There exists a natural number $m < 123456$ such that $123456m$ is a perfect square.
-    \begin{proof}
-        Since $123456=2^6\cdot3\cdot643$, let $m=3\cdot643=1929$, which is less than $123456$.
-        Then, $123456m=238146624=15432^2$.
-        Since $123456m$ can be written as $n^2$ where $n=15432\in\Z$, it is a perfect square, and the statement is true.
-    \end{proof}
-    
-    \item $\exists k\in\Z, 8\nmid(4k^2+12k+8)$.
-    \begin{proof}
-        Consider the negation, $\forall k\in\Z, 8\mid(4k^2+12k+8)$.
-        Notice that the open sentence is logically equivalent to $8 \mid (4k^2+12k)$.
-        Let $k$ be a natural number. Then, $k$ is either even or odd.
-        
-        Suppose that $k$ is even and can be written as $k=2n$.
-        Then, $4k^2=16n^2=8(2n^2)$, so $8 \mid 4k^2$.
-        Likewise, $12k=24n=8(3n)$, so $8 \mid 12k$.
-        By DIC, $8 \mid (4k^2+12k)$.
-        
-        Now, suppose that $k$ is odd and can be written as $k=2n+1$.
-        Then, $4k^2+12k = 4(4n^2+2n+1)+12(2n+1) = 16n^2 + 40n + 16 = 8(2n^2+5n+1)$, so $8 \mid (4k^2+12k)$.
-        
-        Therefore, the negation is true, so the original statement is false.
-    \end{proof}
+  \item $\forall n\in\Z$, $\frac{5n-6}{3}$ is an integer.
+        \begin{proof}
+          Let $n=1$ as a counter-example.
+          Then, $\frac{5n-6}{3}=\frac{5-6}{3}=-\frac{1}{3}$, which is not an integer.
+          Therefore, the statement is false.
+        \end{proof}
+
+  \item $\forall a\in\Z$, $a^3+a+2$ is even.
+        \begin{proof}
+          Let $a$ be an integer. Then, $a$ is either even or odd.
+          Suppose that $a$ is even and can be written as $a=2k$ for an integer $k$.
+          Then, $a^3+a+2=(2k)^3+2k+2=8k^3+2k+2=2(4k^3+k+1)$, an even number.
+
+          Suppose $a$ is odd and can be written as $a=2k+1$ for an integer $k$.
+          Then, $a^3+a+2 = (2k+1)^3 + (2k+1) + 2 = 2k^3 + 12k^2 + 2k + 4 = 2(k^3 + 6k^2 + k + 2)$, an even number.
+
+          Therefore, the statement is true.
+        \end{proof}
+
+  \item For every prime number $p$, $p + 7$ is composite.
+        \begin{proof}
+          Let $p$ be a prime number. % TODO
+        \end{proof}
+
+  \item For all $x \in \R$, $|x-3| + |x-7| \geq 10$.
+        \begin{proof}
+          Let $x=3$ as a counter-example.
+          Then, $|x-3|+|x-7|=|(3)-3|+|(3)-7|=0+4=4 \not\geq 10$.
+          Therefore, the statement is false.
+        \end{proof}
+
+  \item There exists a natural number $m < 123456$ such that $123456m$ is a perfect square.
+        \begin{proof}
+          Since $123456=2^6\cdot3\cdot643$, let $m=3\cdot643=1929$, which is less than $123456$.
+          Then, $123456m=238146624=15432^2$.
+          Since $123456m$ can be written as $n^2$ where $n=15432\in\Z$, it is a perfect square, and the statement is true.
+        \end{proof}
+
+  \item $\exists k\in\Z, 8\nmid(4k^2+12k+8)$.
+        \begin{proof}
+          Consider the negation, $\forall k\in\Z, 8\mid(4k^2+12k+8)$.
+          Notice that the open sentence is logically equivalent to $8 \mid (4k^2+12k)$.
+          Let $k$ be a natural number. Then, $k$ is either even or odd.
+
+          Suppose that $k$ is even and can be written as $k=2n$.
+          Then, $4k^2=16n^2=8(2n^2)$, so $8 \mid 4k^2$.
+          Likewise, $12k=24n=8(3n)$, so $8 \mid 12k$.
+          By DIC, $8 \mid (4k^2+12k)$.
+
+          Now, suppose that $k$ is odd and can be written as $k=2n+1$.
+          Then, $4k^2+12k = 4(4n^2+2n+1)+12(2n+1) = 16n^2 + 40n + 16 = 8(2n^2+5n+1)$, so $8 \mid (4k^2+12k)$.
+
+          Therefore, the negation is true, so the original statement is false.
+        \end{proof}
 \end{enumerate}
 
 
 \question Prove or disprove each of the following statements involving nested quantifiers.
 \begin{enumerate}[(a)]
-    \item For all $n \in\Z$, there exists an integer $k > 2$ such that $k \mid (n^3 - n)$.
-    \begin{proof}
-        Let $n$ be an integer. If $n=0$ or $n=\pm1$, $n^3-n=0$ and all integers (including any $k$) divide zero.
-        
-        If $n > 1$, we select $k=n+1 > 2$.
-        Factor: $n^3-n = n(n-1)(n+1)$.
-        Then, $n^3 - n = [n(n-1)](n+1)$, so $k \mid (n^3-n)$.
-        
-        If $n < 1$, first let $m = -n$ so $n^3-n = (-m)^3+m = -(m^3-m)$.
-        Now, select $k = m+1 > 2$.
-        Then, $n^3 - n = -m(m-1)(m+1)$, so $k \mid (n^3-n)$.
-        
-        Therefore, the statement is true.
-    \end{proof}
+  \item For all $n \in\Z$, there exists an integer $k > 2$ such that $k \mid (n^3 - n)$.
+        \begin{proof}
+          Let $n$ be an integer. If $n=0$ or $n=\pm1$, $n^3-n=0$ and all integers (including any $k$) divide zero.
+
+          If $n > 1$, we select $k=n+1 > 2$.
+          Factor: $n^3-n = n(n-1)(n+1)$.
+          Then, $n^3 - n = [n(n-1)](n+1)$, so $k \mid (n^3-n)$.
+
+          If $n < 1$, first let $m = -n$ so $n^3-n = (-m)^3+m = -(m^3-m)$.
+          Now, select $k = m+1 > 2$.
+          Then, $n^3 - n = -m(m-1)(m+1)$, so $k \mid (n^3-n)$.
+
+          Therefore, the statement is true.
+        \end{proof}
+
+  \item For every positive integer $a$, there exists an integer $b$ with $|b| < a$ such that $b$ divides $a$.
+        \begin{proof}
+          We disprove by counter-example.
+          Let $a = 1$.
+          Then, $|b| < 1$, and the only such integer is 0.
+          However, $0 \nmid 1$ since there is no integer $k$ where $k \cdot 0 = 1$.
+          Therefore, the statement is false.
+        \end{proof}
+
+  \item There exists an integer $n$ such that $m(n - 3) < 1$ for every integer $m$.
+        \begin{proof}
+          % TODO
+        \end{proof}
+
+  \item $\exists n\in\N, \forall m\in\Z, -nm < 0$
+        \begin{proof}
+          Consider the negation $\forall n\in\N, \exists m\in\Z, -nm \geq 0$.
+          Let $n$ be a natural number.
+
+          We can choose an integer $m$, namely $m=-1$.
+          Notice that because $n$ is a natural number, $n > 0 \iff n(-1)(-1) > 0 \iff -nm > 0 \iff -nm \geq 0$.
+
+          Because the negation is true, the original statement is false.
+        \end{proof}
 \end{enumerate}
+
+
+\question Prove that for all integers $a$ and $b$, if $a \mid (2b + 3)$ and $a \mid (3b + 5)$, then $a \mid 13$.
+\begin{proof}
+  Let $a$ and $b$ be arbitrary integers, and assume that $a \mid (2b+3)$ and $a \mid (3b+5)$.
+
+  Recall the divisibility of integer combinations: since $2b+3$ and $3b+5$ are integers,
+  $a$ must divide $n(2b+3) + m(3b+5)$ for all integers $n$ and $m$.
+  Specifically, let $n = -39$ and $m = 26$.
+  Then, $n(2b+3) + m(3b+5) = -78b - 117 + 78b + 130 = 13$.
+  Therefore, $a \mid 13$.
+\end{proof}
+
+
+\question Let $a$, $b$, $c$ and $d$ be positive integers.
+Prove that if $\frac a b < \frac c d$, then $\frac a b < \frac{a+c}{b+d} < \frac c d$.
+\begin{proof}
+  Let $a$, $b$, $c$ and $d$ all be positive integers.
+  Assume $\frac a b < \frac c d$, which is true when $ad < bc$, because $b$ and $d$ are positive.
+  Now, adding $ab$ and $cd$ to both sides, respectively:
+  \begin{alignat*}{3}
+    ad        & < bc              & \hspace{4em} ad              & < bc        \\
+    ad + ab   & < bc + ab         & \hspace{4em} ad + cd         & < bc + cd   \\
+    a(b+d)    & < b(c+a)          & \hspace{4em} d(a+c)          & < c(b+d)    \\
+    \frac a b & < \frac{a+c}{b+d} & \hspace{4em} \frac{a+c}{b+d} & < \frac c d
+  \end{alignat*}
+  Therefore, $\frac a b < \frac{a+c}{b+d} < \frac c d$.
+\end{proof}
+
+
+\question Prove that for all integers $n$, if $1-n^2 > 0$, then $3n - 2$ is an even integer.
+\begin{proof}
+  Let $n$ be an integer where $1-n^2 > 0$.
+  Since squares of integers are positive, $1 > n^2$.
+  This is only true when $|n| < 1$, but the only such integer is 0.
+  $3(0)-2=-2$, which is even.
+\end{proof}
+
+
+\question Let $a$ and $b$ be integers. Prove each of the following implications.
+\begin{enumerate}[(a)]
+  \item If $ab = 4$, then $(a-b)^3 - 9(a-b) = 0$
+        \begin{proof}
+          Let $a$ and $b$ be integers with product 4.
+
+          Consider the possible values for $a$ and $b$.
+          4's divisor pairs are $(\pm 1, \pm 4)$ and $(\pm 2, \pm 2)$.
+          For all of these pairs, either $a=b$ or $a=b\pm3$.
+          Specifically:
+          \begin{itemize}
+            \item If $b=\pm2$, then $a=b$
+            \item If $b=1$, then $a=4=b+3$ (for $b=-1$, $a=-4=b-3$)
+            \item If $b=4$, then $a=1=b-3$ (for $b=-4$, $a=-1=b+3$)
+          \end{itemize}
+
+          Notice that the conclusion factors to $(a-b)(a-b-3)(a-b+3)=0$.
+          This is true when $a=b$ or $a=b\pm3$, which we just showed.
+        \end{proof}
+  \item If $a$ and $b$ are positive, then $a^2(b+1) + b^2(a+1) \geq 4ab$
+        \begin{proof}
+          Let $a$ and $b$ be positive integers, i.e., at least 1.
+
+          If $a$ and $b$ are both at least 1, then $a+b \geq 2$, or $a+b-2>0$.
+          Likewise, $ab$ is a positive integer, so $ab(a+b-2) > 0$.
+          \begin{align*}
+            ab(a+b-2)         & > 0 \\
+            a^2b + b^2a - 2ab & > 0
+          \end{align*}
+          Recall that squares are non-negative:
+          \begin{align*}
+            (a-b)^2 + a^2b + b^2a - 2ab         & > 0            \\
+            a^2 - 2ab + b^2 + a^2b + b^2a - 2ab & > 0            \\
+            a^2 + a^2b + b^2 + b^2a             & > 4ab          \\
+            a^2(b+1) + b^2(a+1)                 & > 4ab \qedhere
+          \end{align*}
+        \end{proof}
+\end{enumerate}
+
 
 
 \end{document}
