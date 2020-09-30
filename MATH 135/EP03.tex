@@ -27,9 +27,10 @@
 \question Prove that for all $k \in \Z$, if $k$ is odd, then $4k + 7$ is odd.
 \begin{proof}
   Let $k$ be an odd integer.
-  $4k+7$ is odd if and only if it may be written as $2n+1$ for some integer $n$.
-  Let $n=2k+3$.
-  Then, $2n+1=2(2k+3)+1=4k+6+1=4k+7$, as required.
+  Then, it can be written as $2n+1$ for some integer $n$.
+
+  Substituting, $4k+7 = 4(2n+1) + 7 = 8n+11 =2(4n+5)+1$.
+  By definition, since $4k+7$ can be written as $2m+1$ where $m=4n+5$ is an integer, it is odd.
 \end{proof}
 
 
@@ -174,7 +175,7 @@ We now give three erroneous proofs of this proposition. Identify the major error
 
   \item There exists a natural number $m < 123456$ such that $123456m$ is a perfect square.
         \begin{proof}
-          Since $123456=2^6\cdot3\cdot643$, let $m=3\cdot643=1929$, which is less than $123456$.
+          Let $m=1929$, which is a natural number less than $123456$.
           Then, $123456m=238146624=15432^2$.
           Since $123456m$ can be written as $n^2$ where $n=15432\in\Z$, it is a perfect square, and the statement is true.
         \end{proof}
@@ -270,7 +271,7 @@ We now give three erroneous proofs of this proposition. Identify the major error
 Prove that if $\frac a b < \frac c d$, then $\frac a b < \frac{a+c}{b+d} < \frac c d$.
 \begin{proof}
   Let $a$, $b$, $c$ and $d$ all be positive integers.
-  Assume $\frac a b < \frac c d$, which is true when $ad < bc$, because $b$ and $d$ are positive.
+  Suppose $\frac a b < \frac c d$, which means $ad < bc$, because $b$ and $d$ are positive.
   Now, adding $ab$ and $cd$ to both sides, respectively:
   \begin{alignat*}{3}
     ad        & < bc              & \hspace{4em} ad              & < bc        \\
@@ -314,18 +315,18 @@ Prove that if $\frac a b < \frac c d$, then $\frac a b < \frac{a+c}{b+d} < \frac
         \begin{proof}
           Let $a$ and $b$ be positive integers, i.e., at least 1.
 
-          If $a$ and $b$ are both at least 1, then $a+b \geq 2$, or $a+b-2>0$.
-          Likewise, $ab$ is a positive integer, so $ab(a+b-2) > 0$.
+          If $a$ and $b$ are both at least 1, then $a+b \geq 2$, or $a+b-2 \geq 0$.
+          Likewise, $ab$ is a positive integer, so $ab(a+b-2) \geq 0$.
           \begin{align*}
-            ab(a+b-2)         & > 0 \\
-            a^2b + b^2a - 2ab & > 0
+            ab(a+b-2)         & \geq 0 \\
+            a^2b + b^2a - 2ab & \geq 0
           \end{align*}
           Recall that squares are non-negative:
           \begin{align*}
-            (a-b)^2 + a^2b + b^2a - 2ab         & > 0            \\
-            a^2 - 2ab + b^2 + a^2b + b^2a - 2ab & > 0            \\
-            a^2 + a^2b + b^2 + b^2a             & > 4ab          \\
-            a^2(b+1) + b^2(a+1)                 & > 4ab \qedhere
+            (a-b)^2 + a^2b + b^2a - 2ab         & \geq 0            \\
+            a^2 - 2ab + b^2 + a^2b + b^2a - 2ab & \geq 0            \\
+            a^2 + a^2b + b^2 + b^2a             & \geq 4ab          \\
+            a^2(b+1) + b^2(a+1)                 & \geq 4ab \qedhere
           \end{align*}
         \end{proof}
 \end{enumerate}
@@ -384,21 +385,10 @@ Prove that if $a \mid b$ and $b \mid c$ and $c \mid d$, then $a \mid d$.
 \begin{center}
   \emph{$a \mid b$ if and only if $ac \mid bc$}
 \end{center}
-Yes, it is true.
-\begin{proof}
-  Consider the two implications of the biconditional statement:
-
-  ($\Rarr$) Let $a$, $b$, and $c$ be integers where $a$ divides $b$.
-  Then, there exists an integer $k$ where $b = ka$.
-  Multiplying both sides by $c$, we have $bc = k(ac)$.
-  However, this is exactly what is needed to show that $bc \mid ac$.
-
-  ($\Larr$) Let $a$, $b$, and $c$ be integers where $ac$ divides $bc$.
-  Then, there exists an integer $k$ where $bc = kac$.
-  Dividing both sides by $c$, we have $b = ka$.
-  However, this is exactly what is needed to show that $b \mid a$.
-
-  Therefore, since both expressions imply the other, $a \mid b$ if and only if $ac \mid bc$ for all integers $a$, $b$, and $c$.
+\begin{proof}[Solution]
+  The statement is false.
+  Consider the counterexample $a=2$, $b=3$, and $c=0$.
+  Then, the backwards implication's hypothesis is true ($0 \mid 0$) but the conclusion is false ($2 \nmid 3$).
 \end{proof}
 
 
@@ -409,7 +399,7 @@ Yes, it is true.
   ($\Rarr$) Let $n$ be an integer where 2 divides $n^4 - 3$.
   This means there is an integer $k$ where $n^4-3 = 2k$.
   Notice that this means $n^4-3$ is even, so $n^4=2(k+1)+1$ is odd.
-  Even numbers raised to integer powers remain even, so $n$ must be odd.
+  Even numbers raised to the fourth power remain even, so $n$ must be odd.
   Therefore, $n = 2m+1$ for some integer $m$.
 
   Now, expand $n^2+3$:
@@ -658,5 +648,26 @@ Yes, it is true.
         \end{proof}
 \end{enumerate}
 
+
+\qsection{Challenges}{C}
+
+\question Let $n$ be an integer.
+Prove that if $2 \mid n$ and $3 \mid n$, then $6 \mid n$.
+
+\question Let $a,b,c\in\R$.
+Prove that if $a^2 + b^2 + c^2 = 1$, then $-1/2 \leq ab+bc+ca \leq 1$.
+
+\question Show that if $p$ and $p^2+2$ are prime, then $p^3+2$ is also prime.
+
+\question Express the following statement in symbolic form and prove that it is true.
+\begin{quote}
+  There exists a real number $L$ such that for every positive real number $\epsilon$,
+  there exists a positive real number $\delta$ such that for all real numbers $x$,
+  if $\abs{x} < \delta$, then $\abs{3x-L} < \epsilon$.
+\end{quote}
+
+\question Prove that there are no positive integers $a$ and $b$ such that $b^4+b+1 = a^4$.
+
+\question Prove that the length of at least one side of a right-angled triangle with integer side lengths must be divisible by 3.
 
 \end{document}
