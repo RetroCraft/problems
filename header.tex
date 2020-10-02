@@ -50,11 +50,15 @@
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 
+% Macros
+% properly typeset ε-δ (epsilon en dash delta)
+\newcommand{\epsdel}{\ensuremath{\epsilon\mathit{\textnormal{--}}\delta}}
+
 % Typesetting
 \usepackage{array}   % for \newcolumntype macro
 \newcolumntype{C}{>{$}c<{$}} % math version of "C" column type
-\newcommand{\dlim}{\displaystyle\lim} % totally not \dfrac ripoff
-\newcommand{\dilim}[1]{\dlim_{#1\to\infty}} % infinite limits
+\newcommand{\dlim}[2]{\displaystyle\lim_{#1\to#2}} % totally not \dfrac ripoff
+\newcommand{\dilim}[1]{\dlim{#1}{\infty}} % infinite limits
 \newcommand{\ilim}[1]{\lim_{#1\to\infty}}
 \usepackage{cancel}
 

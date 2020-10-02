@@ -1,0 +1,295 @@
+\input{../header}
+\title{MATH 137 Fall 2020: Practice Assignment 4}
+
+\begin{document}
+\thispagestyle{firstpage}
+
+\textbf{\@title}
+
+\question Use the \epsdel{} definition of limits to establish the following:
+\begin{enumerate}[(a)]
+  \item $\dlim{x}{3} 2x+1 = 7$
+        \begin{proof}
+          First, recall the \epsdel{} definition of a limit.
+          We must show that for every $\epsilon > 0$, there is a $\delta$ so $|x-3|<\delta$ implies $|2x+1-7|=|2x-6|<\epsilon$.
+
+          Let $\epsilon > 0$.
+          Suppose $\delta = \frac{\epsilon}{2}$.
+          If $0 < |x-3|<\delta$, then $|x-3|<\frac{\epsilon}{2}$. Now,
+          \begin{align*}
+            |x-3|  & < \frac{\epsilon}{2} \\
+            2|x-3| & < \epsilon           \\
+            |2x-6| & < \epsilon
+          \end{align*}
+          as desired. Therefore, $\dlim{x}{3} 2x+1 = 7$.
+        \end{proof}
+  \item $\dlim{x}{-1} 1-9x= 10$
+        \begin{proof}
+          Let $\epsilon > 0$, choose $\delta = \frac{\epsilon}{9}$, and suppose $0 < |x-(-1)| = |x+1| < \delta$. Now,
+          \begin{align*}
+            |x+1|           & < \frac{\epsilon}{9} \\
+            9|x+1|          & < \epsilon           \\
+            |9x+9|          & < \epsilon           \\
+            |-9x-9|         & < \epsilon           \\
+            |(1-9x) - (10)| & < \epsilon
+          \end{align*}
+          Therefore, by the \epsdel{} definition of a limit, $\dlim{x}{-1} 1-9x = 10$.
+        \end{proof}
+  \item $\dlim{x}{5} 3 = 3$
+        \begin{proof}
+          First, notice that $|3-3|$ is always 0.
+          Because we define $\epsilon > 0$, then $|3-3| < \epsilon$ for any choice of $\epsilon$.
+          Therefore, we can arbitrarily let $\delta = 69$ since the choice of $\delta$ has no bearing on whether $|3-3| < \epsilon$, and say that by the \epsdel{} definition, $\dlim{x}{5} 3 = 3$.
+        \end{proof}
+  \item $\dlim{x}{2} x^2-4x+4 = 0$
+        \begin{proof}
+          Let $\epsilon > 0$.
+          Select $\delta = \sqrt{\epsilon}$.
+          Suppose $0 < |x-2| < \delta$, so
+          \begin{align*}
+            |x-2|            & < \sqrt{\epsilon} \\
+            |(x-2)^2|        & < \epsilon        \\
+            |x^2-4x+4|       & < \epsilon        \\
+            |(x^2-4x+4) - 0| & < \epsilon
+          \end{align*}
+          which is the \epsdel{} definition of $\dlim{x}{2} x^2-4x+4 = 0$.
+        \end{proof}
+  \item $\dlim{x}{3} \frac{1}{x^2} = \frac{1}{9}$
+        \begin{proof}
+          Let $\epsilon > 0$.
+          We can restrict $\delta \leq 1$ by selecting $\delta = \min(1,\frac{\epsilon}{7})$.
+          Then, when $0 < |x-3| < \delta$, we have $2 < x < 4$, which means $|x+3| < 7$.
+          It follows that
+          \begin{align*}
+            \abs{\frac{1}{x^2}-\frac{1}{9}} & = \abs{\frac{(x-3)(x+3)}{9x^2}} \\
+                                            & < \abs{(x-3)(x+3)}              \\
+                                            & = \abs{x-3}\cdot\abs{x+3}       \\
+                                            & < 7\abs{x-3}                    \\
+                                            & < 7\delta                       \\
+                                            & = \epsilon
+          \end{align*}
+          as required by the \epsdel{} definition of $\dlim{x}{3} \frac{1}{x^2} = \frac{1}{9}$
+        \end{proof}
+\end{enumerate}
+
+
+\question Let $f(x) > 0$ for all $x \neq a$ and assume $\dlim{x}{a} f(x) = L$ with $L \neq \pm \infty$.
+Use the definition of limits to show that $L \geq 0$.
+Hint: build a contradiction assuming $L < 0$.
+\begin{proof}
+  Let $f(x)$ be a function that converges to $L$ at $x=a$, and is positive for all $x$.
+  Then, by the \epsdel{} definition of a limit, for all $\epsilon > 0$,
+  there exists a $\delta > 0$ such that $0 < |x-a| < \delta$ implies $|f(x) - L| < \epsilon$.
+  Suppose for a contradiction that $L < 0$.
+
+  Select $\epsilon = -L$ (since $L$ is negative).
+  Then, we must be able to find a $\delta$ so $0 < |x-a| < \delta$ implies $|f(x)-L| < -L$.
+  This is equivalently stated $L < f(x)-L < -L$ or $2L < f(x) < 0$.
+  But $f(x) > 0$ for all $x$, so this inequality can never hold.
+
+  Therefore, $L < 0$ cannot be the limit, so $\dlim{x}{a} f(x) \geq 0$.
+\end{proof}
+
+
+\question For the following limits, $\dlim{x}{a} f(x)$, find a sequence $x_n$ such that $x_n \to a$, $x_n \neq a$ and then use this sequence to show that the limits do not exist.
+\begin{enumerate}[(a)]
+  \item $\dlim{x}{3} \frac{1}{x-3}$
+        \begin{proof}
+          Let $f(x) = \frac{1}{x-3}$.
+          We will prove that the limit as $x$ approaches 3 does not exist.
+
+          Recall the Sequential Characterization of Limits.
+          It provides that, given a function $f$ defined around $x=a$,
+          the statement ``$\dlim{x}{a} f(x)$ exists and is $L$'' is equivalent to
+          ``for any sequence $\{x_n\}$ with $x_n\neq a$ and $x_n \to a$, $\dilim{n}f(x_n)=L$.''
+
+          Therefore, to show that the limit does not exist, it suffices to show the negation:
+          there exists a sequence $\{x_n\}$ with $x_n \neq 3$ and $x_n \to 3$ where $f(x_n)$ diverges.
+
+          Let $x_n = 3-\frac{1}{n}$.
+          This sequence clearly converges to but is never equal to 3.
+          Then, \[ f(x_n) = \frac{1}{3-\frac{1}{n}-3} = -n \]
+          $f(x_n)$ clearly diverges to negative infinity, so the limit does not exist.
+        \end{proof}
+  \item $\dlim{x}{0} \ln |x|$
+        \begin{proof}
+          Let $f(x) = \ln |x|$.
+          As above, we must prove the limit at $x=0$ does not exist.
+
+          Again, using the Sequential Characterization of Limits, let $x_n = \frac{1}{x}$,
+          which converges to 0 but is never equal to 0.
+          Then, when $n \geq 1$, \[ f(x_n) = \ln \abs{\frac{1}{n}} = -\ln n, \]
+          a sequence which diverges to $-\infty$.
+
+          Therefore, the limit does not exist.
+        \end{proof}
+\end{enumerate}
+
+\question Prove that $\dlim{x}{3} \dfrac{x^2-9}{|x-3|}$ does not exist
+by finding two sequences $x_n$ and $y_n$ that both converge to 3,
+$x_n \neq 3$, $y_n \neq 3$ for all $n\in\N$,
+and $\dilim{n} f(x_n) \neq \dilim{n} f(y_n)$.
+Explain why this proves the limit does not exist.
+\begin{proof}
+  Suppose for a contradiction that the limit exists and is equal to $L$.
+  Then, according to the Sequential Characterization of Limits,
+  we can find any sequence $\{a_n\}$ with $a_n \to 3$ but $a_n \neq 3$, and $f(a_n)$ will converge to $L$.
+
+  Consider the sequence $x_n = 3+\frac{1}{x}$ for $n \geq 1$, which converges to and is never equal to 3.
+  Substituting,
+  \begin{equation*}
+    f(x_n) = \frac{\left(3+\frac{1}{n}\right)^2 - 9}{\abs{3+\frac{1}{n}-3}}
+    = \frac{9+\frac{6}{n}+\frac{1}{n^2} - 9}{\frac{1}{n}}
+    = 6+\frac{1}{n}
+  \end{equation*}
+  which converges to 6.
+  This implies that $L = 6$.
+
+  However, we could also consider the sequence $y_n = 3-\frac{1}{x}$ for $n \geq 1$, which also satisfies the same constraints.
+  We would instead have $f(y_n)$ as
+  \begin{equation*}
+    f(y_n) = \frac{\left(3-\frac{1}{n}\right)^2 - 9}{\abs{3-\frac{1}{n}-3}}
+    = \frac{9-\frac{6}{n}+\frac{1}{n^2} - 9}{\frac{1}{n}}
+    = -6+\frac{1}{n}
+  \end{equation*}
+  which converges to $-6$.
+  This implies that $L = -6$.
+
+  Since the limit cannot have both values, it cannot exist.
+\end{proof}
+
+\question Compute the following limits using any method.
+If they do not exist, prove it.
+\begin{enumerate}[(a)]
+  \item $\dlim{x}{4} \frac{x^2-16}{x-4}$
+        \begin{proof}[Solution]
+          Notice that for all $x \neq 4$,
+          \[ \frac{x^2-16}{x-4} = \frac{\cancel{(x-4)}(x+4)}{\cancel{x-4}}=x+4 \]
+          so $\dlim{x}{4} \frac{x^2-16}{x-4} = \dlim{x}{4} x+4 = 4+4 = 8$
+        \end{proof}
+  \item $\dlim{x}{2} \frac{x^3-6x^2+12x-8}{x-2}$
+        \begin{proof}[Solution]
+          Notice that for all $x \neq 2$,
+          \[ \frac{x^3-6x^2+12x-8}{x-2} = \frac{(x-2)^3}{x-2} = (x-2)^2 \]
+          so $\dlim{x}{2} \frac{x^3-6x^2+12x-8}{x-2} = \dlim{x}{2} (x-2)^2 = 0$
+        \end{proof}
+  \item $\dlim{x}{16} \frac{\sqrt{x}-4}{x-16}$
+        \begin{proof}[Solution]
+          Notice that for all $x \neq 16$,
+          \begin{equation*}
+            \frac{\sqrt{x}-4}{x-16}
+            = \frac{\sqrt{x}-4}{(\sqrt{x}-4)(\sqrt{x}+4)}
+            = \frac{1}{\sqrt{x}+4}
+          \end{equation*}
+          so $\dlim{x}{16} \frac{\sqrt{x}-4}{x-16} = \dlim{x}{16} \frac{1}{\sqrt{x}+4} = \frac{1}{8}$
+        \end{proof}
+  \item $\dlim{x}{\pi/2} \frac{\tan^2 x+1}{\sec^2 x}$
+        \begin{proof}[Solution]
+          Recall that $\tan^2 \theta + 1 = \sec^2 \theta$ for all real $\theta$. Then,
+          \begin{equation*}
+            \dlim{x}{\pi/2} \frac{\tan^2 x+1}{\sec^2 x}
+            = \dlim{x}{\pi/2} \frac{\sec^2 x}{\sec^2 x}
+            = \dlim{x}{\pi/2} 1
+            = 1 \qedhere
+          \end{equation*}
+        \end{proof}
+  \item $\dlim{x}{3} \frac{|3x-9|}{3-x}$
+        \begin{proof}[Solution]
+          Consider the limit from above.
+          If $x > 3$ then $3x-9 > 0$, so we can drop the absolute value:
+          \begin{equation*}
+            \dlim{x}{3^+} \frac{|3x-9|}{3-x}
+            = \dlim{x}{3^+} \frac{3x-9}{3-x}
+            = \dlim{x}{3^+} \frac{-3(3-x)}{3-x}
+            = \dlim{x}{3^+} -3
+            = -3
+          \end{equation*}
+          Consider the limit from below.
+          If $x < 3$ then $3x-9 < 0$, so $|3x-9| = -(3x-9)$:
+          \begin{equation*}
+            \dlim{x}{3^-} \frac{|3x-9|}{3-x}
+            = \dlim{x}{3^-} \frac{9-3x}{3-x}
+            = \dlim{x}{3^-} \frac{3(3-x)}{3-x}
+            = \dlim{x}{3^-} 3
+            = 3
+          \end{equation*}
+
+          Since the two one-sided limits do not agree, the limit does not exist.
+        \end{proof}
+\end{enumerate}
+
+\question Consider the function
+\[ f(x) = \begin{cases} 1+\frac{1}{x} & x < b \\ 1 + x & x > b \end{cases} \]
+Determine all values of $b\in\R$ for which $\dlim{x}{b} f(x)$ exists.
+Find the limit in each case.
+Prove that the limit does not exist for any other choice of $b$.
+\begin{proof}
+  First, recall that the one-sided limits must exist and be equal for the two-sided limit to exist.
+  Therefore, $\dlim{x}{b} f(x)$ exists only when both $\dlim{x}{b^-}f(x)$ and $\dlim{x}{b^+}f(x)$ exist.
+
+  Consider the limit from below.
+  Then, we only need consider when $x < b$, which means $f(x) = 1+\frac1x$.
+  Now, consider cases for zero and non-zero $b$.
+  When $b=0$, we have $1+\textstyle\frac{1}{x}$ diverging to $-\infty$ as $x \to b$.
+  For non-zero $b$, we can simply apply the arithmetic rules and get the limit from below as $1+\frac1b$.
+
+  Consider the limit from above.
+  Then, $x > b$, so we have $f(x) = 1+x$.
+  For all $b$, we can apply arithmetic rules to have the limit from above as $1+b$.
+
+  Now, we can compare our results.
+  For $b=0$, the two-sided limit clearly does not exist, because the left side diverges and the right side converges.
+  For $b \neq 0$, the limits are only equal when $1+\frac1b = 1+b$.
+  Then, $b^2 = 1$, so $b$ can only be $-1$ or 1.
+  At theses points, the limit is $1+(-1)=0$ and $1+1=2$, respectively.
+\end{proof}
+
+\question Compute the following limits without using l'H\^{o}pital's rule:
+\begin{enumerate}[(a)]
+  \item $\dlim{x}{0} \frac{\sin^2 x}{x^2}$
+        \begin{proof}[Solution]
+          Recall the FTL, $\dlim{\theta}{0} \frac{\sin\theta}{\theta} = 1$.
+          Now, rearrange and apply:
+          \begin{equation*}
+            \dlim{x}{0} \frac{\sin^2 x}{x^2}
+            = \dlim{x}{0}\left(\frac{\sin x}{x}\cdot\frac{\sin x}{x}\right)
+            = \dlim{x}{0}\frac{\sin x}{x} \cdot \dlim{x}{0}\frac{\sin x}{x}
+            = 1 \cdot 1
+            = 1 \qedhere
+          \end{equation*}
+        \end{proof}
+  \item $\dlim{x}{0} \frac{1-\cos x}{x^2}$
+        \begin{proof}
+          First, algebraically manipulate the expression inside the limit to simplify:
+          \begin{equation*}
+            \dlim{x}{0} \frac{1-\cos x}{x^2}
+          \end{equation*}
+          % TODO
+        \end{proof}
+  \item $\dlim{x}{2} \frac{\sin(3(x^2-4))}{x-2}$
+        \begin{proof}[Solution]
+          To apply FTL, factor and multiply by $1=\frac{3(x+2)}{3(x+2)}$.
+          \begin{align*}
+            \dlim{x}{2} \frac{\sin(3(x^2-4))}{x-2}
+             & = \dlim{x}{2} \frac{\sin(3(x-2)(x+2))}{x-2}               \\
+             & = \dlim{x}{2} 3(x+2)\frac{\sin(3(x-2)(x+2))}{3(x+2)(x-2)} \\
+             & = \dlim{x}{2} 3(x+2)                                      \\
+             & = 12 \qedhere
+          \end{align*}
+        \end{proof}
+  \item $\dlim{x}{0} \frac{\sin x^2}{\sqrt{|x^3|}}$
+        \begin{proof}[Solution]
+          Again, to apply FTL, creatively multiply by $1=\frac{x^{1/2}}{x^{1/2}}$.
+          \begin{align*}
+            \dlim{x}{0} \frac{\sin x^2}{\sqrt{|x^3|}}
+             & = \dlim{x}{0} \frac{\sin x^2}{\sqrt{\sqrt{(x^3)^2}}} \\
+             & = \dlim{x}{0} \frac{\sin x^2}{((x^3)^2)^{1/4}}       \\
+             & = \dlim{x}{0} \frac{\sin x^2}{x^{3/2}}               \\
+             & = \dlim{x}{0} x^{1/2}\frac{\sin x^2}{x^2}            \\
+             & = \dlim{x}{0} x^{1/2}                                \\
+             & = 0 \qedhere                                         \\
+          \end{align*}
+        \end{proof}
+\end{enumerate}
+
+\end{document}
