@@ -1,0 +1,215 @@
+\input{../header}
+\title{MATH 135 Fall 2020: Extra Practice 4}
+
+\begin{document}
+\thispagestyle{firstpage}
+
+\textbf{\@title}
+
+\qsection{Warm-Up Exercises}{WE}
+
+\question Evaluate $\displaystyle\sum^8_{i=3}2^i$ and $\displaystyle\prod^5_{j=1}\frac{j}{3}$.
+\begin{proof}[Solution]
+  Simply expand along the sum/product:
+  \[ \sum^8_{i=3}2^i = 2^3 + 2^4 + 2^5 + 2^6 + 2^7 + 2^8 = 8+16+32+64+128+256 = 504 \]
+  and
+  \begin{equation*}
+    \prod^5_{j=1}\frac{j}{3}
+    = \frac13\cdot\frac23\cdot\frac33\cdot\frac43\cdot\frac53
+    = \frac{120}{243}
+    = \frac{40}{81} \qedhere
+  \end{equation*}
+\end{proof}
+
+
+\question Let $x$ be a real number.
+Using the Binomial Theorem, expand $\left(x-\frac{1}{x}\right)^7$.
+\begin{proof}[Solution]
+  Recall the Binomial Theorem, that $(a+b)^n = \sum_{k=0}^n\binom{n}{k}a^{n-k}b^k$.
+  Now, substitute $a = x$ and $b = -\frac{1}{x}$.
+  \begin{align*}
+    \left(x-\frac{1}{x}\right)^7
+     & = \sum_{k=0}^7\binom{7}{k}x^{7-k}\left(-\frac{1}{x}\right)^k                          \\
+     & = \sum_{k=0}^7\binom{7}{k}x^{7-k}x^{-k}(-1)^k                                         \\
+     & = \sum_{k=0}^7\binom{7}{k}(-1)^k x^{7-2k}                                             \\
+     & = x^7-7x^{7-2}+21x^{7-4}-35x^{7-6}+35x^{7-8}-21x^{7-10}+7x^{7-12}-x^{7-14}            \\
+     & = x^7-7x^5+21x^3-35x+\frac{35}{x}-\frac{21}{x^3}+\frac{7}{x^5}-\frac{1}{x^7} \qedhere
+  \end{align*}
+\end{proof}
+
+
+\qsection{Recommended Problems}{RP}
+
+\question Prove the following statements by induction.
+\begin{enumerate}[(a)]
+  \item For all $n\in\N$, $\displaystyle \sum^n_{i=1} (2i-1) = n^2$.
+        \begin{proof}
+          We will induct the statement $P(n) \equiv \sum^n_{i=1} (2i-1) = n^2$ on $n$.
+
+          (Base Case) When $n = 1$, the left-hand side is
+          \begin{align*}
+            \sum^1_{i=1} (2i-1) & = 2(1)-1 \\
+                                & = 1      \\
+                                & = 1^2
+          \end{align*}
+          which is the right-hand side, so $P(1)$ holds.
+
+          (Inductive Step) Now, suppose that $P(k)$ holds for an arbitrary $k$.
+          Then, we take the left-hand side of $P(k+1)$
+          \begin{align*}
+            \sum^{k+1}_{i=1} (2i-1)
+             & = (2(k+1)-1) + \sum^k_{i=1} (2i-1) & \text{extracting $i=n+1$}      \\
+             & = (2k+1) + k^2                     & \text{by inductive hypothesis} \\
+             & = (k+1)^2                          & \text{factoring}
+          \end{align*}
+          as desired to show that if $P(k)$ holds, then $P(k+1)$ holds.
+
+          Therefore, by induction, $P(n)$ holds for all $n$.
+        \end{proof}
+  \item For all $n\in\N$, $\displaystyle \sum^n_{i=0} r^i = \frac{1-r^{n+1}}{1-r}$ where $r$ is any real number such that $r \neq 1$.
+        \begin{proof}
+          Let $r$ be an arbitrary real other than 1.
+          We will induct the statement $P(n) \equiv \sum^n_{i=0} r^i = \frac{1-r^{n+1}}{1-r}$ on $n$.
+
+          (Base Case) For $n=1$, substitute into the LHS and expand the summation:
+          \begin{equation*}
+            \sum^1_{i=1} r^i = r^0 + r^1 = 1 + r = (1+r)\frac{1-r}{1-r} = \frac{1-r^2}{1-r}
+          \end{equation*}
+          This is precisely the RHS of the equality, so $P(1)$ holds.
+
+          (Inductive Step) Now, suppose that $P(k)$ holds for an arbitrary $k$.
+          Again, expand the summation but for the LHS of $P(k+1)$:
+          \begin{align*}
+            \sum^{k+1}_{i=0} r^i
+             & = r^{k+1} + \sum^k_{i=0} r^i                                                   \\
+             & = r^{k+1} + \frac{1-r^{k+1}}{1-r}             & \text{by inductive hypothesis} \\
+             & = \frac{(r^{k+1})(1-r) + 1 - r^{k+1}}{1-r}                                     \\
+             & = \frac{r^{k+1} - r^{k+2} + 1 - r^{k+1}}{1-r}                                  \\
+             & = \frac{1 - r^{k+2}}{1-r}                                                      \\
+          \end{align*}
+          which is the other side of the equality.
+          We have proved that if $P(n)$ holds, then $P(n+1)$ holds.
+          Therefore, by induction, $P(n)$ holds for all natural $n$.
+        \end{proof}
+  \item For all $n\in\N$, $\displaystyle \sum^n_{i=1} \frac{i}{(i+1)!} = 1-\frac{1}{(n+1)!}$.
+        \begin{proof}
+          We will induct the statement $P(n) \equiv \sum^n_{i=1} \frac{i}{(i+1)!} = 1-\frac{1}{(n+1)!}$ on $n$.
+
+          First, verify the base case, $P(1)$.
+          Then, we let $n=1$ and have
+          \[ \sum^1_{i=1} \frac{i}{(i+1)!} = 1-\frac{1}{2!} \]
+          Expanding the summation, we can show that $P(1)$ holds:
+          \[ \sum^1_{i=1} \frac{i}{(i+1)!} = \frac{1}{2!} = \frac{1}{2} = 1-\frac{1}{2} = 1-\frac{1}{2!} \]
+
+          Now, suppose $P(k)$ is true for some $k$, and consider $P(k+1)$:
+          \[ \sum^{n+1}_{i=1} \frac{i}{(i+1)!} = 1-\frac{1}{(n+2)!} \]
+          Like above, we take out a term of the summation and simplify, so we have
+          \begin{align*}
+            \sum^{k+1}_{i=1} \frac{i}{(i+1)!}
+             & = \frac{k+1}{(k+2)!} + \sum^{k}_{i=1} \frac{i}{(i+1)!}                \\
+             & = \frac{k+1}{(k+2)!} + 1 - \frac{1}{(k+1)!}            & \text{by IH} \\
+             & = 1 + \frac{(k+1) - (k+2)}{(k+2)!}                                    \\
+             & = 1 - \frac{1}{(k+2)!}
+          \end{align*}
+          as required.
+          We have proven $P(1)$ and that $P(k)$ implies $P(k+1)$, so, by induction, $P(n)$ is true for all natural $n$.
+        \end{proof}
+  \item For all $n\in\N$, $\displaystyle \sum^n_{i=1} \frac{i}{2^i} = 2-\frac{n+2}{2^n}$.
+        \begin{proof}
+          For induction on $n$, let $P(n) \equiv \sum^n_{i=1} \frac{i}{2^i} = 2-\frac{n+2}{2^n}$.
+
+          Verify the base case $P(1)$:
+          \[ \sum^1_{i=1} \frac{i}{2^i} = \frac{1}{2} = 2 - \frac{3}{2} = 2 -\frac{1+2}{2^1} \]
+          Suppose that $P(k)$ holds for some $k$, and consider $P(k+1)$. Now,
+          \begin{align*}
+            \sum^{n+1}_{i=1} \frac{i}{2^i}
+             & = \frac{k+1}{2^{k+1}} + \sum^n_{i=1} \frac{i}{2^i}                \\
+             & = \frac{k+1}{2^{k+1}} + 2-\frac{k+2}{2^k}          & \text{by IH} \\
+             & = 2 + \frac{k+1 - 2(k+2)}{2^{k+1}}                                \\
+             & = 2 - \frac{k+3}{2^{k+1}}
+          \end{align*}
+          as required.
+          Because $P(1)$ holds and $P(k)$ implies $P(k+1)$, by induction, $P(n)$ holds for all $n$.
+        \end{proof}
+  \item For all $n\in\N$, where $n \geq 4$, $n! > n^2$.
+        \begin{proof}
+          We will prove by induction on $n$.
+          Let $P(n)$ be the statement $n! > n^2$.
+
+          To verify the base case $P(4)$, notice that $4! = 24$, that $4^2 = 16$, and that $24 > 16$.
+
+          Now, suppose that $P(k)$ is true for some $k \geq 4$.
+          We must show that $P(k+1)$ holds, i.e., $(k+1)! > (k+1)^2$.
+
+          First, notice that $x^2 > x+1$ for all $x \geq 4$.
+          Then, we can state the inductive hypothesis as $k! > k+1$.
+          Multiplying both sides by $k+1$ gives $(k+1)! > (k+1)^2$, as desired.
+
+          Therefore, by induction, $n! > n^2$ for all $n \geq 4$.
+        \end{proof}
+  \item For all $n\in\N$, $4^n-1$ is divisible by 3.
+        \begin{proof}
+          Induct the statement ``$4^n-1$ is divisible by 3'' on $n$.
+
+          For the base case, let $n=1$ so $4^1-1=3$ and 3 is obviously divisible by 3.
+
+          Now, suppose that $4^k-1$ is divisible by 3 for some natural number $k$.
+          By definition, there exists an integer $a$ where $4^k-1 = 3a$.
+
+          Consider when $n = k+1$. Rearranging,
+          $4^{k+1}-1 = (4^{k+1} - 4) + 3 = 4(4^k-1)+3$.
+          By our inductive hypothesis, this is equal to $4(3a)+3 = 3(4a+1)$.
+          Then, since $4^{k+1}-1$ can be written as $3b$ for some integer $b$ (namely, $b = 4a+1$),
+          it is by definition divisible by 3.
+
+          Therefore, by induction, $4^n-1$ is divisible by 3 for all $n\in\N$.
+        \end{proof}
+\end{enumerate}
+
+
+\question Let $x$ be a real number.
+Find the coefficient of $x^{19}$ in the expansion of $(2x^3-3x)^9$.
+\begin{proof}[Solution]
+  Recall the Binomial Theorem, $(a+b)^n = \sum_{k=0}^n\binom{n}{k}a^{n-k}b^k$.
+  Let $a = 2x^3$, $b = -3x$, and $n=9$.
+  Then, we have $(2x^3-3x)^9 = \sum_{k=0}^9\binom{9}{k}2^{9-k}(-3)^k x^{27-2k}$.
+  We only care about when the exponent on $x$ is 19, i.e., $27-2k=19 \implies k = 4$.
+  On this term of the summation, we have $\binom{9}{4}2^5 (-3)^4 x^{19}$.
+
+  The coefficient is $\binom{9}{4}2^5 (-3)^4 = 126 \cdot 32 \cdot 81 = 326592$.
+\end{proof}
+
+
+\question Let $n$ be a non-negative integer.
+Prove that $\displaystyle \sum_{k=0}^n \binom{n}{k} = 2^n$.
+\begin{proof}
+  We will induct the statement $P(n) \equiv \sum_{k=0}^n \binom{n}{k} = 2^n$ on $n \geq 0$.
+
+  For the base case, $P(0)$, we have \[ \sum_{k=0}^0 \binom{0}{k} = \binom{0}{0} = 1 = 2^0. \]
+
+  Now, suppose $P(m)$ is true for some $m \geq 0$.
+  Consider the summation in $P(m+1)$:
+  \begin{align*}
+    \sum_{k=0}^{m+1} \binom{m+1}{k}
+     & = \binom{m+1}{m+1} + \sum_{k=0}^m \binom{m+1}{k}                                               \\
+     & = \binom{m+1}{m+1} + \sum_{k=0}^m \left( \binom{m}{k} + \binom{m}{k-1}  \right) & \text{by PI} \\
+     & = \binom{m+1}{m+1} + \sum_{k=0}^m \binom{m}{k} + \sum_{k=0}^m \binom{m}{k-1}                   \\
+     & = 1 + 2^k + \sum_{k=0}^m \binom{m}{k-1}                                         & \text{by IH}
+  \end{align*}
+  Recall that negative binomial coefficients are undefined, so we can change the variable in the summation with $j=k+1$ and ignore the $k=0$ term.
+  Add and subtract a $\binom{m}{m}$ term to round out the summation and apply the IH once more:
+  \begin{align*}
+    \sum_{k=0}^{m+1} \binom{m+1}{k}
+     & = 1 + 2^k + \sum_{j=0}^{m-1} \binom{m}{j}                                              \\
+     & = 1 + 2^k + \sum_{j=0}^{m-1} \binom{m}{j} + \binom{m}{m} - \binom{m}{m}                \\
+     & = 1 + 2^k + \sum_{j=0}^{m} \binom{m}{j} - 1                                            \\
+     & = 1 + 2^k + 2^k - 1                                                     & \text{by IH} \\
+     & = 2^{k+1}                                                                              
+  \end{align*}
+  which is what we wanted to show that $P(m+1)$ is true.
+
+  Therefore, by induction, $P(n)$ is true for all non-negative integer $n$.
+\end{proof}
+
+
+\end{document}
