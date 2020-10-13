@@ -1,0 +1,252 @@
+\input{../header}
+\title{MATH 135 Fall 2020: Extra Practice 5}
+
+\begin{document}
+\thispagestyle{firstpage}
+
+\textbf{\@title}
+
+\qsection{Warm-Up Exercises}{WE}
+
+\question Let $\U=\{1,2,3,4,5,6,7,8,9\}$, $A=\{2,4,6,9\}$, and $B=\{4,5,6,7\}$.
+\begin{enumerate}[(a)]
+  \item Calculate the following:
+        \begin{enumerate}[i.]
+          \item $A \cup B = \{2,4,5,6,7,9\}$
+          \item $A \cap B = \{4,6\}$
+          \item $\overline{A} = \U - A = \{1,3,5,7,8\}$
+          \item $\overline{B} = \U - B = \{1,2,3,8,9\}$
+          \item $A-B = \{2,9\}$
+          \item $B-A = \{5,7\}$
+        \end{enumerate}
+  \item Are $A$ and $B$ disjoint? \emph{No, since 4 is in both sets.}
+  \item Give a set $C$ such that $C \subseteq B$. \emph{Let $C=B$.}
+  \item Give a set $D$ such that $D \subsetneq A$. \emph{Let $D=\{2\}$.}
+\end{enumerate}
+
+\question Suppose $S$ and $T$ are two sets.
+Prove that if $S \cap T = S$, then $S \subseteq T$.
+Is the converse true?
+\begin{proof}
+  Let $S$ and $T$ be arbitrary sets such that their intersection is $S$.
+  We must show that any element of $S$ is an element of $T$.
+
+  Consider an element $s$ in $S$.
+  But $S$ is equal to $S \cap T$.
+  Elements of an intersection are elements of the original sets, so $s \in T$, as desired.
+
+  For the converse, consider another two sets, $S_1$ and $T_1$, where $S_1 \subseteq T_1$.
+  This means that all elements of $S_1$ are elements of $T_1$, that is, all elements of $S_1$ are elements of both $S_1$ and $T_1$.
+  But this is just the definition of the intersection of $S_1$ and $T_1$.
+  Therefore, the converse is also true.
+\end{proof}
+
+
+\question Give an example of three sets $A$, $B$, and $C$ such that $B \neq C$ and $B-A = C-A$.
+\begin{proof}[Solution]
+  Let $A = \{1\}$, $B=\{2\}$ and $C=\{1,2\}$.
+  Then, $B-A=\{2\}$ and $C-A=\{2\}$.
+\end{proof}
+
+
+\qsection{Recommended Problems}{RP}
+
+\question Let $A$ be a subset of the universe $\U$.
+Prove that $A \cup \overline{A} = \U$.
+
+\begin{proof}
+  Recall that the complement of a set $\overline{S}$ with respect to a universe $\U$
+  is defined as the set $\{x\in\U:\lnot(x\in S)\}$.
+  Recall also that the union of two sets $X$ and $Y$, again with universe $\mathcal U$,
+  is defined as the set $X\cup Y=\{x\in\U:x\in X\lor x\in Y\}$.
+
+  Then, $A \cup \overline{A} = \{x\in\U:x \in A \lor \lnot (x \in A)\}$.
+  The disjunction of any logical statement with its negation is a tautology, so this property is true for all elements of $\U$.
+  Therefore, the resulting set is simply $\U$.
+\end{proof}
+
+
+\question\label{distribute} Let $S$ and $T$ be two sets which are subsets of the universe $\U$.
+Prove that \[ (S \cup T) - (S \cap T) = (S - T) \cup (T - S). \]
+
+\begin{proof}
+  Let $S$ and $T$ be arbitrary subsets of $\U$, and $x$ be an arbitrary element of $\U$ such that it is an element of the left-hand side.
+  We prove by showing that the left and right-hand sides are subsets of another,
+  that is, the following universally quantified biconditional holds:
+  \begin{equation*}
+    \forall x \in \U, x \in (S \cup T)-(S \cap T) \iff x \in (S-T) \cup (T-S)
+  \end{equation*}
+  This can be done by rewriting both sides in set-builder notation and applying logical equivalencies.
+  \begin{align*}
+    (S \cup T)-(S \cap T)
+     & = \{x\in\U : (x \in S \cup T) \land (x \not\in S \cap T)\}                       \\
+     & = \{x\in\U : (x \in S \lor x \in T) \land \lnot (x \in S \land x \in T)\}        \\
+     & = \{x\in\U : (x \in S \lor x \in T) \land (\lnot(x \in S) \lor \lnot(x \in T))\}
+  \end{align*}
+  Now, distributing, we have the property:
+  \begin{equation*}
+    (x \in S \land x \not\in S) \lor
+    (x \in S \land x \not\in T) \lor
+    (x \in T \land x \not\in S) \lor
+    (x \in T \land x \not\in T)
+  \end{equation*}
+  which can be equivalently expressed by removing falsities:
+  \begin{equation*}
+    (x \in S \land x \not\in T) \lor (x \in T \land x \not\in S).
+  \end{equation*}
+  Now, we can apply the definitions of unions and complements in reverse:
+  \begin{align*}
+    (S \cup T)-(S \cap T)
+     & = \{x\in\U:(x \in S \land x \not\in T) \lor (x \in T \land x \not\in S)\}             \\
+     & = \{x\in\U:(x \in S \land x \not\in T)\} \cup \{x\in\U: (x \in T \land x \not\in S)\} \\
+     & = (S-T) \cup (T-S) \qedhere
+  \end{align*}
+\end{proof}
+
+
+\question Let $A=\{n\in\Z : 2\mid n\}$ and $B=\{n\in\Z : 4\mid n\}$.
+Let $n \in \Z$. Prove that $n \in (A-B)$ if and only if $n=2k$ for some odd integer $k$.
+
+\begin{proof}
+  We prove the biconditional by proving both implications.
+
+  ($\Rarr$) Let $n$ be an arbitrary integer element of $A-B$, i.e., $n\in A$ but $n\not\in B$.
+  Then, the defining property of $A$ holds but that of $B$ does not.
+  Therefore, $2 \mid n$ but $4 \nmid n$.
+
+  Since $2 \mid n$, it may be written as $n=2q$ for some integer $q$.
+
+  If $q$ is even, then $n=2(2p)$ for some integer $p$.
+  That means $n=4p$, so $n \mid 4$, which is a contradiction.
+  Therefore, $q$ must be odd, and $n$ may be written as $n=2k$ for an odd integer $k=q$.
+
+  ($\Larr$) Let $n$ be an arbitrary integer such that $n=2k$ for some odd integer $k$.
+  It immediately follows that $2 \mid n$ and $n \in A$.
+
+  Also, since $k$ is odd, $n=2(2d+1)=4\left(d+\frac12\right)$ for another integer $d$.
+  $d+\frac12$ will never be an integer, so $4 \nmid n$, which means $n \not\in B$.
+
+  However, $n \in A$ and $n \not\in B$ is precisely the definition of $n \in (A-B)$.
+
+  Therefore, since both implications hold, the statement is true.
+\end{proof}
+
+
+\question Prove that there exist sets $A$, $B$, and $C$ such that $A \cup B=A \cup C$ and $B \neq C$.
+
+\begin{proof}
+  Let $A=\{1,2\}$, $B=\{1\}$, and $C=\{2\}$.
+  Clearly, $B \neq C$.
+
+  We have $A \cup B = \{1,2\}$ and $A \cup C = \{1,2\}$, which are equal.
+\end{proof}
+
+
+\question Prove or disprove.
+If $A$, $B$, and $C$ are sets, then $A \cap (B \cup C) = (A \cap B) \cup C$.
+
+\begin{proof}[Solution]
+  Let $A$, $B$, and $C$ be arbitrary sets.
+  We disprove by showing $(A \cap B) \cup C$ is not a subset of $A \cap (B \cup C)$.
+
+  Let $x$ be an element of $C$ that is not an element of $A$.
+  Then, it is clearly an element of $(A \cap B) \cup C$, since it is an element of $C$ and all elements of either set in a union are elements of the union.
+
+  However, it is not an element of $A \cap (B \cup C)$.
+  Since it is an intersection, all such elements are elements of $A$, which $x$ is not.
+
+  Therefore, $(A \cap B) \cup C \not\subseteq A \cap (B \cup C)$.
+  Set equality is defined by bidirectional subsets, so the sets cannot be equal.
+\end{proof}
+
+
+\question Prove there is a unique set $T$ such that for every set $S$, $S \cup T = S$.
+
+\begin{proof}
+  We suppose that $T=\emptyset$, that is, $T$ is the set with no elements, and prove it.
+
+  (Existence) Since there are no elements in $T$, it may be written as $T=\{ x : P \}$
+  where $P$ is a false logical statement.
+
+  Now, the union $S \cup T$ is $\{ x : x \in S \lor P \}$.
+  but a statement disjoined with false gives itself, so we have $\{ x : x \in S \}$, which is just $S$.
+
+  (Uniqueness) Let $A$ and $B$ be empty sets.
+
+  Then, $\forall x \in \U, x \in A \implies x \in B$ is vacuously true, since the hypothesis is always false by definition.
+  Therefore, $A \subseteq B$.
+
+  Likewise, $\forall x \in \U, x \in B \implies x \in A$ is vacuously true.
+  Therefore, $B \subseteq A$.
+
+  Since both $A$ and $B$ are mutual subsets, $A=B$, and the empty set is unique.
+\end{proof}
+
+
+\qsection{Challenges}{C}
+
+\question The \emph{symmetric difference} of two sets $A$ and $B$, denoted $A \sym B$, is defined as
+\[ A \sym B = (A-B) \cup (B-A). \]
+Prove that $(A \sym B) \sym C = A \sym (B \sym C)$.
+
+\begin{proof}
+  We will prove using logical equivalences.
+
+  Consider the left-hand side. By the given definition,
+  \begin{align*}
+    (A \sym B) \sym C & = ((A-B) \cup (B-A)) \sym C                              \\
+                      & = (((A-B) \cup (B-A)) - C) \cup (C - ((A-B) \cup (B-A)))
+  \end{align*}
+  which is a mess, so we re-express as a logical expression in set-builder notation.
+  That is, $\{ x : P(x) \}$ for some open sentence $P(x)$.
+  For convenience, let $a \equiv x\in A$, $b \equiv x\in B$, and $c \equiv x\in C$.
+  \begin{align*}
+    P(x)
+     & \equiv (((a \land \lnot b) \lor (b \land \lnot a)) \land \lnot c)
+    \lor (c \land \lnot((a \land \lnot b) \lor (b \land \lnot a)))                 \\
+     & \equiv (a \land \lnot b \land \lnot c) \lor (b \land \lnot a \land \lnot c)
+    \lor (c \land \lnot(a \land \lnot b) \land \lnot(b \land \lnot a))             \\
+     & \equiv (a \land \lnot b \land \lnot c) \lor (b \land \lnot a \land \lnot c)
+    \lor (c \land (\lnot a \lor b) \land (\lnot b \lor a))
+  \end{align*}
+  We now digress from this (also enormous) expression to simplify the last term.
+  Recall in Problem~\ref{distribute}, we proved
+  $(X \lor Y) \land (\lnot X \lor \lnot Y) \equiv (X \land Y) \lor (\lnot X \land \lnot Y)$.
+  We may now apply this equivalence with $X\equiv\lnot a$ and $Y\equiv b$.
+  \begin{align*}
+    P(x)
+     & \equiv (a \land \lnot b \land \lnot c) \lor (b \land \lnot a \land \lnot c)
+    \lor (c \land ((\lnot a \land b) \lor (\lnot b \land a)))                      \\
+     & \equiv (a \land \lnot b \land \lnot c) \lor (b \land \lnot a \land \lnot c)
+    \lor (c \land \lnot a \land b) \lor (c \land \lnot b \land a)                  \\
+     & \equiv (a \land b \land c) \lor (a \land \lnot b \land \lnot c)
+    \lor (\lnot a \land b \land \lnot c) \lor (\lnot a \land \lnot b \land c)
+  \end{align*}
+
+  Now, consider the right-hand side. By the given definition,
+  \begin{align*}
+    A \sym (B \sym C) & = A \sym ((B-C) \cup (C-B))                              \\
+                      & = (A - ((B-C) \cup (C-B))) \cup (((B-C) \cup (C-B)) - A)
+  \end{align*}
+  which we may express as $\{ x : Q(x) \}$ for some open sentence $Q(x)$.
+  \begin{align*}
+    Q(x)
+     & \equiv (a \land \lnot ((b \land \lnot c) \lor (c \land \lnot b)))
+    \lor (((b \land \lnot c) \lor (c \land \lnot b)) \land \lnot a)             \\
+     & \equiv (a \land (\lnot(b \land \lnot c) \land \lnot(c \land \lnot b)))
+    \lor ((b \land \lnot c \land \lnot a) \lor (c \land \lnot b \land \lnot a)) \\
+     & \equiv (a \land (\lnot b \lor c) \land (\lnot c \lor b))
+    \lor (\lnot a \land b \land \lnot c) \lor (\lnot a \land \lnot b \land c)
+  \end{align*}
+  Applying the identity we just discovered, namely,
+  $X\land(\lnot Y\lor Z)\land(\lnot Z\lor Y)\equiv(X\land Y\land Z)\lor(X\land\lnot Y\land\lnot Z)$,
+  for $X\equiv a$, $Y\equiv b$, and $Z\equiv c$.
+  \[
+    Q(x) \equiv (a \land b \land c) \lor (a \land \lnot b \land \lnot c)
+    \lor (\lnot a \land b \land \lnot c) \lor (\lnot a \land \lnot b \land c)
+  \]
+  but this is exactly $P(x)$.
+  Therefore, the right-hand side may be expressed $\{ x : P(x) \}$, which is precisely the left-hand side.
+\end{proof}
+
+\end{document}

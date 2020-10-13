@@ -38,6 +38,8 @@
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\sym}{\mathbin{\triangle}}
 
 % Functions
 \DeclareMathOperator{\sgn}{sgn}
@@ -53,6 +55,8 @@
 % Macros
 % properly typeset ε-δ (epsilon en dash delta)
 \newcommand{\epsdel}{\ensuremath{\epsilon\mathit{\textnormal{--}}\delta}}
+\newcommand{\by}[1]{& \text{by #1}}
+\newcommand{\IH}{\by{inductive hypothesis}}
 
 % Typesetting
 \usepackage{array}   % for \newcolumntype macro
@@ -64,9 +68,9 @@
 
 % Auto-number questions
 \newcommand{\QType}{Q}
-\renewcommand{\theparagraph}{\textbf{\QType\ifnum\value{paragraph}<10 0\fi\arabic{paragraph}.}}
-\setcounter{secnumdepth}{4}
-\newcommand{\question}{\par\refstepcounter{paragraph}\theparagraph\space}
+\renewcommand{\theparagraph}{\QType\ifnum\value{paragraph}<10 0\fi\arabic{paragraph}}
+\setcounter{secnumdepth}{6}
+\newcommand{\question}{\par\refstepcounter{paragraph}\textbf{\theparagraph}.\space}
 
 % Question sections
 \titleformat{\section}{\normalsize\bfseries}{\thesection}{1em}{}
