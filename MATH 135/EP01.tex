@@ -1,0 +1,99 @@
+\input{../header}
+\title{MATH 135 Fall 2020: Extra Practice 1}
+
+\begin{document}
+\thispagestyle{firstpage}
+
+\textbf{\@title}
+
+\qsection{Warm-Up Exercises}{WE}
+
+\question Determine if the following quantified statements are true or false.
+No justification is needed.
+\begin{enumerate}[(a)]
+  \item $\forall x\in\R, \sin^2x+\cos^2x=1$ \\
+        True, by the Pythagorean identity.
+  \item $\exists y\in\Z, 6y-3=28$ \\
+        False, since $6y-3=28 \implies 6y=25 \implies y=\frac{25}{6}$, which is undefined in $\Z$.
+  \item $\forall p\in\Q, \exists q\in\Z, |p-q| \leq 1$ \\
+        True, select $q = \floor{p}$.
+\end{enumerate}
+
+
+\qsection{Recommended Problems}{RP}
+
+\question Which of the following are statements?
+If it is a statement, determine if it is true or false.
+No justification is needed.
+\begin{enumerate}[(a)]
+  \item $3 \leq \pi$ \\
+        Statement, true.
+  \item $2x-3 \geq -1$ \\
+        Not a statement, depends on $x$.
+  \item $x^2-y^3 = 1$ \\
+        Not a statement, depends on $x$ and $y$.
+  \item $N$ is a perfect square. \\
+        Not a statement, depends on $N$.
+  \item $x^2+5x-2$ \\
+        Not a statement or an open sentence.
+  \item $x \leq x+1$ \\
+        Not a statement, depends on $x$.
+  \item There is a largest real number. \\
+        Statement, false.
+  \item There is a smallest positive number. \\
+        Statement, true.
+  \item Every real number is either positive or negative. \\
+        Statement, false.
+  \item Some triangles are right triangles. \\
+        Statement, true.
+\end{enumerate}
+
+
+\question For each of the following statements, identify the four parts of the quantified statement
+(quantifier, variables, domain, and open sentence).
+Next, express the statement in symbolic form using as few words as possible and then write down the negation of the statement
+(when possible, without using any negative words such as ``not'' or the $\lnot$ symbol, but negative math symbols like $\neq$ are okay).
+Finally, determine if the original statement is true or false.
+No justification is needed.
+\begin{enumerate}[(a)]
+  \item The equation $x^2+2x-3=0$ has a real solution.
+        \[ \exists x\in\R, x^2+2x-3 = 0 \]
+        Quantifier: existential;
+        variable: $x$;
+        domain: $\R$;
+        open sentence: $x^2+2x-3=0$.
+  \item For all real numbers $x$ and $y$, $x \neq y$ implies that $x^2+y^2 > 0$.
+        \[ \forall (x,y)\in\R^2, x \neq y \implies x^2+y^2>0 \]
+        Quantifier: universal;
+        variable: $x$;
+        domain: $\R^2$;
+        open sentence: $x \neq y \Rarr x^2+y^2>0$.
+  \item For every even integer $a$ and odd integer $b$, a rational number $c$ can always be found such that $a<c<b$ or $b<c<a$.
+        \[ \forall (a,b)\in\Z^2, \exists c\in\Q, \left(\frac{a}{2}\in\Z \land \frac{b-1}{2}\in\Z\right) \implies (a<c<b \lor b<c<a) \]
+        Quantifier: universal/existential;
+        variables: $a$, $b$, $c$;
+        domain: $\Z^2\times\Q$,
+        open sentence: $\left(\frac{a}{2}\in\Z \land \frac{b-1}{2}\in\Z\right) \Rarr (a<c<b \lor b<c<a)$.
+  \item There is a perfect square which is also a perfect cube.
+        \[ \exists (n,x,y)\in\Z^3, n=x^2=y^3 \]
+        Quantifier: existential; variables: $n$, $x$, $y$; domain: $\Z^3$; open sentence: $n=x^2=y^3$.
+\end{enumerate}
+
+
+\question Negate the following statements without using words or the $\lnot$ symbol.
+For each statement determine whether it or its negation is true.
+\begin{enumerate}[(a)]
+  \item $\exists a \in \Z, \forall b \in \Z, 3a=b$: false \\
+        $\forall a \in \Z, \exists b \in \Z, 3a \neq b$: true
+  \item $\forall a \in \Z, \exists b \in \Z, 3a=b$: true \\
+        $\exists a \in \Z, \forall b \in \Z, 3a \neq b$: false
+  \item $\forall a \in \R, \forall b \in \R, \exists c \in \R, \frac{a}{c}=b$: true \\
+        $\exists a \in \R, \exists b \in \R, \forall c \in \R, \frac{a}{c} \neq b$: false
+\end{enumerate}
+
+
+\question Express the following statement symbolically without using any words:
+\emph{Every integer is a perfect square.}
+\[ \forall n\in\Z, \exists m\in\Z, n = m^2 \]
+
+\end{document}
