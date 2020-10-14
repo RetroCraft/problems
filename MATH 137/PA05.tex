@@ -1,0 +1,167 @@
+\input{../header}
+\title{MATH 137 Fall 2020: Practice Assignment 5}
+
+\begin{document}
+\thispagestyle{firstpage}
+
+\textbf{\@title}
+
+\question Compute the following limits using the fact that $\dilim{x}\frac{\ln x}{x^p}=0$
+and $\dilim{x}\frac{x^p}{e^x}=0$ for any $p>0$.
+\begin{enumerate}[(a)]
+  \item $\dilim{x} \frac{\sqrt{x} + \ln x - x}{1 - \ln e^{2x}}$
+        \begin{proof}[Solution]
+          Divide through by $x$: \begin{align*}
+            \ilim{x} \frac{\sqrt{x} + \ln x - x}{1 - \ln e^{2x}}
+             & = \ilim{x} \frac{\sqrt{x} + \ln x - x}{1 - 2x}                              \\
+             & = \ilim{x} \frac{\frac{\sqrt{x}}{x} + \frac{\ln x}{x} - 1}{\frac{1}{x} - 2} \\
+             & = \frac{0 + 0 - 1}{0 - 2}                                                   \\
+             & = \frac{1}{2} \qedhere
+          \end{align*}
+        \end{proof}
+
+  \item $\dilim{x} e^{-x}\left(1-x\sqrt{e^x}\right)$
+        \begin{proof}[Solution]
+          Distribute and simplify: \begin{align*}
+            \ilim{x} e^{-x}\left(1-x\sqrt{e^x}\right)
+             & = \ilim{x} \left(e^{-x}-e^{-x}x\sqrt{e^x}\right) \\
+             & = \ilim{x} \left(0- e^{-x} x e^{x/2} \right)     \\
+             & = \ilim{x} \frac{x}{e^{x/2}}                     \\
+             & = 0 \qedhere
+          \end{align*}
+        \end{proof}
+
+  \item $\dilim{x} \frac{\frac{\ln x}{x^p}}{\frac{x^p}{e^x}}$ for $p > 0$.
+        \begin{proof}[Solution]
+          Recall that a product of divergences diverges.
+          \begin{align*}
+            \ilim{x} \frac{\frac{\ln x}{x^p}}{\frac{x^p}{e^x}}
+             & = \ilim{x} e^x\ln x = \infty \qedhere
+          \end{align*}
+        \end{proof}
+
+  \item $\dilim{x} \frac{(\ln x)^e}{x}$
+        \begin{proof}[Solution]
+          Rewrite as $\left(\frac{\ln x}{x^{1/e}}\right)^e$.
+          This follows the given pattern, so the limit is $0^e=0$.
+        \end{proof}
+\end{enumerate}
+
+\question Find all asymptotes (both horizontal and vertical) of $f(x) = \dfrac{1}{-2x^2+2}$.
+\begin{proof}[Solution]
+  Notice that the limit as $x \to \infty$ is 0, so $y=0$ is an asymptote.
+  Vertical asymptotes of a rational function occur only when the numerator is 0 but the denominator is non-zero.
+  The denominator factors to $-2(x-1)(x+1)$, so $x=\pm 1$ are asymptotes.
+\end{proof}
+
+\question Prove that the function $f(x)=2x^2+9$ is continuous at $x=2$ using the \epsdel{} definition of continuity.
+\begin{proof}
+  We must show that $\dlim{x}{a}f(x) = f(a)$ for $a=2$.
+  Specifically, $\dlim{x}{2} (2x^2+9) = 17$.
+
+  This means that for any $\epsilon > 0$, we can find a $\delta$ where $0 < |x-2| < \delta$
+  implies $|2x^2-8| < \epsilon$.
+
+  Let $\epsilon > 0$.
+  Choose $\delta = \min(\{\frac{\epsilon}{8},2\})$, limiting $\delta$ to be at most 2.
+  Also, suppose that $0 < |x-2| < \delta$.
+  Then, we have $|x+2| < 4$ and $|x-2| < \frac{\epsilon}{8}$.
+  Multiplying:
+  \begin{align*}
+    \abs{x-2}\abs{x+2} & < \frac{\epsilon}{8} \cdot 4 \\
+    \abs{x^2-4}        & < \frac{\epsilon}{2}         \\
+    \abs{2x^2-8}       & < \epsilon
+  \end{align*}
+  which is exactly what we needed to show.
+
+  Therefore, by the \epsdel{} definition of continuity, $f(x)$ is continuous at $x=2$.
+\end{proof}
+
+\question Let $f$ be a function defined as
+\begin{equation*}
+  f(x) = \begin{dcases}
+    \frac{x^2-4}{x^2+x-6} \cos x^2 & x \neq -3,2 \\
+    0                              & x=-3,2
+  \end{dcases}
+\end{equation*}
+Find the intervals where $f$ is continuous. Justify your answer.
+\begin{proof}
+  First, simplify $f$ by factoring:
+  \begin{align*}
+    f(x) & = \begin{dcases}
+      \frac{(x-2)(x+2)}{(x-2)(x+3)} \cos x^2 & x \neq -3,2 \\
+      0                                      & x=-3,2
+    \end{dcases} \\
+         & = \begin{dcases}
+      \frac{x+2}{x+3} \cos x^2 & x \neq -3,2 \\
+      0                        & x=-3,2
+    \end{dcases}
+  \end{align*}
+  Note that cancelling the $x-2$ factors is allowed since the term is only defined when $x\neq 2$.
+
+  By the arithmetic rules for continuity, $f$ is continuous everywhere except possibly at $x=-3$ and $x=2$.
+
+  Consider these two points.
+
+  At $x=-3$, we define $f(-3) = 0$.
+  However, the limit from above blows up to negative infinity (and from below to positive infinity).
+  Since the limit does not exist, the function is not continuous.
+
+  At $x=2$, we again define $f(2)=0$.
+  Applying arithmetic limit rules, the limit is $\frac{2+2}{2+3}\cos 2^2 = \frac{4}{5}\cos 4$.
+  This does not equal the value of the function, 0, so the function is not continuous.
+
+  Therefore, $f$ is continuous on $\R \setminus \{-3,2\}$.
+\end{proof}
+
+\question Let
+\begin{equation*}
+  f(x) = \begin{cases}
+    cx^2+2x & x > 2    \\
+    x^3-cx  & x \leq 2
+  \end{cases}
+\end{equation*}
+Find the value $c$ such that $f(x)$ is continuous on $\R$. Justify your answer.
+\begin{proof}
+  By the arithmetic rules for continuity, $f(x)$ is clearly continuous on $\R \setminus \{2\}$.
+
+  For $f(x)$ to be continuous at $x=2$, the one-sided limits must agree and equal $f(2)$.
+  Since $f(2)$ is defined using the definition for $x > 2$, we need only compare the two cases.
+
+  By the limit rules for polynomials, we have:
+  \begin{align*}
+    \dlim{x}{2^+} (cx^2+2x) & = \dlim{x}{2^-}(x^3-cx) \\
+    c(2)^2+2(2)             & = (2)^3-c(2)            \\
+    4c+4                    & = 8-2c                  \\
+    c                       & = \frac{2}{3} \qedhere
+  \end{align*}
+\end{proof}
+
+\question Show that if a function is continuous at $x=0$ and satisfies the following, it is it is continuous everywhere.
+
+\textbf{Hint:} You may use the fact that $\dlim{x}{a}f(x)=f(a)$ is equivalent to $\dlim{h}{0}f(a+h)=f(a)$.
+\begin{enumerate}[(a)]
+  \item $f(x+y)=f(x)+f(y)$
+        \begin{proof}
+          Let $f$ be a function continuous at $x=0$.
+          By definition, $\dlim{x}{0}f(x)=f(0)$.
+          We must show that for all $a$, $\dlim{x}{a} f(x) = f(a)$.
+
+          Let $a$ be an arbitrary value in the domain of $f$.
+          Recall that $f(a+h) = f(a)+f(h)$, so
+          \[ \dlim{h}{0}f(a+h) = \dlim{h}{0}f(a) + \dlim{h}{0}f(h) = f(a) + f(0) = f(a+0) = f(a) \]
+          By the above hint, this is equivalent to saying $\dlim{x}{a}f(x)=f(a)$.
+        \end{proof}
+  \item $f(x+y)=f(x)f(y)$
+        \begin{proof}
+          Let $f$ be a function continuous at $x=0$, i.e., $\dlim{x}{0}f(x)=f(0)$.
+          Again, we must show that for all $a$, $\dlim{x}{a} f(x) = f(a)$.
+
+          Let $a$ be an arbitrary value in the domain of $f$.
+          Since $f(x+y)=f(x)f(y)$:
+          \[ \dlim{h}{0} f(a+h) = \dlim{h}{0} f(a) \cdot \dlim{h}{0} f(h) = f(a) \cdot f(0) = f(a+0) = f(a) \]
+          By the above hint, this is equivalent to saying $\dlim{x}{a}f(x)=f(a)$.
+        \end{proof}
+\end{enumerate}
+
+\end{document}
