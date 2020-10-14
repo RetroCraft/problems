@@ -58,9 +58,9 @@ Using the Binomial Theorem, expand $\left(x-\frac{1}{x}\right)^7$.
           Then, we take the left-hand side of $P(k+1)$
           \begin{align*}
             \sum^{k+1}_{i=1} (2i-1)
-             & = (2(k+1)-1) + \sum^k_{i=1} (2i-1) & \text{extracting $i=n+1$}      \\
-             & = (2k+1) + k^2                     & \text{by inductive hypothesis} \\
-             & = (k+1)^2                          & \text{factoring}
+             & = (2(k+1)-1) + \sum^k_{i=1} (2i-1) \\
+             & = (2k+1) + k^2 \IH                 \\
+             & = (k+1)^2
           \end{align*}
           as desired to show that if $P(k)$ holds, then $P(k+1)$ holds.
 
@@ -81,11 +81,11 @@ Using the Binomial Theorem, expand $\left(x-\frac{1}{x}\right)^7$.
           Again, expand the summation but for the LHS of $P(k+1)$:
           \begin{align*}
             \sum^{k+1}_{i=0} r^i
-             & = r^{k+1} + \sum^k_{i=0} r^i                                                   \\
-             & = r^{k+1} + \frac{1-r^{k+1}}{1-r}             & \text{by inductive hypothesis} \\
-             & = \frac{(r^{k+1})(1-r) + 1 - r^{k+1}}{1-r}                                     \\
-             & = \frac{r^{k+1} - r^{k+2} + 1 - r^{k+1}}{1-r}                                  \\
-             & = \frac{1 - r^{k+2}}{1-r}                                                      \\
+             & = r^{k+1} + \sum^k_{i=0} r^i                  \\
+             & = r^{k+1} + \frac{1-r^{k+1}}{1-r} \IH         \\
+             & = \frac{(r^{k+1})(1-r) + 1 - r^{k+1}}{1-r}    \\
+             & = \frac{r^{k+1} - r^{k+2} + 1 - r^{k+1}}{1-r} \\
+             & = \frac{1 - r^{k+2}}{1-r}                     \\
           \end{align*}
           which is the other side of the equality.
           We have proved that if $P(n)$ holds, then $P(n+1)$ holds.
@@ -106,9 +106,9 @@ Using the Binomial Theorem, expand $\left(x-\frac{1}{x}\right)^7$.
           Like above, we take out a term of the summation and simplify, so we have
           \begin{align*}
             \sum^{k+1}_{i=1} \frac{i}{(i+1)!}
-             & = \frac{k+1}{(k+2)!} + \sum^{k}_{i=1} \frac{i}{(i+1)!}                \\
-             & = \frac{k+1}{(k+2)!} + 1 - \frac{1}{(k+1)!}            & \text{by IH} \\
-             & = 1 + \frac{(k+1) - (k+2)}{(k+2)!}                                    \\
+             & = \frac{k+1}{(k+2)!} + \sum^{k}_{i=1} \frac{i}{(i+1)!} \\
+             & = \frac{k+1}{(k+2)!} + 1 - \frac{1}{(k+1)!} \IH        \\
+             & = 1 + \frac{(k+1) - (k+2)}{(k+2)!}                     \\
              & = 1 - \frac{1}{(k+2)!}
           \end{align*}
           as required.
@@ -123,9 +123,9 @@ Using the Binomial Theorem, expand $\left(x-\frac{1}{x}\right)^7$.
           Suppose that $P(k)$ holds for some $k$, and consider $P(k+1)$. Now,
           \begin{align*}
             \sum^{n+1}_{i=1} \frac{i}{2^i}
-             & = \frac{k+1}{2^{k+1}} + \sum^n_{i=1} \frac{i}{2^i}                \\
-             & = \frac{k+1}{2^{k+1}} + 2-\frac{k+2}{2^k}          & \text{by IH} \\
-             & = 2 + \frac{k+1 - 2(k+2)}{2^{k+1}}                                \\
+             & = \frac{k+1}{2^{k+1}} + \sum^n_{i=1} \frac{i}{2^i} \\
+             & = \frac{k+1}{2^{k+1}} + 2-\frac{k+2}{2^k} \IH      \\
+             & = 2 + \frac{k+1 - 2(k+2)}{2^{k+1}}                 \\
              & = 2 - \frac{k+3}{2^{k+1}}
           \end{align*}
           as required.
@@ -191,25 +191,193 @@ Prove that $\displaystyle \sum_{k=0}^n \binom{n}{k} = 2^n$.
   Consider the summation in $P(m+1)$:
   \begin{align*}
     \sum_{k=0}^{m+1} \binom{m+1}{k}
-     & = \binom{m+1}{m+1} + \sum_{k=0}^m \binom{m+1}{k}                                               \\
-     & = \binom{m+1}{m+1} + \sum_{k=0}^m \left( \binom{m}{k} + \binom{m}{k-1}  \right) & \text{by PI} \\
-     & = \binom{m+1}{m+1} + \sum_{k=0}^m \binom{m}{k} + \sum_{k=0}^m \binom{m}{k-1}                   \\
-     & = 1 + 2^k + \sum_{k=0}^m \binom{m}{k-1}                                         & \text{by IH}
+     & = \binom{m+1}{m+1} + \sum_{k=0}^m \binom{m+1}{k}                                \\
+     & = \binom{m+1}{m+1} + \sum_{k=0}^m \left( \binom{m}{k} + \binom{m}{k-1}  \right)
+    \by{Pascal's identity}                                                             \\
+     & = \binom{m+1}{m+1} + \sum_{k=0}^m \binom{m}{k} + \sum_{k=0}^m \binom{m}{k-1}    \\
+     & = 1 + 2^k + \sum_{k=0}^m \binom{m}{k-1} \IH
   \end{align*}
   Recall that negative binomial coefficients are undefined, so we can change the variable in the summation with $j=k+1$ and ignore the $k=0$ term.
   Add and subtract a $\binom{m}{m}$ term to round out the summation and apply the IH once more:
   \begin{align*}
     \sum_{k=0}^{m+1} \binom{m+1}{k}
-     & = 1 + 2^k + \sum_{j=0}^{m-1} \binom{m}{j}                                              \\
-     & = 1 + 2^k + \sum_{j=0}^{m-1} \binom{m}{j} + \binom{m}{m} - \binom{m}{m}                \\
-     & = 1 + 2^k + \sum_{j=0}^{m} \binom{m}{j} - 1                                            \\
-     & = 1 + 2^k + 2^k - 1                                                     & \text{by IH} \\
-     & = 2^{k+1}                                                                              
+     & = 1 + 2^k + \sum_{j=0}^{m-1} \binom{m}{j}                               \\
+     & = 1 + 2^k + \sum_{j=0}^{m-1} \binom{m}{j} + \binom{m}{m} - \binom{m}{m} \\
+     & = 1 + 2^k + \sum_{j=0}^{m} \binom{m}{j} - 1                             \\
+     & = 1 + 2^k + 2^k - 1 \IH                                                 \\
+     & = 2^{k+1}
   \end{align*}
   which is what we wanted to show that $P(m+1)$ is true.
 
   Therefore, by induction, $P(n)$ is true for all non-negative integer $n$.
 \end{proof}
 
+
+\question Let $n$ be a non-negative integer.
+Prove by induction on $k$ that $\sum^k_{j=0}\binom{n+j}{j} = \binom{n+k+1}{k}$
+for all non-negative integers $k$.
+\begin{proof}
+  Let $n \geq 0$ be an integer, and let $P(k)$ be the statement $\sum^k_{j=0}\binom{n+j}{j} = \binom{n+k+1}{k}$.
+  We will induct $P(k)$ on $k$.
+
+  For the base case, let $k=0$.
+  Then, $P(k)$ reads $\sum^0_{j=0}\binom{n+j}{j} = \binom{n+1}{0}$.
+  The summation only has one term, so we have $\binom{n}{0} = \binom{n+1}{0}$ which is true for all $n$ (since $\binom{a}{0} = 1$ for all $a$).
+
+  Now, suppose that $P(s)$ holds for some non-negative integer $s$.
+
+  This means that $\sum^s_{j=0}\binom{n+j}{j} = \binom{n+s+1}{s}$.
+  Now, consider the left-hand side of $P(s+1)$:
+  \begin{align*}
+    \sum^{s+1}_{j=0}\binom{n+j}{j}
+     & = \binom{n+s+1}{s+1} + \sum^s_{j=0}\binom{n+j}{j} \\
+     & = \binom{n+s+1}{s+1} + \binom{n+s+1}{s} \IH       \\
+     & = \binom{n+s+2}{s+1} \by{Pascal's identity}       \\
+  \end{align*}
+  which is exactly the right-hand side.
+  Since $P(n)$ is true for $n=0$ and $P(s)$ implies $P(s+1)$, it holds for all $n \geq 0$ by induction.
+\end{proof}
+
+
+\question The sequence $x_1, x_2, x_3, \dots$ is defined recursively by
+$x_1=8$, $x_2=32$, and $x_i = 2x_{i-1} + 3x_{i-2}$ for all integers $i \geq 3$.
+Prove that for all $n\in\N$, $x_n = 2 \times (-1)^n + 10 \times 3^{n-1}$.
+\begin{proof}
+  We will strongly induct the statement $P(n)$, $x_n = 2(-1)^n + 10(3)^{n-1}$, on $n$.
+
+  For a base case, let $n = 1$.
+  Then, $2(-1)^1 + 10(3)^0 = -2+10 = 8$, which is the defined value of $x_1$.
+  For another, let $n = 2$.
+  Then, $2(-1)^2 + 10(3)^1 = 2+30 = 32$, which is the defined value of $x_2$.
+  Therefore, $P(1)$ and $P(2)$ hold.
+
+  Now, for some $m \geq 3$, suppose $P(n)$ holds for all $n < m$.
+  Specifically, $P(m-1)$ and $P(m-2)$ hold.
+
+  Consider the definition of $x_m$:
+  \begin{align*}
+    x_m & = 2x_{m-1} + 3x_{m-2}                                                                   \\
+        & = 2\left( 2(-1)^{m-1} + 10(3)^{m-2} \right) + 3\left( 2(-1)^{m-2} + 10(3)^{m-3} \right) \\
+        & = 4(-1)^{m-1} + 20(3)^{m-2} + 6(-1)^{m-2} + 30(3)^{m-3}                                 \\
+        & = 4(-1)(-1)^{m-2} + 6(-1)^{m-2} + 20(3)(3)^{m-3}  + 30(3)^{m-3}                         \\
+        & = 2(-1)^{m-2} + 90(3)^{m-3}                                                             \\
+        & = 2(-1)^2(-1)^{m-2} + 10(3)^2(3)^{m-3}                                                  \\
+        & = 2(-1)^m + 10(3)^{m-1}
+  \end{align*}
+  which is precisely $P(m)$.
+
+  Therefore, by strong induction, $P(n)$ is true for all $n$.
+\end{proof}
+
+
+\question The sequence $t_1, t_2, t_3, \dots$ is defined recursively by
+$t_1=2$ and $t_n = 2t_{n-1}+n$ for all integers $n > 1$.
+Prove that for all $n\in\N$, $t_n = 5 \times 2^{n-1} - 2 - n$.
+\begin{proof}
+  Let $P(n)$ be the statement $t_n = 5 \times 2^{n-1} - 2 - n$.
+  We will induct $P(n)$ on $n$.
+
+  We first verify base cases: $n = 1$, hypothesized as $t_1 = 5(2)^0-2-1 = 2$, which matches the defined value;
+  and $n=2$, for which $t_2$ is defined as $2(2)+2 = 6$ and we hypothesize $t_2 = 5(2)^{1}-2-2 = 6$.
+
+  Now, let $m$ be an integer above 2 and suppose that $P(m-1)$ holds.
+  Consider the definition of $t_m$:
+  \begin{align*}
+    t_m & = 2t_{m-1}+m                                   \\
+        & = 2\left( 5(2)^{m-2} - 2 - (m-1) \right)+m \IH \\
+        & = 2\left( 5(2)^{m-2} - m - 1 \right)+m         \\
+        & = 5(2)^{m-1} - 2m - 2 + m                      \\
+        & = 5(2)^{m-1} - 2 - m                           \\
+  \end{align*}
+  This is exactly $P(m)$, so $P(m-1)$ implies $P(m)$.
+
+  Therefore, by induction, $P(n)$ is true for all natural $n$.
+\end{proof}
+
+
+\question The Fibonacci sequence is defined as the sequence $f_1, f_2, f_3, \dots$
+where $f_1=1$, $f_2=1$ and $f_i=f_{i-1}+f_{i-2}$ for $i \geq 3$.
+Use induction to prove the following statements:
+\begin{enumerate}[(a)]
+  \item For $n \geq 2$, $f_1 + f_2 + \cdots + f_{n-1} = f_{n+1} - 1$.
+        \begin{proof}
+          We will induct the statement $P(n)$, $\sum_{i=1}^{n-1} f_i = f_{n+1}-1$ on $n$.
+
+          To verify the base case, $n = 2$, substitute and notice $f_1 = 1 = 2-1 = f_3-1$.
+
+          Now, let $m > 2$ and suppose $P(m)$ holds. Then,
+          \begin{align*}
+            \sum_{i=1}^{m-1} f_i       & = f_{m+1}-1         \\
+            f_m + \sum_{i=1}^{m-1} f_i & = f_m + f_{m+1} - 1 \\
+            \sum_{i=1}^{m} f_i         & = f_{m+2}-1         \\
+          \end{align*}
+          which is $P(m+1)$.
+
+          Therefore, by induction, $P(n)$ is true for all $n \geq 2$.
+        \end{proof}
+  \item Let $a = \dfrac{1+\sqrt{5}}{2}$ and $b = \dfrac{1-\sqrt{5}}{2}$.
+        For all $n\in\N$, $f_n = \dfrac{a^n-b^n}{\sqrt{5}}$.
+        \begin{proof}
+          Let $P(n)$ be the statement $f_n = \frac{a^n-b^n}{\sqrt{5}}$.
+          We will strongly induct $P(n)$ on $n$.
+
+          For the base cases, start with $n=1$.
+          $f_1$ is defined to be 1, and $\frac{a-b}{\sqrt{5}} = \frac{\sqrt{5}}{\sqrt{5}} = 1$.
+          Likewise, for $n=2$, $f_2$ is defined as 1, and
+          $\frac{a^2-b^2}{\sqrt{5}}=\frac{a-b}{\sqrt{5}}(a+b)=(1)(1)=1$.
+
+          For our inductive step, first notice that $a$ and $b$ are the roots of $x^2-x-1=0$.
+          Let $x$ be either root.
+
+          Notice that for any $n \geq 2$, we have
+          \begin{align*}
+            0   & = x^2-x-1                 \\
+            0   & = x^{n-2}(x^2-x-1)        \\
+            0   & = x^n - x^{n-1} - x^{n-2} \\
+            x^n & = x^{n-1} + x^{n-2}
+          \end{align*}
+          Therefore, $a^n = a^{n-1}+a^{n-2}$ and $b^n = b^{n-1}+b^{n-2}$ for any $n \geq 2$.
+
+          Now, let $m \geq 2$ and suppose $P(m-1)$ and $P(m-2)$ hold. Then, $f_m$ is defined by:
+          \begin{align*}
+            f_m & = f_{m-1} + f_{m-2}                                                   \\
+                & = \frac{a^{m-1}-b^{m-1}}{\sqrt{5}} + \frac{a^{m-2}-b^{m-2}}{\sqrt{5}} \\
+                & = \frac{(a^{m-1} + a^{m-2}) - (b^{m-1} + b^{m-2})}{\sqrt{5}}          \\
+                & = \frac{a^m - b^m}{\sqrt{5}}
+          \end{align*}
+          Therefore, by strong induction, $P(n)$ holds for all $n$.
+        \end{proof}
+\end{enumerate}
+
+
+\question Each of the following ``proofs'' by induction incorrectly ``proved'' a statement that is actually false.
+State what is wrong with each proof.
+\begin{enumerate}[(a)]
+  \item The proof does not consider the given definition $x_2=20$, and $3(5)^1 = 15 \neq 20$.
+        Note that the recursive definition \emph{only} applies to $x_i$ for $i \geq 3$.
+  \item The proof erroneously assumes that $n=2$ always falls within the inductive hypothesis.
+        However, when proving the case $n=2$ with strong induction, the only given is $n=1$.
+\end{enumerate}
+
+
+\question In a strange country, there are only 4 cent and 7 cent coins.
+Prove that any integer amount of currency greater than 17 cents can always be formed.
+\begin{proof}
+  Let $P(x)$ be the statement that there exist non-negative integer $a$ and $b$ where $x=4a+7b$.
+  We will strongly induct on $x > 17$.
+
+  Verify a few base cases: \\
+  For $P(18)$, let $a=1$ and $b=2$, so $4(1)+7(2)=18$. \\
+  For $P(19)$, let $a=3$ and $b=1$, so $4(3)+7(1)=19$. \\
+  For $P(20)$, let $a=5$ and $b=0$, so $4(5)+7(0)=20$. \\
+  For $P(21)$, let $a=0$ and $b=3$, so $4(0)+7(3)=21$.
+
+  Suppose for some $n > 21$, all of $P(m)$ holds for all $n-4 \leq m < n$.
+  Since $n > 8$, we can write $n$ as $4k+r$ for integers $k > 0$ and $1 \leq r \leq 4$.
+  Now, simply take the $a$-value from $P(n-r)$ and add $k$.
+  This is valid because we supposed that $P(x)$ holds for all values of $n-r$.
+
+  Therefore, by strong induction, $P(x)$ is true for all $x > 17$.
+\end{proof}
 
 \end{document}
