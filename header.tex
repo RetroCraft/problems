@@ -9,7 +9,7 @@
 
 \headheight 13.6pt
 \setlength{\headsep}{10pt}
-\textwidth 15cm 
+\textwidth 15cm
 \textheight 24.3cm
 \evensidemargin 6mm
 \oddsidemargin 6mm
@@ -27,9 +27,9 @@
 \rhead{\@author}
 
 \fancypagestyle{firstpage}{
-    \fancyhf{}
-    \rhead{\@author}
-    \fancyfoot[c]{\thepage}
+  \fancyhf{}
+  \rhead{\@author}
+  \fancyfoot[c]{\thepage}
 }
 
 % Sets
@@ -54,9 +54,15 @@
 
 % Macros
 % properly typeset ε-δ (epsilon en dash delta)
-\newcommand{\epsdel}{\ensuremath{\epsilon\mathit{\textnormal{--}}\delta}}
+\newcommand{\epsdel}[1][\delta]{\ensuremath{\epsilon\mathit{\textnormal{--}}#1}}
 \newcommand{\by}[1]{& \text{by #1}}
 \newcommand{\IH}{\by{inductive hypothesis}}
+% multiple choice (remove spacing between items)
+\newenvironment{choices}
+{\begin{enumerate}[(a)]
+    \setlength{\parskip}{0ex}
+    }{
+  \end{enumerate}}
 
 % Typesetting
 \usepackage{array}   % for \newcolumntype macro
@@ -75,7 +81,7 @@
 % Question sections
 \titleformat{\section}{\normalsize\bfseries}{\thesection}{1em}{}
 \newcommand{\qsection}[2]{%
-    \renewcommand{\QType}{#2}
-    \section*{#1}
-    \refstepcounter{section}
+  \renewcommand{\QType}{#2}
+  \section*{#1}
+  \refstepcounter{section}
 }

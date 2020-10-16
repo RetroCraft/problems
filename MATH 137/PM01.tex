@@ -1,0 +1,385 @@
+% chktex-file 29
+\input{../header}
+\title{MATH 137 Fall 2020: Practice Midterm 1}
+
+\begin{document}
+\thispagestyle{firstpage}
+
+\textbf{\@title}
+
+\qsection{Multiple Choice}{MC}
+
+\question For the sequence $\{a_n\}$ where $a_1=1$, $a_n=\sqrt{6+a_{n-1}}$ for $n \geq 2$.
+The value of $\lim_{n\to\infty} a_n$ is
+\begin{choices}
+  \item $-3$
+  \item $-2$
+  \item $2$
+  \item \fbox{None of the above.}
+  \emph{$a_2=\sqrt{7}>2$ and $\{a_n\}$ is increasing}
+\end{choices}
+
+\question $\dlim{x}{1} \frac{\sin(x-1)}{x^2-1}$
+\begin{choices}
+  \item $=1$.
+  \item \fbox{$=\frac12$.}
+  \emph{Translate to $\dlim{y}{0}\frac{\sin y}{y^2+2y}=\dlim{y}{0}\frac{\sin y}{y}\cdot\frac{1}{y+2}$}
+  \item Does not exist.
+  \item None of the above.
+\end{choices}
+
+\question If $f$ is not continuous at $x=2$ then it must be the case that
+\begin{choices}
+  \item $f(2) \geq 0$.
+  \item $f(2)$ is undefined.
+  \item $f(2)$ is defined.
+  \item \fbox{None of the above.}
+  \emph{For examples, $f(x)=\dfrac{1}{x-2}$ and $f(x)=\begin{cases}
+        0 & x \neq 2 \\ -1 & x = 2
+      \end{cases}$}
+\end{choices}
+
+\question The sequence defined by $a_n = \dfrac{n^2+1}{n+3}$
+\begin{choices}
+  \item converges.
+  \item is non-increasing.
+  \item \fbox{is bounded below.}
+  \emph{Notice that $a_n\to\infty$}
+  \item None of the above.
+\end{choices}
+
+\question If $f(x)=7$ for all $x \in \R$ then $f'(x)$
+\begin{choices}
+  \item \fbox{exists for all $x \in \R$.} \emph{And is equal to 0}
+  \item is not continuous for all $x \in \R$.
+  \item $= 1$.
+  \item None of the above.
+\end{choices}
+
+
+\qsection{True/False}{TF}
+\setcounter{paragraph}{5}
+
+\question Three functions, $f$, $g$ and $h$, are defined on an open interval $I$ containing $x=a$.
+If for each $x \in I$, $g(x)< f(x)< h(x)$ and $\dlim{x}{a^+} g(x) = L = \dlim{x}{a^+} h(x)$, then $\dlim{x}{a} f(x) = L$.
+
+False. If $\dlim{x}{a^-} g(x) \neq \dlim{x}{a^-} h(x)$, then $\dlim{x}{a^-} f(x)$ can be any value between (or undefined).
+
+\question The Fundamental Trigonometric Limit tells us that if $\theta$ is small, then $\cos\theta \approx \theta$.
+
+False. This is true for $\sin\theta$.
+
+\question If $f$ is continuous on $\R$ and $f(0) > 0$ then there exists $\delta > 0$ so that $f(x) > 0$ for all $x\in(0,\delta)$.
+
+True. This follows from the \epsdel{} definition and that $\dlim{x}{0}f(x)=f(0)>0$.
+
+\question $\dilim{x} \frac{x^p}{e^x}=0$ for all $p \in \R$.
+
+True. For positive $p$, see course notes.
+For negative $p$, we have $\frac{1}{x^q e^x}$ for positive $q$, which converges to 0.
+For zero $p$, $\frac{1}{e^x}$ converges to 0.
+
+\question If $f(a)$ exists, then $f'(a)$ exists too.
+
+False. Consider for example $f(x)=\floor{x}$, which is defined but is not continuous at $x=2$.
+
+
+\qsection{Short Answer}{SA}
+
+\question For the function \begin{equation*}
+  f(x) = \begin{cases}
+    1+\sin x & x < 0             \\
+    \cos x   & 0 \leq x \leq \pi \\
+    \sin x   & \pi < x
+  \end{cases}
+\end{equation*} determine
+\begin{enumerate}[(a)]
+  \item $\dlim{x}{0}f(x)$, or write DNE if it does not exist.
+        \begin{proof}[Solution]
+          From below, $\lim_{x\to0^-}(1+\sin x)=1+\sin0=1$.
+          From above, $\lim_{x\to0^+}\cos x=\cos 0=1$.
+          Since the one-sided limits agree, the limit exists and is \fbox{1}.
+        \end{proof}
+  \item $\dlim{x}{\pi}f(x)$, or write DNE if it does not exist.
+        \begin{proof}[Solution]
+          From below, $\lim_{x\to\pi^-}\cos x=\cos \pi=1$.
+          From above, $\lim_{x\to\pi^+}\sin x=\sin \pi=0$.
+          Since the one-sided limits do agree, the limit \fbox{DNE}.
+        \end{proof}
+\end{enumerate}
+
+\question Write all solutions to $\abs{x-1} = \abs{2x}$
+\begin{proof}[Solution]
+  For $x > 1$: $x-1=2x \implies x=-1$. \\
+  For $0 < x < 1$: $-(x-1)=2x \implies x=\frac13$. \\
+  For $x < 0$: $-(x-1)=-(2x) \implies x=-1$.
+
+  Therefore, $\boxed{x\in\left\{-1,\frac13\right\}}$.
+\end{proof}
+
+\question Give an example of a function such that the Extreme Value Theorem does not apply to it on the interval $[0,5]$.
+\begin{proof}[Solution]
+  Let $\boxed{f(x) = \dfrac{1}{x-2}}$.
+
+  There is a vertical asymptote at $x=2$, which breaks the Extreme Value Theorem.
+\end{proof}
+
+\question State the formal \epsdel{} definition of what it means for $\dlim{x}{a}f(x)=L$.
+\begin{proof}[Solution]
+  For all $\epsilon > 0$, there exists a $\delta > 0$, such that for every $x$ in the domain of $f$, $0 < |x-a| < \delta$ implies $|f(x)-L| < \epsilon$. That is,
+  \[\boxed{\forall\epsilon>0,\exists\delta>0,\forall x,0<|x-a|<\delta\implies|f(x)-L|<\epsilon} \qedhere \]
+\end{proof}
+
+
+\qsection{Long Answer}{LA}
+
+\question Use the \epsdel[N] definition of the limit of a sequence to show $\dilim{n} \frac{n+1}{3n+2}=\frac13$.
+\begin{proof}
+  Let $a_n=\frac{n+1}{3n+2}$ and $\epsilon > 0$.
+  We must find $N$ so $n \geq N$ implies $\abs{a_n-\frac13}<\epsilon$.
+
+  Because $a_n-\frac13=\frac{3n+3-3n-2}{9n+6}=\frac{1}{9n+6}$, it suffices to show $\abs{\frac1{9n+6}}<\epsilon$.
+  Since $9n+6$ is positive for all positive $n$, we may drop the absolute value bars.
+
+  Let $N = \frac{1}{9\epsilon}$. Then,
+  \begin{alignat*}{3}
+    n \geq N & \implies n \geq \frac{1}{9\epsilon} \\
+             & \implies 9n \geq \frac{1}{\epsilon} \\
+             & \implies 9n+6 > \frac{1}{\epsilon}  \\
+             & \implies \frac{1}{9n+6} < \epsilon
+  \end{alignat*}
+  exactly as desired.
+
+  Therefore, by the \epsdel[N] definition of a limit of a sequence, $\dilim{n}a_n=\frac13$.
+\end{proof}
+
+
+\question Compute the following sequence limits, or show that they do not exist.
+\begin{enumerate}[(a)]
+  \item $\dilim{n} \frac{\cos n}{n}$
+        \begin{proof}
+          We propose that the limit is 0 and prove it.
+          Recall that $-1 \leq \cos n \leq 1$ for all $n$.
+          Then, for positive $n$, $-\frac1n < \frac{\cos n}{n} < \frac1n$.
+
+          Trivially, $-\frac1n \to 0$ and $\frac1n \to 0$.
+          The limits agree and $\frac{\cos n}{n}$ is bounded by them above and below.
+
+          Therefore, by the squeeze theorem, $\frac{\cos n}{n}$ also converges to 0.
+        \end{proof}
+  \item $\dilim{n} \frac{2n^2-n-1}{5n^2+n-3}$
+        \begin{proof}
+          Recall that for any rational function $\frac{f(x)}{g(x)}$, if $\deg f=\deg g$, the limit at infinity is the ratio of the leading coefficients.
+
+          Therefore, the limit is $\frac{2}{5}$.
+        \end{proof}
+\end{enumerate}
+
+
+\question Consider the recursive sequence $a_1=5$ and $a_{n+1}=\dfrac{a_n+1}{3}$ for $n \geq 1$.
+\begin{enumerate}[(a)]
+  \item Prove that the sequence is decreasing and is bounded below by 0.
+        \begin{proof}
+          We prove by induction of the sentence $0<a_{n+1}<a_n$ on $n$.
+
+          For the base case, notice that $a_1=5$ and $a_2=\frac{5+1}{3}=2$.
+          We have $0 < a_2 < a_1$.
+
+          Now, suppose that $0<a_{k+1}<a_k$ for some $k$. Then,
+          \begin{alignat*}{3}
+            1           & < a_{k+1}+1           & < a_k+1           \\
+            \frac{1}{3} & < \frac{a_{k+1}+1}{3} & < \frac{a_k+1}{3} \\
+            0           & < a_{k+2}             & < a_{k+1}
+          \end{alignat*}
+          as desired.
+          Therefore, by induction, $0<a_{n+1}<a_n$ for all $n$, that is,
+          $a_n$ is decreasing and bounded below by 0.
+        \end{proof}
+  \item Prove that the sequence converges and find its limit.
+        \begin{proof}
+          Because $a_n$ is non-increasing and bounded below, the limit exists and is equal to $L$ by the monotone convergence theorem.
+
+          Recall that if $a_n \to L$, then $a_{n+1} \to L$. Then,
+          \begin{align*}
+            \ilim{n} a_n & = \ilim{n} a_{n+1}         \\
+            L            & = \ilim{n} \frac{a_n+1}{3} \\
+            L            & = \frac{\ilim{n}a_n+1}{3}  \\
+            L            & = \frac{L+1}{3}            \\
+            L            & = \frac{1}{2} \qedhere
+          \end{align*}
+        \end{proof}
+\end{enumerate}
+
+
+\question Use the \epsdel{} definition of the limit of a function to show that
+$\dlim{x}{2}\left(x^2+2x-3\right)=5$.
+
+\begin{proof}
+  Let $\epsilon > 0$.
+  We must find $\delta$ so that $0<|x-2|<\delta$ implies $\abs{(x^2+2x-3)-5}=|x^2+2x-8|<\epsilon$.
+
+  We can limit $\delta$ by having it equal $\min(\{\frac\epsilon7,1\})$.
+  Then, when $|x-2| < \delta$ we have $|x+4| < 7$.
+
+  We now have $|x-2| < \delta \leq \frac\epsilon7$ and $|x+4| < 7$. Multiplying,
+  \begin{align*}
+    |x-2|\cdot|x+4| & < \frac\epsilon7\cdot7 \\
+    |(x-2)(x+4)|    & < \epsilon             \\
+    |x^2+2x-8|      & < \epsilon
+  \end{align*}
+
+  Therefore, by the \epsdel{} definition of the limit of a function, $\dlim{x}{2}\left(x^2+2x-3\right)=5$.
+\end{proof}
+
+
+\question Compute the following function limits, if possible.
+If the limit does not exist, prove it.
+\begin{enumerate}[(a)]
+  \item $\dlim{x}{0} \frac{5x^2-3x}{2x^3-x^2}$
+        \begin{proof}[Solution]
+          Recall the continuity of polynomials and quotients.
+          It follows that all rational functions $\frac{p(x)}{q(x)}$ are continuous at any $x=a$ so long as $q(a)\neq 0$.
+
+          Let $f(x) = \frac{5x^2-3}{2x^3-x^2}$.
+          At $x=0$, we have $2x^3-x^2=0$.
+          Therefore, $f$ is not continuous at $x=0$ and we analyze the one-sided limits to determine the type of discontinuity.
+
+          First, notice that we may factor as $f(x)=\frac{1}{x^2} \cdot \frac{5x-3}{2x-1}$.
+
+          Consider the sequence $a_n=\frac1n$, a sequence which converges to 0. We have
+          \[
+            \ilim{n} f(a_n)
+            = \ilim{n} n^2\left(\frac{\frac{5}{n}-3}{\frac{2}{n}-1}\right)
+            = \infty
+          \]
+          By the sequential characterization of limits,
+          if the limit of $f(a_n)$ does not exist, so too does the limit $f$ at $x=0$.
+
+          Therefore, $\dlim{x}{0} \frac{5x^2-3x}{2x^3-x^2}$ does not exist.
+        \end{proof}
+  \item $\dlim{x}{0} \frac{3x^2-1}{x^2-x+1}$
+        \begin{proof}
+          Recall again the continuity of rational functions.
+
+          Here, the denominator is $(0)^2-(0)+1 = 1 \neq 0$,
+          therefore we may simply evaluate the function at $x=0$.
+          This is $\frac{0-1}{0-0+1}=-1$.
+        \end{proof}
+  \item $\dilim{x} \frac{\ln x^2 - \ln x}{x^2-x}$
+        \begin{proof}[Solution]
+          Simplify:
+          \begin{align*}
+            \ilim{x} \frac{\ln x^2 - \ln x}{x^2-x}
+             & = \ilim{x} \frac{2\ln x - \ln x}{x(x-1)} \by{logarithm laws}            \\
+             & = \ilim{x} \frac{\ln x}{x}\cdot\ilim{x} \frac{1}{x-1} \by{limit laws}   \\
+             & = 0\cdot0                                             \by{FLL \qedhere}
+          \end{align*}
+        \end{proof}
+\end{enumerate}
+
+\question Given the function \begin{equation*}
+  f(x) = \begin{cases}
+    k^2+5 & x \leq -2 \\
+    x^2+k & x > -2
+  \end{cases}
+\end{equation*}
+If $f(x)$ is continuous at $x=-2$, determine all value(s) for $k$. % chktex 36
+\begin{proof}[Solution]
+  Recall that for $f$ to be continuous at $x=-2$, $\dlim{x}{-2}f(x)=f(-2)$.
+
+  This limit exists if and only if the one-sided limits,
+  \[ \lim_{x\to-2^-}f(x) = k^2+5 \qquad \text{and} \qquad \lim_{x\to-2^+}f(x) = 4+k \]
+  agree as $x$ approaches $-2$ from above and below. That is,
+  \begin{align*}
+    k^2 + 5 & = 4 + k       \\
+    0       & = k^2 - k + 1
+  \end{align*}
+  which is a quadratic in $k$.
+  However, the discriminant, $(-1)^2-4(1)(1)=-3$, is negative.
+  This means there are no real solutions for $k$.
+\end{proof}
+
+\question Determine, with justification, all vertical asymptotes of the function
+\[ f(x) = \frac{x+3}{\abs{x^2-2x-15}}. \]
+\begin{proof}[Solution]
+  Recall the continuity of polynomials and quotients.
+  It follows that all rational functions $\frac{p(x)}{q(x)}$ are continuous at any $x=a$ so long as $q(a)\neq 0$.
+
+  Factoring, $\abs{x^2-2x-15}=\abs{(x-5)(x+3)}=\abs{x-5}\cdot\abs{x+3}$.
+  This is zero at $x=-3,5$.
+  We consider these two options:
+  \begin{itemize}
+    \item Consider $x=-3$. The limit from below is:
+          \begin{equation*}
+            \dlim{x}{-3^-} \frac{x+3}{\abs{x-5}\cdot\abs{x+3}}
+            = \dlim{x}{-3^-} \frac{x+3}{-(x-5)\cdot-(x+3)}
+            = \dlim{x}{-3^-} \frac{1}{x-5}
+            = \frac{1}{8}
+          \end{equation*}
+          and the limit from above is:
+          \begin{equation*}
+            \dlim{x}{-3^+} \frac{x+3}{\abs{x-5}\cdot\abs{x+3}}
+            = \dlim{x}{-3^+} \frac{x+3}{-(x-5)(x+3)}
+            = \dlim{x}{-3^+} -\frac{1}{x-5}
+            = -\frac{1}{8}
+          \end{equation*}
+
+          These limits do not agree but they exist.
+          Therefore, there is a jump discontinuity.
+    \item Consider $x=5$. The limit from below is:
+          \begin{equation*}
+            \dlim{x}{5^-} \frac{x+3}{\abs{x-5}\cdot\abs{x+3}}
+            = \dlim{x}{5^-} \frac{x+3}{-(x-5)(x+3)}
+            = \dlim{x}{5^-} -\frac{1}{x-5}
+            = \dlim{x_0}{0^-} -\frac{1}{x_0}
+            = \infty
+          \end{equation*}
+          This is enough to say that there exists a vertical asymptote at $x=5$.
+  \end{itemize}
+
+  Therefore, discontinuities exist only at $x=-3,5$, where $x=5$ is a vertical asymptote.
+\end{proof}
+
+\question Suppose $A,B \in \R$, $A>0$, $B>0$ and $f:\R\to\R$ is a function such that
+if $|x-y| < A$ then $|f(x)-f(y)| < B|x-y|$ for all $x,y\in\R$.
+
+Prove that $f$ is continuous on $\R$.
+\begin{proof}
+  Let $A$ and $B$ be positive reals, and $f$ be a function on the reals such that
+  $|x-y| < A$ implies $|f(x)-f(y)| < B|x-y|$ for any $x$ and $y$.
+
+  We must show that $\dlim{n}{a}f(n)=f(a)$ for all $a$.
+  That is, for any tolerance $\epsilon > 0$,
+  we may find a $\delta$ such that $0 < |n-a| < \delta$ implies $|f(n)-f(a)| < \epsilon$.
+
+  Let $\epsilon > 0$ and $a$ be a real. Select $\delta = \min(\{A,\frac{\epsilon}{B}\})$.
+
+  Suppose that $0 < |n-a| < \delta$.
+  That is, $|n-a| < A$ and $|n-a| < \frac{\epsilon}{B}$.
+
+  It also follows that $|f(n)-f(a)| < B|n-a|$.
+  But we supposed that $|n-a| < \frac{\epsilon}{B}$, so
+  \[ \abs{f(n)-f(a)} < B\frac{\epsilon}{B} = \epsilon \]
+  This is exactly what was needed to show that $f$ is continuous for any $a$.
+\end{proof}
+
+\question Prove that $x^2+x\cos x = 1$ has at least two real solutions.
+\begin{proof}
+  Let $f(x) = x^2+x\cos x$.
+  Recall that polynomials and cosine are both continuous on $\R$.
+  Therefore, their sum/product, $f$, is also continuous.
+
+  At $x=0$, we have $f(x)=0+0=0$.
+
+  At $x=-\pi$, we have $f(x)=\pi^2-\pi(-1)=\pi^2+\pi > 1$.
+  We then have that $f(-\pi) < 1 < f(0)$.
+  So, by the intermediate value theorem, there exists some $a\in(-\pi,0)$ where $f(x)=1$.
+
+  Likewise at $x=\pi$, we have $f(x)=\pi^2+\pi(-1)=\pi^2-\pi > 1$.
+  We then have that $f(0) < 1 < f(\pi)$.
+  So, by the intermediate value theorem, there exists some $b\in(0,\pi)$ where $f(x)=1$.
+
+  Therefore, there must exist at least two real solutions, $a$ and $b$, to $x^2+x\cos x=1$.
+\end{proof}
+
+\end{document}
