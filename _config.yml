@@ -1,3 +1,5 @@
 exclude: 
   - MATH135/WA*
   - MATH137/A*
+
+theme: jekyll-theme-cayman
