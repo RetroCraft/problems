@@ -1,8 +1,11 @@
 title: CS/BBA University Assignments
 description: A hopefully legal archive of assignments and practice work
 
-exclude: 
+exclude:
   - MATH135/WA*
   - MATH137/A*
 
 theme: jekyll-theme-cayman
+
+plugins:
+  - jemoji
