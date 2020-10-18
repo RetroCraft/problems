@@ -279,8 +279,8 @@ If the limit does not exist, prove it.
 
 \question Given the function \begin{equation*}
   f(x) = \begin{cases}
-    k^2+5 & x \leq -2 \\
-    x^2+k & x > -2
+    k^2x+5 & x \leq -2 \\
+    x^2+k  & x > -2
   \end{cases}
 \end{equation*}
 If $f(x)$ is continuous at $x=-2$, determine all value(s) for $k$. % chktex 36
@@ -288,15 +288,15 @@ If $f(x)$ is continuous at $x=-2$, determine all value(s) for $k$. % chktex 36
   Recall that for $f$ to be continuous at $x=-2$, $\dlim{x}{-2}f(x)=f(-2)$.
 
   This limit exists if and only if the one-sided limits,
-  \[ \lim_{x\to-2^-}f(x) = k^2+5 \qquad \text{and} \qquad \lim_{x\to-2^+}f(x) = 4+k \]
+  \[ \lim_{x\to-2^-}f(x) = -2k^2+5 \qquad \text{and} \qquad \lim_{x\to-2^+}f(x) = 4+k \]
   agree as $x$ approaches $-2$ from above and below. That is,
   \begin{align*}
-    k^2 + 5 & = 4 + k       \\
-    0       & = k^2 - k + 1
+    -2k^2 + 5 & = 4 + k        \\
+    0         & = 2k^2 + k - 1
   \end{align*}
   which is a quadratic in $k$.
-  However, the discriminant, $(-1)^2-4(1)(1)=-3$, is negative.
-  This means there are no real solutions for $k$.
+  Factoring, $0 = (2k-1)(k+1)$.
+  Therefore, $k \in \left\{-1,\frac12\right\}$.
 \end{proof}
 
 \question Determine, with justification, all vertical asymptotes of the function
@@ -379,7 +379,9 @@ Prove that $f$ is continuous on $\R$.
   We then have that $f(0) < 1 < f(\pi)$.
   So, by the intermediate value theorem, there exists some $b\in(0,\pi)$ where $f(x)=1$.
 
-  Therefore, there must exist at least two real solutions, $a$ and $b$, to $x^2+x\cos x=1$.
+  We know that $a$ and $b$ are distinct because they exist on disjoint intervals.
+
+  Therefore, there must exist at least two distinct real solutions to $x^2+x\cos x=1$.
 \end{proof}
 
 \end{document}
