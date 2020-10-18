@@ -232,7 +232,7 @@ for all non-negative integers $k$.
     \sum^{s+1}_{j=0}\binom{n+j}{j}
      & = \binom{n+s+1}{s+1} + \sum^s_{j=0}\binom{n+j}{j} \\
      & = \binom{n+s+1}{s+1} + \binom{n+s+1}{s} \IH       \\
-     & = \binom{n+s+2}{s+1} \by{Pascal's identity}       \\
+     & = \binom{n+s+2}{s+1} \by{Pascal's identity}
   \end{align*}
   which is exactly the right-hand side.
   Since $P(n)$ is true for $n=0$ and $P(s)$ implies $P(s+1)$, it holds for all $n \geq 0$ by induction.
@@ -287,7 +287,7 @@ Prove that for all $n\in\N$, $t_n = 5 \times 2^{n-1} - 2 - n$.
         & = 2\left( 5(2)^{m-2} - 2 - (m-1) \right)+m \IH \\
         & = 2\left( 5(2)^{m-2} - m - 1 \right)+m         \\
         & = 5(2)^{m-1} - 2m - 2 + m                      \\
-        & = 5(2)^{m-1} - 2 - m                           \\
+        & = 5(2)^{m-1} - 2 - m
   \end{align*}
   This is exactly $P(m)$, so $P(m-1)$ implies $P(m)$.
 
@@ -309,7 +309,7 @@ Use induction to prove the following statements:
           \begin{align*}
             \sum_{i=1}^{m-1} f_i       & = f_{m+1}-1         \\
             f_m + \sum_{i=1}^{m-1} f_i & = f_m + f_{m+1} - 1 \\
-            \sum_{i=1}^{m} f_i         & = f_{m+2}-1         \\
+            \sum_{i=1}^{m} f_i         & = f_{m+2}-1
           \end{align*}
           which is $P(m+1)$.
 
@@ -379,5 +379,14 @@ Prove that any integer amount of currency greater than 17 cents can always be fo
 
   Therefore, by strong induction, $P(x)$ is true for all $x > 17$.
 \end{proof}
+
+
+\qsection{Challenges}{C}
+
+\question Prove that for every positive integer, there exists a unique way to write the integer as the sum of distinct non-consecutive Fibonacci numbers.
+
+
+\question Find a formula for the minimum steps required to solve the Tower of Hanoi puzzle with three pegs with $n$ rings.
+Prove that your answer is correct.
 
 \end{document}
