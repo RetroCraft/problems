@@ -1,0 +1,282 @@
+\input{../header}
+\title{MATH 135 Fall 2018: Midterm Examination}
+
+\begin{document}
+\thispagestyle{firstpage}
+
+\textbf{\@title}
+
+\question \begin{enumerate}[(a)]
+  \item Complete the truth table below
+        \begin{center}
+          \begin{tabular}{C|C||C|C||C|C}
+            P & Q & P \iff Q & (P \iff Q) \lor Q & P \implies Q & (P \implies Q) \land Q \\ \hline
+            T & T & T        & T                 & T            & T                      \\
+            T & F & F        & F                 & F            & F                      \\
+            F & T & F        & T                 & T            & T                      \\
+            F & F & T        & T                 & T            & F                      \\
+          \end{tabular}
+        \end{center}
+  \item Is $(P \iff Q) \lor Q$ logically equivalent to $(P \implies Q) \land Q$? \emph{No.}
+\end{enumerate}
+
+
+\question Consider the statement $S$: $\forall a \in\R,\exists b\in\R, a=(b-2)^2-5$.
+\begin{enumerate}[(a)]
+  \item Give a negation of the statement $S$ without using any words or the symbol $\lnot$.
+        \begin{equation*}
+          \exists a\in\R, \forall b\in\R, a \neq (b-2)^2-5
+        \end{equation*}
+  \item Is the statement $S$ true or false? \emph{False}
+  \item Prove or disprove the statement $S$.
+        \begin{proof}
+          We prove by counter-example.
+
+          Let $a = -10$. We must find a $b$ such that $a=(b-2)^2-5$, that is,
+          \begin{align*}
+            -10         & = (b-2)^2 - 5 \\
+            -5          & = (b-2)^2     \\
+            \sqrt{-5}+2 & = b
+          \end{align*}
+          but $\sqrt{-5}$ is undefined in $\R$, so no such $b$ exists.
+        \end{proof}
+\end{enumerate}
+
+
+\question The proofs of two different statements are given below.
+For each proof, indicate that the proof is correct or identify the fundamental error.
+(The statements may or may not be true, but this is not relevant to the question or your answer.)
+\begin{enumerate}[(a)]
+  \item \emph{Statement:} For all $d,c\in\N$, if $dc \mid d^3$, then $c \mid d$. \\
+        \emph{Proof:} Let $d,c\in\N$. Assume that $dc \mid d^3$.
+        Then $\exists k\in\Z$ such that $d^3 = kdc$.
+        Since $d \neq 0$, we divide both sides of this equation by $d $to get $d^2 = kc$.
+        Since $k \in \Z$, it follows that $c \mid d^2$. Thus $c \mid d(d)$.
+        Since $d \in \Z$, it follows that $c \mid d$.
+
+        The proof is invalid. It does not immediately follow that $c \mid d$ from $c \mid d^2$.
+  \item \emph{Statement:} For all $d,c\in\N$, if $c \mid d$, then $dc \mid d^3$. \\
+        \emph{Proof:} Let $d,c\in\N$. Assume that $c \mid d$.
+        Then $\exists k \in \Z$, $d=kc$.
+        Thus $d^2=k^2c^2$ and $d^3=d(k^2c^2)=dc(k^2c)$.
+        Since $k^2c\in\Z$, it follows that $dc \mid d^3$.
+
+        The proof is correct.
+\end{enumerate}
+
+
+\question Let $a \in \N$. Alex is proving by induction that for all non-negative integers $n$,
+\begin{equation*}
+  \sum_{i=0}^n\binom{a+i-1}{a-1} = \binom{a+n}{a}
+\end{equation*}
+They have correctly stated the proof below. Complete the rest of the proof.
+
+\begin{quote}
+  \emph{Base Case:} When $n=0$, the left-hand side is $\sum^0_{i=0}\binom{a+i-1}{a-1}$
+  which evaluates to $\binom{a+0-1}{a-1}=1$.
+  The right-hand side is $\binom{a+0}{a}$ which evaluates to 1.
+  Since both sides are equal, the base case holds.
+
+  \emph{Inductive Hypothesis:} Assume that for non-negative integer $k$,
+  $\sum_{i=0}^k\binom{a+i-1}{a-1}=\binom{a+k}{a}$.
+\end{quote}
+
+\emph{Inductive Conclusion:}
+We must show that $\sum_{i=0}^{k+1}\binom{a+i-1}{a-1} = \binom{a+k+1}{a}$.
+Taking the left hand:
+\begin{align*}
+  \sum_{i=0}^{k+1}\binom{a+1-1}{a-1} & = \binom{a+k+1-1}{a-1} + \sum_{i=0}^{k}\binom{a+i-1}{a-1} \\
+                                     & = \binom{a+k}{a-1} + \binom{a+k}{a} \IH                   \\
+                                     & = \binom{a+k+1}{a} \by{Pascal's identity}
+\end{align*}
+Which is exactly the right-hand side.
+
+Therefore, by the principle of mathematical induction,
+$\sum_{i=0}^n\binom{a+i-1}{a-1} = \binom{a+n}{a}$
+for all non-negative integers. $\qedsymbol$
+
+
+\question Let $x,y\in\R$. Consider the implication $S$:
+If $x^2-y^2 < 0$, then $x<y$ or $x+y < 0$.
+\begin{enumerate}[(a)]
+  \item State the hypothesis of $S$.
+        \[ x^2-y^2 < 0 \]
+  \item State the conclusion of $S$.
+        \begin{center}
+          $x<y$ or $x+y<0$
+        \end{center}
+  \item State the converse of $S$.
+        \begin{center}
+          If $x<y$ or $x+y<0$, then $x^2-y^2<0$
+        \end{center}
+  \item State the contrapositive of $S$.
+        \begin{center}
+          If $x\geq y$ and $x+y \geq 0$, then $x^2-y^2 \geq 0$
+        \end{center}
+  \item State the negation of $S$ in a form that does not contain an implication.
+        \begin{center}
+          $x^2-y^2 \geq 0$, and $x<y$ or $x+y<0$
+        \end{center}
+  \item Prove $S$ for all $x,y\in\R$.
+        \begin{proof}
+          We prove by the contrapositive.
+          Let $x$ and $y$ be real numbers such that $x \geq y$ and $x+y \geq 0$.
+          Since $x \geq y$, we have $x-y \geq 0$.
+
+          Multiplying, $(x+y)(x-y) \geq 0\cdot 0$, that is, $x^2-y^2 \geq 0$.
+        \end{proof}
+\end{enumerate}
+
+
+\question Let $\U=\{1,2,3,4,5\}$.
+For each of the following statements indicate clearly whether the statement is
+true or false and then prove or disprove the statement.
+\begin{enumerate}[(a)]
+  \item For all sets $S$ and $T$ which are subsets of $\U$, $\overline{S\cup T}=\overline{S}\cup\overline{T}$.
+
+        Circle one of the following:
+        \quad This statement is TRUE
+        \quad \fbox{This statement is FALSE}
+
+        \begin{proof}
+          Consider the counter-example $S=\{1\}$ and $T=\{1,2\}$.
+          We have $\overline{S\cup T} = \overline{(\{1,2\})} = \{3,4,5\}$.
+          However, $\overline{S}\cup\overline{T} = \{2,3,4,5\} \cup \{3,4,5\} = \{2,3,4,5\}$.
+
+          These sets are clearly not equal, therefore, the statement is false.
+        \end{proof}
+  \item There exist sets $S$ and $T$ which are subsets of $\U$, $\overline{S\cup T}=\overline{S}\cup\overline{T}$.
+
+        Circle one of the following:
+        \quad \fbox{This statement is TRUE}
+        \quad This statement is FALSE
+
+        \begin{proof}
+          Let $S=T=\U$. Then, $S$ and $T$ are trivially subsets of $\U$.
+          We have $\overline{S\cup T} = \emptyset$ and
+          $\overline{S}\cup\overline{T}=\emptyset\cup\emptyset=\emptyset$,
+          which are equal by the uniqueness of the empty set.
+        \end{proof}
+\end{enumerate}
+
+
+\question Let $A=\{8k : k\in\Z\}\cup\{8j+4 : j\in\Z\}$ and $B=\{x\in\Z : 4 \mid x\}$.
+Prove that $A=B$.
+\begin{proof}
+  Recall that $A=B$ if and only if $A\subseteq B$ and $B \subseteq A$.
+
+  ($\subseteq$) Let $a$ be an arbitrary element of $A$.
+  By definition, $a$ is either an element of $\{8k : k\in\Z\}$ or $\{8j+4 : j\in\Z\}$.
+  Taking cases,
+  \begin{itemize}
+    \item If $a\in\{8k : k\in\Z\}$, we may write $a=8k$ for some integer $k$.
+          It follows that $a=4(2k)$, and since $2k$ is an integer, 4 divides $a$.
+          Therefore, $a$ is an integer such that $4 \mid a$, that is, $a \in B$.
+    \item Likewise, if $a\in\{8j+4 : j\in\Z\}$, we may write $a=8j+4$ for some integer $j$.
+          It follows that $a=4(2j+2)$. Since $2j+2\in\Z$, we have $4 \mid a$.
+          Therefore, $a\in B$.
+  \end{itemize}
+  Therefore, all elements of $A$ are also elements of $B$, so $A \subseteq B$.
+
+  ($\supseteq$) Let $b$ be an arbitrary element of $B$.
+  By definition, $b$ is an integer such that $4 \mid b$, that is, $b = 4k$ for some integer $k$.
+  Recall that all integers are either even or odd.
+  \begin{itemize}
+    \item If $k$ is even, we may write it as $2p$ for another integer $p$.
+          Then, $b = 8p$ with integer $p$, which is exactly the definition of a member of $\{8k : k\in\Z\}$.
+    \item Likewise, for odd $k$, we may write it as $2q+1$ for integer $q$.
+          Then, $b = 8q+4$ with integer $q$, the definition of members of $\{8j+4 : j\in\Z\}$.
+  \end{itemize}
+  Since $A$ is defined as the union of these sets, $b\in A$.
+  Therefore, $B \subseteq A$.
+\end{proof}
+
+
+\question Prove that for all $a,b,c\in\Z$, if $a \mid b$ and $a \nmid c$, then $a \nmid (b+c)$.
+\begin{proof}
+  Let $a$, $b$, and $c$ be integers where $a \mid b$ and $a \nmid c$.
+
+  Suppose for a contradiction that $a \mid (b+c)$.
+  Then, by DIC, since $a \mid ((1)(b+c) + (-1)(b))$, which means $a \mid c$.
+  This is a contradiction.
+  Therefore, $a \nmid (b+c)$.
+\end{proof}
+
+
+\question Prove that for all $a, b, c \in \Z$, if $a + b^3 + c^5 = 6001$,
+then at least one of $a$, $b$ or $c$ is not a multiple of 3.
+\begin{proof}
+  Let $a$, $b$, and $c$ be integers where $a + b^3 + c^5 = 6001$.
+  Suppose for a contradiction that $a$, $b$, and $c$ are all multiples of 3.
+  Then, we may write them as $3i$, $3j$, and $3k$ for integers $i$, $j$, and $k$.
+
+  We then have $6001 = a+b^3+c^5 = 3i+27j^3+243k^5 = 3(i+9j^3+81k^5)$
+  where $i+9j^3+81k^5$ is an integer.
+  Therefore, 3 must divide 6001.
+  However, we can see by inspection that 3 does not divide 6001.
+
+  Therefore, $a$, $b$, and $c$ cannot all be multiples of 3, so at least one of them is not.
+\end{proof}
+
+
+\question Prove that there is no solution to $4x^3 - y^2 = 1$ where $x$ and $y$ are integers.
+\begin{proof}
+  % Let $x$ and $y$ be integers.
+  % Notice that the case $x=y=0$ does not hold since $0-0=1$ is false.
+  % Without loss of generality, let $y > 0$.
+
+  % Suppose for a contradiction that $4x^3 - y^2 = 1$ holds. Then,
+  % \begin{align*}
+  %   y^2 & = 4x^3-1        \\
+  %   y   & = \sqrt{4x^3-1}
+  % \end{align*}
+  % This implies that $4x^3-1 \geq 0$, which is true when $x^3 \geq \frac14$.
+  % We may take the cube root since it is always increasing and therefore preserves inequalities.
+  % Therefore, $x \geq \frac{1}{\sqrt[3]{4}} \approx 0.63$.
+  % Since $x$ is an integer, $x \geq 1$.
+
+  Suppose for a counter-example that a solution exists.
+  Let $x$ and $y$ be the solution to $4x^3-y^2=1$ in the integers.
+
+  Then, $4x^3 = 1+y^2$.
+  Since $x^3$ and $1+y^2$ are integers, $4 \mid (1+y^2)$.
+  Recall that all integers are either even or odd.
+
+  If $y$ is even, it may be written as $2k$ for an integer k.
+  Then, $4 \mid (1+4k^2)$.
+  However, because 4 clearly divides $4k^2$, this implies $4 \mid 1$.
+  This is false, therefore $y$ cannot be even.
+
+  Since $y$ is odd, it may be written as $2k+1$ for an integer k.
+  Then, $4 \mid (4k^2+4k+2)$.
+  Again, because 4 clearly divides $4k^2+4k$, this implies $4 \mid 2$.
+  This is false, so $y$ cannot be odd.
+
+  Therefore, no integer values of $y$ exist, and the statement is true by contradiction.
+\end{proof}
+
+
+\question Let $a_1, a_2, a_3, \dots$ be a sequence defined as follows: $a_1 = 1$, $a_2 = 3$, and $a_n = 6a_{n-1} + 5a_{n-2}$ for $n \geq 3$.
+Prove by induction that $a_n$ is odd for all $n\in\N$.
+\begin{proof}
+  We will strongly induct on $n$ the statement $P(n)$, that $a_n$ is odd.
+
+  To verify base cases, note that $a_1=1$ is odd and $a_2=3$ is odd.
+
+  Suppose that $P(n)$ holds for all $1 \leq n < k$ for some natural number $k \geq 3$.
+  Specifically, because $P(k-1)$ holds, $n_{k-1}$ is odd and we may write it $2p+1$ with integer $p$.
+  Likewise, since $P(k-2)$ holds, $n_{k-2} = 2q+1$ for another integer $q$. Now,
+  \begin{align*}
+    a_k & = 6a_{k-1} + 5a_{k-2}   \\
+        & = 6(2p+1) + 5(2q+1) \IH \\
+        & = 12p+10q+11            \\
+        & = 2(6p+5q+5) + 1
+  \end{align*}
+  Because $6p+5q+5$ is an integer, $a_k$ is odd.
+
+  Therefore, by the principle of strong induction,
+  $P(n)$ is true for all natural numbers $n$, and all $a_n$ are odd.
+\end{proof}
+
+
+\end{document}
