@@ -22,6 +22,7 @@ Please let me know if you find a mistake though!
 | [Extra Practice 4](./MATH135/EP04.pdf)     | :black_large_square: | Missing C01 and C02 |
 | [Extra Practice 5](./MATH135/EP05.pdf)     |  :white_check_mark:  |                     |
 | [Fall 2018 Midterm](./MATH135/MT2018F.pdf) |  :white_check_mark:  |                     |
+| [Fall 2019 Midterm](./MATH135/MT2019F.pdf) |  :white_check_mark:  |                     |
 
 ### MATH 137
 

@@ -1,0 +1,243 @@
+\input{../header}
+\title{MATH 135 Fall 2019: Midterm Examination}
+
+\begin{document}
+\thispagestyle{firstpage}
+
+\textbf{\@title}
+
+\question Let $A$ and $B$ be statement variables.
+\begin{enumerate}[(a)]
+  \item Complete the truth table below.
+        \begin{center}
+          \begin{tabular}{C|C||C|C|C|C||C}
+            A & B & \lnot B & A \land (\lnot B) & B \iff A & (A \land (\lnot B)) \lor (B \iff A) & B \implies A \\ \hline
+            T & T & F       & F                 & T        & T                                   & T            \\
+            T & F & T       & T                 & F        & T                                   & T            \\
+            F & T & F       & F                 & F        & F                                   & F            \\
+            F & F & T       & F                 & T        & T                                   & T            \\
+          \end{tabular}
+        \end{center}
+  \item Determine whether $(A \land (\lnot B)) \lor (B \iff A)$ is logically equivalent to $B \implies A$.
+        Circle the correct answer. No further justification is needed.
+
+        \fbox{Equivalent} \quad Not Equivalent
+\end{enumerate}
+
+
+\question Let $x,y\in\R$. Consider the implication $S$:
+\begin{center}
+  If $xy > 6$, then $x > 2$ and $y > 3$.
+\end{center}
+\begin{enumerate}[(a)]
+  \item State the hypothesis of $S$. \[ xy > 6 \]
+  \item State the conclusion of $S$. \begin{center}
+          $x>2$ and $y>3$
+        \end{center}
+  \item State the converse of $S$. \begin{center}
+          If $x>2$ and $y>3$, then $xy>6$.
+        \end{center}
+  \item State the contrapositive of $S$. \begin{center}
+          If $x \leq 2$ or $y \leq 3$, then $xy \leq 6$.
+        \end{center}
+  \item State the negation of $S$ in a form that does not contain an implication. \begin{center}
+          $xy \leq 6$, $x > 2$, and $y > 3$.
+        \end{center}
+  \item Indicate clearly whether the given implication $S$ is true or false for all $x,y\in\R$.
+        Then prove or disprove the statement.
+
+        Circle the correct answer: \quad True \quad \fbox{False}
+        \begin{proof}
+          Suppose for a counterexample that $x=1$ and $y=7$.
+          Clearly, $xy=7>6$, so the hypothesis holds.
+          However, $1 \not> 2$.
+          Since the hypothesis is true and the conclusion false, the implication is false.
+        \end{proof}
+\end{enumerate}
+
+
+\question Given a variable $x$, let $P(x)$ denote the open sentence $x \geq 0$,
+and let $Q(x)$ denote the open sentence $x < 0$.
+Determine if the following statements are true or false.
+Circle the correct answers. No justification is needed.
+\begin{enumerate}[(a)]
+  \item $(\forall x\in\R,P(x))\lor(\forall x\in\R,Q(x))$ \\ True \quad \fbox{False}
+  \item $\forall x\in\R,(P(x) \lor Q(x))$ \\ \fbox{True} \quad False
+  \item $(\forall x\in\N,P(x))\lor(\forall x\in\N,Q(x))$ \\ \fbox{True} \quad False
+  \item $\forall x\in\N, (P(x) \lor Q(x))$ \\ \fbox{True} \quad False
+\end{enumerate}
+
+
+\question For each of the following statements,
+indicate clearly whether the statement is true or false and then prove or disprove the statement.
+\begin{enumerate}[(a)]
+  \item $\forall x\in\R, \exists y\in\R, x+2y=0$. \\
+        Circle the correct answer:\quad \fbox{True} \quad False
+        \begin{proof}
+          Let $x$ be an arbitrary real.
+          Select $y = -\frac{x}{2}$, which is a real number.
+          Then, $x+2y = x+2(-\frac{x}{2}) = x-x = 0$, as desired.
+        \end{proof}
+  \item $\exists y\in\R, \forall x\in\R, x+2y=0$. \\
+        Circle the correct answer:\quad True \quad \fbox{False}
+        \begin{proof}
+          Consider the negation: $\forall y\in\R, \exists x\in\R, x+2y \neq 0$.
+
+          Let $y$ be an arbitrary real number.
+          Select $x = -2y+1$, which is a real number.
+          Then, $x+2y = (-2y+1)+2y = 1 \neq 0$, as desired.
+
+          Since the negation is true, the original statement is false.
+        \end{proof}
+\end{enumerate}
+
+
+\question Let $a_1,a_2,a_3,\dots$ be a sequence of positive integers defined by
+\begin{center}
+  $a_1=1$,\quad $a_2=5$,\quad $a_m=a_{m-1}+2a_{m-2}$, if $m \geq 3$.
+\end{center}
+Prove that for all $n\in\N$, \[ a_n = 2^n + (-1)^n. \]
+\begin{proof}
+  We will prove by strong induction of $P(n)$, that $a_n=2^n+(-1)^n$, on $n$.
+
+  To verify the base cases $P(1)$ and $P(2)$,
+  notice that $a_1$ is defined to be 1 and $2^1+(-1)^1=2-1=1$.
+  Likewise, $a_2$ is defined to be 5 and $2^2+(-1)^2=4+1=5$.
+
+  Now, suppose that for some $k \geq 3$, $P(n)$ holds for all $n < k$.
+  Specifically, $P(k-1)$ and $P(k-2)$ hold.
+  Then, we take the definition of $a_k$:
+  \begin{align*}
+    a_k & = a_{k-1} + 2a_{m-2}                                 \\
+        & = (2^{k-1}+(-1)^{k-1}) + 2(2^{k-2} + (-1)^{k-2}) \IH \\
+        & = 2^{k-1}+(-1)^{k-1} + 2^{k-1} + 2(-1)^{k-2}         \\
+        & = 2^k + (-1)(-1)^{k-2}+ 2(-1)^{k-2}                  \\
+        & = 2^k + (-1+2)(-1)^{k-2}(-1)(-1)                     \\
+        & = 2^k + (-1)^{k}
+  \end{align*}
+  which is exactly $P(k)$.
+
+  Therefore, by the principle of strong induction, $P(n)$ holds for all $n \geq 1$.
+\end{proof}
+
+
+\question \begin{enumerate}[(a)]
+  \item Let $n\in\N$. Evaluate the sum $\displaystyle\sum_{i=0}^n\binom{n}{n-i}2^i$.
+        \begin{proof}[Solution]
+          Recall that $1^k=1$ for any real $k$. Then,
+          \begin{align*}
+            \sum_{i=0}^n\binom{n}{n-i}2^i & = \sum_{i=0}^n\binom{n}{n-i}2^i 1^{n-i} \\
+                                          & = (2+1)^n \by{binomial theorem}         \\
+                                          & = 3^n \qedhere
+          \end{align*}
+        \end{proof}
+  \item Determine the coefficient of $x^{22}$ in the expansion of $\left(x^2+\frac{2}{x}\right)^{14}$.
+        \begin{proof}[Solution]
+          Apply the binomial theorem:
+          \begin{align*}
+            \left(x^2+\frac{2}{x}\right)^{14} & = \sum_{i=0}^{14}\binom{14}{14-i}(x^2)^i (2x^{-1})^{14-i} \\
+                                              & =\sum_{i=0}^{14}\binom{14}{14-i}2^{14-i}x^{2i}x^{-(14-i)} \\
+                                              & =\sum_{i=0}^{14}\binom{14}{14-i}2^{14-i}x^{3i-14}
+          \end{align*}
+          The exponent on $x$, $3i-14$, will be 22 when $i=12$.
+          On this term, the coefficient will be $\binom{14}{14-12}2^{14-12} = \binom{14}{2}2^2 = 364$.
+        \end{proof}
+\end{enumerate}
+
+
+\question Let $a,b\in\Z$ with $a \geq 2$.
+Prove that if $a \neq 13$, then $a \nmid (3b+1)$ or $3a \nmid (7b-2)$.
+\begin{proof}
+  Let $a \geq 2$ and $b$ be integers.
+  We will prove the contrapositive:
+  \begin{center}
+    If $a \mid (3b+1)$ and $3a \mid (7b-2)$, then $a = 13$.
+  \end{center}
+  Suppose that $a$ divides $3b+1$ and $3a$ divides $7b-2$.
+
+  Then, we may write $3b+1 = ak$ for some $k\in\Z$.
+  But this means $9b+3 = (3a)k$, so $3a \mid 9b+3$.
+  By DIC, it follows that $3a \mid [7(9b+3)-9(7b-2)]$.
+  That is, $3a \mid 39$.
+
+  This means we may write $39 = 3an$ for an integer $n$.
+  It follows that $13 = an$, so $a \mid 13$.
+  However, 13 is prime, therefore, the only value for $a \geq 2$ is 13.
+\end{proof}
+
+
+\question \begin{enumerate}[(a)]
+  \item Prove that for all $n\in\N$, $n^2+n+1$ is odd.
+        \begin{proof}
+          Let $n$ be a natural number.
+          Recall that all natural numbers are either even or odd.
+
+          If $n$ is even, we may write $n=2k$ for some integer $k$.
+          Then, $n^2+n+1 = 4k^2 + 2k + 1 = 2(2k^2+k) + 1$.
+          Since $2k^2+k$ is an integer, this is an odd number.
+
+          Likewise, if $n$ is odd, we may write $n=2k+1$ for some integer $k$.
+          Then, $n^2+n+1 = 4k^2+4k+1 + 2k+1 + 1 = 2(2k^2+3k+1)+1$.
+          Since $2k^2+3k+1$ is an integer, this is also an odd number.
+
+          Therefore, the sum $n^2+n+1$ is odd for all natural $n$.
+        \end{proof}
+  \item Let $d,n\in\N$.
+        Prove that if $d \mid (n^2+n+1)$ and $d \mid (n^2+n+3)$, then $d=1$.
+        \begin{proof}
+          Let $d$ and $n$ be natural numbers such that $d$ divides both $n^2+n+1$ and $n^2+n+3$.
+
+          Consider the case that $n = 0$.
+          We have that $d \mid 1$ and $d \mid 3$.
+
+          Also, by DIC, $d \mid \left((n^2+n+3) - (n^2+n+1)\right)$, that is, $d \mid 2$.
+
+          However, 2 and 3 are both prime, so their only divisors are 1 and themselves.
+          Since $d$ cannot simultaneously be 2 and 3, it must be 1.
+        \end{proof}
+\end{enumerate}
+
+
+\question Let $a$ and $b$ be non-negative integers.
+Prove that $3^a=8^b$ if and only if $a=b=0$.
+\begin{proof}
+  We will prove by considering both implications.
+
+  ($\Rarr$) Let $a$ and $b$ be non-negative integers such that $3^a=8^b$.
+  Recall that integers have unique prime factorizations, and that 2 and 3 are primes.
+
+  Notice that $8^b=2^{3b}$.
+  For any positive $a$ and $b$, because $3^a$ consists only of 3's, and $2^{3b}$ consists only of 2's, they cannot be equal.
+  Therefore, the only possible values are $a=b=0$.
+  In this case, both values equal 1, so the equality holds.
+
+  ($\Larr$) Let $a=b=0$. Then, $3^0=1$ and $8^0=1$, so the equality holds.
+
+  Therefore, both implications hold, so the if and only if statement is true.
+\end{proof}
+
+\question Prove that for all $n\in\N$, \[ \sum_{i=1}^n \frac{1}{i^2} \leq 2-\frac{1}{n}. \]
+\begin{proof}
+  We will prove by inducting the statement $P(n)$, $\sum_{i=1}^n \frac{1}{i^2} \leq 2-\frac{1}{n}$, on $n$.
+
+  To verify the base case $P(1)$, notice that
+  \[ \sum_{i=1}^n \frac{1}{i^2} = \frac{1}{1^2} = 1 \]
+  and that
+  \[ 2-\frac{1}{1} = 2-1 = 1 \]
+  We have $1 \leq 1$, which is true.
+
+  Now, suppose that $P(k)$ holds for an arbitrary $k \geq 1$. That is,
+  \begin{align*}
+    \sum_{i=1}^k \frac{1}{i^2}                     & \leq 2-\frac{1}{k}                     \\
+    \frac{1}{(k+1)^2} + \sum_{i=1}^k \frac{1}{i^2} & \leq 2-\frac{1}{k} + \frac{1}{(k+1)^2} \\
+    \sum_{i=1}^{k+1} \frac{1}{i^2}                 & \leq 2-\frac{k^2+k+1}{k(k+1)^2}        \\
+                                                   & < 2-\frac{k^2+k}{k(k+1)^2}             \\
+                                                   & = 2-\frac{k(k+1)}{k(k+1)^2}            \\
+                                                   & = 2-\frac{1}{k+1}
+  \end{align*}
+  which is $P(k+1)$.
+
+  Therefore, by the principle of mathematical induction, $P(n)$ holds for all natural $n$.
+\end{proof}
+
+\end{document}
