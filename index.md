@@ -14,13 +14,14 @@ Please let me know if you find a mistake though!
 
 ### MATH 135
 
-| File                                   |      Complete?       | Notes               |
-| -------------------------------------- | :------------------: | ------------------- |
-| [Extra Practice 1](./MATH135/EP01.pdf) |  :white_check_mark:  |                     |
-| [Extra Practice 2](./MATH135/EP02.pdf) |  :white_check_mark:  |                     |
-| [Extra Practice 3](./MATH135/EP03.pdf) |  :white_check_mark:  |                     |
-| [Extra Practice 4](./MATH135/EP04.pdf) | :black_large_square: | Missing C01 and C02 |
-| [Extra Practice 5](./MATH135/EP05.pdf) |  :white_check_mark:  |                     |
+| File                                       |      Complete?       | Notes               |
+| ------------------------------------------ | :------------------: | ------------------- |
+| [Extra Practice 1](./MATH135/EP01.pdf)     |  :white_check_mark:  |                     |
+| [Extra Practice 2](./MATH135/EP02.pdf)     |  :white_check_mark:  |                     |
+| [Extra Practice 3](./MATH135/EP03.pdf)     |  :white_check_mark:  |                     |
+| [Extra Practice 4](./MATH135/EP04.pdf)     | :black_large_square: | Missing C01 and C02 |
+| [Extra Practice 5](./MATH135/EP05.pdf)     |  :white_check_mark:  |                     |
+| [Fall 2018 Midterm](./MATH135/MT2018F.pdf) |  :white_check_mark:  |                     |
 
 ### MATH 137
 
