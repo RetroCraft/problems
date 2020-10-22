@@ -367,15 +367,17 @@ Prove that any integer amount of currency greater than 17 cents can always be fo
   We will strongly induct on $x > 17$.
 
   Verify a few base cases: \\
-  For $P(18)$, let $a=1$ and $b=2$, so $4(1)+7(2)=18$. \\
-  For $P(19)$, let $a=3$ and $b=1$, so $4(3)+7(1)=19$. \\
-  For $P(20)$, let $a=5$ and $b=0$, so $4(5)+7(0)=20$. \\
-  For $P(21)$, let $a=0$ and $b=3$, so $4(0)+7(3)=21$.
+  For $P(18)$ (where $18 = 4(4)+2$), let $a=1$ and $b=2$, so $4(1)+7(2)=18$. \\
+  For $P(19)$ (where $19 = 4(4)+3$), let $a=3$ and $b=1$, so $4(3)+7(1)=19$. \\
+  For $P(20)$ (where $20 = 4(5)+0$), let $a=5$ and $b=0$, so $4(5)+7(0)=20$. \\
+  For $P(21)$ (where $21 = 4(5)+1$), let $a=0$ and $b=3$, so $4(0)+7(3)=21$.
 
-  Suppose for some $n > 21$, all of $P(m)$ holds for all $n-4 \leq m < n$.
-  Since $n > 8$, we can write $n$ as $4k+r$ for integers $k > 0$ and $1 \leq r \leq 4$.
-  Now, simply take the $a$-value from $P(n-r)$ and add $k$.
-  This is valid because we supposed that $P(x)$ holds for all values of $n-r$.
+  Now, suppose for some $n > 21$, $P(m)$ holds for all $m < n$.
+  Specifically, $P(n-4)$ holds.
+  That is, $n-4 = 4a_0 + 7b_0$ for some $a_0$ and $b_0$.
+  Equivalently, $n = 4(a_0+1) + 7b_0$.
+  If we let $a = a_0+1$ and $b = b_0$, it follows that $P(n)$ holds.
+
 
   Therefore, by strong induction, $P(x)$ is true for all $x > 17$.
 \end{proof}
