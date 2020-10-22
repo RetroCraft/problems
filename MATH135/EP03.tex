@@ -227,19 +227,9 @@ We now give three erroneous proofs of this proposition. Identify the major error
 
   \item There exists an integer $n$ such that $m(n - 3) < 1$ for every integer $m$.
         \begin{proof}
-          Consider the negation, that for all $n$, there is a $m$ where $m(n - 3) \geq 1$.
-
-          The inequality is equivalently written $mn \geq 3n + 1$.
-          Take cases for the sign of $n$:
-          \begin{itemize}
-            \item If $n = 0$, then the inequality reads $0 \geq 0 + 1$, which is false for all $m$.
-            \item If $n > 0$, then $m \geq \frac{3n+1}{n}$.
-                  Select $m = \floor{\frac{3n+1}{n}} - 1$, and the inequality is false.
-            \item If $n < 0$, then $m \leq \frac{3n+1}{n}$.
-                  Select $m = \ceil{\frac{3n+1}{n}} + 1$, and the inequality is false.
-          \end{itemize}
-
-          Therefore, since the negation is false, the original statement is true.
+          Choose $n = 3$ and let $m$ be an integer.
+          Then, $m(n-3) = m(3-3) = 0 < 1$, as desired.
+          Therefore, the statement is true.
         \end{proof}
 
   \item $\exists n\in\N, \forall m\in\Z, -nm < 0$
