@@ -35,3 +35,14 @@ Please let me know if you find a mistake though!
 | [Practice Assignment 5](./MATH137/PA05.pdf)  | :white_check_mark: |                                        |
 | [Practice Assignment MT](./MATH137/PAMT.pdf) |        :x:         | Posted as `Practice AssignMT` on LEARN |
 | [Practice Midterm 1](./MATH137/PM01.pdf)     | :white_check_mark: | Posted as `midterm_practice` on LEARN  |
+
+## Mistakes
+
+Because it's motivating or something, here's a list of all of my mistakes.
+Hopefully it makes you feel better about yours.
+Thanks to everyone on the list who've helped me make this resource better for everyone :)
+
+### _Errata corrige_ (beginning October 21)
+1. **MATH135/EP04/RP04** Messed up basic arithmetic (Roy)
+2. **MATH135/EP03/RP09** Rewrote completely incomprehensible proof (Gabriel)
+3. **MATH135/EP03/RP05** Proved a _there exists_ statement by exhausting the domain (Angela)
