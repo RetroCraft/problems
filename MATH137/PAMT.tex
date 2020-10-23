@@ -4,21 +4,47 @@
 \begin{document}
 \thispagestyle{firstpage}
 
-\textbf{\@title{} (Practice Assignment Midterm)}
+\textbf{\@title{} (week of the midterm)}
 
 \question You leave for Montreal on Friday morning at 10am.
 You eventually make it to your destination at 6pm.
-After a long weekend of partying you leave the next Monday morning at 10am taking the exactsame route and arriving back in Waterloo at 6pm.
+After a long weekend of partying you leave the next Monday morning at 10am taking the exact same route and arriving back in Waterloo at 6pm.
 Show that there is at least one time between 10am and 6pm where you will be at the same spot on the road on Friday and Monday.
 
 \begin{proof}
+  Let $a(t) \in [0,1]$ denote the fraction of the distance travelled from home to Montreal,
+  from $t=0$ (10am Friday) to $t=8$ (6pm Friday).
+  Also let $b(t) \in [0,1]$ denote the same fraction, but on the time period from 10am--6pm Monday.
+  These functions are both continuous because teleportation has not been invented yet.
 
+  Now, let $d(t) = b(t) - a(t)$.
+  Note that $d$ is the difference of two continuous functions, so it is itself continuous.
+  We must find a time $t_0$ when $d(t_0) = 0$.
+
+  Notice that $d(0) = b(0) - a(0) = 1 - 0 = 1$ and that $d(8) = b(8) - a(8) = 0 - 1 = -1$.
+  Therefore, by the intermediate value theorem, since $d$ is continuous and $d(0) > 0 > d(8)$,
+  there exists a $t_0$ on the interval $(0,8)$ where $d(t_0) = 0$, that is, $a(t_0) = b(t_0)$.
 \end{proof}
 
 \question Consider the polynomial $p(x)=x^6+x-1$.
 \begin{enumerate}[(a)]
   \item Prove that the polynomial has a root between $x=0$ and $x=1$.
+        \begin{proof}
+          First, recall the continuity of polynomials on $\R$.
+          Consider the value of $p$ at the endpoints of the interval $[0,1]$.
+          $p(0) = 0+0-1 = -1$ and $p(1) = 1+1-1 = 1$.
+          Then, by the IVT, since $p(0) < 0 < p(1)$ and $p$ is continuous on $\R$,
+          there exists some value on $x_0\in(0,1)$ such that $p(x_0)=0$, that is,
+          $x_0$ is a root of $p$ between 0 and 1.
+        \end{proof}
   \item Find an interval of length $\frac{1}{2}$ that contains a root of $p(x)$.
+        \begin{proof}
+          We have already showed that the interval $(0,1)$ contains a root of $p$.
+
+          Consider $x=\frac12$. Here, $p(\frac12)\approx-0.4844$, a negative number.
+          Because $p(\frac12) < 0 < p(1)$, and $p$ is continuous, by the IVT,
+          there must exist a root $x_1\in(\frac12,1)$.
+        \end{proof}
 \end{enumerate}
 
 \question For each function below, determine if the EVT applies on the given domain.
@@ -29,16 +55,69 @@ If the EVT does not apply, then determine if $f$ achieves its global max/min or 
             x^2     & 0 \leq x \leq 2 \\
             (x-4)^2 & 2 < x \leq 3
           \end{cases}$
+        \begin{proof}[Solution]
+          Notice that the defining cases of $f$ are continuous along their respective domains.
+          Then, $f$ is continuous only if the one-sided limits agree at $x=2$,
+          which is the only possible point of discontinuity.
+
+          Here, we have $f(2) = 2^2 = 4$, $\lim_{x\to2^-}f(x)=\lim_{x\to2^-}x^2=4$,
+          and $\lim_{x\to2^+}f(x)=\lim_{x\to2^+}(x-4)^2=(-2)^2=4$.
+
+          Therefore, $f$ is continuous on $[0,3]$, so the EVT applies and $f$ has global extrema.
+
+          As the right side of a parabola, $x^2$ is always increasing on $0 \leq x \leq 2$.
+          As the left side of a parabola, $(x-4)^2$ is always decreasing on $2 < x \leq 3$.
+          Thus, $f(2)=4$ must be the maximum.
+          For the same reasons, the minimum value must lie on either end of the bounds.
+          We have $f(0) = 0$ and $f(3) = 1$, so the minimum is at $f(0)$.
+        \end{proof}
   \item $f(x)=\begin{cases}
             e^x    & x < 0    \\
             e^{-x} & x \geq 0
           \end{cases}$
+        \begin{proof}[Solution]
+          The domain is $\R$.
+          This is not bounded, so the EVT cannot apply.
+
+          Recall that $e^x$ decreases for decreasing $x$ and $e^{-x}$ decreases for increasing $x$.
+          Therefore, $f$ has no minimum value, since it approaches 0 as $x\to\pm\infty$.
+          However, for the same reasons, $f$ has its maximum value at $f(0)=1$.
+        \end{proof}
   \item $f(x)=4$ for $x \in [1,6]$
+        \begin{proof}[Solution]
+          We have that $\dlim{x}{a}f(x)=4=f(a)$ for any $a\in[1,6]$, so $f$ is continuous on $[1,6]$.
+          Therefore, the EVT applies.
+          However, since $f(x)$ is constant, the maximum and minimum are equal (i.e.\ 4) and have no specific point.
+        \end{proof}
   \item $f(x)=\begin{cases}
             \sin x                & 0 \leq x < \frac{\pi}{2}   \\
             \cos(x-\frac{\pi}{2}) & \frac{\pi}{2} < x \leq \pi
           \end{cases}$
+        \begin{proof}[Solution]
+          We follow the same pattern from (a).
+
+          Verify continuity at $x=\frac\pi2$:
+          $\sin \frac\pi2 = 1$ and $\cos(\frac\pi2-\frac\pi2)=\cos 0=1$.
+          Therefore, $f$ is continuous and the EVT applies.
+
+          In fact, we may recall that $\cos(x-\frac\pi2)=\sin x$ is a trigonometric identity.
+          Then, we may just rewrite $f(x)=\sin x$.
+          We can also recall from trigonometry that in the domain $[0,\pi]$,
+          the minimum value of the sine function is 0 (at $x=0$ and $x=\pi$)
+          and the maximum value is 1 (at $x=\frac\pi2$).
+        \end{proof}
   \item $f(x) = \dfrac{|x|}{x}$ for $x \in [-2,2]$
+        \begin{proof}[Solution]
+          Here, our possible discontinuity lies at $x=0$.
+          From below, we have that $\lim_{x\to0^-}\frac{|x|}{x} = -1$
+          but from above, we have $\lim_{x\to0^+}\frac{|x|}{x} = 1$.
+
+          Therefore, $f$ is not continuous on $[-2,2]$, and the EVT does not apply.
+
+          However, we can notice that $f(x)$ is just 1 if $x>0$ and $-1$ if $x<0$.
+          Then, we achieve maximum value 1 at $f(1)$ and the minimum value $-1$ at $f(-1)$
+          (or any other positive and negative numbers in the domain).
+        \end{proof}
 \end{enumerate}
 
 \question Let $f$ and $g$ be functions that are continuous on $[a,b]$.
@@ -46,22 +125,130 @@ For each statement below argue why it is true or provide a counterexample.
 \begin{enumerate}[(a)]
   \item If $h=f+g$ then $h$ achieves its global max and min on $[a,b]$.
   \item If $h=fg$ then $h$ achieves its global max and min on $[a,b]$.
+        \begin{proof}
+          For both of these, the arithmetic rules for continuity mean that $h$ is continuous on $[a,b]$.
+          Therefore, the EVT applies.
+        \end{proof}
   \item If $h=\dfrac{f}{g}$ then $h$ achieves its global max and min on $[a,b]$.
+        \begin{proof}[Solution]
+          It is not guaranteed that $g$ is non-zero along $[a,b]$.
+          Suppose that $f(x) = x$ and $g(x) = 0$, both continuous themselves.
+          Then, $h$ is not defined on $[a,b]$, and has no values at all.
+        \end{proof}
   \item If $h=g\circ f$ then $h$ achieves its global max and min on $[a,b]$.
+        \begin{proof}[Solution]
+          We do not know if $g$ is defined at $f(a)$, since $f(a)$ might not be in $[a,b]$.
+          For example, suppose that $f(x)=-1$, $g(x)=\sqrt{x}$, and $0<a<b$.
+          $f$ is continuous as a constant, and since $[a,b]$ consists of only positive numbers,
+          $g(x)$ is also continuous along $[a,b]$.
+          However, $h$ is not defined at all.
+        \end{proof}
 \end{enumerate}
 
-\question For the displacement function, $s(t)=9.8t^2+30t+12$, determine the instantaneous velocity at $t=1$.
+\question For the displacement function, $s(t)=-9.8t^2+30t+12$, determine the instantaneous velocity at $t=1$.
+\begin{proof}[Solution]
+  Apply the formula for instantaneous velocity:
+  \begin{align*}
+    v(a) & = \dlim{t}{a} \frac{s(t) - s(a)}{t-a}                                         \\
+    v(1) & = \dlim{t}{1} \frac{(-9.8t^2 + 30t + 12) - (-9.8(1)^2 + 30(1) + 12)}{t-1}     \\
+         & = \dlim{t}{1} \frac{(-9.8t^2 + 30t) - (-9.8 + 30)}{t-1}                       \\
+         & = \dlim{t}{1} \left( -\frac{9.8t^2-9.8}{t-1} + \frac{30t-30}{t-1} \right)     \\
+         & = \dlim{t}{1} \left( -\frac{9.8(t-1)(t+1)}{t-1} + \frac{30(t-1)}{t-1} \right) \\
+         & = \dlim{t}{1} \left( -9.8(t+1) + 30 \right)                                   \\
+         & = -9.8(1+1) + 30                                                              \\
+         & = 10.4 \qedhere
+  \end{align*}
+\end{proof}
 
 \question For each of the following, determine the value of $f'(a)$ using the definition of the derivative.
 \begin{enumerate}[(a)]
-  \item $f(x) = a^4$, $a=2$
+  \item $f(x) = x^4$, $a=2$
+        \begin{proof}[Solution]
+          Apply the Newton quotient:
+          \begin{align*}
+            f'(a) & = \lim_{x\to a}\frac{f(x)-f(a)}{x-a}            \\
+            f'(2) & = \lim_{x\to 2}\frac{f(x)-f(2)}{x-2}            \\
+                  & = \lim_{x\to 2}\frac{x^4-2^4}{x-2}              \\
+                  & = \lim_{x\to 2}\frac{(x-2)(x^3+2x^2+4x+8)}{x-2} \\
+                  & = \lim_{x\to 2}(x^3+2x^2+4x+8)                  \\
+                  & = 32 \qedhere
+          \end{align*}
+        \end{proof}
   \item $f(x) = \sqrt{x-2}$, $a=9$
+        \begin{proof}[Solution]
+          Apply the Newton quotient with $h$:
+          \begin{align*}
+            f'(a) & = \lim_{h\to0}\frac{f(a+h)-f(a)}{h}                \\
+            f'(9) & = \lim_{h\to0}\frac{f(9+h)-f(9)}{h}                \\
+                  & = \lim_{x\to0}\frac{\sqrt{9+h-2}-\sqrt{9-2}}{h}    \\
+                  & = \lim_{x\to0}\frac{7+h-7}{h(\sqrt{7+h}+\sqrt{7})} \\
+                  & = \lim_{x\to0}\frac{1}{\sqrt{7+h}+\sqrt{7}}        \\
+                  & = \frac{1}{2\sqrt{7}} \qedhere
+          \end{align*}
+        \end{proof}
   \item $f(x) = \dfrac{3}{x^2+7}$, $a=-3$
+        \begin{proof}[Solution]
+          Apply the Newton quotient:
+          \begin{align*}
+            f'(a)  & = \lim_{x\to a}\frac{f(x)-f(a)}{x-a}                          \\
+            f'(-3) & = \lim_{x\to-3}\frac{f(x)-f(-3)}{x+3}                         \\
+                   & = \lim_{x\to-3}\frac{\frac{3}{x^2+7}-\frac{3}{(-3)^2+7}}{x+3} \\
+                   & = \lim_{x\to-3}\frac{27+7-3x^2-7}{16(x+3)(x^2+7)}             \\
+                   & = -\frac{3}{16}\lim_{x\to-3}\frac{x^2-9}{(x+3)(x^2+7)}        \\
+                   & = -\frac{3}{16}\lim_{x\to-3}\frac{(x-3)(x+3)}{(x+3)(x^2+7)}   \\
+                   & = -\frac{3}{16}\lim_{x\to-3}\frac{x-3}{x^2+7}                 \\
+                   & = \frac{9}{128} \qedhere
+          \end{align*}
+        \end{proof}
   \item $f(x) = \dfrac{1}{\sqrt{x-3}+\sqrt{x-2}}$, $a=7$ (bonus)
+        % \begin{proof}[Solution]
+        %   Apply the Newton quotient, but hold off on evaluation to make the cancellation more obvious:
+        %   \begin{align*}
+        %     f'(a) & = \lim_{x\to a}\frac{f(x)-f(a)}{x-a}                                                                                   \\
+        %           & = \lim_{x\to a}\frac{\frac{1}{\sqrt{x-3}+\sqrt{x-2}}-\frac{1}{\sqrt{a-3}+\sqrt{a-2}}}{x-a}                             \\
+        %           & = \lim_{x\to a}\frac{\sqrt{a-3}+\sqrt{a-2}-\sqrt{x-3}-\sqrt{x-2}}{(x-a)(\sqrt{x-3}+\sqrt{x-2})(\sqrt{a-3}+\sqrt{a-2})} \\
+        %     f'(7) & = \lim_{x\to 7}\frac{\sqrt{7-3}+\sqrt{7-2}-\sqrt{x-3}-\sqrt{x-2}}{(x-7)(\sqrt{x-3}+\sqrt{x-2})(\sqrt{7-3}+\sqrt{7-2})} \\
+        %           & = \lim_{x\to 7}\frac{1}{(\sqrt{x-3}+\sqrt{x-2})(2+\sqrt{5})}
+        %     \left( \frac{2-\sqrt{x-3}}{x-7} + \frac{\sqrt{5}-\sqrt{x-2}}{x-7} \right)                                                      \\
+        %           & = \lim_{x\to 7}\frac{1}{(\sqrt{x-3}+\sqrt{x-2})(2+\sqrt{5})}
+        %     \left( \frac{4-x+3}{(x-7)(2+\sqrt{x-3})} + \frac{5-x+2}{(x-7)(\sqrt{5}+\sqrt{x-2})} \right)                                    \\
+        %           & = \lim_{x\to 7}\frac{1}{(\sqrt{x-3}+\sqrt{x-2})(2+\sqrt{5})}
+        %     \left( \frac{-1}{(2+\sqrt{x-3})} + \frac{-1}{(\sqrt{5}+\sqrt{x-2})} \right)                                                    \\
+        %           & = -\frac{1}{(\sqrt{7-3}+\sqrt{7-2})(2+\sqrt{5})}
+        %     \left( \frac{1}{(2+\sqrt{7-3})} + \frac{1}{(\sqrt{5}+\sqrt{7-2})} \right)                                                      \\
+        %           & = -\frac{1}{(2+\sqrt{5})^2}\left( \frac{1}{4} + \frac{1}{2\sqrt{5}} \right)                                            \\
+        %           & = \qedhere
+        %   \end{align*}
+        % \end{proof}
 \end{enumerate}
 
 \question Determine the equation of the tangent line to the graph of $f(x)=-4x^3+3x-1$ at $x=2$ using the definition of the derivative.
+\begin{proof}[Solution]
+  Recall that the equation of the tangent line at $x=a$ is $y=f'(x)(x-a)$.
+  Then, the tangent of $f(x)$ at $x=2$ is $y=f'(2)(x-2)$.
+  Apply the definition of the derivative:
+  \begin{align*}
+    f'(a) & = \dlim{x}{a} \frac{f(x)-f(a)}{x-a}                                             \\
+    f'(2) & = \dlim{x}{2} \frac{f(x)-f(2)}{x-2}                                             \\
+          & = \dlim{x}{2} \frac{(-4x^3 + 3x - 1) - (-4(2)^3 + 3(2) - 1)}{x-2}               \\
+          & = \dlim{x}{2} \left( \frac{-4(x^3-2^3)}{x-2} + \frac{3x-6}{x-2} \right)         \\
+          & = \dlim{x}{2} \left( \frac{-4(x-2)(x^2+2x+4)}{x-2} + \frac{3(x-2)}{x-2} \right) \\
+          & = \dlim{x}{2} \left( -4(x^2+2x+4) + 3 \right)                                   \\
+          & = -45
+  \end{align*}
 
-\question Show that $f(x) = \abs{\sin x}$ is continuous but not differentiable for any $x \in \{k\pi : k \in \Z\}$.
+  Therefore, the equation of the tangent line to $f$ at $x=2$ is $y=-45(x-2)$ or
+  \[ 45x + y - 90 = 0 \qedhere \]
+\end{proof}
+
+\question Show $f(x) = \abs{\sin(x)}$ is continuous but not differentiable for any $x \in \{k\pi : k \in \Z\}$.
+\begin{proof}
+  We know that the absolute value function is continuous at that the sine function is continuous.
+  By the composition rule from the arithmetic laws for continuity, $f$ must be continuous on $\R$.
+
+  $f$ is differentiable at $a$ if the limit $f'(a)=\dlim{x}{a}\frac{f(x)-f(a)}{x-a}$ exists.
+
+  Let $a$ be an arbitrary element of $\{k\pi : k \in \Z\}$.
+\end{proof}
 
 \end{document}
