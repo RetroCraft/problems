@@ -1,14 +1,11 @@
-# University Assignments
+This is an open archive of practice problems from the University of Waterloo CS/BBA program.
+These are published with the belief that they are permitted by relevant faculty,
+please contact me if they are not and I will take them down.
 
-This is an archive of my university assignments.
-They will become publicly available as allowed by policy.
-
-For sources, change URLs to `.tex` from `.pdf`.
-I use macros from [this header file](./header.tex).
-
-I make no guarantees that my solutions are remotely close to correct.
+I make no guarantees that these solutions are remotely close to correct.
 Frankly, it's more likely that they're wrong.
 Please let me know if you find a mistake though!
+Or, in the spirit of open source, make a pull request fixing it.
 
 ## Math
 
@@ -42,7 +39,7 @@ Because it's motivating or something, here's a list of all of my mistakes.
 Hopefully it makes you feel better about yours.
 Thanks to everyone on the list who've helped me make this resource better for everyone :)
 
-### _Errata corrige_ (beginning October 21)
+### _Errata corrige_
 1. **MATH135/EP04/RP04** Messed up basic arithmetic (Roy)
 2. **MATH135/EP03/RP09** Rewrote completely incomprehensible proof (Gabriel)
 3. **MATH135/EP03/RP05** Proved a _there exists_ statement by exhausting the domain (Angela)
