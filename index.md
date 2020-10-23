@@ -1,25 +1,26 @@
 This is an open archive of practice problems from the University of Waterloo CS/BBA program.
 These are published with the belief that they are permitted by relevant faculty,
-please contact me if they are not and I will take them down.
+please [contact me](mailto:jahyong@uwaterloo.ca) if they are not and I will take them down.
 
 I make no guarantees that these solutions are remotely close to correct.
 Frankly, it's more likely that they're wrong.
 Please let me know if you find a mistake though!
-Or, in the spirit of open source, make a pull request fixing it.
+Or, in the spirit of open source, make a [pull request](https://github.com/RetroCraft/problems/pulls) fixing it.
 
 ## Math
 
 ### MATH 135
 
-| File                                       |      Complete?       | Notes               |
-| ------------------------------------------ | :------------------: | ------------------- |
-| [Extra Practice 1](./MATH135/EP01.pdf)     |  :white_check_mark:  |                     |
-| [Extra Practice 2](./MATH135/EP02.pdf)     |  :white_check_mark:  |                     |
-| [Extra Practice 3](./MATH135/EP03.pdf)     |  :white_check_mark:  |                     |
-| [Extra Practice 4](./MATH135/EP04.pdf)     | :black_large_square: | Missing C01 and C02 |
-| [Extra Practice 5](./MATH135/EP05.pdf)     |  :white_check_mark:  |                     |
-| [Fall 2018 Midterm](./MATH135/MT2018F.pdf) |  :white_check_mark:  |                     |
-| [Fall 2019 Midterm](./MATH135/MT2019F.pdf) |  :white_check_mark:  |                     |
+| File                                         |      Complete?       | Notes               |
+| -------------------------------------------- | :------------------: | ------------------- |
+| [Extra Practice 1](./MATH135/EP01.pdf)       |  :white_check_mark:  |                     |
+| [Extra Practice 2](./MATH135/EP02.pdf)       |  :white_check_mark:  |                     |
+| [Extra Practice 3](./MATH135/EP03.pdf)       |  :white_check_mark:  |                     |
+| [Extra Practice 4](./MATH135/EP04.pdf)       | :black_large_square: | Missing C01 and C02 |
+| [Extra Practice 5](./MATH135/EP05.pdf)       |  :white_check_mark:  |                     |
+| [Fall 2018 Midterm](./MATH135/MT2018F.pdf)   |  :white_check_mark:  |                     |
+| [Fall 2019 Midterm](./MATH135/MT2019F.pdf)   |  :white_check_mark:  |                     |
+| [Winter 2020 Midterm](./MATH135/MT2020W.pdf) |  :white_check_mark:  |                     |
 
 ### MATH 137
 
@@ -40,6 +41,7 @@ Hopefully it makes you feel better about yours.
 Thanks to everyone on the list who've helped me make this resource better for everyone :)
 
 ### _Errata corrige_
+
 1. **MATH135/EP04/RP04** Messed up basic arithmetic (Roy)
 2. **MATH135/EP03/RP09** Rewrote completely incomprehensible proof (Gabriel)
 3. **MATH135/EP03/RP05** Proved a _there exists_ statement by exhausting the domain (Angela)
