@@ -1,0 +1,140 @@
+\input{../header}
+\title{MATH 135 Fall 2020: Extra Practice 5}
+
+\begin{document}
+\thispagestyle{firstpage}
+
+\textbf{\@title}
+
+\qsection{Warm-Up Exercises}{WE}
+
+\question What is the remainder when $-98$ is divided by 7?
+
+$-98 \divisionsymbol 7 = -14$, so the remainder is 0.
+
+\question Calculate $\gcd(10,-65)$.
+
+We have $10 = 2 \cdot 5$ and $-65 = -1 \cdot 5 \cdot 13$, so the GCD is 5.
+
+\question Let $a,b,c\in\Z$. Consider the implication $S$:
+If $\gcd(a,b)=1$ and $c \mid (a+b)$, then $\gcd(b,c)=1$.
+Fill in the blanks to complete a proof of $S$.
+\begin{enumerate}[(a)]
+  \setlength{\parskip}{0ex}
+  \item Since $\gcd(a,b)=1$, by \fbox{B\'ezout's Lemma},
+        there exist integers $x$ and $y$ such that $ax+by=1$.
+  \item Since $c \mid (a+b)$, by \fbox{definition},
+        there exists an integer $k$ such that $a+b=ck$.
+  \item Substituting $a=ck-b$ into the first equation, we get $1=(ck-b)x+by=b(-x+y)+c(kx)$.
+  \item Since 1 is a common divisor of $b$ and $c$ and $-x+y$ and $kx$ are integers,
+        $\gcd(b,c)=1$ by \fbox{the GCD Characterization Theorem}.
+\end{enumerate}
+
+\question Disprove: For all integers $a$, $b$, and $c$, if $a \mid (bc)$, then $a \mid b$ or $a \mid c$.
+\begin{proof}
+  We prove the negation, there are integers $a$, $b$, and $c$ where
+  $a \mid bc$, $a \nmid b$, and $a \nmid c$.
+
+  Let $a=15$, $b=5$, and $c=3$.
+  Clearly, $a \nmid b$ and $a \nmid c$.
+  However, $bc=15$, and $15 \mid 15$.
+\end{proof}
+
+\qsection{Recommended Problems}{RP}
+
+\question \begin{enumerate}[(a)]
+  \item Use the Extended Euclidean Algorithm to find three integers $x$, $y$ and
+        $d = \gcd(1112, 768)$ such that $1112x + 768y = d$.
+        \begin{proof}[Solution]
+          Apply the EEA with $x=1112$ and $y=768$.
+          \begin{center}
+            \begin{tabular}{C|C|C|C}
+              x   & y    & r    & q \\ \hline
+              1   & 0    & 1112     \\
+              0   & 1    & 768      \\
+              1   & -1   & 344  & 1 \\
+              -2  & 3    & 80   & 2 \\
+              9   & -13  & 24   & 4 \\
+              -29 & 42   & 8    & 3 \\ \hline
+              96  & -139 & 0    & 3
+            \end{tabular}
+          \end{center}
+          Therefore, we have that $d=\gcd(1112,768)=8$, and that
+          \[ 1112(-29) + 768(42) = 8 \]
+          That is, our solution is when $x=-29$ and $y=42$.
+        \end{proof}
+  \item Determine integers $s$ and $t$ such that $768s - 1112t = \gcd(768, -1112)$.
+        \begin{proof}[Solution]
+          Since the GCD is invariant under sign changes, we immediately know that $\gcd(768,-1112)=8$.
+          We also have that $1112(-96) + 768(42) = 8$.
+          But this is the same as saying $768(42) - 1112(96) = 8$, so $s=42$ and $t=96$.
+        \end{proof}
+\end{enumerate}
+
+\question Prove that for all $a\in\Z$, $\gcd(9a + 4, 2a + 1) = 1$.
+\begin{proof}
+  Let $a$ be an integer.
+  We must show that $9a+4$ and $2a+1$ are coprime.
+  Recall the Coprimeness Characterization Theorem:
+  it suffices to find integers $a$ and $b$ such that $(9a+4)a + (2a+1)b = 1$.
+
+  Choose $a=-2$ and $b=9$. Then,
+  \begin{align*}
+    (9a+4)a + (2a+1)b & = -2(9a+4)a + 9(2a+1) \\
+                      & = -18a-8 + 18a+9      \\
+                      & = 1
+  \end{align*}
+  as desired. Therefore, $\gcd(9a+4,2a+1) = 1$.
+\end{proof}
+
+\question Let $\gcd(x, y) = d$ for integers $x$ and $y$.
+Express $\gcd(18x + 3y, 3x)$ in terms of $d$ and prove that you are correct.
+
+\question Let $a,b\in\Z$. Prove that if $\gcd(a, b) = 1$, then $\gcd(2a + b, a + 2b) \in \{1, 3\}$.
+
+\question Prove that for all integers $a$, $b$ and $k$, if $b \neq 0$, then $\gcd(a, b) \leq \gcd(ak, b)$.
+
+\question Prove that for all integers $a$, $b$ and $c$:
+if $a \mid c$ and $b \mid c$ and $\gcd(a, b) = 1$, then $ab \mid c$.
+
+\question Let $a,b,c\in\Z$. Prove that if $\gcd(a, b) = 1$ and $c \mid a$, then $\gcd(b, c) = 1$.
+
+\question Let $a$ and $b$ be integers.
+Prove that if $\gcd(a, b) = 1$, then $\gcd(a^m, b^n) = 1$ for all $m,n\in\N$.
+You may use the result which is proved in Example 14 in the notes.
+
+\question Suppose a, b and n are integers.
+Prove that $n \mid \gcd(a, n) \cdot \gcd(b, n)$ if and only if $n \mid ab$.
+
+\question How many positive divisors does 33480 have?
+
+\question Prove that for all integers $a$ and $b$,
+if $9a^2 = b^4$ where $a,b\in\Z$, then 3 is a common divisor of $a$ and $b$.
+
+\question Let $n\in\N$. Prove that if $p$ is prime and $p \leq n$, then $p$ does not divide $n! + 1$.
+
+
+\qsection{Challenges}{C}
+
+\question Prove that for any integer $a \neq 1$ and $n\in\N$,
+$\gcd\left( \frac{a^n-1}{a-1}, a-1 \right) = \gcd(n, a-1)$.
+
+\question Let $n$ be a positive integer for which
+$\gcd(n, n + 1) < \gcd(n, n + 2) < \cdots < {\gcd(n, n + 20)}$.
+Prove that $\gcd(n, n + 20) < \gcd(n, n + 21)$.
+
+\question Let $a$ and $b$ be nonnegative integers.
+Prove that $\gcd(2^a - 1, 2^b - 1) = 2\gcd(a,b) - 1$.
+
+\question An integer $n$ is \emph{perfect} if the sum of all of its positive divisors
+(including 1 and itself) is $2n$.
+\begin{enumerate}[(a)]
+  \item Is 6 a perfect number? Give reasons for your answer.
+  \item Is 7 a perfect number? Give reasons for your answer.
+  \item Prove the following statement:
+        If $k$ is a positive integer and $2^k-1$ is prime, then $2^{k-1}(2^k-1)$ is perfect.
+\end{enumerate}
+
+\question Let $a,b\in\Z$. Prove that $\gcd(a^n, b^n) = \gcd(a, b)^n$ for all $n\in\N$.
+
+\end{document}
