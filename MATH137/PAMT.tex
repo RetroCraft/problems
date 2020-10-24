@@ -201,25 +201,29 @@ For each statement below argue why it is true or provide a counterexample.
           \end{align*}
         \end{proof}
   \item $f(x) = \dfrac{1}{\sqrt{x-3}+\sqrt{x-2}}$, $a=7$ (bonus)
-        % \begin{proof}[Solution]
-        %   Apply the Newton quotient, but hold off on evaluation to make the cancellation more obvious:
-        %   \begin{align*}
-        %     f'(a) & = \lim_{x\to a}\frac{f(x)-f(a)}{x-a}                                                                                   \\
-        %           & = \lim_{x\to a}\frac{\frac{1}{\sqrt{x-3}+\sqrt{x-2}}-\frac{1}{\sqrt{a-3}+\sqrt{a-2}}}{x-a}                             \\
-        %           & = \lim_{x\to a}\frac{\sqrt{a-3}+\sqrt{a-2}-\sqrt{x-3}-\sqrt{x-2}}{(x-a)(\sqrt{x-3}+\sqrt{x-2})(\sqrt{a-3}+\sqrt{a-2})} \\
-        %     f'(7) & = \lim_{x\to 7}\frac{\sqrt{7-3}+\sqrt{7-2}-\sqrt{x-3}-\sqrt{x-2}}{(x-7)(\sqrt{x-3}+\sqrt{x-2})(\sqrt{7-3}+\sqrt{7-2})} \\
-        %           & = \lim_{x\to 7}\frac{1}{(\sqrt{x-3}+\sqrt{x-2})(2+\sqrt{5})}
-        %     \left( \frac{2-\sqrt{x-3}}{x-7} + \frac{\sqrt{5}-\sqrt{x-2}}{x-7} \right)                                                      \\
-        %           & = \lim_{x\to 7}\frac{1}{(\sqrt{x-3}+\sqrt{x-2})(2+\sqrt{5})}
-        %     \left( \frac{4-x+3}{(x-7)(2+\sqrt{x-3})} + \frac{5-x+2}{(x-7)(\sqrt{5}+\sqrt{x-2})} \right)                                    \\
-        %           & = \lim_{x\to 7}\frac{1}{(\sqrt{x-3}+\sqrt{x-2})(2+\sqrt{5})}
-        %     \left( \frac{-1}{(2+\sqrt{x-3})} + \frac{-1}{(\sqrt{5}+\sqrt{x-2})} \right)                                                    \\
-        %           & = -\frac{1}{(\sqrt{7-3}+\sqrt{7-2})(2+\sqrt{5})}
-        %     \left( \frac{1}{(2+\sqrt{7-3})} + \frac{1}{(\sqrt{5}+\sqrt{7-2})} \right)                                                      \\
-        %           & = -\frac{1}{(2+\sqrt{5})^2}\left( \frac{1}{4} + \frac{1}{2\sqrt{5}} \right)                                            \\
-        %           & = \qedhere
-        %   \end{align*}
-        % \end{proof}
+        \begin{proof}[Solution]
+          Apply the Newton quotient and just bash algebra until things cancel:
+          \begin{align*}
+            f'(a) & = \dlim{x}{a}\frac{f(x)-f(a)}{x-a}                                                                                   \\
+                  & = \dlim{x}{a}\frac{\frac{1}{\sqrt{x-3}+\sqrt{x-2}}-\frac{1}{\sqrt{a-3}+\sqrt{a-2}}}{x-a}                             \\
+                  & = \dlim{x}{a}\frac{\sqrt{a-3}+\sqrt{a-2}-\sqrt{x-3}-\sqrt{x-2}}{(x-a)(\sqrt{x-3}+\sqrt{x-2})(\sqrt{a-3}+\sqrt{a-2})} \\
+            f'(7) & = \dlim{x}{7}\frac{\sqrt{7-3}+\sqrt{7-2}-\sqrt{x-3}-\sqrt{x-2}}{(x-7)(\sqrt{x-3}+\sqrt{x-2})(\sqrt{7-3}+\sqrt{7-2})} \\
+                  & = \dlim{x}{7}\frac{1}{(x-7)(\sqrt{x-3}+\sqrt{x-2})(2+\sqrt{5})}
+            \left( \frac{2-\sqrt{x-3}}{1} + \frac{\sqrt{5}-\sqrt{x-2}}{1} \right)                                                        \\
+                  & = \dlim{x}{7}\frac{1}{(x-7)(\sqrt{x-3}+\sqrt{x-2})(2+\sqrt{5})}
+            \left( \frac{4-x+3}{2+\sqrt{x-3}} + \frac{5-x+2}{\sqrt{5}+\sqrt{x-2}} \right)                                                \\
+                  & = \dlim{x}{7}\frac{1}{(x-7)(\sqrt{x-3}+\sqrt{x-2})(2+\sqrt{5})}
+            \left( \frac{-(x-7)}{2+\sqrt{x-3}} + \frac{-(x-7)}{\sqrt{5}+\sqrt{x-2}} \right)                                              \\
+                  & = -\dlim{x}{7}\frac{x-7}{(\sqrt{x-3}+\sqrt{x-2})(2+\sqrt{5})}
+            \left( \frac{1}{2+\sqrt{x-3}} + \frac{1}{\sqrt{5}+\sqrt{x-2}} \right)                                                        \\
+                  & = -\frac{1}{(\sqrt{7-3}+\sqrt{7-2})(2+\sqrt{5})}
+            \left( \frac{1}{2+\sqrt{7-3}} + \frac{1}{\sqrt{5}+\sqrt{7-2}} \right)                                                        \\
+                  & = -\frac{1}{(2+\sqrt{5})^2}\left( \frac{1}{4} + \frac{1}{2\sqrt{5}} \right)                                          \\
+                  & = -\frac{1}{(2+\sqrt{5})^2}\left( \frac{2(2+\sqrt{5})}{8\sqrt{5}} \right)                                            \\
+                  & = -\frac{2+\sqrt{5}}{4\sqrt{5}(2+\sqrt{5})^2}                                                                        \\
+                  & = -\frac{1}{4\sqrt{5}(2+\sqrt{5})} \qedhere
+          \end{align*}
+        \end{proof}
 \end{enumerate}
 
 \question Determine the equation of the tangent line to the graph of $f(x)=-4x^3+3x-1$ at $x=2$ using the definition of the derivative.
