@@ -7,6 +7,16 @@ Frankly, it's more likely that they're wrong.
 Please let me know if you find a mistake though!
 Or, in the spirit of open source, make a [pull request](https://github.com/RetroCraft/problems/pulls) fixing it.
 
+## Computer Science
+
+### CS 135
+
+I don't implement the full design recipe in exercises, for obvious reasons (I'm lazy).
+
+| File                                   |     Complete?      | Notes |
+| -------------------------------------- | :----------------: | ----- |
+| [Module 11 Exercises](./CS135/E11.rkt) | :white_check_mark: |       |
+
 ## Math
 
 ### MATH 135
