@@ -240,27 +240,56 @@
 ;; Examples:
 (check-expect (common "human" mco) 4)
 (check-expect (common "worm" mco) 2)
-;; common: Str EvoTree -> Nat
+;; common: Str EvoTree -> (anyof false Nat)
 (define (common sp t)
-  ...)
+  (cond [(ancestor? t)
+         (common/path (common sp (ancestor-left t))
+                      (common sp (ancestor-right t)))]
+        [(string=? sp (current-name t)) 0]
+        [else false]))
+
+;; (common/path left right) advances the left/right depth of a tree by 1
+;; common/path: (anyof false Nat) (anyof false Nat) -> (anyof false Nat)
+(define (common/path left right)
+  (cond [(number? left) (add1 left)]
+        [(number? right) (add1 right)]
+        [else false]))
 
 ;; (path sp t) finds the path taken from the root of t to a species sp
 ;; Examples:
 (check-expect
  (path "rat" mco)
- '("multi-celled organism" "early vertebrates" "early mammals" "rat"))
+ '("multi-celled organisms" "early vertibrates" "early mammals" "rat"))
 (check-expect
  (path "human" e-mammals) '("early mammals" "early primates" "human"))
-;; path: Str EvoTree -> (listof Str)
+;; path: Str EvoTree -> (anyof false (listof Str))
 (define (path sp t)
-  ...)
+  (cond [(ancestor? t)
+         (path/path (ancestor-name t)
+                    (path sp (ancestor-left t))
+                    (path sp (ancestor-right t)))]
+        [(string=? sp (current-name t))
+         (list (current-name t))]
+        [else false]))
+
+;; (path/path name left right) advances the left/right depth after name root
+;; path/path: (anyof false (listof Str)) (anyof false (listof Str))
+;;              -> (anyof false (listof Str))
+(define (path/path name left right)
+  (cond [(list? left) (cons name left)]
+        [(list? right) (cons name right)]
+        [else false]))
 
 ;; (list-endangered t) lists endangered species in t
 ;; Example:
 (check-expect (list-endangered mco) '("chimp" "crane"))
 ;; list-endangered: EvoTree -> (listof Str)
 (define (list-endangered t)
-  ...)
+  (cond [(ancestor? t)
+         (append (list-endangered (ancestor-left t))
+                 (list-endangered (ancestor-right t)))]
+        [(current-endangered t) (list (current-name t))]
+        [else empty]))
 
 
 
