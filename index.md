@@ -48,6 +48,7 @@ I don't implement the full design recipe in exercises, for obvious reasons (I'm 
 | [Practice Assignment 4](./MATH137/PA04.pdf)  | :white_check_mark: |                                        |
 | [Practice Assignment 5](./MATH137/PA05.pdf)  | :white_check_mark: |                                        |
 | [Practice Assignment MT](./MATH137/PAMT.pdf) | :white_check_mark: | Posted as `Practice AssignMT` on LEARN |
+| [Practice Assignment 6](./MATH137/PA06.pdf)  | :white_check_mark: |                                        |
 | [Practice Midterm 1](./MATH137/PM01.pdf)     | :white_check_mark: | Posted as `midterm_practice` on LEARN  |
 
 ## Mistakes
