@@ -8,6 +8,16 @@
 
 \question For $f(x)=\dfrac{x+1}{x-1}$, find $f'(x)$ using the limit definition.
 \begin{proof}[Solution]
+  Apply the Newton quotient:
+  \begin{align*}
+    f'(x) & = \dlim{x}{a} \frac{f(x)-f(a)}{x-a}                           \\
+          & = \dlim{x}{a} \frac{\frac{x+1}{x-1} - \frac{a+1}{a-1}}{x-a}   \\
+          & = \dlim{x}{a} \frac{(x+1)(a-1) - (a+1)(x-1)}{(x-a)(x-1)(a-1)} \\
+          & = \dlim{x}{a} \frac{(xa+a-x-1) - (xa-a+x-1)}{(x-a)(x-1)(a-1)} \\
+          & = \dlim{x}{a} \frac{-2(x-a)}{(x-a)(x-1)(a-1)}                 \\
+          & = \dlim{x}{a} \frac{-2}{(x-1)(a-1)}                           \\
+          & = -\frac{2}{(x-1)^2} \qedhere
+  \end{align*}
 \end{proof}
 
 
@@ -15,9 +25,32 @@
 \begin{enumerate}[(a)]
   \item Find $f'(x)$ using any method.
         \begin{proof}[Solution]
+          First, notice that $f(x)$ is undefined at $x=\frac{b}{a}$,
+          so we differentiate along all $x \neq \frac{b}{a}$.
+          Apply the quotient and linear function rules:
+          \begin{align*}
+            \dv{x}(\frac{ax+b}{ax-b})
+             & = \frac{(ax-b)\dv{x}(ax+b) - (ax+b)\dv{x}(ax-b)}{(ax-b)^2} \\
+             & = \frac{(ax-b)a - (ax+b)a}{(ax-b)^2}                       \\
+             & = \frac{a(-2b)}{(ax-b)^2}                                  \\
+             & = -\frac{2ab}{(ax-b)^2} \qedhere
+          \end{align*}
         \end{proof}
   \item Show that for $x \neq \frac{b}{a}$, $abf'(x)<0$.
         \begin{proof}
+          Let $a$ and $b$ be non-zero reals, and let $x \neq \frac{b}{a}$. Then,
+          \begin{align*}
+            abf'(x) & = ab\left(\frac{2ab}{(ax-b)^2}\right) \\
+                    & = -\frac{2a^2b^2}{(ax-b)^2}
+          \end{align*}
+          Recall that the square of any non-zero number is positive.
+          Then, we have that $a^2 > 0$, $b^2 > 0$, and $(ax-b)^2 > 0$.
+          The last one also implies $\frac{1}{(ax-b)^2} > 0$. Multiplying,
+          \begin{align*}
+            \frac{a^2b^2}{(ax-b)}   & > 0          \\
+            -2\frac{a^2b^2}{(ax-b)} & < 0          \\
+            abf'(x)                 & < 0 \qedhere
+          \end{align*}
         \end{proof}
 \end{enumerate}
 
@@ -26,15 +59,43 @@
 \begin{enumerate}[(a)]
   \item $f(x)=5^x\sin x+(x^3+x^2)\cos x$.
         \begin{proof}[Solution]
+          Apply arithmetic rules and recall that $\dv{x}a^x=a^x\ln a$:
+          \begin{align*}
+            f'(x) & = \dv{x}(5^x\sin x)+\dv{x}((x^3+x^2)\cos x)                                         \\
+                  & = (5^x\dv{x}\cos x + \cos x\dv{x}5^x)+(\cos x\dv{x}(x^3+x^2)+(x^3+x^2)\dv{x}\cos x) \\
+                  & = 5^x\sin x + \ln 5\cos x5^x + \cos x(3x^2+2x)+(x^3+x^2)\sin x                      \\
+                  & = \sin x(x^3+x^2+5^x) + \cos x(5^x\ln 5 + 3x^2+2x) \qedhere
+          \end{align*}
         \end{proof}
   \item $f(x)=\dfrac{x^2+x-2}{x^3+6}$.
         \begin{proof}[Solution]
+          Apply the quotient rule, excepting $x=\sqrt[3]{-6}$ from the domain:
+          \begin{align*}
+            f'(x) & = \frac{(x^3+6)\dv{x}(x^2+x-2)-(x^2+x-2)\dv{x}(x^3+6)}{(x^3+6)^2} \\
+                  & = \frac{(x^3+6)(2x+1)-(x^2+x-2)3x^2}{(x^3+6)^2}                   \\
+                  & = -\frac{x^4+2x^3-6x^2-12x-6}{(x^3+6)^2} \qedhere
+          \end{align*}
         \end{proof}
   \item $f(x)=\sqrt{2\tan^2x+3}$.
         \begin{proof}[Solution]
+          Apply the chain rule, recalling that $\dv{x}\tan x=\sec^2 x$.
+          \begin{align*}
+            f'(x)
+             & = \dv{\sqrt{2\tan^2x+3}}{(2\tan^2x+3)}\cdot \dv{x}(2\tan^2x+3)                              \\
+             & = \frac{1}{2\sqrt{2\tan^2x+3}} \cdot 2\dv{\tan^2x}{\tan x} \cdot \dv{x}\tan x               \\
+             & = \frac{1}{2\sqrt{2\tan^2x+3}} \cdot \left(2\dv{\tan^2x}{\tan x} \cdot \dv{x}\tan x \right) \\
+             & = \frac{1}{2\sqrt{2\tan^2x+3}} \cdot 4\tan x \sec^2x                                        \\
+             & = \frac{2\tan x \sec^2x}{\sqrt{2\tan^2x+3}} \qedhere
+          \end{align*}
         \end{proof}
   \item $f(x)=2^{\sin(\sec x)}$.
         \begin{proof}[Solution]
+          Again, simply apply the chain rule repeatedly.
+          \begin{align*}
+            f'(x)
+             & = \dv{(2^{\sin(\sec x)})}{(\sin(\sec x))}\cdot\dv{\sin(\sec x)}{(\sec x)}\cdot\dv{x}\sec x \\
+             & = 2^{\sin(\sec x)}\ln(2)\cos(\sec x)\sec(x)\tan(x) \qedhere
+          \end{align*}
         \end{proof}
 \end{enumerate}
 
