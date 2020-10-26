@@ -1,3 +1,8 @@
+---
+layout: default
+gh: https://github.com/RetroCraft/problems/blob/master
+---
+
 This is an open archive of practice problems from the University of Waterloo CS/BBA program.
 These are published with the belief that they are permitted by relevant faculty,
 please [contact me](mailto:jahyong@uwaterloo.ca) if they are not and I will take them down.
@@ -13,9 +18,9 @@ Or, in the spirit of open source, make a [pull request](https://github.com/Retro
 
 I don't implement the full design recipe in exercises, for obvious reasons (I'm lazy).
 
-| File                                   |     Complete?      | Notes |
-| -------------------------------------- | :----------------: | ----- |
-| [Module 11 Exercises](./CS135/E11.rkt) | :white_check_mark: |       |
+| File                                               |     Complete?      | Notes |
+| -------------------------------------------------- | :----------------: | ----- |
+| [Module 11 Exercises]({{ page.gh }}/CS135/E11.rkt) | :white_check_mark: |       |
 
 ## Math
 
