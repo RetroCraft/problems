@@ -104,15 +104,44 @@
 \begin{enumerate}[(a)]
   \item $f(x)=x^2$, $a=3$.
         \begin{proof}[Solution]
+          By the power rule, $f'(x) = 2x$.
+          Recall the formula for the equation of a tangent: $L_a^f(x)=f(a)+f'(a)(x-a)$.
+          Apply it:
+          \begin{align*}
+            L_3^f(x) & = f(3)+f'(3)(x-3) \\
+                     & = 3^2 + 2(3)(x-3) \\
+            y        & = 6x - 9 \qedhere
+          \end{align*}
         \end{proof}
   \item $f(x)=\cos x$, $a=-\dfrac{3\pi}{4}$.
         \begin{proof}[Solution]
+          Again, apply the linear approximation formula, knowing $f'(x)=-\sin x$.
+          \begin{align*}
+            L_{-3\pi/4}^f
+              & = f(-\flatfrac{3\pi}{4}) + f'(-\flatfrac{3\pi}{4})\left(x-\frac{3\pi}{4}\right)      \\
+              & = \cos(-\flatfrac{3\pi}{4}) - \sin(-\flatfrac{3\pi}{4})\left(x-\frac{3\pi}{4}\right) \\
+              & = -\frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2}\left(x-\frac{3\pi}{4}\right)              \\
+            y & = \frac{\sqrt{2}}{2}x + \frac{3\pi-2\sqrt{2}}{4} \qedhere
+          \end{align*}
         \end{proof}
   \item $f(x)=e^x$, $a=\ln\pi$.
         \begin{proof}[Solution]
+          Nothing new or fancy here. Even less so since $f'(x)=e^x$.
+          \begin{align*}
+            L_{\ln\pi}^f & = f(\ln\pi) + f'(\ln\pi)(x-\ln\pi)  \\
+                         & = e^{\ln\pi} + e^{\ln\pi}(x-\ln\pi) \\
+                         & = \pi + \pi(x-\ln\pi)               \\
+            y            & = \pi x - \ln\pi - \pi \qedhere
+          \end{align*}
         \end{proof}
   \item $f(x)=4^x$, $a=-3$.
         \begin{proof}[Solution]
+          Recall the derivative of an exponential: $\dv{x}a^x = a^x\ln a$.
+          \begin{align*}
+            L_{-3}^f & = f(-3) + f'(-3)(x+3)                              \\
+                     & = 4^{-3} + 4^{-3}\ln 4(x+3)                        \\
+                     & = \frac{\ln 2}{32}x + \frac{3\ln 4+1}{64} \qedhere
+          \end{align*}
         \end{proof}
 \end{enumerate}
 
@@ -121,9 +150,27 @@
 \begin{enumerate}[(a)]
   \item $y=\cos x^2$.
         \begin{proof}[Solution]
+          Apply the chain rule to find the first derivative:
+          \[ \dv{y}{x} = \dv{\cos(x^2)}{(x^2)} \cdot \dv{x^2}{x} = -2x\sin x^2. \]
+          Apply the product and chain rule to find the second derivative:
+          \begin{align*}
+            \dv[2]{y}{x} & = \dv{x}(-2x\sin x^2)                                \\
+                         & = -2\dv{x}(x\sin x^2)                                \\
+                         & = -2\left( x\dv{x}\sin x^2 + \sin x^2\dv{x}x \right) \\
+                         & = -2\left( x(2x\cos x^2) + \sin x^2(1) \right)       \\
+                         & = -4x^2\cos x^2 - 2\sin x^2. \qedhere
+          \end{align*}
         \end{proof}
   \item $y=\cos^2 x$.
         \begin{proof}[Solution]
+          Follow the same procedure as above, remembering that $\cos^2 x = (\cos x)^2$:
+          \[ \dv{y}{x} = \dv{\cos^2 x}{\cos x}\cdot\dv{\cos x}{x} = -2\cos x\sin x. \]
+          We can simplify this to $-\sin 2x$ using the double angle identity. Then,
+          \begin{align*}
+            \dv[2]{y}{x} & = \dv{x}(-\sin 2x)                      \\
+                         & = -\dv{\sin(2x)}{(2x)}\cdot\dv{(2x)}{x} \\
+                         & = -2\cos 2x. \qedhere
+          \end{align*}
         \end{proof}
 \end{enumerate}
 
@@ -131,18 +178,46 @@
 \question \begin{enumerate}[(a)]
   \item Use the Chain Rule to prove that the derivative of an even function is odd.
         \begin{proof}
+          Recall that an even function $f$ is one where $f(-x)=f(x)$ for all $x$,
+          and an odd function $g$ is one where $g(-x)=-g(x)$ for all $x$.
+          Let $f$ be even. We must show that $f'(-x) = -f'(x)$.
+          
+          Notice that $(f(-x))' = f'(-x)\cdot(-x)' = -f'(-x)$.
+          However, because $f$ is even, this is equal to $(f(x))' = f'(x)$.
+          That is, $-f'(-x) = f'(x)$ and it follows that $f'$ is odd.
         \end{proof}
   \item Using ONLY the Chain Rule and the Product Rule (and not the Reciprocal/Quotient rules),
         give an alternative proof of the Quotient Rule.
           [Hint: $\dfrac{f(x)}{g(x)}=f(x)(g(x))^{-1}$].
         \begin{proof}
+          Let $f$ and $g$ be differentiable functions, and let $h(x)=\frac{f(x)}{g(x)}$. 
+          According to the above hint, write $h$ as $f(x) \cdot (g(x))^{-1}$.
+
+          Now, apply the product rule:
+          \[ h'(x) = f(x)(g(x)^{-1})' + f'(x)(g(x))^{-1} \]
+          We can evaluate the derivative of $g(x)^{-1}$ using the power and chain rules:
+          \[ (g(x)^{-1})' = (-1)g(x)^{-2}\cdot g'(x) = -\frac{g'(x)}{g(x)^2} \]
+          Substiting back in and simplifying, we arrive at the quotient rule:
+          \[ -\frac{f(x)g'(x)}{g(x)^2} + \frac{f'(x)}{g(x)} = \frac{f'(x)g(x)-f(x)g'(x)}{g(x)^2} \qedhere \]
         \end{proof}
 \end{enumerate}
 
 
 \question If $y=f(u)$ and $u=g(x)$ where $f$ and $g$ are twice differentiable functions, prove that
-\[\dv[2]{y}{x} = \dv[2]{y}{u}\left(\dv{u}{x}\right)^2 + \dv{y}{u}\dv[2]{u}{x}. \]
+\[ \dv[2]{y}{x} = \dv[2]{y}{u}\left(\dv{u}{x}\right)^2 + \dv{y}{u}\dv[2]{u}{x}. \]
 \begin{proof}
+  Let $y$ be dependent on $u$ and $u$ be dependent on $x$.
+  Then, by the chain rule,
+  \[ \dv{y}{x} = \dv{y}{u} \cdot \dv{u}{x}. \]
+  And, differentiating both sides, we have
+  \[ \dv[2]{y}{x} = \dv{x}(\dv{y}{u} \cdot \dv{u}{x}) \]
+  which is just a product, so we may apply the product rule. This gives
+  \begin{align*}
+    \dv[2]{y}{x} & = \dv{x}(\dv{y}{u})\cdot\dv{u}{x} + \dv{y}{u}\cdot\dv{x}(\dv{u}{x})  \\
+                 & = \dv{y}{u}\cdot\dv{u}{x}\cdot\dv{u}{x} + \dv{y}{u}\cdot\dv[2]{u}{x} \\
+                 & = \dv[2]{y}{u}\left(\dv{u}{x}\right)^2 + \dv{y}{u}\dv[2]{u}{x}
+  \end{align*}
+  exactly as desired.
 \end{proof}
 
 \end{document}
