@@ -250,9 +250,35 @@ For each statement below argue why it is true or provide a counterexample.
   We know that the absolute value function is continuous at that the sine function is continuous.
   By the composition rule from the arithmetic laws for continuity, $f$ must be continuous on $\R$.
 
-  $f$ is differentiable at $a$ if the limit $f'(a)=\dlim{x}{a}\frac{f(x)-f(a)}{x-a}$ exists.
-
+  $f$ is differentiable at $a$ if the limit $f'(a)=\dlim{h}{0}\frac{f(a+h)-f(a)}{h}$ exists.
+  The limit exists only if the one-sided limits agree.
   Let $a$ be an arbitrary element of $\{k\pi : k \in \Z\}$.
+  Then, $a=k\pi$ for some integer $k$, so
+  \begin{align*}
+    \dlim{h}{0} \frac{f(k\pi+h)-f(k\pi)}{h}
+     & = \dlim{h}{0} \frac{\abs{\sin(k\pi+h)}-\abs{\sin k\pi}}{h} \\
+     & = \dlim{h}{0} \frac{\abs{\sin(k\pi+h)}-\abs{0}}{h}         \\
+     & = \dlim{h}{0} \frac{\abs{\sin(k\pi+h)}}{h}
+  \end{align*}
+  And we have the limit from below:
+  \begin{align*}
+    \dlim{x}{0\pi^-} \frac{\abs{\sin(k\pi+h)}}{h}
+     & = \dlim{x}{k\pi^-} \frac{-\sin(k\pi+h)}{h}                          \\
+     & = \dlim{x}{k\pi^-} \frac{-(\sin k\pi \cos h + \cos k\pi \sin h)}{h} \\
+     & = \dlim{x}{k\pi^-} \frac{-((0)\cos h + (1)\sin h)}{h}               \\
+     & = \dlim{x}{k\pi^-} \frac{-\sin h}{h}                                \\
+     & = -1
+  \end{align*}
+  Likewise, the limit from above:
+  \begin{align*}
+    \dlim{x}{0\pi^+} \frac{\abs{\sin(k\pi+h)}}{h}
+     & = \dlim{x}{k\pi^+} \frac{\sin(k\pi+h)}{h}                        \\
+     & = \dlim{x}{k\pi^+} \frac{\sin k\pi \cos h + \cos k\pi \sin h}{h} \\
+     & = \dlim{x}{k\pi^+} \frac{\sin h}{h}                              \\
+     & = 1
+  \end{align*}
+  Since $-1 \neq 1$, the limit does not exist.
+  Therefore, $f$ is not differentiable at $a$.
 \end{proof}
 
 \end{document}
