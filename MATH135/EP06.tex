@@ -1,5 +1,5 @@
 \input{../header}
-\title{MATH 135 Fall 2020: Extra Practice 5}
+\title{MATH 135 Fall 2020: Extra Practice 6}
 
 \begin{document}
 \thispagestyle{firstpage}
@@ -40,6 +40,7 @@ Fill in the blanks to complete a proof of $S$.
   However, $bc=15$, and $15 \mid 15$.
 \end{proof}
 
+
 \qsection{Recommended Problems}{RP}
 
 \question \begin{enumerate}[(a)]
@@ -71,6 +72,7 @@ Fill in the blanks to complete a proof of $S$.
         \end{proof}
 \end{enumerate}
 
+
 \question Prove that for all $a\in\Z$, $\gcd(9a + 4, 2a + 1) = 1$.
 \begin{proof}
   Let $a$ be an integer.
@@ -87,31 +89,139 @@ Fill in the blanks to complete a proof of $S$.
   as desired. Therefore, $\gcd(9a+4,2a+1) = 1$.
 \end{proof}
 
+
 \question Let $\gcd(x, y) = d$ for integers $x$ and $y$.
 Express $\gcd(18x + 3y, 3x)$ in terms of $d$ and prove that you are correct.
+\begin{proof}
+  Let $x$ and $y$ be integers with GCD $d$.
+  We may apply GCD With Remainders to reduce $g=\gcd(18x+3y,3x)$.
+  We have $18x+3y = 6(3x) + 3y$, so $g=\gcd(3x,3y)$.
 
-\question Let $a,b\in\Z$. Prove that if $\gcd(a, b) = 1$, then $\gcd(2a + b, a + 2b) \in \{1, 3\}$.
+  Now, $x \mid d$ and $y \mid d$, so we can find integers $m$ and $n$ where $x = dm$ and $y = dn$.
+  Multiplying through by 3, we have $3x = (3d)m$ and $3y = (3d)n$.
+  It follows that $3d \mid 3x$ and $3d \mid 3y$, that is, $3d$ is a common divisor of $3x$ and $3y$.
+
+  By Bézout's Lemma, there are integers $s$ and $t$ such that $xs+yt=d$, which implies $(3x)s+(3y)t=3d$.
+  Therefore, by the GCD CT, $\gcd(3x,3y) = 3d$.
+\end{proof}
+
+
+\question Let $a,b\in\Z$. Prove that if $\gcd(a, b) = 1$, then $\gcd(2a+b, a+2b) \in \{1,3\}$.
+\begin{proof}
+\end{proof}
+
 
 \question Prove that for all integers $a$, $b$ and $k$, if $b \neq 0$, then $\gcd(a, b) \leq \gcd(ak, b)$.
+\begin{proof}
+  Let $a$, $b$, and $k$ be integers where $b$ is non-zero.
+  Also, let $d=\gcd(a,b)$ and $g=\gcd(ak,b)$. We must show $d \leq g$.
+
+  By Bézout's Lemma, there are integers $s$ and $t$ where $as+bt=d$.
+  Now, $a \mid d$ so we may write $an = d$ for some integer $n$.
+  This implies $akn=dk$, that is, $ak \mid dk$.
+  Also, since $b \mid d$ and $d \mid dk$, by the transitivity of divisibility we have $b \mid dk$.
+
+  Therefore, $dk$ is a common divisor of $ak$ and $b$.
+  By definition, $\gcd(ak,b)$ is either equal to $|dk|$ or greater, so $|dk| \leq g$.
+  Since $d > 0$, we have $d|k| \leq g$, that is, $d \leq g$.
+\end{proof}
+
 
 \question Prove that for all integers $a$, $b$ and $c$:
 if $a \mid c$ and $b \mid c$ and $\gcd(a, b) = 1$, then $ab \mid c$.
+\begin{proof}
+  Let $a$, $b$, and $c$ be integers such that $a$ and $b$ divide $c$, and $a$ and $b$ are coprime.
+
+  Then, there exist integers $m$ and $n$ such that $am=c$ and $bn=c$.
+  Also, by the CCT, there exist integers $s$ and $t$ such that $as+bt=1$.
+
+  Then, $cas+cbt=c$, so $(bn)as+(am)bt=c$.
+  It follows that $ab(ns+bt)=c$, so $ab \mid c$.
+\end{proof}
+
 
 \question Let $a,b,c\in\Z$. Prove that if $\gcd(a, b) = 1$ and $c \mid a$, then $\gcd(b, c) = 1$.
+\begin{proof}
+  Let $a$, $b$, and $c$ be integers such that $\gcd(a,b)=1$ and $c \mid a$.
+
+  Then, $nc = a$ for some integer $n$ and, by Bézout's Lemma, $as+bt=1$.
+  Substituting, $(nc)a+bt=bt+c(ns)=1$, so by the CCT, $\gcd(b,c)=1$.
+\end{proof}
+
 
 \question Let $a$ and $b$ be integers.
 Prove that if $\gcd(a, b) = 1$, then $\gcd(a^m, b^n) = 1$ for all $m,n\in\N$.
 You may use the result which is proved in Example 14 in the notes.
+\begin{proof}
+  Recall that Example 14 proved that for all integers $a$, $b$, and natural numbers $n$,
+  if $\gcd(a, b)=1$, then $\gcd(a, b^n)=1$.
+  Therefore, it suffices to let $c=b^n$ and prove that $\gcd(a, c)=1$ implies $\gcd(a^m, c)=1$.
 
-\question Suppose a, b and n are integers.
+  In fact, we may simplify the problem further.
+  If we show that the arguments of the GCD are commutative,
+  then we may again use the result from Example 14.
+  Let $x$ and $y$ be coprime integers, that is, $\gcd(x,y)=1$.
+  By Bézout's Lemma, there exist $s$ and $t$ such that $xs+yt=1$.
+  Equivalently, $yt+xs=1$, and by the CCT, $\gcd(y,x)=1$.
+
+  Then, $\gcd(a,c)=\gcd(c,a)=1$.
+  By Example 14, $\gcd(c,a^m)=1$, that is, $\gcd(a^m,c)=\gcd(a^m,b^n)=1$, as desired.
+\end{proof}
+
+
+\question Suppose $a$, $b$ and $n$ are integers.
 Prove that $n \mid \gcd(a, n) \cdot \gcd(b, n)$ if and only if $n \mid ab$.
+\begin{proof}
+\end{proof}
+
 
 \question How many positive divisors does 33480 have?
+\begin{proof}[Solution]
+  We may apply prime factorization to get $33480=2^3\cdot3^3\cdot5\cdot31$.
+  Then, by DFPF, we have that any positive divisor $d=2^\alpha\cdot3^\beta\cdot5^\gamma\cdot31^\delta$
+  for integers $0\leq\alpha\leq3$, $0\leq\beta\leq3$, $0\leq\gamma\leq1$, and $0\leq\delta\leq1$.
+
+  That is, there are 4 choices for each of $\alpha$ and $\beta$, and 2 choices for $\gamma$ and $\delta$.
+  Multiplying out, we have $4\cdot4\cdot2\cdot2=64$ positive divisors.
+\end{proof}
+
 
 \question Prove that for all integers $a$ and $b$,
 if $9a^2 = b^4$ where $a,b\in\Z$, then 3 is a common divisor of $a$ and $b$.
+\begin{proof}
+  Let $a$ and $b$ be integers such that $9a^2=b^4$.
+  Without loss of generality, let both $a$ and $b$ be positive
+  (if $a=b=0$, then, trivially, $3 \mid a$ and $3 \mid b$).
+
+  By UFT, $a=\prod p_i^{\alpha_i}$ for distinct primes $p_i$ and unique non-negative integers $\alpha_i$.
+  Likewise, $b=\prod p_i^{\beta_i}$ for the same primes $p_i$ and unique non-negative integers $\beta_i$.
+  Since 3 is prime, there exists an $n$ where $p_n=3$.
+
+  It follows that $9a^2$ has $2+2\alpha_n$ factors of 3 and that $b^4$ has $4\beta_n$ factors.
+  Since $9a^2=b^4$, by UFT, $2+2\alpha_n=4\beta_n$.
+
+  We have that $4\beta_n = 2+2\alpha_n \geq 2$, so $\beta_n \geq 1$, which means $3 \mid b$.
+
+  However, if $\beta_n \geq 1$, then $2+2\alpha_n = 4\beta_n \geq 4$, which means $\alpha_n \geq 1$.
+  That is, $3 \mid a$.
+
+  Therefore, 3 is a common divisor of $a$ and $b$.
+\end{proof}
+
 
 \question Let $n\in\N$. Prove that if $p$ is prime and $p \leq n$, then $p$ does not divide $n! + 1$.
+\begin{proof}
+  Let $n$ be a natural number, and $p$ be a prime number.
+
+  Since $n!$ is defined as the product of all positive integers up to $n$ and $p \leq n$, $p$ clearly divides $n$.
+  Therefore, $n! = kp$ for some integer $k$.
+  Then, $k$ is the product of all positive integers up to $n$ \emph{except} $p$.
+  Since $p$ is prime, $k \nmid p$.
+
+  Then, we have $n!+1 = p(k+\frac{1}{p})$, so $p \mid (n!+1)$ only if $k+\frac{1}{p}$ is an integer,
+  which it clearly is not (since $p \geq 2$).
+  Therefore, $p \nmid (n!+1)$.
+\end{proof}
 
 
 \qsection{Challenges}{C}
