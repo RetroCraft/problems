@@ -28,16 +28,17 @@ I don't implement the full design recipe in exercises, for obvious reasons (I'm 
 
 ### MATH 135
 
-| File                                         |      Complete?       | Notes               |
-| -------------------------------------------- | :------------------: | ------------------- |
-| [Extra Practice 1](./MATH135/EP01.pdf)       |  :white_check_mark:  |                     |
-| [Extra Practice 2](./MATH135/EP02.pdf)       |  :white_check_mark:  |                     |
-| [Extra Practice 3](./MATH135/EP03.pdf)       |  :white_check_mark:  |                     |
-| [Extra Practice 4](./MATH135/EP04.pdf)       | :black_large_square: | Missing C01 and C02 |
-| [Extra Practice 5](./MATH135/EP05.pdf)       |  :white_check_mark:  |                     |
-| [Fall 2018 Midterm](./MATH135/MT2018F.pdf)   |  :white_check_mark:  |                     |
-| [Fall 2019 Midterm](./MATH135/MT2019F.pdf)   |  :white_check_mark:  |                     |
-| [Winter 2020 Midterm](./MATH135/MT2020W.pdf) |  :white_check_mark:  |                     |
+| File                                         |      Complete?       | Notes                               |
+| -------------------------------------------- | :------------------: | ----------------------------------- |
+| [Extra Practice 1](./MATH135/EP01.pdf)       |  :white_check_mark:  |                                     |
+| [Extra Practice 2](./MATH135/EP02.pdf)       |  :white_check_mark:  |                                     |
+| [Extra Practice 3](./MATH135/EP03.pdf)       |  :white_check_mark:  |                                     |
+| [Extra Practice 4](./MATH135/EP04.pdf)       | :black_large_square: | Missing C01 and C02                 |
+| [Extra Practice 5](./MATH135/EP05.pdf)       |  :white_check_mark:  |                                     |
+| [Fall 2018 Midterm](./MATH135/MT2018F.pdf)   |  :white_check_mark:  |                                     |
+| [Fall 2019 Midterm](./MATH135/MT2019F.pdf)   |  :white_check_mark:  |                                     |
+| [Winter 2020 Midterm](./MATH135/MT2020W.pdf) |  :white_check_mark:  |                                     |
+| [Extra Practice 6](./MATH135/EP06.pdf)       | :black_large_square: | Missing challenges. RP09 by sooshi. |
 
 ### MATH 137
 
