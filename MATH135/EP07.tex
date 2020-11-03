@@ -1,5 +1,5 @@
 \input{../header}
-\title{MATH 135 Fall 2020: Extra Practice 6}
+\title{MATH 135 Fall 2020: Extra Practice 7}
 
 \begin{document}
 \thispagestyle{firstpage}
@@ -9,9 +9,41 @@
 \qsection{Warm-Up Exercises}{WE}
 
 \question Find the complete integer solution to $7x+11y=3$.
+\begin{proof}[Solution]
+  Begin by applying the EEA to determine one solution for $x$ and $y$:
+  \begin{center}
+    \begin{tabular}{C|C|C|C}
+      x  & y  & r  & q  \\ \hline
+      1  & 0  & 7  & 0  \\
+      0  & 1  & 11 & 0  \\
+      -1 & 1  & 4  & -1 \\
+      2  & -1 & 3  & 2
+    \end{tabular}
+  \end{center}
+  which gives $7(2)+11(-1)=3$.
+  Since 7 and 11 are prime, we immediately know their GCD is 1.
+  Now, apply the LDET to determine the complete solution set:
+  \begin{equation*}
+    \{ (x,y) : x = 2 + 11n, y = -1 -7n, n\in\Z \} \qedhere
+  \end{equation*}
+\end{proof}
 
 
 \question Find the complete integer solution to $28x+60y=10$.
+\begin{proof}[Solution]
+  Begin by applying the EEA to find the GCD\@:
+  \begin{center}
+    \begin{tabular}{C|C|C|C}
+      y  & x  & r  & q \\ \hline
+      1  & 0  & 60 & 0 \\
+      0  & 1  & 28 & 0 \\
+      1  & -4 & 4  & 2 \\
+      -7 & 29 & 0  & 7
+    \end{tabular}
+  \end{center}
+  Therefore, $\gcd(28,60)=4$.
+  However, $4 \nmid 10$, so there are no solutions to this equation.
+\end{proof}
 
 
 \qsection{Recommended Problems}{RP}
