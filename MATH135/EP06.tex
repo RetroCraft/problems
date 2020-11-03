@@ -135,15 +135,34 @@ Express $\gcd(18x + 3y, 3x)$ in terms of $d$ and prove that you are correct.
 \begin{proof}
   Let $a$, $b$, and $k$ be integers where $b$ is non-zero.
   Also, let $d=\gcd(a,b)$ and $g=\gcd(ak,b)$. We must show $d \leq g$.
+  
+  We will apply the GCD from Prime Factorization.
+  For convenience, we define $p_n$ to be the $n$\textsuperscript{th} prime.
+  First, by UPF, we are guaranteed to be able to write
+  $a=p_1^{\alpha_1}p_2^{\alpha_2}\cdots p_n^{\alpha_n}$,
+  $b=p_1^{\beta_1}p_2^{\beta_2}\cdots p_n^{\beta_n}$, and
+  $k=p_1^{\kappa_1}p_2^{\kappa_2}\cdots p_n^{\kappa_n}$
+  with non-negative $\alpha_i$, $\beta_i$, and $\kappa_i$.
+  Notice that we may write $ak$ as a product of primes:
+  $p_1^{\alpha_1+\kappa_1}p_2^{\alpha_2+\kappa_2}\cdots p_n^{\alpha_n+\kappa_n}$.
 
-  By Bézout's Lemma, there are integers $s$ and $t$ where $as+bt=d$.
-  Now, $a \mid d$ so we may write $an = d$ for some integer $n$.
-  This implies $akn=dk$, that is, $ak \mid dk$.
-  Also, since $b \mid d$ and $d \mid dk$, by the transitivity of divisibility we have $b \mid dk$.
+  Now, by GCD PF, we have $d=p_1^{\delta_1}p_2^{\delta_2}\cdots p_n^{\delta_n}$,
+  where $\delta_i=\min(\{\alpha_i,\beta_i\})$ for all integers $1 \leq i \leq k$.
+  Likewise, we have $g=p_1^{\gamma_1}p_2^{\gamma_2}\cdots p_n^{\gamma_n}$,
+  where $\gamma_i=\min(\{\alpha_i+\kappa_i,\beta_i\})$.
 
-  Therefore, $dk$ is a common divisor of $ak$ and $b$.
-  By definition, $\gcd(ak,b)$ is either equal to $|dk|$ or greater, so $|dk| \leq g$.
-  Since $d > 0$, we have $d|k| \leq g$, that is, $d \leq g$.
+  We will show that $\delta_i \leq \gamma_i$ for all $i$, from which it follows $d \leq g$.
+  Let $i$ be arbitrary.
+
+  If $\alpha_i \leq \beta_i \leq \alpha_i+\kappa_i$,
+  then we have $\delta_i = \alpha_i$ and $\gamma_i = \beta_i$.
+  It follows that $\delta_i\leq\gamma_i$.
+  Otherwise, $\beta_i \leq \alpha_i \leq \alpha_i + \kappa_i$,
+  so $\delta_i = \beta_i$ and $\kappa_i = \alpha_i$.
+  We again have $\delta_i\leq\gamma_i$.
+
+  Therefore, since every exponent in the prime factorization of $d$ is less than or equal to
+  the coresponding exponent in the prime factorization of $g$, it must be the case that $d \leq g$.
 \end{proof}
 
 

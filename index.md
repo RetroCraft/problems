@@ -64,3 +64,4 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 1. **MATH135/EP04/RP04** Messed up basic arithmetic (Roy)
 2. **MATH135/EP03/RP09** Rewrote completely incomprehensible proof (Gabriel)
 3. **MATH135/EP03/RP05** Proved a _there exists_ statement by exhausting the domain (Angela)
+4. **MATH135/EP06/RP05** Got the divides relation backwards for an incoherent proof (Quan)
