@@ -10,16 +10,39 @@
 \begin{enumerate}[(a)]
   \item Determine the equation for the linear approximation to $f(x)$ at $x=a$, $L^f_a$, for any $a\in\R$.
         \begin{proof}[Solution]
+          Apply the formula, knowing $(\sin x)' = \cos x$:
+          \begin{align*}
+            L^f_a & = f(a)+f'(a)(x-a)                     \\
+                  & = x\cos a + \sin a - a\cos a \qedhere
+          \end{align*}
         \end{proof}
   \item Determine the equation for the linear approximation to $f(x)$ at $x=\frac\pi3$, $L^f_{\pi/3}$.
         \begin{proof}[Solution]
+          Substituting for $x=\frac\pi3$ into part (a):
+          \begin{align*}
+            L^f_{\pi/3} & = x\cos\frac\pi3 + \frac{\sqrt3}{2} - \frac\pi3\cos\frac\pi3 \\
+                        & = \frac12x + \frac{\sqrt3}{2} - \frac\pi6                    \\
+                        & = \frac12x + \frac{3\sqrt3 - \pi}{6} \qedhere
+          \end{align*}
         \end{proof}
   \item Use your answer to (b) to approximate $\sin(1)$.
         \begin{proof}[Solution]
+          Substituting for $x=1$ into part (b),
+          \[ L^f_{\pi/3}=\frac12(1) + \frac{3\sqrt3 - \pi}{6} =\dfrac{3+3\sqrt3-\pi}{6} \approx 0.842. \qedhere \]
         \end{proof}
   \item Since $f''(x)=-\sin x$, we can safely say that $f''(x) \leq 1$.
         Given this fact, what is the maximum error (worst-case scenario) for your answer in (c)?
         \begin{proof}[Solution]
+          Recall that if $|f''(x)| \leq M$ for all $x$ in an interval $I$ containing $a$,
+          then the worst case error is given by $|f(x)-L_a(x)| \leq \frac{M}{2}(x-a)^2$.
+
+          Substitute $x=1$, $M=1$, and $a=\frac\pi3$:
+          \begin{align*}
+            |f(1)-L_{\pi/3}| & \leq \frac12(1-\frac\pi3)^2 \\
+                             & = \frac12(\frac{2\pi}{3})^2 \\
+                             & = \frac{2\pi}{9}
+          \end{align*}
+          Therefore, the maximum error is $\frac{2\pi}{9}$.
         \end{proof}
 \end{enumerate}
 
@@ -63,12 +86,21 @@ Use the technique of estimating change to investigate.
 \begin{enumerate}[(a)]
   \item What is the domain of $f$?
         \begin{proof}[Solution]
+          Apply rules for rational functions: $x\in\R\setminus\{-\frac53\}$.
         \end{proof}
   \item Find $f'(x)$.
         \begin{proof}[Solution]
+          Apply the quotient rule:
+          \begin{align*}
+            f'(x) & = \frac{(3x+5)(6x+1)'-(6x+1)(3x+5)'}{(3x+5)^2} \\
+                  & = \frac{6(3x+5) - 3(6x+1)}{(3x+5)^2}           \\
+                  & = \frac{27}{(3x+5)^2} \qedhere
+          \end{align*}
         \end{proof}
   \item There is only one point $c\in\R$ where $f(c) = 0$, find it directly.
         \begin{proof}[Solution]
+          Notice that the numerator is zero when $x=-\frac16$, and the denominator is not.
+          Therefore, $f(-\frac16)=0$.
         \end{proof}
   \item Now, starting with $x_1=5$ (a particularly foolish choice),
         perform 3 iterations of Newton's Method. Use 5 decimal places.
@@ -87,6 +119,11 @@ Use the technique of estimating change to investigate.
 \question Using the fact that $(\ln x)' = \dfrac{1}{x}$,
 prove that $(\log_a x)'=\dfrac{1}{x\ln a}$ for $a > 0$, $a \neq 1$.
 \begin{proof}
+  Let $0 < a \neq 1$.
+  Recall the change of base formula: $\log_a x = \frac{\ln x}{\ln a}$.
+
+  Since $\frac{1}{\ln a}$ is a constant with respect to $x$, we may pull it out of the derivative,
+  and it immediately follows that $(\log_a x)' = \frac{1}{\ln a}(\ln x)' = \frac{1}{x\ln a}$.
 \end{proof}
 
 
@@ -94,12 +131,32 @@ prove that $(\log_a x)'=\dfrac{1}{x\ln a}$ for $a > 0$, $a \neq 1$.
 \begin{enumerate}[(a)]
   \item $f(x)=\sqrt{\log_{10}(7+\sin x)}$
         \begin{proof}[Solution]
+          Apply the chain rule a bunch of times:
+          \begin{align*}
+            f'(x) & = (\log_{10}(7+\sin x)^{1/2})'                                                         \\
+                  & = \frac12(\log_{10}(7+\sin x)^{-1/2})(\log_{10}(7+\sin x))'                            \\
+                  & = \frac{1}{2\sqrt{\log_{10}(7+\sin x)}}\cdot\frac{1}{(7+\sin x)\ln 10}\cdot(7+\sin x)' \\
+                  & = \frac{\cos x}{2\sqrt{\log_{10}(7+\sin x)}(7+\sin x)\ln 10} \qedhere
+          \end{align*}
         \end{proof}
   \item $f(x)=\arcsin(\tan x+x^3)e^x$
         \begin{proof}[Solution]
+          Recall that $(\arcsin x)' = \frac{1}{\sqrt{1-x^2}}$, and apply the product and chain rule:
+          \begin{align*}
+            f'(x) & = (\arcsin(\tan x+x^3))'e^x + \arcsin(\tan x+x^3)(e^x)'                         \\
+                  & = \frac{(\tan x+x^3)'}{1-(\tan x+x^3)^2}e^x + \arcsin(\tan x+x^3)e^x            \\
+                  & = \frac{\sec^2 x + 3x^2}{1-(\tan x+x^3)^2}e^x + \arcsin(\tan x+x^3)e^x \qedhere
+          \end{align*}
         \end{proof}
   \item $f(x)=\frac{x}{\arctan(x^2+1)}$
         \begin{proof}[Solution]
+          Recall that $(\arctan x)' = \frac{1}{1+x^2}$, and apply the quotient and chain rule:
+          \begin{align*}
+            f'(x) & = \frac{\arctan(x^2+1)(x)' - (x)(\arctan(x^2+1))'}{\arctan^2(x^2+1)}            \\
+                  & = \frac{\arctan(x^2+1) - x\frac{(x^2+1)'}{1+(x^2+1)^2}}{\arctan^2(x^2+1)}       \\
+                  & = \frac{1}{\arctan(x^2+1)} - \frac{\frac{x(2x)}{x^4+2x^2+2}}{\arctan^2(x^2+1)}  \\
+                  & = \frac{1}{\arctan(x^2+1)} - \frac{2x^2}{(x^4+2x^2+2)\arctan^2(x^2+1)} \qedhere
+          \end{align*}
         \end{proof}
 \end{enumerate}
 
@@ -108,12 +165,23 @@ prove that $(\log_a x)'=\dfrac{1}{x\ln a}$ for $a > 0$, $a \neq 1$.
 \begin{enumerate}
   \item Find $f^{-1}(-1)$.
         \begin{proof}[Solution]
+          We must solve $-1=\frac13x^3+x-1$, or $0=x(\frac13x^2+1)$.
+
+          Clearly, $x=0$, so $f^{-1}(-1)=0$.
         \end{proof}
   \item Find $(f^{-1})'(-1)$.
         \begin{proof}[Solution]
+          Recall the rule for derivatives of inverses: $(f^{-1}(f(a)))' = \frac{1}{f'(a)}$.
+          We know from above that $a=0$, so we have $\frac{1}{f'(0)}=\frac{1}{(0)^2+1}=1$.
         \end{proof}
   \item Find $L^{f^{-1}}_{-1}$.
         \begin{proof}[Solution]
+          Apply the formula:
+          \begin{align*}
+            L^{f^{-1}}_{-1} & = f^{-1}(-1)+(f^{-1})'(-1)(x+1) \\
+                            & = 0 + 1(x+1)                    \\
+                            & = x+1 \qedhere
+          \end{align*}
         \end{proof}
 \end{enumerate}
 
