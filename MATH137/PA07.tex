@@ -38,9 +38,9 @@
 
           Substitute $x=1$, $M=1$, and $a=\frac\pi3$:
           \begin{align*}
-            |f(1)-L_{\pi/3}| & \leq \frac12(1-\frac\pi3)^2 \\
-                             & = \frac12(\frac{2\pi}{3})^2 \\
-                             & = \frac{2\pi}{9}
+            |f(1)-L_{\pi/3}| & \leq \frac12\left(1-\frac\pi3\right)^2 \\
+                             & = \frac12\left(\frac{2\pi}{3}\right)^2 \\
+                             & = \frac{2\pi^2}{9}
           \end{align*}
           Therefore, the maximum error is $\frac{2\pi}{9}$.
         \end{proof}
@@ -63,6 +63,14 @@ should we expect the ball to survive this initial inflation?
 Use the technique of estimating change to investigate.
 
 \begin{proof}[Solution]
+  The formula for a surface area of a sphere is $A(r)=4\pi r^2$, so we also have $A'(r)=8\pi r$.
+  Recall that we may estimate change by saying $\Delta A \cong A'(r_0) \Delta r$.
+  We let $r_0=R$ and $\Delta r = 0.03R$.
+  Then, $\Delta A = 0.24\pi R^2$.
+
+  Finally, $\dfrac{\Delta A}{A(R)} = \dfrac{0.24\pi R^2}{4\pi R^2} = 0.06$, which is a 6\% change.
+
+  Rich should duck and prepare for a rather sudden deflation.
 \end{proof}
 
 
@@ -70,14 +78,40 @@ Use the technique of estimating change to investigate.
   \item For $a\in\R$, $a > 0$, write down the recursive sequence that Newton's Method would generate for $f(x)=x^2-a$.
         That is, write the formula for $x_{n+1}$ in terms of $x_n$.
         \begin{proof}[Solution]
+          The recursive sequence is:
+          \begin{align*}
+            x_{n+1} & = x_n - \frac{f(x_n)}{f'(x_n)}  \\
+                    & = x_n - \frac{x_n^2-a}{2x_n}    \\
+                    & = \frac{2x_n^2-x_n^2+a}{2x_n}   \\
+                    & = \frac{x_n^2+a}{2x_n} \qedhere
+          \end{align*}
         \end{proof}
   \item Use Newton's Method to approximate each of the following, correct to 4 decimal places.
         \begin{enumerate}[(i)]
           \item $\sqrt{7}$ (use initial guess $x_1=3$)
                 \begin{proof}[Solution]
+                  Recursively apply the above formula with $a=7$:
+                  \begin{alignat*}{4}
+                     & x_1 &  & = 3                                                                           \\
+                     & x_2 &  & = \frac{(3)^2+7}{2(3)}           &  & = \frac83             &  & \cong 2.6667 \\
+                     & x_3 &  & = \frac{(8/3)^2+7}{2(8/3)}       &  & = \frac{127}{48}      &  & \cong 2.6458 \\
+                     & x_3 &  & = \frac{(127/48)^2+7}{2(127/48)} &  & = \frac{32257}{12192} &  & \cong 2.6458
+                  \end{alignat*}
+                  Since the figures agree to 4 decimal places, $\sqrt{7} \cong 2.6458$.
                 \end{proof}
           \item $\sqrt{\pi}$ (use initial guess $x_1=2$)
                 \begin{proof}[Solution]
+                  Recursively apply the above formula with $a=\pi$:
+                  \begin{alignat*}{4}
+                     & x_1                              &  & = 2                                                                                  \\
+                     & x_2                              &  & = \frac{(2)^2+\pi}{2(2)}                                                           &
+                     & = 1+\frac\pi4                    &  & \cong 1.7854                                                                         \\
+                     & x_3                              &  & = \frac{(1+\frac\pi4)^2+\pi}{2(1+\frac\pi4)}                                       &
+                     & = \frac{\pi^2+24\pi+16}{8\pi+32} &  & \cong 1.7725                                                                         \\
+                     & x_4                              &  & = \frac{(\frac{\pi^2+24\pi+16}{8\pi+32})^2+\pi}{2(\frac{\pi^2+24\pi+16}{8\pi+32})} &
+                     & = \textrm{a fat mess}            &  & \cong 1.7725
+                  \end{alignat*}
+                  Since the figures agree to 4 decimal places, $\sqrt{\pi} \cong 1.7725$.
                 \end{proof}
         \end{enumerate}
 \end{enumerate}
@@ -105,6 +139,21 @@ Use the technique of estimating change to investigate.
   \item Now, starting with $x_1=5$ (a particularly foolish choice),
         perform 3 iterations of Newton's Method. Use 5 decimal places.
         \begin{proof}[Solution]
+          Recall the formula for the Newton's Method sequence: $x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$.
+          We can substitute $f(x) = \frac{6x+1}{3x+5}$ and $f'(x)=\frac{27}{(3x+5)^2}$ and simplify:
+          \begin{align*}
+            x_{n+1} & = x_n - \frac{\frac{6x_n+1}{3x_n+5}}{\frac{27}{(3x_n+5)^2}} \\
+                    & = x_n - \frac{(6x_n+1)(3x_n+5)}{27}                         \\
+                    & = -\frac{1}{27}(18x_n^2 + 60x_n + 5)
+          \end{align*}
+          Now, beginning with $x_1=5$, apply Newton's Method:
+          \begin{alignat*}{4}
+             & x_1 &  & = 5                                                                                                                                      \\
+             & x_2 &  & = -\frac{1}{27}(18(5)^2+60(5)+5)                                         &  & = -\frac{755}{27}                 &  & \cong -27.96296     \\
+             & x_3 &  & = -\frac{1}{27}(18(-755/27)^2+60(-755/27)+5)                             &  & = -\frac{1004555}{2187}           &  & \cong -459.33013    \\
+             & x_3 &  & = -\frac{1}{27}(18(-\frac{1004555}{2187})^2+60(-\frac{1004555}{2187})+5) &  & = -\frac{2003617741355}{14348907} &  & \cong -139635.56537
+          \end{alignat*}
+          This is\dots not converging.
         \end{proof}
   \item It is clear that starting with $x_1=5$ will not lead us to the root.
         In fact, the sequence generated by Newton's Method in this case diverges.
@@ -112,6 +161,19 @@ Use the technique of estimating change to investigate.
         Newton's Method will not converge to the root of this function.
         (Hint: show the recursive sequence you get from Newton's Method is strictly decreasing).
         \begin{proof}
+          We that the sequence $\{x_n\}$ is strictly decreasing along the relevant domain:
+          Specifically, that $x_{n+1} < x_n$, that is,
+          \begin{align*}
+            -\frac{1}{27}(18x_n^3 + 60x_n + 5) & < x_n   \\
+            18x_n^2 + 60x_n + 5                & > 27x_n \\
+            18x_n^2 + 33x_n + 5                & > 0     \\
+            (3x_n+5)(6x_n+1)                   & > 0
+          \end{align*}
+          This shows that $\{x_n\}$ is decreasing whenever $x_n < -\frac53$ or $x_n > -\frac16$.
+          Once $x_n$ falls into the former interval, $x_{n+1}$ will be lower than $x_n$,
+          which is still in the interval, so $x_{n+2}$ is lower than $x_{n+1}$, \emph{ad infinitum}.
+
+          Since $x_2=-\frac{755}{27} < -\frac{5}{3}$, the sequence is infinitely decreasing.
         \end{proof}
 \end{enumerate}
 
