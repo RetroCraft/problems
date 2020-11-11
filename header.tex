@@ -58,6 +58,9 @@
 \newcommand{\epsdel}[1][\delta]{\ensuremath{\epsilon\mathit{\textnormal{--}}#1}}
 \newcommand{\by}[1]{& \text{by #1}}
 \newcommand{\IH}{\by{inductive hypothesis}}
+\newcommand{\pf}[2]{%
+\let\tmp\relax\newcommand\tmp[1]{#1}
+\ensuremath{p_1^{\tmp{1}}p_2^{\tmp{2}}\cdots p_#2^{\tmp{#2}}}}
 % multiple choice (remove spacing between items)
 \newenvironment{choices}
 {\begin{enumerate}[(a)]

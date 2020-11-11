@@ -94,7 +94,7 @@ Fill in the blanks to complete a proof of $S$.
 Express $\gcd(18x + 3y, 3x)$ in terms of $d$ and prove that you are correct.
 \begin{proof}
   Let $x$ and $y$ be integers with GCD $d$.
-  
+
   We may apply GCD With Remainders to reduce $g=\gcd(18x+3y,3x)$.
   We have $18x+3y = 6(3x) + 3y$, so $g=\gcd(3x,3y)$.
 
@@ -135,21 +135,17 @@ Express $\gcd(18x + 3y, 3x)$ in terms of $d$ and prove that you are correct.
 \begin{proof}
   Let $a$, $b$, and $k$ be integers where $b$ is non-zero.
   Also, let $d=\gcd(a,b)$ and $g=\gcd(ak,b)$. We must show $d \leq g$.
-  
+
   We will apply the GCD from Prime Factorization.
   For convenience, we define $p_n$ to be the $n$\textsuperscript{th} prime.
   First, by UPF, we are guaranteed to be able to write
-  $a=p_1^{\alpha_1}p_2^{\alpha_2}\cdots p_n^{\alpha_n}$,
-  $b=p_1^{\beta_1}p_2^{\beta_2}\cdots p_n^{\beta_n}$, and
-  $k=p_1^{\kappa_1}p_2^{\kappa_2}\cdots p_n^{\kappa_n}$
+  $a=\pf{\alpha_#1}{n}$, $b=\pf{\beta_#1}{n}$, and $k=\pf{\kappa_#1}{n}$,
   with non-negative $\alpha_i$, $\beta_i$, and $\kappa_i$.
-  Notice that we may write $ak$ as a product of primes:
-  $p_1^{\alpha_1+\kappa_1}p_2^{\alpha_2+\kappa_2}\cdots p_n^{\alpha_n+\kappa_n}$.
+  Notice that we may write $ak$ as a product of primes: $\pf{\alpha_#1+\kappa_#1}{n}$.
 
-  Now, by GCD PF, we have $d=p_1^{\delta_1}p_2^{\delta_2}\cdots p_n^{\delta_n}$,
-  where $\delta_i=\min(\{\alpha_i,\beta_i\})$ for all integers $1 \leq i \leq k$.
-  Likewise, we have $g=p_1^{\gamma_1}p_2^{\gamma_2}\cdots p_n^{\gamma_n}$,
-  where $\gamma_i=\min(\{\alpha_i+\kappa_i,\beta_i\})$.
+  Now, by GCD PF, we have $d=\pf{\delta_#1}{n}$, where $\delta_i=\min(\{\alpha_i,\beta_i\})$
+  for all integers $1 \leq i \leq k$.
+  Likewise, we have $g=\pf{\gamma_#1}{n}$, where $\gamma_i=\min(\{\alpha_i+\kappa_i,\beta_i\})$.
 
   We will show that $\delta_i \leq \gamma_i$ for all $i$, from which it follows $d \leq g$.
   Let $i$ be arbitrary.
@@ -221,7 +217,7 @@ Prove that $n \mid \gcd(a, n) \cdot \gcd(b, n)$ if and only if $n \mid ab$.
   Then, we may write $dn=a$ and $cm=b$ for some integers $n$ and $m$.
   Multiplying together, $dc(mn)=ab$, that is, since $mn$ is an integer, $dc \mid ab$.
   By the transitivity of divisibility, $n \mid dc$ and $dc \mid ab$ imply $n \mid ab$, as desired.
-  
+
   ($\Rarr$) Suppose that $n \mid ab$.
   We apply Bézout's Lemma to rewrite $d=as+nt$ and $c=bx+ny$ with integers $s$, $t$, $x$, and $y$.
   Multiplying together gives $dc = absx+asny+bxnt+n^2ty$.
@@ -251,9 +247,9 @@ if $9a^2 = b^4$ where $a,b\in\Z$, then 3 is a common divisor of $a$ and $b$.
   Without loss of generality, let both $a$ and $b$ be positive
   (if $a=b=0$, then, trivially, $3 \mid a$ and $3 \mid b$).
 
-  By UFT, $a=\prod p_i^{\alpha_i}$ for distinct primes $p_i$ and unique non-negative integers $\alpha_i$.
-  Likewise, $b=\prod p_i^{\beta_i}$ for the same primes $p_i$ and unique non-negative integers $\beta_i$.
-  Since 3 is prime, there exists an $n$ where $p_n=3$.
+  By UFT, $a=\pf{\alpha_#1}{k}$ for $k$ distinct primes $p_i$ and non-negative integers $\alpha_i$.
+  Likewise, $b=\pf{\beta_#1}{k}$ for non-negative integers $\beta_i$.
+  Since 3 is prime, there is an $n$ where $p_n=3$.
 
   It follows that $9a^2$ has $2+2\alpha_n$ factors of 3 and that $b^4$ has $4\beta_n$ factors.
   Since $9a^2=b^4$, by UFT, $2+2\alpha_n=4\beta_n$.
