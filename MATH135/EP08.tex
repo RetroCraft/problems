@@ -1,0 +1,100 @@
+\input{../header}
+\title{MATH 135 Fall 2020: Extra Practice 8}
+
+\begin{document}
+\thispagestyle{firstpage}
+
+\textbf{\@title}
+
+\qsection{Warm-Up Exercises}{WE}
+
+\question Is 7386458999999992324343123 divisible by 11?
+\begin{proof}[Solution]
+  We may simply apply Proposition 9 from the course notes: an integer is divisible by 11
+  if the difference of the sums of the even and odd digits is divisible by 11.
+
+  The even digits are $7+8+4+8+9+9+9+9+3+4+4+1+3 = 78$
+  and the odd digits are $3+6+5+9+9+9+9+2+2+3+3+2 = 62$.
+  We have $78 - 62 = 16$ which is not divisible by 11.
+
+  Therefore, $11 \nmid 7386458999999992324343123$.
+\end{proof}
+
+
+\question For each linear congruence, determine the complete solution, if a solution exists.
+\begin{enumerate}[(a)]
+  \item $3x \equiv 11 \pmod{18}$
+        \begin{proof}[Solution]
+          Notice that $\gcd(3,18)=3$ and $3 \nmid 11$.
+          Therefore, by LCT, there are no solutions.
+        \end{proof}
+  \item $4x \equiv 5 \pmod{21}$
+        \begin{proof}[Solution]
+          Notice that $\gcd(4,21)=1$ and $1 \mid 5$.
+          Therefore, LCT guarantees a set of solutions where $x \equiv x_0 \pmod{21}$
+          for some particular solution $x_0$.
+
+          By inspection, $21+4(-4) = 5$, so $-4 \equiv 5 \pmod{21}$.
+
+          Therefore, the set of solutions is $x \in [-4]_{21} = [17]_{21}$.
+        \end{proof}
+\end{enumerate}
+
+
+\question Complete the addition and multiplication tables for $\Z_5$.
+\begin{proof}[Solution]
+  The elements of $\Z_5$ are $\{[0], [1], [2], [3], [4]\}$:
+  \begin{center}
+    \begin{tabular}{c|c|c|c|c|c}
+      $+$   & $[0]$ & $[1]$ & $[2]$ & $[3]$ & $[4]$ \\ \hline
+      $[0]$ & $[0]$ & $[1]$ & $[2]$ & $[3]$ & $[4]$ \\
+      $[1]$ & $[1]$ & $[2]$ & $[3]$ & $[4]$ & $[0]$ \\
+      $[2]$ & $[2]$ & $[3]$ & $[4]$ & $[0]$ & $[1]$ \\
+      $[3]$ & $[3]$ & $[4]$ & $[0]$ & $[1]$ & $[2]$ \\
+      $[4]$ & $[4]$ & $[0]$ & $[1]$ & $[2]$ & $[3]$ \\
+    \end{tabular}
+    \quad
+    \begin{tabular}{c|c|c|c|c|c}
+      $\times$ & $[0]$ & $[1]$ & $[2]$ & $[3]$ & $[4]$ \\ \hline
+      $[0]$    & $[0]$ & $[0]$ & $[0]$ & $[0]$ & $[0]$ \\
+      $[1]$    & $[0]$ & $[1]$ & $[2]$ & $[3]$ & $[4]$ \\
+      $[2]$    & $[0]$ & $[2]$ & $[4]$ & $[1]$ & $[3]$ \\
+      $[3]$    & $[0]$ & $[3]$ & $[1]$ & $[4]$ & $[2]$ \\
+      $[4]$    & $[0]$ & $[4]$ & $[3]$ & $[2]$ & $[1]$ \\
+    \end{tabular}
+  \end{center}
+\end{proof}
+
+
+\question What is the remainder when $14^{43}$ is divided by 41?
+\begin{proof}[Solution]
+  Since 41 is prime and $41 \nmid 14$, we may apply Fermat's Little Theorem.
+  \begin{equation*}
+    14^{41-1} = 14^{40} \equiv 1 \pmod{41}
+  \end{equation*}
+  Now, simply apply modular arithmetic: $14^2 = 196 \equiv -9 \pmod{41}$,
+  and $14^3 = 14 \cdot 14^2 \equiv 14 \cdot -9 \equiv -3 \pmod{41}$.
+  Finally, $14^{40} \cdot 14^3 = 14^{43} \equiv 1 \cdot -3 \equiv 38 \pmod{41}$.
+  Therefore, the remainder is 38.
+\end{proof}
+
+
+\question Solve \begin{align*}
+  x & \equiv 7 \pmod{11} \\
+  x & \equiv 5 \pmod{12}
+\end{align*}
+\begin{proof}[Solution]
+  We apply the Chinese Remainder Theorem since $\gcd(11,12)=1$.
+  Solutions to the first equation are $x \equiv 7,18,29,40,51,62,73,84,95,106,117,128 \pmod{132}$.
+  Solutions to the second are $x \equiv 5,17,29,41,53,65,77,89,101,113,125 \pmod{132}$.
+  The unique solution common to these is $x \equiv 29 \pmod{132}$.
+\end{proof}
+
+
+\question What is the smallest non-negative integer $x$ such that $2000 \equiv x \pmod{37}$?
+\begin{proof}[Solution]
+  Simply reduce using the division algorithm, which guarantees a minimal non-negative remainder below 37:
+  we have $2000 = 37(54) + 2$, so $2000 \equiv 2 \pmod{37}$.
+\end{proof}
+
+\end{document}
