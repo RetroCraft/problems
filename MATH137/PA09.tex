@@ -1,0 +1,64 @@
+\input{../header}
+\title{MATH 137 Fall 2020: Practice Assignment 9}
+
+\begin{document}
+\thispagestyle{firstpage}
+\textbf{\@title}
+
+\question Find the intervals over which the following functions are increasing/decreasing.
+\begin{enumerate}[(a)]
+  \item $f(x) = x^4 - 8x^2$
+  \item $f(x) = \frac{1}{x^2-1}$
+  \item $f(x) = e^x + e^{-x+1}$
+  \item $f(x) = x^4 - 4x^3 + 16x - 7$
+\end{enumerate}
+
+
+\question Show that if $f$ is increasing and differentiable on $(a,b)$
+then $f'(x) \geq 0$ for all $x\in(a,b)$.
+
+\textbf{Hint:} You may wish to use the result \begin{center}
+  If $g(x) > 0$ for all $x \neq a$ and $\dlim{x}{a}g(x)=L$, then $L \geq 0$.
+\end{center}
+
+
+\question Suppose $f$ is a differentiable function that satisfies $f(1) = 3$ and $2 \leq f'(x) \leq 7$.
+Use the Bounded Derivative Theorem to find an interval for $f(3)$.
+
+
+\question Assume $f$ is a differentiable function on $\R$.
+\begin{enumerate}[(a)]
+  \item Prove that if $|f'(x)| \leq M$ for all $x \in \R$,
+        then $|f(x) - f(y)| \leq M|x-y|$ for all $x,y\in\R$.
+          [Functions with this property are called \emph{Lipschitz}].
+  \item Is the converse of part (a) true? Prove it or give a counterexample.
+\end{enumerate}
+
+
+\question Let $f(x) = \sqrt{x}$ and let $g(x) = 1 + \ln x$.
+\begin{enumerate}[(a)]
+  \item Show that there is at least one point of intersection of $f$ and $g$ between $e^2$ and $e^4$.
+  \item Show that there is exactly one point of intersection of $f$ and $g$ between $e^2$ and $e^4$.
+        Call this point $x=b$.
+  \item Show that for all $x > b$ we have $f(x) > g(x)$.
+        That is, there are no more intersection points after $x=b$.
+\end{enumerate}
+
+
+\question Evaluate the following limits, you may use any method.
+\begin{enumerate}[(a)]
+  \item $\dlim{x}{0}\frac{\tan x + x^2 - x}{\sin^2 x}$.
+  \item $\dlim{x}{1}\left(\frac{x}{x-1} - \frac{1}{\ln x}\right)$.
+  \item $\dilim{x}\left(1 + \frac{1}{x}\right)^{2x}$.
+\end{enumerate}
+
+
+\question Let $f(x) = x + \sin x \cos x$ and let $g(x) = f(x)e^{\sin x}$.
+\begin{enumerate}[(a)]
+  \item Argue why $\dilim{x}\frac{f(x)}{g(x)}$ does not exist.
+  \item Prove that $\dilim{x}f(x) = \infty$ and $\dilim{x}g(x) = \infty$.
+  \item Prove that $\dilim{x}\frac{f'(x)}{g'(x)} = 0$.
+  \item Why is the above not a contradiction to l'Hôpital's Rule?
+\end{enumerate}
+
+\end{document}

@@ -40,8 +40,8 @@ I don't implement the full design recipe in exercises, for obvious reasons (I'm 
 | [Fall 2019 Midterm](./MATH135/MT2019F.pdf)   |  :white_check_mark:  |                                     |
 | [Winter 2020 Midterm](./MATH135/MT2020W.pdf) |  :white_check_mark:  |                                     |
 | [Extra Practice 6](./MATH135/EP06.pdf)       | :black_large_square: | Missing challenges. RP09 by sooshi. |
-| [Extra Practice 7](./MATH135/EP07.pdf)       | :black_large_square: | Missing C01 |
-| [Extra Practice 8](./MATH135/EP08.pdf)       | :black_large_square: | Only up to RP04 |
+| [Extra Practice 7](./MATH135/EP07.pdf)       | :black_large_square: | Missing C01                         |
+| [Extra Practice 8](./MATH135/EP08.pdf)       | :black_large_square: | Only up to RP04                     |
 
 ### MATH 137
 
@@ -55,6 +55,8 @@ I don't implement the full design recipe in exercises, for obvious reasons (I'm 
 | [Practice Assignment MT](./MATH137/PAMT.pdf) | :white_check_mark: | Posted as `Practice AssignMT` on LEARN |
 | [Practice Assignment 6](./MATH137/PA06.pdf)  | :white_check_mark: |                                        |
 | [Practice Assignment 7](./MATH137/PA07.pdf)  | :white_check_mark: |                                        |
+| [Practice Assignment 8](./MATH137/PA08.pdf)  | :white_check_mark: |                                        |
+| [Practice Assignment 9](./MATH137/PA09.pdf)  |        :x:         |                                        |
 | [Practice Midterm 1](./MATH137/PM01.pdf)     | :white_check_mark: | Posted as `midterm_practice` on LEARN  |
 
 ## Mistakes
