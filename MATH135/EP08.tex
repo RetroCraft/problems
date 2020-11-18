@@ -199,7 +199,25 @@ We now investigate what happens if the moduli are not coprime.
         Determine which one has solutions and which one has no solutions.
         For the one with solutions, give the complete solutions to the system.
         For the one with no solutions, explain why no solutions exist.
-        \begin{proof}
+        \begin{proof}[Solution]
+          Consider system $A$.
+          By definition, numbers $n$ congruent to 10 modulo 18 are of the from
+          $n = 10 + 18k$ for some integer $k$.
+          Substituting into the first congruence,
+          $10 + 18k \equiv 2 \pmod{12}$, that is, $6k \equiv 4 \pmod{12}$.
+          However, since $\gcd(6,12)=6$ and $6 \nmid 4$, there are no valid values of $k$.
+
+          Consider system $B$.
+          By definition, solutions to the second congruence are of the from
+          $n = 11 + 18k$ for some integer $k$.
+          Substituting, $11 + 18k \equiv 5 \pmod{12}$, that is, $6k \equiv 6 \pmod{12}$.
+          Since $\gcd(6,12) = 6$ and $6 \mid 6$, a solution exists.
+          By inspection, $k=1$ is a solution.
+          By LCT, the set of all solutions is given by $\{ k \in \Z : k \equiv 1 \pmod{2} \}$.
+          Therefore, values for $k$ are of the form $2m+1$ for some integer $m$.
+          Backsubstituting, $n = 11 + 18(2m+1) = 29 + 36m$.
+          Equivalently, the solution set for all $n$ is given by
+          \[ \{ n\in\Z : n \equiv 29 \pmod{36} \} \qedhere \]
         \end{proof}
 
   \item Let $a_1$ and $a_2$ be integers, and let $m_1$ and $m_2$ be positive integers.
@@ -212,23 +230,106 @@ We now investigate what happens if the moduli are not coprime.
         \end{equation*}
         Using your observations in (a), complete the following two statements.
         The system $S$ has a solution if and only if
-        \rule{3cm}{0.15mm}.
+        \fbox{$a_1 \equiv a_2 \pmod{\gcd(m_1,m_2)}$}.
         If $n_0$ is a solution to $S$, then the complete solution is
-        $n \equiv \rule{3cm}{0.15mm}$.
+        \fbox{$n \equiv n_0 \pmod{\lcm(m_1,m_2)}$}.
 
   \item Prove the first statement.
         \begin{proof}
+          Let $a_1$ and $a_2$ be integers and let $m_1$ and $m_2$ be positive integers with GCD $d$.
+          We prove the biconditional by mutual implication.
+
+          ($\Rarr$) Suppose that $a_1 \equiv a_2 \pmod{d}$.
+          Solutions to the first congruence are of the form $n = a_1 + m_1x$ for some integer $x$.
+          However, we may write $a_1 = a_2 + dk$ with integer $k$, so we have $n = a_2 + dk + m_1x$.
+          Substituting, $a_2 + dk + m_1x \equiv a_2 \pmod{m_2}$,
+          that is, $m_1x \equiv -dk \pmod{m_2}$.
+
+          By LCT, this has a solution $x_0$ because $\gcd(m_1,m_2)=d$ and $d \mid -dk$,
+          and all solutions are given by $x = x_0 + m_2y$ for some integer $y$.
+          Backsubstituting, $n = a_1 + m_1(x_0+m_2y) = a_1 + m_1x_0 + m_1m_2y$.
+          Therefore, the system $S$ has solutions.
+
+          ($\Larr$) Suppose that $S$ has a solution.
+          Then, there is some $n$ such that $n = a_1 + m_1p = a_2 + m_2q$ for integers $p$ and $q$.
+          Rearranging, $a_1 - a_2 = m_1p + m_2q$.
+          This is an LDE in $a_1-a_2$.
+          By the LDET, it has solutions if and only if $\gcd(m_1,m_2) \mid (a_1 - a_2)$.
+          This is equivalent by definition to saying $a_1 \equiv a_2 \pmod d$.
         \end{proof}
 \end{enumerate}
 
 
 \question Solve $x^3 \equiv 17 \pmod{99}$.
 \begin{proof}[Solution]
+  We can split the modulus to simplify the problem: $99 = 3\times3\times11$.
+  By SMT, we can solve three simultaneous congruences.
+  However, since 3 appears twice, those congruences are redundant.
+  Then, we may equivalently solve the simultaneous congruences
+  \begin{equation*}
+    x^3 \equiv 17 \equiv 2 \pmod{3}
+    \quad \text{and} \quad
+    x^3 \equiv 17 \equiv 6 \pmod{11}
+  \end{equation*}
+  For the first congruence, we make a table
+  \begin{center}
+    \begin{tabular}{C|C|C|C}
+      x \pmod3   & 0 & 1 & 2 \\ \hline
+      x^2 \pmod3 & 0 & 1 & 1 \\
+      x^3 \pmod3 & 0 & 1 & 2
+    \end{tabular}
+  \end{center}
+  and see from the last row that the solution is all $x$ such that $x \equiv 2 \pmod{3}$.
+  Repeating for the second congruence, we make a table
+  \begin{center}
+    \begin{tabular}{C|C|C|C|C|C|C|C|C|C|C|C}
+      x \pmod{11}   & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ \hline
+      x^2 \pmod{11} & 0 & 1 & 4 & 9 & 5 & 3 & 3 & 5 & 9 & 4 & 1  \\
+      x^3 \pmod{11} & 0 & 1 & 8 & 5 & 9 & 4 & 7 & 2 & 6 & 3 & 10
+    \end{tabular}
+  \end{center}
+  and see again in the last row that the solution is all $x$ such that $x \equiv 8 \pmod{11}$.
+  Now, we apply the Chinese Remainder Theorem.
+  There must exist some $x_0$ so the solution set is all $x$ congruent to $x_0$ modulo 33.
+
+  Note that solutions between 0 and 32 that are congruent to 8 modulo 11 are 8, 19, and 30.
+  Of these, only 8 is congruent to 2 modulo 3.
+  Therefore, the solution is all $x$ such that $x \equiv 8 \pmod{33}$, or, equivalently,
+  \[ x \equiv 8, 41, 74 \pmod{99} \qedhere \]
 \end{proof}
 
 
 \question Solve $x^2 + 25x \equiv 54 \pmod{63}$.
 \begin{proof}[Solution]
+  Again, split the modulus as $63 = 3 \times 3 \times 7$.
+  By SMT, we can solve three simultaneous congruences, simplified by redundancy to two.
+  It suffices then to solve
+  \begin{align*}
+    x^2 + 25x & \equiv 54 \pmod{3} & x^2 + 25x & \equiv 54 \pmod{7} \\
+    x^2 + x   & \equiv 0 \pmod{3}  & x^2 + 4x  & \equiv 5 \pmod{7}
+  \end{align*}
+  For the first congruence, we make a table:
+  \begin{center}
+    \begin{tabular}{C|C|C|C}
+      x \pmod3     & 0 & 1 & 2 \\ \hline
+      x^2 \pmod3   & 0 & 1 & 1 \\
+      x^2+x \pmod3 & 0 & 2 & 0
+    \end{tabular}
+  \end{center}
+  and determine the solution is $x \equiv 0,2 \pmod{3}$.
+  Making another table for the second,
+  \begin{center}
+    \begin{tabular}{C|C|C|C|C|C|C|C}
+      x \pmod3     & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\ \hline
+      x^2 \pmod3   & 0 & 1 & 4 & 2 & 2 & 4 & 1 \\
+      x^2+x \pmod3 & 0 & 2 & 6 & 5 & 6 & 2 & 0
+    \end{tabular}
+  \end{center}
+  we find the solution is $x \equiv 3 \pmod{7}$.
+  By the CRT, there are two unique solutions modulo 21.
+  We find that $3 \equiv 0 \pmod{3} \equiv 3 \pmod{7}$ and $17 \equiv 2 \pmod{3} \equiv 3 \pmod{7}$.
+  Therefore, the solution set is all $x$ such that $x \equiv 3,17 \pmod{21}$, or, equivalently,
+  \[ x \equiv 3,17,24,38,45,59 \pmod{63} \qedhere \]
 \end{proof}
 
 
