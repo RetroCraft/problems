@@ -42,7 +42,7 @@ I don't implement the full design recipe in exercises, for obvious reasons (I'm 
 | [Winter 2020 Midterm](./MATH135/MT2020W.pdf) |  :white_check_mark:  |                                     |
 | [Extra Practice 6](./MATH135/EP06.pdf)       | :black_large_square: | Missing challenges. RP09 by sooshi. |
 | [Extra Practice 7](./MATH135/EP07.pdf)       | :black_large_square: | Missing C01                         |
-| [Extra Practice 8](./MATH135/EP08.pdf)       | :black_large_square: | Only up to RP04                     |
+| [Extra Practice 8](./MATH135/EP08.pdf)       | :black_large_square: | "Missing" RP08                      |
 
 ### MATH 137
 

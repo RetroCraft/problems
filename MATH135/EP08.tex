@@ -336,18 +336,45 @@ We now investigate what happens if the moduli are not coprime.
 \question Find the smallest positive integer $a$ such that
 $5n^{13}+13n^5+a(9n) \equiv 0 \pmod{65}$ for all integers $n$.
 \begin{proof}[Solution]
+  I don't know how to prove this but the Wolfram Mathematica code \\
+  \verb|Solve[ForAll[n, 5n^13+13n^5+a(9n) == 0], a, Modulus -> 65]|
+  finds $a=63$.
 \end{proof}
 
 
 \question Prove that for distinct primes $p$ and $q$,
 $\left(p^{q-1} + q^{p-1}\right) \equiv 1 \pmod{pq}$.
 \begin{proof}
+  Let $p$ and $q$ be distinct primes.
+  Since $q-1$ and $p-1$ are positive integers, $p^{q-1}$ is a multiple of $p$ and $q^{p-1}$ of $q$.
+  By definition, $p^{q-1} \equiv 0 \pmod p$ and $q^{p-1} \equiv 0 \pmod q$.
+  Since $p \nmid q$ and $q \nmid p$, by \FLT, we have
+  $q^{p-1} \equiv 1 \pmod p$ and $p^{q-1} \equiv 1 \pmod q$.
+  Therefore, by CAM, we have the simultaneous congruences
+  \begin{align*}
+    \left( p^{q-1} + q^{p-1} \right) & \equiv 1 \pmod p \\
+    \left( p^{q-1} + q^{p-1} \right) & \equiv 1 \pmod q
+  \end{align*}
+  As distinct primes, $\gcd(p,q)=1$.
+  Then, by SMT, $\left(p^{q-1} + q^{p-1}\right) \equiv 1 \pmod{pq}$.
 \end{proof}
 
 
 \question If $a$ and $b$ are integers, $3 \nmid a$, $3 \nmid b$, $5 \nmid a$, and $5 \nmid b$,
 prove that $a^4 \equiv b^4 \pmod{15}$
 \begin{proof}
+  Let $x$ be an integer where $3 \nmid x$ and $5 \nmid x$.
+  We exhaust possibilities for $x \pmod{15}$:
+  \begin{center}
+    \begin{tabular}{C|C|C|C|C|C|C|C|C}
+      x\pmod{15}   & 1 & 2 & 4 & 7 & 8 & 11 & 13 & 14 \\ \hline
+      x^2\pmod{15} & 1 & 4 & 1 & 4 & 4 & 1  & 4  & 1  \\
+      x^4\pmod{15} & 1 & 1 & 1 & 1 & 1 & 1  & 1  & 1
+    \end{tabular}
+  \end{center}
+  Therefore, for any integer $x$ neither a multiple of 3 nor 5, $x^4 \equiv 1 \pmod{15}$.
+  It follows that for any two integers $a$ and $b$,
+  with both neither multiples of 3 nor 5, $a^4 \equiv b^4 \pmod{15}$.
 \end{proof}
 
 
@@ -359,6 +386,37 @@ When the eggs are removed 7 at a time there are none left over.
 Assuming none of the eggs broke during the preceding operations,
 determine the minimum number of eggs that were in the basket.
 \begin{proof}[Solution]
+  Let $n$ be the number of eggs in the basket.
+  Since removing 6 eggs leaves at least 5 eggs, $n \geq 11$.
+  We interpret the constraints as a system of linear congruences:
+  \begin{align*}
+    n & \equiv 1 \pmod{2} & n & \equiv 2 \pmod{3} \\
+    n & \equiv 3 \pmod{4} & n & \equiv 4 \pmod{5} \\
+    n & \equiv 5 \pmod{6} & n & \equiv 0 \pmod{7}
+  \end{align*}
+  Note that all multiples of 7 are odd, so we may ignore the first condition.
+  Also, we may write $n = 7m$ for some integer $m$ and simplify:
+  \begin{align*}
+    7m \equiv m  & \equiv 2 \pmod{3} & 7m \equiv 3m & \equiv 3 \pmod{4} \\
+    7m \equiv 2m & \equiv 4 \pmod{5} & 7m \equiv m  & \equiv 5 \pmod{6}
+  \end{align*}
+  Since 3 and 4 are coprime, we apply CD to the second congruence, $m \equiv 1 \pmod{4}$.
+  By definition and the first congruence, $m = 2 + 3p$ for an integer $p$.
+  Apply CAM and CD\@:
+  \begin{align*}
+    2+3p & \equiv 1 \pmod{4} & 2(2+3p) & \equiv 4 \pmod{5} & 2+3p & \equiv 5 \pmod{6} \\
+    3p   & \equiv 3 \pmod{4} & 6p      & \equiv 0 \pmod{5} & 3p   & \equiv 3 \pmod{6} \\
+    p    & \equiv 1 \pmod{4} & p       & \equiv 0 \pmod{5} & 3p   & \equiv 3 \pmod{6}
+  \end{align*}
+  We find by inspection that $p=1$ is a solution to the third congruence, so by LCT,
+  it is equivalently $p \equiv 1 \pmod{2}$ (i.e.\ $p$ is odd).
+  However, this is also implied by the first congruence, leaving us with two congruences.
+  Since 4 and 5 are coprime, we may apply the Chinese Remainder Theorem.
+  By inspection, $p=5$ is a solution.
+  Therefore, all $p$ are of the form $p \equiv 5 \pmod{20}$ or $p = 5 + 20q$ for an integer $q$.
+
+  It follows that $m = 2+3(5+20q) = 17 + 60q$ and that $n = 7(17+60q) = 119 + 420q$.
+  Since $119 < 420$, the lowest possible value of $n$ is 119 eggs.
 \end{proof}
 
 \end{document}
