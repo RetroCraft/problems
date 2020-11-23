@@ -25,6 +25,7 @@ I don't implement the full design recipe in exercises, for obvious reasons (I'm 
 | [Module 13 Exercises]({{ page.gh }}/CS135/E13.rkt) | :white_check_mark: |       |
 | [Module 14 Exercises]({{ page.gh }}/CS135/E14.rkt) | :white_check_mark: |       |
 | [Module 15 Exercises]({{ page.gh }}/CS135/E15.rkt) | :white_check_mark: |       |
+| [Module 16 Exercises]({{ page.gh }}/CS135/E16.rkt) | :white_check_mark: |       |
 
 ## Math
 
