@@ -10,16 +10,50 @@
 
 \qsection{Warm-Up Exercises}{WE}
 
-\question Express $\frac{2-i}{3+4i}$ in standard form.
+\question Express $\dfrac{2-i}{3+4i}$ in standard form.
+\begin{proof}[Solution]
+  Multiply numerator and denominator by the conjugate of the denominator:
+  \[ \frac{2-i}{3+4i} = \frac{(2-i)(3-4i)}{9+16} = \frac{2-11i}{25} = \frac{2}{25}-\frac{11}{25}i \qedhere \]
+\end{proof}
 
-\question Write $x=\frac{9+i}{5-4i}$ in polar form, $r(\cos\theta+i\sin\theta)$, with $0\leq\theta<2\pi$.
+
+\question Write $x=\dfrac{9+i}{5-4i}$ in polar form, $r(\cos\theta+i\sin\theta)$, with $0\leq\theta<2\pi$.
+\begin{proof}[Solution]
+  We express first in standard form by multiplying through the conjugate:
+  \[ \frac{9+i}{5-4i} = \frac{(9+i)(5+4i)}{41} = \frac{41+41i}{41} = 1+i \]
+  We can geometrically interpret this as $\sqrt2\cis\frac\pi4$.
+\end{proof}
+
 
 \question Write $(\sqrt{3}+i)^4$ in standard form.
+\begin{proof}[Solution]
+  We first place the quantity within the brackets in polar form.
+  By inspection, this is $2\cis\frac\pi6$.
+  Now, applying DMT, we have $(2\cis\frac\pi6)^4 = 2^4\cis^4\frac\pi6 = 16\cis\frac{2\pi}{3}$.
+
+  Expressing in standard form,
+  $16(\cos\frac{2\pi}{3} + i\sin\frac{2\pi}{3}) = 16(-\frac12+i\frac{\sqrt3}{2}) = -8 + 8\sqrt3 i$
+\end{proof}
+
 
 \question Find all $z\in\C$ such that $z^5=1$ and plot the solutions in the complex plane.
 (You may state values in polar form.)
+\begin{proof}[Solution]
+  Note that $1 = 1\cis0$.
+  Applying the CRNT, we have that the five roots are given by
+  $\sqrt[5]{1}\cis\left(\frac{2k\pi}{n}\right)$ for $k=0,1,2,3,4$.
+  These values are $\{ 1, \cis\frac\pi5, \cis\frac{4\pi}{5}, \cis\frac{6\pi}{5}, \cis\frac{8\pi}{5} \}$.
+  I am too lazy to learn \verb|tikz| to draw the diagram.
+\end{proof}
 
-\question Find all $z\in\C$ such that $z^2=\frac{1+i}{1-i}$.
+
+\question Find all $z\in\C$ such that $z^2=\dfrac{1+i}{1-i}$.
+\begin{proof}[Solution]
+  Simplifying the fraction on the right-hand side, $\frac{(1+i)(1+i)}{2}=\frac{1+2i-1}{2}=i$.
+  On the complex plane, $i=1\cis\frac\pi2$.
+  Then, by CRNT, the solutions are $\cis\frac\pi4$ and $\cis\frac{5\pi}{4}$.
+  Evaluating to get standard form, we have $z = \pm(\frac{\sqrt{2}}{2}+\frac{\sqrt{2}}{2}i)$.
+\end{proof}
 
 
 \qsection{Recommended Problems}{RP}
