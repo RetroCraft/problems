@@ -1,0 +1,106 @@
+\input{../header}
+\usepackage{minted}
+
+\title{MATH 135 Fall 2020: Extra Practice 10}
+
+\begin{document}
+\thispagestyle{firstpage}
+
+\textbf{\@title}
+
+\qsection{Warm-Up Exercises}{WE}
+
+\question Express $\frac{2-i}{3+4i}$ in standard form.
+
+\question Write $x=\frac{9+i}{5-4i}$ in polar form, $r(\cos\theta+i\sin\theta)$, with $0\leq\theta<2\pi$.
+
+\question Write $(\sqrt{3}+i)^4$ in standard form.
+
+\question Find all $z\in\C$ such that $z^5=1$ and plot the solutions in the complex plane.
+(You may state values in polar form.)
+
+\question Find all $z\in\C$ such that $z^2=\frac{1+i}{1-i}$.
+
+
+\qsection{Recommended Problems}{RP}
+
+\question Express the following complex numbers in standard form.
+\begin{enumerate}[(a)]
+  \item $\dfrac{(\sqrt2-i)^2}{(\sqrt2+i)(1-\sqrt2i)}$
+  \item $(\sqrt5-i\sqrt3)^4$
+\end{enumerate}
+
+\question Prove all of the Properties of Complex Arithmetic that were not proved in the notes or in class.
+
+\question Let $n \in \N$. Prove that if $n \equiv 1 \pmod 4$, then $i^n = i$.
+
+\question Find all $z \in \C$ which satisfy
+\begin{enumerate}[(a)]
+  \item $z^2+2z+1=0$
+  \item $z^2+2\bar{z}+1=0$
+  \item $z^2 = \dfrac{1+i}{1-i}$
+\end{enumerate}
+
+\question \begin{enumerate}[(a)]
+  \item Find all $w\in\C$ satisfying $w^2 = -15 + 8i$.
+  \item Find all $z\in\C$ satisfying $z^2-(3+2i)z+5+i=0$.
+\end{enumerate}
+
+\question Let $z, w \in \C$. Prove that if $zw = 0$ then $z = 0$ or $w = 0$.
+
+\question Let $a,b,c \in \C$. Prove: if $|a|=|b|=|c|=1$, then $\overline{a+b+c}=\frac1a+\frac1b+\frac1c$.
+
+\question Find all $z\in\C$ satisfying $z^2=|z|^2$.
+
+\question Find all $z\in\C$ satisfying $|z+1|^2 \leq 3$ and shade the corresponding region in the complex plane.
+
+\question Let $z,w\in\C$ such that $\bar z w \neq 1$.
+Prove that if $|z|=1$ or $|w|=1$, then $\abs{\dfrac{z-w}{1 -\bar z w}}=1$.
+
+\question Show that for all complex numbesr $z$, $|\Re(z)|+|\Im(z)|\leq\sqrt{2}|z|$.
+
+\question Use \emph{De Moivre's Theorem} (DMT) to prove that
+$\sin 4\theta = 4\sin\theta\cos^3\theta - 4\sin^3\theta\cos\theta$ for all $\theta\in\R$.
+
+\question Let $n\in\N$ and $a,b\in\R$. Show that $z=(a+bi)^n+(a-bi)^n$ is real.
+
+\question An \emph{$n$\textsuperscript{th} root of unity} is any complex solution to $z^n=1$.
+Prove that if $w$ is an $n$\textsuperscript{th} root of unity,
+$\frac1w$ is also an $n$\textsuperscript{th} root of unity.
+
+\question A complex number $z$ is called a \emph{primitive} $n$-th root of unity
+if $z^n=1$ and $z^k \neq 1$ for all $1 \leq k \leq n-1$.
+\begin{enumerate}[(a)]
+  \item For each $n=1,3,5,6$ list all the primitive $n$-th roots of unity.
+  \item Let $z$ be a primitive $n$-th root of unity. Prove the following statements:
+        \begin{enumerate}[i.]
+          \item For any $j\in\Z$, $z^j=1$ if and only if $n \mid j$.
+          \item For any $m\in\Z$, if $\gcd(m,n)=1$, then $z^m$ is a primitive $n$-th root of unity.
+        \end{enumerate}
+\end{enumerate}
+
+\question Let $u$ and $v$ be fixed complex numbers.
+Let $\omega$ be a non-real cube root of unity.
+For each $k\in\Z$, define $y_k\in\C$ by the formula \[ y_k = \omega^k u + \omega^{-k}v \]
+\begin{enumerate}[(a)]
+  \item Compute $y_1$, $y_2$, and $y_3$ in terms of $u$, $v$, and $\omega$.
+  \item Show that $y_k = y_{k+3}$ for any $k\in\Z$.
+  \item Show that for any $k\in\Z$, \[ y_k-y_{k+1} = \omega^k(1-\omega)(u-\omega^{k-1}v) \]
+\end{enumerate}
+
+
+\qsection{Challenges}{C}
+
+\question Let $z,w\in\C$.
+\begin{enumerate}[(a)]
+  \item Prove that $|z+w| \leq |z| + |w|$.
+  \item Prove that $\abs{|z| - |w|} \leq |z-w| \leq |z|+|w|$.
+\end{enumerate}
+
+\question Let $a,b,c\in\C$.
+Show that if $\dfrac{b-a}{a-c} = \dfrac{a-c}{c-b}$ then $|b-a| = |a-c| = |c-b|$.
+
+\question Let $n \geq 2$ be an integer. Prove that
+\[ \sum_{k=0}^{n-1}\cos\left(\frac{2k\pi}{n}\right)=0=\sum_{k=0}^{n-1}\sin\left(t\frac{2k\pi}{n}\right) \]
+
+\end{document}
