@@ -8,9 +8,50 @@
 \question Find the intervals over which the following functions are increasing/decreasing.
 \begin{enumerate}[(a)]
   \item $f(x) = x^4 - 8x^2$
+        \begin{proof}[Solution]
+          We take $f'(x) = 4x^3 - 16x = 4x(x^2-4) = 4x(x-4)(x+4)$.
+          The critical points are $x=0,\pm 4$.
+          Since $f'$ is an odd-degree polynomial with a positive leading coefficient and linear factors,
+          we can say that $f$ is decreasing on $(-\infty,-4)\cup(0,4)$
+          and increasing on $(-4,0)\cup(4,\infty)$.
+        \end{proof}
   \item $f(x) = \frac{1}{x^2-1}$
+        \begin{proof}[Solution]
+          We take $f'(x) = -\frac{2x}{(x^2-1)^2} = -\frac{2x}{(x-1)(x+1)}$
+          and find critical points $x=0,\pm1$.
+          Analyzing the signs of the factors of $f'$:
+          \begin{center}
+            \begin{tabular}{C|C|C|C|C}
+                    & (-\infty,-1) & (-1,0) & (0,1) & (1,\infty) \\ \hline
+              -2x   & +            & +      & -     & -          \\
+              (x-1) & -            & -      & -     & +          \\
+              (x+1) & -            & +      & +     & +          \\ \hline
+              f'    & +            & -      & +     & -          \\
+            \end{tabular}
+          \end{center}
+          Then, $f$ is decreasing on $(-1,0)\cup(1,\infty)$ and increasing on $(-\infty,-1)\cup(0,1)$.
+        \end{proof}
   \item $f(x) = e^x + e^{-x+1}$
+        \begin{proof}[Solution]
+          We have $f'(x) = e^x - e^{-x+1}$. This is defined on $\R$, so we solve $f'(x)=0$:
+          \begin{align*}
+            f'(x) & = 0        \\
+            e^x   & = e^{-x+1} \\
+            x     & = -x + 1   \\
+            x     & = \frac12
+          \end{align*}
+          Therefore, our only critical point is at $x=\frac12$.
+          For large positive $x$, the $e^x$ term dominates and for large negative $x$, the $e^{-x}$ term dominates.
+          It follows that $f$ is decreasing on $(-\infty,\frac12)$ and increasing on $(\frac12,\infty)$.
+        \end{proof}
   \item $f(x) = x^4 - 4x^3 + 16x - 7$
+        \begin{proof}[Solution]
+          Taking the derivative, $f'(x) = 4x^3 - 12x^2 + 16 = 4(x+1)(x-2)^2$,
+          and the critical points are $x=-1,2$.
+
+          Since $(x-2)^2$ is always non-negative, it does not affect the sign of $f'$.
+          From the sign of $(x+1)$, we can say $f$ is increasing on $(-\infty,-1)$ and increasing on $(-1,\infty)$.
+        \end{proof}
 \end{enumerate}
 
 
@@ -20,10 +61,27 @@ then $f'(x) \geq 0$ for all $x\in(a,b)$.
 \textbf{Hint:} You may wish to use the result \begin{center}
   If $g(x) > 0$ for all $x \neq a$ and $\dlim{x}{a}g(x)=L$, then $L \geq 0$.
 \end{center}
+\begin{proof}
+  Let $f$ be an increasing and differentiable function on $(a,b)$, and let $x\in(a,b)$.
+
+  Since $f$ is differentiable, $f'(x)$ exists and is equal to
+  $\lim\limits_{h\to0}\frac{f(x+h)-f(x)}{h}$.
+
+  Since the limit exists, the one-sided limits exist and are equal.
+  Consider the right-handed limit. Then, $h > 0$ and $x+h > x$.
+  Because $f$ is increasing, $f(x+h) > f(x)$ and $f(x+h)-f(x) > 0$.
+  Therefore, the Newton quotient is positive for all $h$,
+  so the limit, i.e., the derivative, is positive.
+\end{proof}
 
 
 \question Suppose $f$ is a differentiable function that satisfies $f(1) = 3$ and $2 \leq f'(x) \leq 7$.
 Use the Bounded Derivative Theorem to find an interval for $f(3)$.
+\begin{proof}[Solution]
+  Since the lower bound of $f'$ is 2, over a distance $3-1=2$, $f$ can increase by at least 4.
+  Likewise, as the upper bound of $f'$ is 7, over a distance 2, $f$ can increase by at most 14.
+  Therefore, we have the range $f(3)\in[3+4,3+14] = [7,17]$.
+\end{proof}
 
 
 \question Assume $f$ is a differentiable function on $\R$.
@@ -31,32 +89,132 @@ Use the Bounded Derivative Theorem to find an interval for $f(3)$.
   \item Prove that if $|f'(x)| \leq M$ for all $x \in \R$,
         then $|f(x) - f(y)| \leq M|x-y|$ for all $x,y\in\R$.
           [Functions with this property are called \emph{Lipschitz}].
+        \begin{proof}
+          Let $f$ be differentiable and let $x$, $y$, and $M \geq 0$ be real numbers.
+          Suppose $|f'(n)| \leq M$, that is, $-M \leq f'(n) \leq M$ for all $n$.
+
+          Then, $f(y)$ is at most $f(x) + M|x-y|$ and at least $f(x) - M|x-y|$.
+
+          That is, $f(y) - f(x) \leq \pm M|x-y|$, or, $|f(x)-f(y)| \leq M|x-y|$.
+        \end{proof}
   \item Is the converse of part (a) true? Prove it or give a counterexample.
+        \begin{proof}[Solution]
+          Yes. Suppose $|f(x) - f(y)| \leq M|x-y|$ for all $x,y\in\R$. Then,
+          \begin{align*}
+            |f'(x)| = \lim_{h\to0}\frac{\abs{f(x+h)-f(x)}}{|h|} \leq \frac{M|x+h-x|}{|h|} = M
+          \end{align*}
+          since $|x|$ is continuous.
+        \end{proof}
 \end{enumerate}
 
 
 \question Let $f(x) = \sqrt{x}$ and let $g(x) = 1 + \ln x$.
 \begin{enumerate}[(a)]
   \item Show that there is at least one point of intersection of $f$ and $g$ between $e^2$ and $e^4$.
+        \begin{proof}
+          Consider the function $h(x) = f(x) - g(x)$.
+          Since $h$ is composed of continuous functions, it is continuous on its domain ($x > 0$).
+          Then, $h(e^2) = \sqrt{e^2} - 1 - \ln e^2 = e-3$ and $h(e^4) = \sqrt{e^4} - 1 - \ln e^4 = e^2-5$.
+
+          As $e-3 < 0$ and $e^2-5 > 0$, by the IVT, there exists a $c\in(e^2,e^4)$ where $h(c)=0$,
+          that is, $f(c) = g(c)$.
+        \end{proof}
   \item Show that there is exactly one point of intersection of $f$ and $g$ between $e^2$ and $e^4$.
         Call this point $x=b$.
+        \begin{proof}
+          Let $b_0,b_1\in(e^2,e^4)$.
+          Suppose for a contradiction that $h(b_0) = 0$ and $h(b_1) = 0$.
+          Then, by the MVT, there exists some $c\in(b_0,b_1)\subsetneq(e^2,e^4)$ where $h'(c) = 0$.
+          Now,
+          \begin{align*}
+            h'(c) & = f'(c) - g'(c)                     \\
+            0     & = \frac{1}{2\sqrt{c}} - \frac{1}{c} \\
+            0     & = \frac{\sqrt{c} - 2}{2c}           \\
+            c     & = 4
+          \end{align*}
+          (since $0 \not\in(b_0,b_1)$) but $4 \not\in (e^2,e^4)$.
+          Therefore, there cannot be a second point of intersection.
+        \end{proof}
   \item Show that for all $x > b$ we have $f(x) > g(x)$.
         That is, there are no more intersection points after $x=b$.
+        \begin{proof}
+          Notice from above that $h'(x) = 0$ only when $x=4$.
+          When $x > 4$, $h'(c) < 0$, and as $h'$ is continuous on its domain, $h$ is decreasing.
+
+          Since $b \in (e^2,e^4)$, we have $4 < e^2 < b$, $h$ is decreasing for all $x>b$.
+          Then, $h(b) > h(x) = f(x)-g(x)$, so $f(x) > g(x)$ for all $x > b$.
+        \end{proof}
 \end{enumerate}
 
 
 \question Evaluate the following limits, you may use any method.
 \begin{enumerate}[(a)]
   \item $\dlim{x}{0}\frac{\tan x + x^2 - x}{\sin^2 x}$.
+        \begin{proof}[Solution]
+          We evaluate the fraction and find that it is of the form
+          $\frac{\tan 0+0^2-0}{\sin^2 0}=\frac{0}{0}$.
+          Repeatedly applying l'Hôpital's rule:
+          \begin{align*}
+            \lim_{x\to0} \frac{\tan x + x^2 - x}{\sin^2 x}
+             & = \at{\frac{\dv{x}(\tan x + x^2 - x)}{\dv{x}(\sin^2 x)}}{x=0} \\
+             & = \lim_{x\to0} \frac{\sec^2 x + 2x - 1}{2\sin 2x}             \\
+             & = \at{\frac{\dv{x}(\sec^2 x + 2x - 1)}{\dv{x}(\sin 2x)}}{x=0} \\
+             & = \lim_{x\to0} \frac{2\sec^2 x \tan x + 2}{2\cos 2x}          \\
+             & = \frac{0 + 2}{2(1)}                                          \\
+             & = 1 \qedhere
+          \end{align*}
+        \end{proof}
   \item $\dlim{x}{1}\left(\frac{x}{x-1} - \frac{1}{\ln x}\right)$.
+        \begin{proof}[Solution]
+          Simplify the fraction and apply l'Hôpital's Rule to forms $\frac{0}{0}$:
+          \begin{align*}
+            \lim_{x\to1} \left(\frac{x}{x-1} - \frac{1}{\ln x}\right)
+             & = \lim_{x\to1} \frac{x \ln x - (x-1)}{\ln x(x-1)}               \\
+             & = \at{\frac{\dv{x}(x \ln x - x+1)}{\dv{x}(\ln x(x-1))}}{x=1}    \\
+             & = \lim_{x\to1} \frac{\ln x}{\ln x + \frac{x-1}{x}}              \\
+             & = \at{\frac{\dv{x}(\ln x)}{\dv{x}(\ln x + \frac{x-1}{x})}}{x=1} \\
+             & = \lim_{x\to1} \frac{1}{x\frac{1}{x} + \frac{1}{x^2}}           \\
+             & = \frac{1}{2} \qedhere
+          \end{align*}
+        \end{proof}
   \item $\dilim{x}\left(1 + \frac{1}{x}\right)^{2x}$.
+        \begin{proof}[Solution]
+          This is of the form $1^\infty$ so we take the logarithm:
+          \begin{align*}
+            \lim_{x\to\infty} \ln \left(1 + \frac{1}{x}\right)^{2x}
+             & = \lim_{x\to\infty} 2x\ln \left(1 + \frac{1}{x}\right)                            \\
+             & = \lim_{x\to\infty} \frac{2\ln \left(1 + \frac{1}{x}\right)}{\frac1x}             \\
+             & = \at{\frac{\dv{x}(2\ln \left(1 + \frac{1}{x}\right))}{\dv{x}\frac1x}}{x=\infty}  \\
+             & = \lim_{x\to\infty} \frac{-2\frac{1}{1+\frac{1}{x}}\frac{1}{x^2}}{-\frac{1}{x^2}} \\
+             & = \lim_{x\to\infty} 2\frac{1}{1+\frac{1}{x}}                                      \\
+             & = 2 \qedhere
+          \end{align*}
+        \end{proof}
 \end{enumerate}
 
 
 \question Let $f(x) = x + \sin x \cos x$ and let $g(x) = f(x)e^{\sin x}$.
 \begin{enumerate}[(a)]
   \item Argue why $\dilim{x}\frac{f(x)}{g(x)}$ does not exist.
+        \begin{proof}
+          Note that $\frac{f(x)}{g(x)} = \frac{f(x)}{f(x)e^{\sin x}} = \frac{1}{e^{\sin x}}$.
+          Since $\sin x$ is periodic and has no infinite limit,
+          $\frac{1}{e^{\sin x}}$ oscillates between the values
+          $\frac{1}{e}$ for $x = \frac{\pi+4k}{2}$ and $e$ for $x = \frac{3\pi+4k}{2}$, $k\in\Z$,
+          which are not equal.
+
+          Therefore, picking some sequence with those values, limit cannot exist.
+        \end{proof}
+
   \item Prove that $\dilim{x}f(x) = \infty$ and $\dilim{x}g(x) = \infty$.
+        \begin{proof}
+          Note that $\sin x\cos x \geq -1$ for all $x$.
+          Then, $f(x) \geq x - 1$ for all $x$, but $x-1$ diverges to infinity.
+          Therefore, $\dilim{x}f(x) = \infty$.
+
+          Now, $\sin x$ has range $[-1,1]$, so $e^{\sin x}$ has range $[e^{-1},e]$.
+          Then, $g(x) \geq f(x)e^{-1}$, but we established that $f(x)$ diveres, so $\dilim{x}g(x) = \infty$.
+        \end{proof}
   \item Prove that $\dilim{x}\frac{f'(x)}{g'(x)} = 0$.
   \item Why is the above not a contradiction to l'Hôpital's Rule?
 \end{enumerate}
