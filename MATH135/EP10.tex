@@ -61,26 +61,162 @@
 \question Express the following complex numbers in standard form.
 \begin{enumerate}[(a)]
   \item $\dfrac{(\sqrt2-i)^2}{(\sqrt2+i)(1-\sqrt2i)}$
+        \begin{proof}[Solution]
+          Multiply through conjugates of the denominator:
+          \begin{align*}
+            \frac{(\sqrt2-i)^2}{(\sqrt2+i)(1-\sqrt2i)}
+             & = \frac{(1-2\sqrt{2}i)(\sqrt{2}-i)(1+\sqrt{2}i)}{(3)(-1)} \\
+             & = -\frac{(5-\sqrt2i)(\sqrt2-i)}{3}                        \\
+             & = -\frac{4\sqrt2-7i}{3}                                   \\
+             & = -\frac{4\sqrt2}{3}+\frac{7}{3}i \qedhere
+          \end{align*}
+        \end{proof}
   \item $(\sqrt5-i\sqrt3)^4$
+        \begin{proof}[Solution]
+          Let $z=\sqrt5-i\sqrt3$.
+          We have $z^2 = 5 - 2\sqrt{15} i - 3 = 2 - 2\sqrt{15} i$.
+          Finally, $z^4 = (z^2)^2 = 4 - 8\sqrt{15} i - 60 = -56 - 8\sqrt{15}i$.
+        \end{proof}
 \end{enumerate}
 
 \question Prove all of the Properties of Complex Arithmetic that were not proved in the notes or in class.
+\begin{proof}
+  Let $u=a+bi$, $v=c+di$, and $z=f+gi$ be complex numbers.
+  We must show the Properties of Complex Arithmetic, i.e., that
+  \begin{enumerate}
+    \item Complex addition is associative.
+
+          First, $u+v = (a+c) + (b+d)i$ and $(u+v)+z = ((a+c)+f) + ((b+d)+g)i$.
+          Then, $v+z = (c+f) + (d+g)i$, so $u+(v+z) = (a+(c+f)) + (b+(d+g))i$.
+          The result follows by the associativity of real addition.
+
+    \item Complex addition is commutative.
+
+          We have $u+v = (a+c) + (b+d)i = (c+a) + (d+b)i = v+u$ by the commutativity of real addition.
+
+    \item The complex additive identity is $0=0+0i$. (Example 3, p. 159)
+
+    \item A complex additive inverse $-z$ exists. (Example 3, p. 159)
+
+    \item Complex multiplication is associative.
+
+          By definition, $uv = (ac-bd)+(ad+bc)i$, so we have
+          \[ (uv)w = ((ac-bd)f - (ad+bc)g) + ((ac-bd)g + (ad+bc)f)i \]
+          We also have $vw = (cf-dg) + (cg+df)i$ and by extension
+          \begin{align*}
+            u(vw) & = (a(cf-dg) - b(cg+df)) + (a(cg+df) + b(cf-dg))i      \\
+                  & = (acf - adg - bcg - bdf) +  (acg + adf + bcf - bdg)i \\
+                  & = (acf - bdf - adg - bcg) +  (acg - bdg + adf + bcf)i \\
+                  & = ((ac-bd)f - (ad+bc)g) + ((ac-bd)g + (ad+bc)f)i      \\
+                  & = (uv)w
+          \end{align*}
+          as desired.
+
+    \item Complex multiplication is commutative.
+
+          Again, $uv = (ac-bd)+(ad+bc)i$ and $vu = (ca-db)+(cb+da)i$.
+          The result follows from the commutativity of real multiplication and addition.
+
+    \item The complex multiplicative identity is $1=1+0i$. (Example 3, p. 159)
+
+    \item A complex multiplicative inverse $z^{-1}$ exists iff $z \neq 0$.
+          (Proposition 1, p. 159)
+
+    \item Complex multiplication distributes over addition.
+
+          We have $u+v = (a+c) + (b+d)i$. Then,
+          \[ z(u+v) = (f(a+c) - g(b+d)) + (f(b+d) + g(a+c))i \]
+          Now, $zu = (fa - gb) + (fb + ga)i$ and $zv = (fc - gd) + (fd + gc)i$, so by definition,
+          \begin{align*}
+            zu + zv & = ((fa - gb) + (fc - gd)) + ((fb + ga) + (fd + gc))i \\
+                    & = (fa + fc - gb - gd) + (fb + fd + ga + gc)i         \\
+                    & = (f(a+c) - g(b+d)) + (f(b+d) + g(a+c))i             \\
+                    & = z(u+v)
+          \end{align*}
+          completing the proof. \qedhere
+  \end{enumerate}
+\end{proof}
+
 
 \question Let $n \in \N$. Prove that if $n \equiv 1 \pmod 4$, then $i^n = i$.
+\begin{proof}
+  Let $n$ be a natural number congruent to 1 modulo 4.
+  Then, we may write $n = 4k+1$ for some integer $k$.
+  Notice that $i^4 = (i^2)^2 = (-1)^2 = 1$.
+
+  Therefore, $i^{4k+1} = (i^4)^k i^1 = (1)^k i = i$, as desired.
+\end{proof}
+
 
 \question Find all $z \in \C$ which satisfy
 \begin{enumerate}[(a)]
   \item $z^2+2z+1=0$
+        \begin{proof}[Solution]
+          Factor: $z^2 + 2z + 1 = (z+1)^2$ so $z = -1 + 0i$ (by~\ref{q:fac})
+        \end{proof}
   \item $z^2+2\bar{z}+1=0$
+        \begin{proof}[Solution]
+          Let $z=a+bi$ so $\bar{z}=a-bi$ for two real numbers $a$ and $b$. Then,
+          \begin{align*}
+            0 & = z^2+2\bar{z}+1           \\
+            0 & = (a+bi)^2+2(a-bi)+1       \\
+            0 & = (a^2+2a-b^2+1)+(2ab-2b)i
+          \end{align*}
+          which is true if and only if both $a^2+2a-b^2+1=0$ and $2ab-2b=0$.
+
+          The second equation implies $2ab=2b$ so $a=1$ or $b=0$.
+
+          If $a=1$ then $a^2+2a-b^2+1 = 4-b^2 = 0$, so $b=\pm 2$.
+
+          If $b=0$, then $a^2+2a+1 = (a+1)^2 = 0$, so $a = -1$.
+
+          Therefore, the solutions are $-1+0i$, $1+2i$, and $1-2i$.
+        \end{proof}
   \item $z^2 = \dfrac{1+i}{1-i}$
+        \begin{proof}[Solution]
+          Simplify: $z^2 = \frac{(1+i)^2}{2} = \frac{2i}2 = i$.
+          The square roots of $i$ are $\pm (\frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2}i)$.
+        \end{proof}
 \end{enumerate}
+
 
 \question \begin{enumerate}[(a)]
   \item Find all $w\in\C$ satisfying $w^2 = -15 + 8i$.
+        \begin{proof}[Solution]
+          We rewrite $w=a+bi$ for some reals $a$ and $b$.
+          Then, $(a+bi)^2 = (a^2 - b^2) + (2ab)i = -15 + 8i$.
+          Equating real and complex parts, $a^2 - b^2 = -15$ and $2ab = 8$.
+
+          Now, $|w^2| = |ww| = |w| |w| = |w|^2$ by PM4.
+          Then, $a^2+b^2 = \sqrt{(-15)^2 + (8)^2} = 17$.
+          Solving the system in $a^2$ and $b^2$, $a^2 = 1$ and $b^2 = 16$.
+
+          Therefore, $a = \pm 1$ and $b = \pm 4$.
+          To satisfy $2ab=8$, we must have $z = \pm(1 + 4i)$.
+        \end{proof}
   \item Find all $z\in\C$ satisfying $z^2-(3+2i)z+5+i=0$.
+        \begin{proof}[Solution]
+          We apply the quadratic formula.
+          The discriminant is a solution to $w^2 = (3+2i)^2 - 4(1)(5+i) = (5+12i) - (20+4i) = -15+8i$.
+          From above, a solution is $w=1+4i$.
+          Therefore, the solutions are $z = \frac{(3+2i) \pm (1+4i)}{2(1)}$.
+
+          The first is $z = \frac{(3+2i) + (1+4i)}{2} = 2+3i$
+          and the second is $z = \frac{(3+2i) - (1+4i)}{2} = 1-i$.
+        \end{proof}
 \end{enumerate}
 
-\question Let $z, w \in \C$. Prove that if $zw = 0$ then $z = 0$ or $w = 0$.
+
+\question\label{q:fac} Let $z, w \in \C$. Prove that if $zw = 0$ then $z = 0$ or $w = 0$.
+\begin{proof}
+  Let $z$ and $w$ be complex numbers such that $zw = 0$.
+  Suppose for a contradiction that both $z$ and $w$ are non-zero.
+  Then, by PM1, $|z| \neq 0$ and $|w| \neq 0$.
+  However, by PM4, $|zw| = |z| |w| \neq 0$, which is a contradiction, since $zw = 0$.
+
+  Therefore, $z$ or $w$ is zero.
+\end{proof}
+
 
 \question Let $a,b,c \in \C$. Prove: if $|a|=|b|=|c|=1$, then $\overline{a+b+c}=\frac1a+\frac1b+\frac1c$.
 
