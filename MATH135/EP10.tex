@@ -218,11 +218,50 @@
 \end{proof}
 
 
-\question Let $a,b,c \in \C$. Prove: if $|a|=|b|=|c|=1$, then $\overline{a+b+c}=\frac1a+\frac1b+\frac1c$.
+\question Let $a,b,c \in \C$. Prove: if $|a|=|b|=|c|=1$,
+then $\overline{a+b+c}=\frac1a+\frac1b+\frac1c$.
+\begin{proof}
+  First, consider some arbitrary complex number $z=a+bi$ with modulus 1.
+  By definition, $a^2 + b^2 = 1^2 = 1$.
+  Then, $z^{-1} = \frac{1}{a+bi} = \frac{a-bi}{(a+bi)(a-bi)} = \frac{a-bi}{1} = a-bi = \bar{z}$
+
+  Let $a$, $b$, and $c$ be complex numbers with modulus 1.
+  From above, $a^{-1}=\bar{a}$, $b^{-1}=\bar{b}$, and $c^{-1}=\bar{c}$.
+  The conclusion immediately follows from PCJ2:
+  \begin{align*}
+    \overline{a+b+c} & = \bar{a} + \bar{b} + \bar{c}          \\
+                     & = \frac1a+\frac1b+\frac{1}{c} \qedhere
+  \end{align*}
+\end{proof}
+
 
 \question Find all $z\in\C$ satisfying $z^2=|z|^2$.
+\begin{proof}
+  Let $z$ be a complex number.
+  Recall that $|z|^2 = \bar{z}z$ by PM3.
+  Then, we have $z^2 = \bar{z}z$ so $z = \bar{z}$, that is, $z - \bar{z} = 0$.
+  By PCJ3, this is true if $2\Im(z)i = 0$, which means that $z$ is purely real.
+  Therefore, $z$ is any purely real number.
+\end{proof}
+
 
 \question Find all $z\in\C$ satisfying $|z+1|^2 \leq 3$ and shade the corresponding region in the complex plane.
+\begin{proof}[Solution]
+  We write $z = a+bi$, so $|z+1|^2 = |(a+1)+bi|^2 = (\sqrt{(a+1)^2+b^2})^2 = (a+1)^2 + b^2$.
+  Then, we are shading the inside of the circle defined by $(a+1)^2 + b^2 = 3$.
+  \begin{center}
+    \includegraphics[width=0.5\columnwidth]{EP10RP09.pdf}
+  \end{center}
+  This graph is generated in Wolfram Mathematica by
+  \begin{minted}{mathematica}
+    Show[ComplexRegionPlot[
+      Abs[z + 1]^2 <= 3, {z, -3 - 2 I, 1 + I}],
+      Axes -> True, AxesLabel -> {HoldForm["Re(z)"], HoldForm["Im(z)"]},
+      LabelStyle -> {12, GrayLevel[0]}]
+  \end{minted}
+  and stored in \verb|EP10RP09.pdf|.
+\end{proof}
+
 
 \question Let $z,w\in\C$ such that $\bar z w \neq 1$.
 Prove that if $|z|=1$ or $|w|=1$, then $\abs{\dfrac{z-w}{1 -\bar z w}}=1$.
