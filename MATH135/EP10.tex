@@ -1,5 +1,4 @@
 \input{../header}
-\usepackage{minted}
 
 \title{MATH 135 Fall 2020: Extra Practice 10}
 
@@ -248,18 +247,17 @@ then $\overline{a+b+c}=\frac1a+\frac1b+\frac1c$.
 \question Find all $z\in\C$ satisfying $|z+1|^2 \leq 3$ and shade the corresponding region in the complex plane.
 \begin{proof}[Solution]
   We write $z = a+bi$, so $|z+1|^2 = |(a+1)+bi|^2 = (\sqrt{(a+1)^2+b^2})^2 = (a+1)^2 + b^2$.
-  Then, we are shading the inside of the circle defined by $(a+1)^2 + b^2 = 3$.
+  Then, we are shading the inside of the circle defined by $(a+1)^2 + b^2 = 3$.  
   \begin{center}
-    \includegraphics[width=0.5\columnwidth]{EP10RP09.pdf}
+    \begin{tikzpicture}
+      \begin{axis}[
+          xlabel=$\Re(z)$, ylabel=$\Im(z)$,
+          xmin=-3, xmax=1, ymin=-2, ymax=2, grid=both]
+        \draw[fill=blue!10] (axis cs:-1,0) circle[radius=sqrt(3)];
+      \end{axis}
+    \end{tikzpicture}
   \end{center}
-  This graph is generated in Wolfram Mathematica by
-  \begin{minted}{mathematica}
-    Show[ComplexRegionPlot[
-      Abs[z + 1]^2 <= 3, {z, -3 - 2 I, 1 + I}],
-      Axes -> True, AxesLabel -> {HoldForm["Re(z)"], HoldForm["Im(z)"]},
-      LabelStyle -> {12, GrayLevel[0]}]
-  \end{minted}
-  and stored in \verb|EP10RP09.pdf|.
+  This is the circle centered at $(-1,0)$ with radius $\sqrt3$.
 \end{proof}
 
 
