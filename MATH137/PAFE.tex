@@ -1,0 +1,42 @@
+\input{../header}
+\title{MATH 137 Fall 2020: Practice Assignment on Chapter 5}
+
+\begin{document}
+\thispagestyle{firstpage}
+\textbf{\@title}
+
+\question Approximate $f(x)=x^{-1/2}$ with a Taylor polynomial of degree 2 centered at $x=4$.
+Use Taylor's Theorem to get an upper bound on the error if $3.5 \leq x \leq 4.5$.
+
+\question Approximate $f(x)=\ln(1+2x)$ with a Taylor polynomial of degree 3 centered at $x=1$.
+Use Taylor's Theorem to get an upper bound on the error if $0.5 \leq x \leq 1.5$.
+
+\question Here we approximate the value of $\ln 2$ in two ways.
+\begin{enumerate}[(a)]
+  \item Find the degree 3 Taylor polynomial for $\ln(1+x)$ centred at $x = 0$.
+  \item Use $x=1$ in your polynomial from part (a) to approximate the value of $\ln 2$.
+  \item Use $x=-\frac12$ in your polynomial from part (a) to approximate the value of $\ln 2$.
+        You will need to relate your answer to $\ln 2$ with log rules.
+        Show that the upper bound on the error given by Taylor's Theorem is the same
+        for your approximations from parts (b) and (c).
+  \item Use a calculator to compare your approximations in part (b) and (c)
+        with the actual value of $\ln 2$. Which is actually closer, and why does this make sense?
+\end{enumerate}
+
+\question Use Taylor's Theorem to find $n\in\N$ so that using $T_{n,0}(x)$
+to approximate $e^x$ at $x=0.1$ has an error of at most $0.00001$
+
+\question Let us revisit Newton's Method one more time using Taylor's Theorem.
+Suppose we are approximating the root $r$ of the function $f$.
+Recall that from an initial approximation $x_1$,
+we obtained the successive approximations using the recursive formula
+\[ x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}. \]
+Use Taylor's Theorem (or inequality) with $n=1$, $a=x_n$, and $x=r$
+to show that if $f''(x)$ exists on an interval $I$ containing $r$, $x_n$, and $x_{n+1}$,
+and $|f''(x)| \leq M$, $|f'(x)| \geq K$ for all $x \in I$, then
+\[ \abs{x_{n+1}-r} \leq \frac{M}{2K}\abs{x_n-r}^2. \]
+(Note that this says that if the error at stage $n$ is at most $10^{-m}$,
+then the error at stage $n+1$ is at most $\frac{M}{2K}10^{-2m}$, or in other words,
+that successive iterations are accurate to approximately twice as many decimal places!)
+
+\end{document}
