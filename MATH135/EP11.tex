@@ -1,0 +1,68 @@
+\input{../header}
+
+\title{MATH 135 Fall 2020: Extra Practice 11}
+
+\begin{document}
+\thispagestyle{firstpage}
+
+\textbf{\@title}
+
+\qsection{Warm-Up Exercises}{WE}
+
+\question Find a real cubic polynomial whose roots include 1 and $i$.
+
+
+\question Divide $f(x)=x^3+x^2+x+1$ by $g(x)=x^2+4x+3$ to find the quotient $q(x)$ and remainder $r(x)$
+that satisfy the requirements of the \emph{Division Algorithm for Polynomials} (DAP)
+
+
+\qsection{Recommended Problems}{RP}
+
+\question Let $z\in\C$. Prove that $(x-z)(x-\overline{z}) \in \R[x]$.
+
+
+\question Prove that there exists a polynomial in $\Q[x]$ with the root $2-\sqrt 7$.
+
+
+\question For each of the following polynomials $f(x) \in \F[x]$,
+write $f(x)$ as a product of irreducible polynomials in $\F[x]$.
+
+
+\question Let $g(x)=x^3+bx^2+cx+d\in\C[x]$ be a monic cubic polynomial.
+Let $z_1$, $z_2$, and $z_3$ be three roots of $g(x)$ such that
+\[ g(x) = (x-z_1)(x-z_2)(x-z_3) \]
+Prove that \begin{align*}
+  z_1 + z_2 + z_3          & = -b \\
+  z_1z_2 + z_2z_3 + z_3z_1 & = c  \\
+  z_1z_2z_3                & = -d
+\end{align*}
+
+
+\question Using the Rational Roots Theorem, prove that $\sqrt 3 + \sqrt 7$ is irrational.
+
+
+\question \begin{enumerate}[(a)]
+  \item Prove that for every prime $p$, there exists a polynomial $f(x)$ over $\Z_p$,
+        of degree $p$, such that every element of $\Z_p$ is a root of $f(x)$.
+  \item Prove that for every prime $p$, there exists a polynomial $f(x)$ over $\Z_p$,
+        of degree $p$, which has no roots in $\Z_p$.
+\end{enumerate}
+
+
+\question Suppose $f(x) = a_n x^n + a_{n-1} x^{n-1} + \cdots + a_1 x + a_0 \in \C[x]$ with degree $n$.
+We say $f(x)$ is \emph{palindromic} if the coefficients $a_j$ satisfy
+\[ a_{n-j} = a_j \quad \text{for all} \quad 0 \leq j \leq n \]
+Prove that \begin{enumerate}[(a)]
+  \item If $f(x)$ is a palindromic polynomial and $c \in \C$ is a root of $f(x)$,
+        then $c$ must be non-zero, and $\frac{1}{c}$ is also a root of $f(x)$.
+  \item If $f(x)$ is a palindromic polynomial of odd degree, then $f(-1) = 0$.
+  \item If $\deg f = 1$ and $f(x)$ is a monic, palindromic polynomial, then $f(x) = x+1$.
+\end{enumerate}
+
+
+\qsection{Challenge}{C}
+
+\question We call a polynomial primitive if the greatest common divisor of all of its coefficients is 1.
+Show that the product of two primitive polynomials is again primitive.
+
+\end{document}
