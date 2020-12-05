@@ -1,4 +1,5 @@
 \input{../header}
+\usepackage{polynom}
 
 \title{MATH 135 Fall 2020: Extra Practice 11}
 
@@ -10,22 +11,87 @@
 \qsection{Warm-Up Exercises}{WE}
 
 \question Find a real cubic polynomial whose roots include 1 and $i$.
+\begin{proof}[Solution]
+  Apply the Factor Thorem to create $f(x) = (x-1)(x-i)(x-r)$.
+  To ensure the polynomial is real, make $(x-r)$ the conjugate of $(x-i)$, i.e., $r=-i$.
+  Then, $f(x) = (x-1)(x^2+1) = x^3 - x^2 + x - 1$.
+\end{proof}
 
 
 \question Divide $f(x)=x^3+x^2+x+1$ by $g(x)=x^2+4x+3$ to find the quotient $q(x)$ and remainder $r(x)$
 that satisfy the requirements of the \emph{Division Algorithm for Polynomials} (DAP)
+\begin{proof}[Solution]
+  Perform polynomial long division:
+  \[ \polylongdiv{x^3+x^2+x+1}{x^2+4x+3} \]
+  and conclude that $q(x) = 10x + 10$ and $r(x) = x - 3$.
+\end{proof}
 
 
 \qsection{Recommended Problems}{RP}
 
 \question Let $z\in\C$. Prove that $(x-z)(x-\overline{z}) \in \R[x]$.
+\begin{proof}
+  Let $z$ be a complex number.
+  Expand the product to obtain
+  \begin{align*}
+    (x-z)(x-\overline{z}) & = x^2 - zx - \overline{z}x + z\overline{z}  \\
+                          & = x^2 - (z + \overline{z})x + z\overline{z}
+  \end{align*}
+  which is a polynomial in $x$ with coefficients $1$, $-(z+\overline{z})$, and $z\overline{z}$.
+  Clearly, $1 \in \R$.
+  From PCJ3, we have $z+\overline{z} = 2\Re z$ so $-(z+\overline{z}) = -2 \Re z \in \R$.
+  Also, from PM3, $z\overline{z}=|z|^2 \in \R$.
+  Therefore, the polynomial is a member of $\R[x]$.
+\end{proof}
 
 
 \question Prove that there exists a polynomial in $\Q[x]$ with the root $2-\sqrt 7$.
+\begin{proof}
+  We propose $f(x) = x^2 - 4x - 3 \in \Q[x]$.
+  \[ f(2-\sqrt{7}) = (2-\sqrt7)^2 - 4(2-\sqrt7) - 3 = 11 - 4\sqrt7 - 8 + 4\sqrt7 - 3 = 0 \qedhere \]
+\end{proof}
 
 
 \question For each of the following polynomials $f(x) \in \F[x]$,
 write $f(x)$ as a product of irreducible polynomials in $\F[x]$.
+\begin{enumerate}[(a)]
+  \item $x^2 - 2x + 2 \in \C[x]$
+        \begin{proof}[Solution]
+          By inspection, $x^2-2x+2 = 0$ has solutions $1 \pm \sqrt3 \in \C$.
+          Therefore, we may write in irreducible polynomials $f(x)=(x-1-\sqrt3)(x-1+\sqrt3)$.
+        \end{proof}
+  \item $x^2 + (-3i + 2)x - 6i \in \C[x]$
+        \begin{proof}[Solution]
+          By inspection, $x=-2$ is a root.
+          Divide by $g(x)=x+2$ to obtain $q(x)=x-3i$.
+          Therefore, we write in irreducible polynomials $f(x)=(x+2)(x-3i)$.
+        \end{proof}
+  \item $2x^3 - 3x^2 + 2x + 2 \in \R[x]$
+        \begin{proof}[Solution]
+          The RRT gives $x=1,-1,2,-2,\frac12,-\frac12$ as candidates for roots of $f$.
+          We find that $f(-\frac12)=0$, so we divide by $g(x)=2x+1$ to find $q(x)=x^2-2x+2$.
+          Now, the discriminant of $q$ is negative, so it has no real solutions and is irreducible in $\R[x]$.
+          Therefore, we write $f(x)=(2x+1)(x^2-2x+2)$.
+        \end{proof}
+  \item $3x^4 + 13x^3 + 16x^2 + 7x + 1 \in \R[x]$
+        \begin{proof}[Solution]
+          By inspection, $x=-1$ is a root.
+          Divide by $g(x)=x+1$ to obtain $q(x)=3x^3+10x^2+6x+1$.
+          To find roots of this cubic, the RRT gives candidates $x=1,-1,\frac13,-\frac13$.
+          In fact, $q(-\frac13)=0$.
+          Dividing $q(x)$ by $(3x+1)$, we obtain the factor $(x^2+3x+1)$.
+          The discriminant of this quadratic is negative, so it is irreducible in $\R[x]$.
+          Therefore, $f(x) = (x+1)(3x+1)(x^2+3x+1)$.
+        \end{proof}
+  \item $x^4 + 27x \in \C[x]$
+        \begin{proof}[Solution]
+          Factor: $f(x) = x(x^3 + 27)$.
+          The roots are $x=0$ and $x=\sqrt[3]{-27}=3\sqrt[3]{-1}$.
+          By the CNRT, the cube roots of $-1$ are $-1$,
+          $\frac12+\frac{\sqrt{3}}2i$, and $\frac12-\frac{\sqrt{3}}2i$. Therefore,
+          \[ f(x) = x(x-1)(x-\frac{3}{2}-\frac{3\sqrt{3}}{2}i)(x-\frac{3}{2}+\frac{3\sqrt{3}}{2}i) \qedhere \]
+        \end{proof}
+\end{enumerate}
 
 
 \question Let $g(x)=x^3+bx^2+cx+d\in\C[x]$ be a monic cubic polynomial.
@@ -36,16 +102,61 @@ Prove that \begin{align*}
   z_1z_2 + z_2z_3 + z_3z_1 & = c  \\
   z_1z_2z_3                & = -d
 \end{align*}
+\begin{proof}
+  Let $g$ be a monic cubic polynomial over \C, where $z_1$, $z_2$, and $z_3$ are its roots.
+  Then, by CPN, $g(x) = x^3 + bx^2 + cx + d = (x-z_1)(x-z_2)(x-z_3)$ for some coefficients $b,c,d\in\C$.
+  We expand using standard arithmetic:
+  \begin{align*}
+    x^3 + bx^2 + cx + d & = (x-z_1)(x-z_2)(x-z_3)                                                    \\
+                        & = (x^2 - xz_1 - xz_2 + z_1z_2)(x-z_3)                                      \\
+                        & = x^3 - x^2z_1 - x^2z_2 + z_1z_2x - x^2z_3 - z_1z_3x - z_2z_3x - z_1z_2z_3 \\
+                        & = x^3 - (z_1 + z_2 + z_3)x^2 + (z_1z_2 + z_2z_3 + z_3z_1)x - z_1z_2z_3
+  \end{align*}
+  Recall that two polynomials are defined to be equal if and only if their coefficients agree.
+  Therefore, $b = -(z_1+z_2+z_3)$, $c = z_1z_2 + z_2z_3 + z_3z_1$, and $d = -z_1z_2z_3$
+  and the conclusion immediately follows.
+\end{proof}
 
 
 \question Using the Rational Roots Theorem, prove that $\sqrt 3 + \sqrt 7$ is irrational.
+\begin{proof}
+  Let $a = \sqrt 3 + \sqrt 7$.
+  Then, $a^2 = 10 + 2\sqrt{21}$ and $a^2 - 10 = 2\sqrt{21}$.
+  Squaring again, $a^4 - 20a^2 + 100 = 84$, i.e., $a^4 + 20a^2 - 16 = 0$.
+
+  Now, we can let $f(x) = x^4 - 20x^2 + 16$ such that $f(a) = 0$.
+  The RRT gives that rational roots of $f$ are of the form $p/q$ with coprime integers $p$ and $q$
+  where $p \mid 16$ and $q \mid 1$. The divisors of 1 are $\pm1$ and of 16 are $\pm1,\pm2,\pm4,\pm8,\pm16$.
+  Note that $f$ is even, so we need only test $x=1,\frac12,\frac14,\frac18,\frac1{16}$.
+
+  Now, $f(1)=5$, $f(\frac12)=-\frac{175}{16}$, $f(\frac14)=-\frac{3775}{256}$,
+  $f(\frac18)=-\frac{64255}{4096}$, and $f(\frac1{16})=-\frac{1043455}{65536}$.
+
+  Therefore, $f$ has no rational roots. However, $a$ is a root of $f$, therefore, $a$ is irrational.
+\end{proof}
 
 
 \question \begin{enumerate}[(a)]
   \item Prove that for every prime $p$, there exists a polynomial $f(x)$ over $\Z_p$,
         of degree $p$, such that every element of $\Z_p$ is a root of $f(x)$.
+        \begin{proof}
+          Let $p$ be a prime number.
+          Then, $\Z_p$ is a field.
+          For each element $[n] \in \Z_p$, there is a linear factor $([1]x - [n]) \in \Z_p[x]$.
+          The product of polynomials is well-defined and is a polynomial, so we may say that
+          the polynomial $f(x) \in \Z_p[x]$ \[ f(x) = \prod_{[i] \in \Z_p}([1]x - [i]) \]
+          has $p$ roots corresponding to each of the $p$ elements in $\Z_p$.
+          The degree of a product is the sum of the degrees of the factors,
+          but each factor is linear with degree 1 so the sum is simply $p$.
+        \end{proof}
   \item Prove that for every prime $p$, there exists a polynomial $f(x)$ over $\Z_p$,
         of degree $p$, which has no roots in $\Z_p$.
+        \begin{proof}
+          Let $p$ be a prime number and let $g(x)$ be the polynomial from (a) above for $p$.
+          Then, $g(x) \equiv 0 \pmod p$ for any $x \in \Z_p$.
+          Therefore, $g(x) \not\equiv 1 \pmod p$ for any $x$ and we may say the polynomial
+          $f(x) = g(x) - 1$ has no solutions in $\Z_p$.
+        \end{proof}
 \end{enumerate}
 
 
@@ -55,8 +166,45 @@ We say $f(x)$ is \emph{palindromic} if the coefficients $a_j$ satisfy
 Prove that \begin{enumerate}[(a)]
   \item If $f(x)$ is a palindromic polynomial and $c \in \C$ is a root of $f(x)$,
         then $c$ must be non-zero, and $\frac{1}{c}$ is also a root of $f(x)$.
+        \begin{proof}
+          Let $f(x) \in \C[x]$ be a palindromic polynomial with coefficients $a_n$ and root $c$ so
+          \[ 0 = a_n c^n + a_{n-1} c^{n-1} + \cdots + a_1 c + a_0 \]
+          Since $f(x)$ has degree $n$, $a_n \neq 0$.
+          As $f(x)$ is palindromic, $a_0 \neq 0$.
+          Suppose that $c = 0$ and substitute above.
+          We have that $a_0 = 0$, which is a contradiction.
+          Therefore, $c \neq 0$.
+          Now, multiplying through by $c^{-n}$, we have
+          \[ 0 = a_n + a_{n-1} c^{-1} + \cdots + a_1 c^{-n+1} + a_0 c^{-n} \]
+          but since $f(x)$ is palindromic we substitute $a_{n-j}$ for $a_j$ and write
+          \[ 0 = a_0 + a_1\left(\frac1c\right) + \cdots + a_{n-1}\left(\frac1c\right)^{n-1} + a_n \left(\frac1c\right)^n \]
+          But this is just saying $f(\frac1c) = 0$, that is, $\frac1c$ is a root of $f(x)$.
+        \end{proof}
   \item If $f(x)$ is a palindromic polynomial of odd degree, then $f(-1) = 0$.
+        \begin{proof}
+          Let $f(x)$ be a palindromic polynomial in \C{} with odd degree $n$ and coefficients $a_n$.
+          Since $n$ is odd, we have $n=2k+1$ for some integer $k$. Then,
+          \[ f(-1) = a_{2k+1} (-1)^{2k+1} + a_{2k} (-1)^{2k} + \cdots + a_1 (-1) + a_0 \]
+          and we apply the fact that $a_{n-j} = a_j$ for all $0 \leq j \leq k$ to get
+          \[ f(-1) = a_0 (-1)^{2k+1} + a_1 (-1)^{2k} + \cdots + a_k (-1)^{k+1} + a_k (-1)^k + \cdots + a_1 (-1) + a_0 \]
+          Notice that there are an even ($n+1 = 2k+2$) number of terms.
+          We pair them by common coefficients.
+          Let $0 \leq i \leq k$.
+          Then, the coefficient $a_i$ appears in the terms $a_i (-1)^{2k+1-i}$ and $a_i (-1)^{i}$.
+          The difference in the powers is $2(k-i)+1$, an odd number.
+          Therefore, one is even and the other is odd.
+          Suppose WLOG that $i$ is even.
+          Then, $a_i (-1)^{2k+1-i} = -a_i$ and $a_i (-1)^{i} = a_i$.
+
+          It follows that each term cancels its palindromic term, and the resulting sum is 0.
+        \end{proof}
   \item If $\deg f = 1$ and $f(x)$ is a monic, palindromic polynomial, then $f(x) = x+1$.
+        \begin{proof}
+          Let $f(x)$ be a first-degree polynomial in \C, that is, $f(x) = a_1x + a_0$.
+          Since $f(x)$ is monic, its leading coefficient $a_1$ is 1.
+          However, since $f(x)$ is palindromic, $a_{\deg f - 1} = = a_{1-1} = a_0 = 1$ as well.
+          Therefore, $f(x) = x + 1$.
+        \end{proof}
 \end{enumerate}
 
 
