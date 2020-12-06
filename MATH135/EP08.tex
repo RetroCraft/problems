@@ -336,9 +336,26 @@ We now investigate what happens if the moduli are not coprime.
 \question Find the smallest positive integer $a$ such that
 $5n^{13}+13n^5+a(9n) \equiv 0 \pmod{65}$ for all integers $n$.
 \begin{proof}[Solution]
-  I don't know how to prove this but the Wolfram Mathematica code \\
-  \verb|Solve[ForAll[n, 5n^13+13n^5+a(9n) == 0], a, Modulus -> 65]|
-  finds $a=63$.
+  Let $n$ be an integer.
+  Since $65 = 5 \times 13$, we split the congruence with SMT:
+  \begin{align*}
+    5n^{13}+13n^5+a(9n) & \equiv 0 \pmod{5} & 5n^{13}+13n^5+a(9n) & \equiv 0 \pmod{13} \\
+    3n^5+a(4n)          & \equiv 0 \pmod{5} & 5n^{13}+a(9n)       & \equiv 0 \pmod{13}
+  \end{align*}
+  Now, we apply C\FLT{} to both congruences to obtain
+  \begin{align*}
+    3n+a(4n) & \equiv 0 \pmod{5} & 5n+a(9n) & \equiv 0 \pmod{13} \\
+    (3+4a)n  & \equiv 0 \pmod{5} & (5+9a)n  & \equiv 0 \pmod{13}
+  \end{align*}
+  This has a trivial solution when $n \equiv 0 \pmod{65}$, but since $n$ is arbitrary,
+  we must otherwise have that $3+4a \equiv 0 \pmod 5$ and $5+9a \equiv 0 \pmod{13}$ by CAD\@.
+  We solve the simultaneous congruence
+  \begin{align*}
+    4a & \equiv 2 \pmod{5} & 9a & \equiv 8 \pmod{13}
+  \end{align*}
+  noting that since 5 and 13 are prime, solutions exist.
+  In fact, we can bruteforce to find $a \equiv 3 \pmod 5$ and $a \equiv 11 \pmod{13}$.
+  Then, by the CRT, $a \equiv 63 \pmod{65}$ and the smallest positive such integer is $a = 63$.
 \end{proof}
 
 
