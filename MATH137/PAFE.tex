@@ -7,24 +7,114 @@
 
 \question Approximate $f(x)=x^{-1/2}$ with a Taylor polynomial of degree 2 centered at $x=4$.
 Use Taylor's Theorem to get an upper bound on the error if $3.5 \leq x \leq 4.5$.
+\begin{proof}[Solution]
+  First calculate $f'(x) = -\frac12 x^{-3/2}$ and $f''(x) = \frac34 x^{-5/2}$.
+  Then, $f(4) = 4^{-1/2} = \frac12$, $f'(4) = -\frac12 4^{-3/2} = \frac{1}{16}$,
+  and $f''(4) = \frac34 4^{-5/2} = \frac{3}{128}$. Then,
+  \begin{align*}
+    T_{2,4}(x) & = f(4) + f'(4)(x-4) + \frac12 f''(4)(x-4)^2       \\
+               & = \frac12 + \frac{x-4}{16} + \frac{3(x-4)^2}{256}
+  \end{align*}
+
+  Taylor's Theorem gives the error $R_{2,4}(x)=\frac{f^{(3)}(c)}{3!}(x-4)^3$ for some $c\in[3.5,4.5]$.
+  The third derivative of $f$ is $-\frac{15}{8} x^{-7/2}$.
+  This is strictly increasing (i.e. $f^{(4)} > 0$) and negative (i.e. $f^{(3)} < 0$),
+  so the maximum $|f^{(3)}(c)|$ is at $|f^{(3)}(3.5)| \approx 0.02338$.
+
+  Thus, $|R_{2,4}(x)| \leq \abs{\frac{f^{(3)}(3.5)}{6}(0.5)^3} \approx 4.87 \times 10^{-4}$.
+\end{proof}
+
 
 \question Approximate $f(x)=\ln(1+2x)$ with a Taylor polynomial of degree 3 centered at $x=1$.
 Use Taylor's Theorem to get an upper bound on the error if $0.5 \leq x \leq 1.5$.
+\begin{proof}[Solution]
+  We have $f'(x)=\frac{2}{1+2x}$, $f''(x)=-\frac{4}{(1+2x)^2}$, and $f^{(3)}(x)=\frac{16}{(1+2x)^3}$.
+  Calculate $f(1)=\ln 3$, $f'(1)=\frac{2}{3}$, $f''(1)=-\frac{4}{9}$, and $f^{(3)}(1)=\frac{16}{27}$.
+  The Taylor polynomial is
+  \begin{align*}
+    T_{3,1}(x) & = f(1) + f'(1)(x-1) + \frac12 f''(1)(x-1)^2 + \frac16 f^{(3)}(1)(x-1)^3 \\
+               & = \ln 3 + \frac{2}{3}(x-1) - \frac{2}{9}(x-1)^2 + \frac{8}{81}(x-1)^3
+  \end{align*}
+
+  Taylor's Theorem gives the error $R_{3,1}(x)=\frac{f^{(4)}(c)}{4!}(x-4)^3$ for some $c\in[0.5,1.5]$.
+  The fourth derivative of $f$ is $-\frac{48}{(1+2x)^4}$.
+  We can conclude that $|f^{(4)}|$ reaches its max at $c=0.5$ through geometric argument,
+  knowing the function is rational with one asymptote at $x=-\frac12$ and no roots.
+  We have $|f^{(4)}(0.5)| = 6$.
+
+  Thus, $|R_{3,1}(x)| \leq \abs{\frac{f^{(4)}(0.5)}{24}(0.5)^4} = 0.015625$.
+\end{proof}
+
 
 \question Here we approximate the value of $\ln 2$ in two ways.
 \begin{enumerate}[(a)]
   \item Find the degree 3 Taylor polynomial for $\ln(1+x)$ centred at $x = 0$.
+        \begin{proof}[Solution]
+          Let $f(x) = \ln(1+x)$.
+          Then we have $f'(x) = \frac{1}{1+x}$, $f''(x) = -\frac{1}{(1+x)^2}$,
+          and $f^{(3)}(x) = \frac{2}{(1+x)^3}$.
+          Evaluating at $x=0$, we have $f(0) = 0$, $f'(0) = 1$, $f''(0) = -1$, and $f^{(3)}(0)=2$.
+          Therefore, the Taylor polynomial $T_{3,0}(x)$ is
+          \begin{align*}
+            T_{3,0}(x) & = \frac{f^{(3)}(x)}{3!}x^3 + \frac{f''(x)}{2!}x^2 + f'(x) x + f(x) \\
+                       & = \frac{1}{3}x^3 - \frac{1}{2}x^2 + x \qedhere
+          \end{align*}
+        \end{proof}
   \item Use $x=1$ in your polynomial from part (a) to approximate the value of $\ln 2$.
+        \begin{proof}[Solution]
+          Plug and chug: $T_{3,0}(1) = \frac{1}{3} - \frac{1}{2} + 1 = \frac{5}{6}$.
+        \end{proof}
   \item Use $x=-\frac12$ in your polynomial from part (a) to approximate the value of $\ln 2$.
         You will need to relate your answer to $\ln 2$ with log rules.
         Show that the upper bound on the error given by Taylor's Theorem is the same
         for your approximations from parts (b) and (c).
+        \begin{proof}[Solution]
+          At $x=-\frac12$, we have $f(x) = \ln(\frac12) = -\ln 2$. Plugging and chugging,
+          $T_{3,0}(-\frac12) = \frac13(-\frac18) - \frac12(\frac14) - \frac12 = -\frac23$.
+          Therefore, our estimate is $\ln 2 \approx \frac23$.
+
+          The error $|R_{3,0}|$ depends on the maximum value of $|f^{(4)}(x)| = \frac{6}{(1+x)^4}$.
+          This value is decreasing everywhere, the maximum value is at $x=0$ for $[0,1]$
+          and $x=-\frac12$ for $[-\frac12,0]$: $|f^{(4)}(0)| = 6$ and $|f^{(4)}(-\frac12)| = 96$.
+
+          Therefore, the error for part (b) is at least
+          \[ |R_{3,0}(1)| \leq \frac{6}{4!}(1)^4 = 0.25 \]
+          and the error above is at least
+          \[ |R_{3,0}(-0.5)| \leq \frac{96}{4!}(0.5)^4 = 0.25 \qedhere \]
+        \end{proof}
   \item Use a calculator to compare your approximations in part (b) and (c)
         with the actual value of $\ln 2$. Which is actually closer, and why does this make sense?
+        \begin{proof}[Solution]
+          Calculator gives $\ln 2 \approx 0.693147$.
+
+          Part (b) estimated $\frac56 \approx 0.833333$ which an error of about $-0.140186$
+          and part (c) estimated $\frac23 \approx 0.666667$ which is off by $0.026480$.
+
+          Part (c) was actually closer, and this makes sense because we are working closer
+          to the center of the Taylor polynomial.
+        \end{proof}
 \end{enumerate}
+
 
 \question Use Taylor's Theorem to find $n\in\N$ so that using $T_{n,0}(x)$
 to approximate $e^x$ at $x=0.1$ has an error of at most $0.00001$
+\begin{proof}[Solution]
+  Let $f(x) = e^x$. Recall that $f^{(n)}(x) = e^x$ for any $n \in \N$.
+  Since $e^x$ is increasing everywhere, the maximum on $[0,0.1]$ will be at $x=0.1$
+  Then, Taylor's Theorem gives
+  \[ |R_{n,0}(x)| \leq \frac{e^{0.1}}{(n+1)!}(0.1)^{n+1} \]
+  but we have $e^{0.1}$ stuck in there.
+  We can give an upper bound by doing some shenanigans.
+  $e^0.1$ is the tenth root of $e$.
+  This is clearly less than the tenth root of 3.
+  Now, $1.1^{10} \approx 2.6$ and $1.2^{10} \approx 6.2$, so we give $\sqrt[10]{e} \leq 1.2$. Then,
+  \begin{align*}
+    |R_{n,0}(x)| & \leq \frac{e^x}{(n+1)!}(0.1)^{n+1} \\
+    0.00001      & \leq \frac{1.2}{(n+1)!}(0.1)^{n+1}
+  \end{align*}
+  and we find by Pain and Agony\textsuperscript{TM} that we need $n \geq 3$.
+\end{proof}
+
 
 \question Let us revisit Newton's Method one more time using Taylor's Theorem.
 Suppose we are approximating the root $r$ of the function $f$.
@@ -38,5 +128,23 @@ and $|f''(x)| \leq M$, $|f'(x)| \geq K$ for all $x \in I$, then
 (Note that this says that if the error at stage $n$ is at most $10^{-m}$,
 then the error at stage $n+1$ is at most $\frac{M}{2K}10^{-2m}$, or in other words,
 that successive iterations are accurate to approximately twice as many decimal places!)
+\begin{proof}
+  We follow the instructions and do as we're told.
+  Then, we have $f(r) = 0$, $f(r) = T_{1,x_n}(r) + R_{1,x_n}(r)$, and $T_{1,x_n}(r) = f'(r)(r-x_n) + f(r)$.
+
+  Substituting, $0 = f'(r)(r-x_n) + f(r) + R_{1,x_n}(r)$.
+
+  Then, we have $R_{1,x_n}(r) = -f(r) + f'(r)(x_n-r)$.
+  We want $\frac{f(x_n)}{f'(x_n)}$ so we divide through by $f'(x_n)$
+  to get $\frac{R_{1,x_n}(r)}{f'(x_n)} = x_n - \frac{f(x_n)}{f'(x_n)} - r = x_{n+1} - r$.
+  Therefore, $|\frac{R_{1,x_n}(r)}{f'(x_n)}| = |x_{n+1} - r|$.
+  Since $f'(x_n) \geq K$, we have $|x_{n+1} - r| \leq \frac{1}{K}|R_{1,x_n}(r)|$.
+
+  We can finally apply Taylor's Theorem and get that $|R_{1,x_n}(r)| = \frac{f''(c)}{2}|x_n-r|^2$.
+  We know that $f''(c) \leq M$ so $|R_{1,x_n}(r)| \leq \frac{M}{2}|x_n-r|^2$.
+
+  Combining these, we have $|x_{n+1} - r| \leq \frac{M}{2K}|x_n-r|^2$.
+\end{proof}
+
 
 \end{document}
