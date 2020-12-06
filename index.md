@@ -78,3 +78,13 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 2. **MATH135/EP03/RP09** Rewrote completely incomprehensible proof (Gabriel)
 3. **MATH135/EP03/RP05** Proved a _there exists_ statement by exhausting the domain (Angela)
 4. **MATH135/EP06/RP05** Got the divides relation backwards for an incoherent proof (Quan)
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z40WHV9MJY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z40WHV9MJY');
+</script>

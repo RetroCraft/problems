@@ -3,7 +3,5 @@ description: A hopefully legal archive of assignments and practice work
 
 theme: jekyll-theme-cayman
 
-google_analytics: G-Z40WHV9MJY
-
 plugins:
   - jemoji
