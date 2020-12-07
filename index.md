@@ -62,7 +62,7 @@ I don't implement the full design recipe in exercises, for obvious reasons (I'm 
 | [Practice Assignment 7](./MATH137/PA07.pdf)  |  :white_check_mark:  |                                        |
 | [Practice Assignment 8](./MATH137/PA08.pdf)  |  :white_check_mark:  |                                        |
 | [Practice Assignment 9](./MATH137/PA09.pdf)  | :black_large_square: |                                        |
-| [Practice Assignment 10](./MATH137/PA10.pdf) |         :x:          |                                        |
+| [Practice Assignment 10](./MATH137/PA10.pdf) |  :white_check_mark:  |                                        |
 | [Practice Assignment FE](./MATH137/PAFE.pdf) |  :white_check_mark:  |                                        |
 | [Practice Midterm 1](./MATH137/PM01.pdf)     |  :white_check_mark:  | Posted as `midterm_practice` on LEARN  |
 

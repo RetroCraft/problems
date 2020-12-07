@@ -9,38 +9,127 @@
 is concave up or concave down and state any points of inflection.
 \begin{enumerate}[(a)]
   \item $f(x) = x^4+6x^3-60x^2+6x-60$
+        \begin{proof}[Solution]
+          Take the second derivative: $f''(x) = 12x^2 + 36x - 120$.
+          Factoring, $f''(x) = 12(x+5)(x-2)$
+          Then, $f''(x) \geq 0$ and $f$ is concave up on $[-\infty,-5]$ and $[2,\infty]$,
+          and $f''(x) \leq 0$ and $f$ is concave down on $[-5,2]$.
+
+          The inflection points are $(-5,f(-5)) = (-5,-1715)$ and $(2,f(2)) = (2,-224)$.
+        \end{proof}
   \item $f(x) = 1+\frac{1}{x}-\frac{1}{x^3}$
+        \begin{proof}[Solution]
+          We have $f'(x) = -\frac{1}{x^2} + \frac{3}{x^4}$ and $f''(x) = \frac{2}{x^3} - \frac{12}{x^5}$.
+          Then, $f''(x) = \frac{2x^2-12}{x^5}$ which is zero or undefined at $x=0,\pm\sqrt6$.
+          In fact, this is a rational function with zeroes at $x=\pm\sqrt6$ and an asymptote at $x=0$.
+          Therefore, $f$ is concave up on $[-\sqrt6,0)$ and $[\sqrt6,\infty)$,
+          and $f$ is concave down on $(-\infty,-\sqrt6]$ and $(0,\sqrt6]$.
+
+          The inflection points are $(-\sqrt6,f(-\sqrt6)) \approx (-2.4495, 0.6598)$
+          and $(\sqrt6,f(\sqrt6)) \approx (2.4495,1.3402)$ since there is none at the asymptote.
+        \end{proof}
   \item $f(x) = \frac{x^2}{x+x^3}$
+        \begin{proof}[Solution]
+          There is a removable discontinuity at $x=0$, so $f'$ is well-defined everywhere.
+          Then, $f'(x) = -\frac{x^2-1}{(x^2+1)^2}$ and $f''(x) = \frac{2x(x^2-3)}{(x^2+1)^2}$.
+          This is zero at $x=0,\pm\sqrt3$.
+          Skipping the sign analysis cause I'm lazy, $f$ is concave up on $[-\sqrt3,0]$ and $[\sqrt3,\infty)$
+          and $f$ is concave down on $(-\infty,-\sqrt3]$ and $[0,\sqrt3]$.
+
+          Since $f$ is discontinuous at $x=0$, there cannot be an inflection point there, so we have only
+          $(-\sqrt3,f(-\sqrt3)) \approx (-1.7321, -0.4330)$ and $(\sqrt3,f(\sqrt3)) \approx (1.7321, 0.4330)$.
+        \end{proof}
   \item $f(x) = \frac{\sin x}{1+\cos x}$
+        \begin{proof}[Solution]
+          Use a derivative calculator (am lazy):
+          $f'(x) = \frac{1}{1+\cos x}$ and $f''(x) = \frac{\sin x}{(1+\cos x)^2}$.
+          Clearly, $(1+\cos x)^2 \geq 0$ for any $x$,
+          so this changes sign when $\sin x = 0$ or $x = k\pi$ for some integer $k$.
+          However, if $\cos x = -1$, i.e., when $k$ is odd, $f$ is undefined so there is no inflection point.
+
+          Therefore, $f$ is concave up on $[2k\pi,2k\pi+\pi)$, concave down on $(2k\pi-\pi,2k\pi]$ and
+          has an inflection point at $(2k\pi, 0)$ for any integer $k$.
+        \end{proof}
   \item $f(x) = x^2-9x^{\frac{1}{3}}$
+        \begin{proof}[Solution]
+          Chug some derivatives: $f'(x) = 2x - 3x^{-\frac23}$
+          and $f''(x) = 2 + 2x^{-\frac53} = \frac{2x^{5/3}+2}{x^{5/3}}$.
+          This is zero at $x=-1$ and undefined at $x=0$.
+          Do some sign analysis and find that $f$ is concave up on $(\infty,-1]$ and $(0,\infty)$,
+          $f$ is concave down on $[-1,0)$, and an inflection point occurs at $(-1,10)$.
+        \end{proof}
   \item $f(x) = x\ln(x^2-2x)$
+        \begin{proof}[Solution]
+          First, notice that the function is only defined when $x^2-2x > 0$ or $x \not\in [0,2]$.
+          Take $f'(x) = \ln(x^2-2x) + \frac{2x-2}{x-2}$ and $f''(x) = \frac{2x^2-8x+4}{x(x-2)^2}$.
+          This is zero at $x=2\pm\sqrt2$ but only $x=2+\sqrt2$ is in our domain.
+          So too are both undefined points.
+
+          We test the sign of $f''$ in $(-\infty,0)$, $(2,2+\sqrt2)$ and $(2+\sqrt2,\infty)$
+          to conclude that $f$ is concave up on $[2+\sqrt2,\infty)$,
+          concave down on $(-\infty,0)$ and $(2,2+\sqrt2)$,
+          and has an inflection point at approximately $(3.4142, 5.3758)$.
+        \end{proof}
 \end{enumerate}
 
 
 \question Locate and classify the critical points of each of the following functions:
 \begin{enumerate}[(a)]
   \item $f(x) = 3x^5-20x^3+15$
-  \begin{proof}[Solution]
-    We have $f'(x) = 15x^4-60x^2 = 15x^2(x^2-4)$, so $f'(x)=0$ exactly when $x=0,\pm2$.
-    Apply the Second Derivative Test: $f''(x) = 60x^3-120x$, so we have
-    $f''(0) = 0$ (not a local extremum), $f''(-2) = -240$ (local maxima), and $f''(2)=240$ (local minima).
-  \end{proof}
+        \begin{proof}[Solution]
+          We have $f'(x) = 15x^4-60x^2 = 15x^2(x^2-4)$, so $f'(x)=0$ exactly when $x=0,\pm2$.
+          Apply the Second Derivative Test: $f''(x) = 60x^3-120x$, so we have
+          $f''(0) = 0$ (not a local extremum), $f''(-2) = -240$ (local maxima), and $f''(2)=240$ (local minima).
+        \end{proof}
   \item $f(x) = \frac{x+1}{x-1}-x$
-  \begin{proof}[Solution]
-    We have $f'(x) = -\frac{x^2-2x+3}{(x-1)^2}$, so $f'(x)$ is never zero and undefined at $x=1$.
-    This creates an asymptote, which is not a local extremum.
-  \end{proof}
+        \begin{proof}[Solution]
+          We have $f'(x) = -\frac{x^2-2x+3}{(x-1)^2}$, so $f'(x)$ is never zero and undefined at $x=1$.
+          This creates an asymptote, which is not a local extremum.
+        \end{proof}
   \item $f(x) = \frac{x+1}{x-1}+x$
-  \begin{proof}[Solution]
-    We have $f'(x) = -\frac{x^2-2x-1}{(x-1)^2}$, so $f'(x)$ is zero at $x=1\pm\sqrt2$ and undefined at $x=1$.
-    As above, we have an asymptote at $x=1$ which is not a local extrema.
-    Since $(x-1)^2 \geq 0$ for all $x$ and the numerator is a quadratic, we can deduce that
-    $1-\sqrt2$ is the local max and $1+\sqrt2$ is the local min.
-  \end{proof}
+        \begin{proof}[Solution]
+          We have $f'(x) = -\frac{x^2-2x-1}{(x-1)^2}$, so $f'(x)$ is zero at $x=1\pm\sqrt2$ and undefined at $x=1$.
+          As above, we have an asymptote at $x=1$ which is not a local extrema.
+          Since $(x-1)^2 \geq 0$ for all $x$ and the numerator is a quadratic, we can deduce that
+          $1-\sqrt2$ is the local max and $1+\sqrt2$ is the local min.
+        \end{proof}
   \item $f(x) = 12x^{\frac{1}{3}}+|x|$
+        \begin{proof}[Solution]
+          Again, $f'(x) = 4x^{-\frac23} + \sgn x$.
+          Notice that $4x^{-\frac23}$ is always positive.
+          Then, $f'(x) = 0$ only if $x$ is negative and $4x^{-\frac23} = -1$, which occurs at $x=-8$.
+          We also know that $f'(x)$ is undefined at $x=0$.
+          From this, we conclude that $x=-8$ is a local min.
+        \end{proof}
   \item $f(x) = 4e^x-2e^{2x}-x$
+        \begin{proof}[Solution]
+          Derivative time: $f'(x) = 4e^x - 4e^{2x} - 1$.
+          This is a quadratic in $e^x$ which factors to $-(2e^x - 1)^2$.
+          The critical point is then at $e^x = \frac12$ or $x = -\ln 2$.
+          However, since $f'(x) \leq 0$ for all $x$, this is not a local extremum.
+        \end{proof}
   \item $f(x) = \ln(x+1) + x^2 - 6x$
+        \begin{proof}[Solution]
+          WolframAlpha says $f'(x) = \frac{1}{x+1} + 2x - 6 = \frac{2x^2 - 4x - 5}{x+1}$.
+          This is undefined at $x=-1$ and zero at $x=\frac{2\pm\sqrt{14}}{2}$.
+          However, $x=-1$ is not in the domain of $f$ and is not a critical point.
+          Some sign analysis later, we find that $\frac{2-\sqrt{14}}{2}$ is the local max
+          and $\frac{2+\sqrt{14}}{2}$ is the local min.
+        \end{proof}
   \item $f(x) = |x|+\sin^2 x$
+        \begin{proof}[Solution]
+          Another janky $|x|$ derivative, $f'(x) = \sgn x + 2\sin x \cos x = \sgn x + \sin 2x$.
+
+          This is equal to zero for positive $x$ when $\sin 2x = -1$, i.e., $x = (4k+3)\pi$ for some integer $k$.
+          For negative $x$, $\sin 2x = 1$, i.e., $x = (4k-1)\pi$ for some integer $k$.
+          These are in fact the same so critical points exist at all $x = (4k+3)\pi$.
+
+          Notice that for positive $x$, $\sgn x = 1$ and $\sin 2x \leq 1$ so $f'(x) \geq 0$.
+          Likewise, for negative $x$, $f'(x) \leq 0$.
+          Therefore, no local extrema exist for $x \neq 0$.
+
+          At $x = 0$, the sign of $f'(x)$ changes from negative to positive, so it is a local min.
+        \end{proof}
 \end{enumerate}
 
 
@@ -99,7 +188,7 @@ then the graph of $g = (f)^2$ is concave up on $\R$.
 \begin{proof}
   Let $f$ be a twice differentiable function.
   Since $f$ is concave up and $f'' \neq 0$, we have that $f''$ is always positive.
-  
+
   Now, consider $g''$. Apply the product rule: $g'(x) = f'(x)f(x) + f(x)f'(x) = 2f'(x)f(x)$.
   Then, $g''(x) = 2(f''(x)f(x) + f'(x)f'(x)) = 2f''(x)f(x) + (f'(x))^2$.
 
