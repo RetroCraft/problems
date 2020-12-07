@@ -12,9 +12,12 @@ Frankly, it's more likely that they're wrong.
 Please let me know if you find a mistake though!
 Or, in the spirit of open source, make a [pull request](https://github.com/RetroCraft/problems/pulls) fixing it.
 
+* TOC
+{:toc}
+
 ## Computer Science
 
-### CS 135
+### CS 135 (F2020)
 
 I don't implement the full design recipe in exercises, for obvious reasons (I'm lazy).
 
@@ -29,7 +32,7 @@ I don't implement the full design recipe in exercises, for obvious reasons (I'm 
 
 ## Math
 
-### MATH 135
+### MATH 135 (F2020)
 
 | File                                         |      Complete?       | Notes                               |
 | -------------------------------------------- | :------------------: | ----------------------------------- |
@@ -48,7 +51,7 @@ I don't implement the full design recipe in exercises, for obvious reasons (I'm 
 | [Fall 2019 Midterm](./MATH135/MT2019F.pdf)   |  :white_check_mark:  |                                     |
 | [Winter 2020 Midterm](./MATH135/MT2020W.pdf) |  :white_check_mark:  |                                     |
 
-### MATH 137
+### MATH 137 (F2020)
 
 | File                                         |     Complete?      | Notes                                  |
 | -------------------------------------------- | :----------------: | -------------------------------------- |
