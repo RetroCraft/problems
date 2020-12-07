@@ -38,33 +38,33 @@ I don't implement the full design recipe in exercises, for obvious reasons (I'm 
 | [Extra Practice 3](./MATH135/EP03.pdf)       |  :white_check_mark:  |                                     |
 | [Extra Practice 4](./MATH135/EP04.pdf)       | :black_large_square: | Missing C01 and C02                 |
 | [Extra Practice 5](./MATH135/EP05.pdf)       |  :white_check_mark:  |                                     |
-| [Fall 2018 Midterm](./MATH135/MT2018F.pdf)   |  :white_check_mark:  |                                     |
-| [Fall 2019 Midterm](./MATH135/MT2019F.pdf)   |  :white_check_mark:  |                                     |
-| [Winter 2020 Midterm](./MATH135/MT2020W.pdf) |  :white_check_mark:  |                                     |
 | [Extra Practice 6](./MATH135/EP06.pdf)       | :black_large_square: | Missing challenges. RP09 by sooshi. |
 | [Extra Practice 7](./MATH135/EP07.pdf)       | :black_large_square: | Missing C01                         |
 | [Extra Practice 8](./MATH135/EP08.pdf)       |  :white_check_mark:  |                                     |
 | [Extra Practice 9](./MATH135/EP09.pdf)       |  :white_check_mark:  |                                     |
 | [Extra Practice 10](./MATH135/EP10.pdf)      | :black_large_square: | Missing RP10, challenges            |
 | [Extra Practice 11](./MATH135/EP11.pdf)      | :black_large_square: | Missing C01                         |
+| [Fall 2018 Midterm](./MATH135/MT2018F.pdf)   |  :white_check_mark:  |                                     |
+| [Fall 2019 Midterm](./MATH135/MT2019F.pdf)   |  :white_check_mark:  |                                     |
+| [Winter 2020 Midterm](./MATH135/MT2020W.pdf) |  :white_check_mark:  |                                     |
 
 ### MATH 137
 
-| File                                         |      Complete?       | Notes                                  |
-| -------------------------------------------- | :------------------: | -------------------------------------- |
-| [Practice Assignment 1](./MATH137/PA01.pdf)  |  :white_check_mark:  |                                        |
-| [Practice Assignment 2](./MATH137/PA02.pdf)  |  :white_check_mark:  |                                        |
-| [Practice Assignment 3](./MATH137/PA03.pdf)  |  :white_check_mark:  |                                        |
-| [Practice Assignment 4](./MATH137/PA04.pdf)  |  :white_check_mark:  |                                        |
-| [Practice Assignment 5](./MATH137/PA05.pdf)  |  :white_check_mark:  |                                        |
-| [Practice Assignment MT](./MATH137/PAMT.pdf) |  :white_check_mark:  | Posted as `Practice AssignMT` on LEARN |
-| [Practice Assignment 6](./MATH137/PA06.pdf)  |  :white_check_mark:  |                                        |
-| [Practice Assignment 7](./MATH137/PA07.pdf)  |  :white_check_mark:  |                                        |
-| [Practice Assignment 8](./MATH137/PA08.pdf)  |  :white_check_mark:  |                                        |
-| [Practice Assignment 9](./MATH137/PA09.pdf)  | :black_large_square: |                                        |
-| [Practice Assignment 10](./MATH137/PA10.pdf) |  :white_check_mark:  |                                        |
-| [Practice Assignment FE](./MATH137/PAFE.pdf) |  :white_check_mark:  |                                        |
-| [Practice Midterm 1](./MATH137/PM01.pdf)     |  :white_check_mark:  | Posted as `midterm_practice` on LEARN  |
+| File                                         |     Complete?      | Notes                                  |
+| -------------------------------------------- | :----------------: | -------------------------------------- |
+| [Practice Assignment 1](./MATH137/PA01.pdf)  | :white_check_mark: |                                        |
+| [Practice Assignment 2](./MATH137/PA02.pdf)  | :white_check_mark: |                                        |
+| [Practice Assignment 3](./MATH137/PA03.pdf)  | :white_check_mark: |                                        |
+| [Practice Assignment 4](./MATH137/PA04.pdf)  | :white_check_mark: |                                        |
+| [Practice Assignment 5](./MATH137/PA05.pdf)  | :white_check_mark: |                                        |
+| [Practice Assignment MT](./MATH137/PAMT.pdf) | :white_check_mark: | Posted as `Practice AssignMT` on LEARN |
+| [Practice Assignment 6](./MATH137/PA06.pdf)  | :white_check_mark: |                                        |
+| [Practice Assignment 7](./MATH137/PA07.pdf)  | :white_check_mark: |                                        |
+| [Practice Assignment 8](./MATH137/PA08.pdf)  | :white_check_mark: |                                        |
+| [Practice Assignment 9](./MATH137/PA09.pdf)  | :white_check_mark: |                                        |
+| [Practice Assignment 10](./MATH137/PA10.pdf) | :white_check_mark: |                                        |
+| [Practice Assignment FE](./MATH137/PAFE.pdf) | :white_check_mark: |                                        |
+| [Practice Midterm 1](./MATH137/PM01.pdf)     | :white_check_mark: | Posted as `midterm_practice` on LEARN  |
 
 ## Mistakes
 

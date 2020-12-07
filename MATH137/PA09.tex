@@ -216,7 +216,24 @@ Use the Bounded Derivative Theorem to find an interval for $f(3)$.
           Then, $g(x) \geq f(x)e^{-1}$, but we established that $f(x)$ diveres, so $\dilim{x}g(x) = \infty$.
         \end{proof}
   \item Prove that $\dilim{x}\frac{f'(x)}{g'(x)} = 0$.
+        \begin{proof}
+          Take some derivatives to get $f'(x) = 1 + \cos 2x$ and
+          \begin{align*}
+            g'(x) & = f'(x)e^{\sin x} + f(x)e^{\sin x}\cos x                         \\
+                  & = (1 + \cos 2x)e^{\sin x} + (x + \sin x \cos x)e^{\sin x}\cos x  \\
+                  & = e^{\sin x}(1 + \cos x + \frac{\sin 2x}{2}) + (e^{\sin x}\cos x)x
+          \end{align*}
+          Note that $0 \leq f'(x) \leq 2$ for all $x$, so $0 \leq \abs{\frac{f'(x)}{g'(x)}} \leq 2$.
+          The first term in $g'(x)$ is also clearly bounded.
+          However, the second term is a bounded term multiplied by $x$, so it is unbounded.
+          Therefore, $|g'(x)|$ can be made arbitrarily large.
+          It follows by some squeeze theorem bullshit that $\dilim{x}\frac{f'(x)}{g'(x)} = 0$.
+        \end{proof}
   \item Why is the above not a contradiction to l'Hôpital's Rule?
+        \begin{proof}[Answer]
+          $f'(x)$ does not go to 0 or $\infty$,
+          so the limit not of the form $\frac{0}{0}$ or $\frac{\infty}{\infty}$.
+        \end{proof}
 \end{enumerate}
 
 \end{document}
