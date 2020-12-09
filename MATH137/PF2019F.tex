@@ -1,0 +1,391 @@
+\input{../header}
+\title{MATH 137 Fall 2019: Practice Final Exam}
+
+\begin{document}
+\thispagestyle{firstpage}
+\textbf{\@title}
+
+\qsection{Multiple Choice}{MC}
+
+\prob{$\dlim{x}{3} \ln|x-3| = $}
+\begin{choices}
+  \item 0.
+  \item $\infty$.
+  \item \fbox{$-\infty$.} \emph{Vertical asymptote}
+  \item None of the above.
+\end{choices}
+\prob{If $f$ is continuous on $[a,b]$ and differentiable on $(a,b)$, then}
+\begin{choices}
+  \item \fbox{for any $x_1,x_2\in(a,b)$ where $x_1 < x_2$, exists $c\in(x_1,x_2)$ so that
+    $f'(c) = \frac{f(x_1)-f(x_2)}{x_1-x_2}$.} \\
+  \emph{Statement of the MVT}
+  \item $f(a) \leq f(x) \leq f(b)$ for all $x\in[a,b]$.
+  \item $f'(x)$ is continuous on $(a,b)$.
+  \item None of the above.
+\end{choices}
+\prob{$\dlim{x}{0}\frac{\cos x + \sin x - 1}{x}=$}
+\begin{choices}
+  \item -1.
+  \item 0.
+  \item 2.
+  \item \fbox{None of the above.} \emph{And is equal to 1}
+\end{choices}
+\begin{prob}
+  If $\dlim{x}{a} f(x) = L \in \R$ and $\{f(x_n)\}$ is a sequence such that
+  $x_n \to a$ as $n \to \infty$, and $x_n \neq a$ for all $n \in \N$, then
+\end{prob}
+\begin{choices}
+  \item $\dilim{n}f(x_n)$ does not exist.
+  \item $f$ is continuous at $x=a$.
+  \item \fbox{$\dilim{n}f(x_n) = L$.} \emph{Statement of SCL}
+  \item None of the above.
+\end{choices}
+\prob{For a function $f$ and $a\in\R$, if $f''(a) = 0$ and $f'(a) = 0$, then}
+\begin{choices}
+  \item $x=a$ is a point of inflection for $f$.
+  \item \fbox{$x=a$ is a critical point for $f$.} \emph{By definition}
+  \item $f$ cannot have a local maximum at $x=a$.
+  \item None of the above.
+\end{choices}
+
+
+\qsection{True/False}{TF}
+\setcounter{question}{5}
+\prob{For $a\in\R$, $|x-a| \leq 1$ defines a closed interval of length 1.} \\
+False. \emph{The interval has length 2}
+\prob{$f(x) = 3x^4 - 2x - 1$ haas a root on $[0,1]$.} \\
+True. \emph{Notice that $f(1) = 0$}
+\prob{If $f'(x) = \cos x$ then $f(x) = \sin x$.} \\
+False. \emph{Missing constant of integration}
+\prob{Let $a_n = f(n)$ where $f$ is a continuous function defined on \R.
+  If $\dilim{n} a_n = L$ then $\dilim{x} f(x) = L$.} \\
+False. \emph{Let $f(n+\frac12) = L+1$ for all $n$}
+\prob{If $f$ is not differentiable at $x=a\in\R$,
+  then for $k\in\R$, $g(x)=f(x)+k$ is not differentiable at $x=a$} \\
+True. \emph{The limit does not exist}
+
+
+\qsection{Short Answer}{SA}
+
+\prob{For $f(x) = \ln(e+x)$, find $L_0^f(x)$.}
+\begin{sol}
+  We know $f(0) = \ln e = 1$ and $f'(x) = \frac{1}{e+x}$ so $f'(0) = \frac{1}{e}$. Therefore,
+  \[ L_0^f(x) = 1 + \frac{1}{e}x \qedhere \]
+\end{sol}
+
+\begin{prob}
+  If $f$ is a differentiable function such that $f(0) = 1$ and $f'(x)\in[1,5]$ for all $x\in\R$,
+  use the Bounded Derivative Theorem to write down an interval that $f(3)$ must lie in.
+\end{prob}
+\begin{sol}
+  Apply BDT\@: $f(3) \in [1+1(3),1+5(3)] = [4,16]$.
+\end{sol}
+
+\begin{prob}
+  Give an example of a differentiable function $f$ that is concave up everywhere,
+  but $f''(0)$ does not exist.
+\end{prob}
+\begin{sol}
+  Let $f(x) = \begin{cases} x^2 & x \geq 0 \\ x^4 & x < 0 \end{cases}$.
+
+  At $x=0$, the function remains differentiable since both one-sided limits and derivatives are 0.
+  However, $f''(0)$ does not exist since the one-sided derivatives do not agree.
+  For all points other than $x=0$, $f''(x) > 0$, so $f$ is concave up for positive and negative $x$.
+  In fact, $f$ is concave up everywhere.
+\end{sol}
+
+\begin{prob}
+  Give an example of a function $f$ that is differentiable on $(0,1)$,
+  both $f(0)$ and $f(1)$ are defined, but the Mean Value Theorem cannot be applied to $f$.
+\end{prob}
+\begin{sol}
+  We are given the hypotheses of MVT except continuity. Make $f$ discontinuous:
+  \[ f(x) = \begin{cases}
+      x & x \neq 0 \\
+      1 & x = 0
+    \end{cases} \qedhere \]
+\end{sol}
+
+\begin{prob} If $f(3) = 1$ and $f'(3) = \pi$, find $(f^{-1})'(1)$. \end{prob}
+\begin{sol}
+  We know that $f^{-1}(1) = 3$.
+  Then, by the IFT, $(f^{-1})'(1) = \frac{1}{f'(3)} = \frac{1}{\pi}$.
+\end{sol}
+
+
+\qsection{Long Answer}{LA}
+
+\begin{prob}
+  Find each of the following sequence limits, if they exist.
+  If they do not exist, prove it.
+  \begin{enumerate}[(a)]
+    \item $\dilim{n} \frac{\sin n\pi}{\sin n}$
+          \begin{sol}
+            Recall that $\sin n\pi = 0$ for all $n$.
+            Then, $\frac{\sin n\pi}{\sin n} = 0$ so the limit is 0.
+          \end{sol}
+    \item $\dilim{n} \frac{\sin n}{n^2+1}$
+          \begin{sol}
+            We know that $-1 \leq \sin n \leq 1$, so we have
+            \[ -\frac{1}{n^2+1} \leq \frac{\sin n}{n^2+1} \leq \frac{1}{n^2+1} \]
+            Now, both of these converge to 0, so by the Squeeze Theorem, the limit is 0.
+          \end{sol}
+    \item $\dilim{n} \frac{n^3+n+1}{3n^3+n^2}$
+          \begin{sol}
+            Divide through by $n^3$: \begin{align*}
+              \ilim{n} \frac{n^3+n+1}{3n^3+n^2}
+               & = \ilim{n} \frac{1+\frac{1}{n^2}+\frac{1}{n^3}}{3+\frac{1}{n}} \\
+               & = \ilim{n} \frac{1+0+0}{3+0}                                   \\
+               & = \ilim{n} \frac{1}{3} \qedhere
+            \end{align*}
+          \end{sol}
+  \end{enumerate}
+\end{prob}
+
+\begin{prob}
+  Prove that if $\{a_n\}$ and $\{b_n\}$ are sequences such that $\{a_n\}$ is bounded
+  and $b_n \to 0$ as $n \to \infty$, then $\dilim{n}(a_n b_n) = 0$.
+\end{prob}
+\begin{prf}
+  Since $a_n$ is bounded, we have $x = \sup a_n$ and $y = \inf a_n$ such that $x \leq a_n \leq y$ for all $n$.
+  Multiplying through by $b_n$, we have $xb_n \leq a_n b_n \leq yb_n$.
+  As $b_n$ converges to 0, so too do $xb_n$ and $yb_n$ by the arithmetic rules.
+
+  Therefore, by the Squeeze Theorem, the limit is 0.
+\end{prf}
+
+\begin{prob}
+  For each of the following functions, compute $f'(x)$ using any method.
+  You do not need to simplify your answers.
+  \begin{enumerate}[(a)]
+    \item $f(x) = x^2 e^x \ln x$
+          \begin{sol}
+            Repeatedly apply the product rule: \begin{align*}
+              f'(x) & = 2x e^x \ln x + x^2(e^x \ln x)'                         \\
+                    & = 2x e^x \ln x + x^2(e^x \ln x + \frac{e^x}{x}) \qedhere
+            \end{align*}
+          \end{sol}
+    \item $f(x) = \tan(\cos x)$
+          \begin{sol}
+            Apply the chain rule: \begin{align*}
+              f'(x) & = \sec^2(\cos x)(\cos x)'        \\
+                    & = -\sec^2(\cos x)\sin x \qedhere
+            \end{align*}
+          \end{sol}
+  \end{enumerate}
+\end{prob}
+
+\begin{prob}
+  \begin{enumerate}[(a)]
+    \item Find $y'$ if $\ln x + \ln y = xy$.
+          \begin{sol}
+            Implicitly differentiate with respect to $x$: \begin{align*}
+              \frac{1}{x} + \frac{y'}{y} & = xy' + y                                      \\
+              y'(\frac{1}{y} - x)        & = y - \frac{1}{x}                              \\
+              y'                         & = \frac{y-\frac{1}{x}}{\frac{1}{y}-x} \qedhere
+            \end{align*}
+          \end{sol}
+    \item Find $\dyx$ if $y = (\sin x)^{\ln x}$ for $0 < x \leq \pi$.
+          \begin{sol}
+            Taking the logarithm of both sides, $\ln y = \ln x \ln(\sin x)$.
+            Then, implicitly differentiating with respect to $x$: \begin{align*}
+              \frac{y'}{y} & = \frac{\ln(\sin x)}{x} + \frac{\ln x \cos x}{\sin x}                        \\
+              \dyx         & = (\sin x)^{\ln x}\left(\frac{\ln(\sin x)}{x} + \ln x \cot x\right) \qedhere
+            \end{align*}
+          \end{sol}
+  \end{enumerate}
+\end{prob}
+
+\begin{prob}
+  For $f(x) = (x-1)|x+2| - 3$, determine all global extrema on the interval $[-3,0]$, if they exist.
+\end{prob}
+\begin{sol}
+  For $x < -2$, $f(x) = -(x-1)(x+2) - 3 = - x^2 - x - 1$ and $f'(x) = -2x - 1$.
+  Likewise, if $x > -2$, $f(x) = (x-1)(x+2) - 3 = x^2 + x - 5$ and $f'(x) = 2x + 1$.
+
+  The critical points are at $x = -2$ (undefined) and $x = -\frac12$ (zero).
+  Testing the function values here and at the endpoints, we have
+  $f(-3) = -7$, $f(-2) = -3$, $f(-\frac12) = -\frac{21}{4}$, and $f(0) = -5$.
+
+  Therefore, the global extrema are at $(-3, -7)$ and $(-2, -3)$.
+\end{sol}
+
+\begin{prob}
+  \begin{enumerate}[(a)]
+    \item State the Intermediate Value Theorem for a function $f$.
+
+          \textbf{Theorem.} If $f$ is continuous on $[a,b]$ and $f(a) < f(b)$,
+          then for any value $k\in(f(a),f(b))$ there exists a $c\in(a,b)$ where $f(c) = k$.
+          Likewise, if $f(b) < f(a)$, then for any value $k\in(f(b),f(a))$,
+          there exists a $c\in(a,b)$ where $f(c)=k$.
+
+    \item Find an interval of length at most 1 that contains a root of $f(x) = x^3 + 3x + 1$.
+          \begin{sol}
+            We know that $f(0) = 1$ and $f(-1) = -3$, so by the IVT, a root exists on $(0,1)$.
+          \end{sol}
+
+    \item Using $x_1 = 0$, perform two iterations of Newton's Method to find $x_2$ and $x_3$
+          to approximate the root of $f(x) = x^3 + 3x + 1$.
+          \begin{sol}
+            We have $f'(x) = 3x^2 + 3$
+            Then, $x_1 = 0$ and $x_2 = x_1 - \frac{f(x_1)}{f'(x_1)} = -\frac{f(0)}{f'(0)} = -\frac13$.
+            Again, $x_3 = x_2 - \frac{f(x_2)}{f'(x_2)} = -\frac13 - \frac{-1/27}{10/3} = -\frac{29}{90}$.
+
+            Therefore, $f(-\frac{29}{90}) \approx 0$.
+          \end{sol}
+  \end{enumerate}
+\end{prob}
+
+\begin{prob}
+  Let $f(x) = \ln(x^2+1)$.
+  \begin{enumerate}[(a)]
+    \item Determine the intervals of increase/decrease for $f$.
+          \begin{sol}
+            We have $f'(x) = \frac{2x}{x^2+1}$.
+            Since $x^2+1$ is always positive, $f'(x)$ has the same sign as $x$.
+            Therefore, $f$ is increasing for positive $x$ and decreasing for negative $x$.
+          \end{sol}
+    \item Determine the intervals of concavity for $f$.
+          \begin{sol}
+            Taking the derivative from above, $f''(x) = -\frac{2(x-1)(x+1)}{(x^2+1)^2}$.
+            The denominator is always positive so this is well-defined.
+            It is zero at $x = \pm 1$, and from a sign analysis,
+            we determine that $f''(x)$ is positive on $(-1,1)$ so $f$ is concave up,
+            and that $f''(x)$ is negative on $(-\infty,-1)$ and $(1,\infty)$ so $f$ is concave down.
+          \end{sol}
+  \end{enumerate}
+\end{prob}
+
+\begin{prob}
+  Prove that if $f$ is a differentiable function with no critical points,
+  then it can have at most one real root.
+\end{prob}
+\begin{prf}
+  Let $f$ be a differentiable function with no critical points.
+  Suppose for a contradiction that $f$ contains more than one real root, namely, $a$ and $b$.
+  Then, by Rolle's Theorem, since $f(a) = 0$ and $f(b) = 0$, there exists a point $c\in(a,b)$
+  such that $f'(c) = 0$, i.e., $c$ is a critical point of $f$.
+  However, $f$ has no critical points.
+
+  Therefore, $f$ has at most one real root.
+\end{prf}
+
+\begin{prob}
+  In each case, compute the limit using any method.
+  \begin{enumerate}[(a)]
+    \item $\dlim{x}{1^+}(\ln x)^{x-1}$
+          \begin{proof}[Solution]
+            This is indeterminate of the form $0^0$.
+            We can rewrite the quantity in the limit as $e^{\ln((\ln x)^{x-1})} = e^{(x-1)\ln(\ln x)}$.
+            Since $e^x$ is continuous, we can push through the limit and consider only the limit
+            \[ \dlim{x}{1^+}(\ln x)^{x-1} = e^{\dlim{x}{1^+}(x-1)\ln(\ln x)} \]
+            We now have the form $0\cdot-\infty$.
+            We rewrite as $-\frac{\infty}{\infty}$ and apply l'Hôpital's Rule:
+            \begin{align*}
+              \dlim{x}{1^+}(x-1)\ln(\ln x)
+               & = \dlim{x}{1^+}\frac{\ln(\ln x)}{\frac{1}{x-1}}                                             \\
+               & = \dlim{x}{1^+}\frac{\frac{1}{x\ln x}}{-\frac{1}{(x-1)^2}}                                  \\
+               & = \dlim{x}{1^+}\frac{(x-1)^2}{x \ln x}                                                      \\
+               & = \dlim{x}{1^+}\frac{(x-1)^2}{x \ln x}                     & \text{(of the form $\frac00$)} \\
+               & = \dlim{x}{1^+}\frac{2(x-1)}{1+\ln x}                                                       \\
+               & = \frac{0}{1} = 0
+            \end{align*}
+            Now, $e^0 = 1$, so the limit is equal to 1.
+          \end{proof}
+    \item $\dlim{x}{0^+}(\sqrt{x})^{\frac{1}{3\sqrt{x}}}$
+          \begin{proof}[Solution]
+            We have an indeterminate form $0^\infty$.
+            Again, we rewrite as $e^{\frac{1}{3\sqrt{x}}\ln(\sqrt{x})} = e^{\frac{\ln x}{6\sqrt{x}}}$
+            and then push through the limit to get one of the form $-\frac{\infty}{0}$.
+            This clearly diverges to $-\infty$, so we have $e^{-\infty} = 0$.
+          \end{proof}
+    \item $\dlim{x}{0^+}(1+\sqrt{x})^{\frac{1}{3\sqrt{x}}}$
+          \begin{proof}[Solution]
+            The limit is indeterminate and of the form $1^{\infty}$.
+            Doing our good ol$e$' trickery, we rewrite as $e^{\frac{\ln(1+\sqrt{x})}{3\sqrt{x}}}$,
+            and after pushing through, we have a form $\frac{0}{0}$ so we can apply l'Hôpital's Rule:
+            \begin{align*}
+              \dlim{x}{0^+} \frac{\ln(1+\sqrt{x})}{3\sqrt{x}}
+               & = \dlim{x}{0^+} \frac{\frac{1}{2\sqrt{x}(1+\sqrt{x})}}{\frac{3}{2\sqrt{x}}} \\
+               & = \dlim{x}{0^+} \frac{1}{3(1+\sqrt{x})}                                     \\
+               & = \frac13
+            \end{align*}
+            We can conclude the limit is $\sqrt[3]{e}$.
+          \end{proof}
+  \end{enumerate}
+\end{prob}
+
+\begin{prob}
+  Find values of $a$ and $b$ so that $f$ is differentiable everywhere, where
+  \[ f(x) = \begin{cases}
+      \sin ax      & x \geq 0 \\
+      x^2 + 2x + b & x < 0
+    \end{cases} \]
+\end{prob}
+\begin{sol}
+  For $f$ to be differentiable, the one-sided derivatives must agree.
+  These are $a\cos ax$ and $2x + 2$.
+  At $x=0$, these are equal to $a$ and $2$, so $a=2$
+  Differentiability implies continuity, so we check the one-sided limits.
+  Then, $\sin 0 = (0)^2 + 2(0) + b$, and we conclude $b=0$.
+
+  Therefore, $(a,b) = (2,0)$.
+\end{sol}
+
+\begin{prob}
+  \begin{enumerate}[(a)]
+    \item Prove that if $f'(x) = g'(x)$ for all $x$ in some open interval $I$,
+          then there exists $k \in \R$ so that $f(x) = g(x) + k$ for all $x \in I$.
+          \begin{prf}
+            This follows directly from the Constant Function Theorem.
+          \end{prf}
+    \item Use part (a) to prove that if $f'(x) - g'(x) = 2x$ on $I$,
+          then $f(x) = g(x) + x^2 + k$ for all $x \in I$ for some $k \in \R$.
+          \begin{prf}
+            Notice that $f'(x) = g'(x) + 2x = (g(x)+x^2)'$.
+
+            Then, from (a), $f(x) = g(x) + x^2 + k$.
+          \end{prf}
+  \end{enumerate}
+\end{prob}
+
+\begin{prob} Consider the function $f(x) = \ln(1+x)$.
+  \begin{enumerate}[(a)]
+    \item Find the second-degree Taylor polynomial for $f$ centred at $x=0$, $T_{2,0}(x)$.
+          \begin{sol}
+            We have that $f'(x) = \frac{1}{1+x}$ and $f''(x) = -\frac{1}{(1+x)^2}$.
+            Then, $f(0) = 0$, $f'(0) = 1$, and $f''(0) = -1$.
+            Now, applying the formula,
+            \begin{align*}
+              T_{2,0}(x) & = \frac{f''(0)}{2}x^2 + f'(0)x + f(0) \\
+                         & = -\frac{1}{2}x^2 + x \qedhere
+            \end{align*}
+          \end{sol}
+    \item Use $T_{2,0}$ to approximate $\ln 2$.
+          \begin{sol}
+            From above, evaluate $\ln 2 = \ln(1+1) \approx T_{2,0}(1) = \frac12$.
+          \end{sol}
+    \item Use Taylor's Theorem to write down what $f(x) - T_{2,0}(x)$ is equal to
+          (in terms of $x$ and $c$) for $x > 0$.
+          \begin{sol}
+            For some $c\in(0,1)$, we have that $f(x) - T_{2,0}(x) = R_{2,0} = \frac{f^{(3)}(c)}{3!}x^3$.
+            We can calculate $f^{(3)}(x) = \frac{2}{(1+x)^3}$, so we can expand this as
+            \[ R_{2,0}(x) = \frac{x^3}{3(1+c)^3} \qedhere \]
+          \end{sol}
+    \item Find an upper bound on the error in your approximation in part (b).
+          \begin{sol}
+            From above, $R_{2,0}(1) = \frac{1}{3(1+c)^3}$.
+            This is always positive and maximized when $c=0$, so $R_{2,0}(1) \leq \frac{1}{3}$.
+          \end{sol}
+    \item Is the estimate in part (b) an over or under estimate?
+          \begin{sol}
+            From above, the difference is positive, so it is an underestimate.
+          \end{sol}
+    \item Give an interval that $\ln 2$ must lie in, be as specific as possible.
+          \begin{sol}
+            From part (d), it lies in $[\frac12,\frac12+\frac13] = [\frac12,\frac56]$.
+          \end{sol}
+  \end{enumerate}
+\end{prob}
+
+\end{document}

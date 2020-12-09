@@ -1,11 +1,14 @@
 \documentclass[11pt]{article}
 
 \usepackage{physics}
-\usepackage{amsfonts,amsmath,amssymb,amsthm}
+\usepackage{amsfonts,amsmath,amssymb}
+\usepackage{systeme}
+\sysdelim..
 \usepackage{enumerate}
 \usepackage{titlesec}
 \usepackage{fancyhdr}
 \usepackage{multicol}
+\usepackage[dvipsnames]{xcolor}
 
 \headheight 13.6pt
 \setlength{\headsep}{10pt}
@@ -82,19 +85,39 @@
 \newcommand\at[2]{\left.#1\right|_{#2}}
 \usepackage{cancel}
 
-% Auto-number questions
-\newcommand{\QType}{Q}
-\renewcommand{\theparagraph}{\QType\ifnum\value{paragraph}<10 0\fi\arabic{paragraph}}
-\setcounter{secnumdepth}{6}
-\newcommand{\question}{\par\refstepcounter{paragraph}\textbf{\theparagraph}.\space}
+% Links
+\usepackage{hyperref,cleveref}
+\hypersetup{
+  colorlinks,
+  linkcolor=RoyalBlue,
+  linktoc=all
+}
 
-% Question sections
+% Question/Problem theorem styles
+\usepackage{amsthm,thmtools}
 \titleformat{\section}{\normalsize\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
+
+\newcommand{\QType}{Q}
+\newcounter{question}[subsection]
+\renewcommand{\thequestion}{\QType\ifnum\value{question}<10 0\fi\arabic{question}}
+\newcommand{\question}{\par\refstepcounter{question}\textbf{\thequestion}.\space}
+
 \newcommand{\qsection}[2]{%
   \renewcommand{\QType}{#2}
   \section*{#1}
   \refstepcounter{section}
 }
+\declaretheoremstyle[
+  spaceabove=6pt,spacebelow=6pt,
+  headfont=\normalfont\itshape,bodyfont=\normalfont,
+  qed=\qedsymbol]{proof}
+\declaretheorem[sibling=question,style=definition,name=,
+  refname={problem,problems},Refname={Problem,Problems}]{prob}
+\declaretheorem[numberwithin=subsection,style=definition,name=Exercise,
+  refname={exercise,exercises},Refname={Exercise,Exercises}]{xca}
+\declaretheorem[name=Proof,style=proof,unnumbered]{prf}
+\declaretheorem[name=Solution,style=proof,unnumbered]{sol}
 
 \usepackage{tikz,pgfplots}
 \pgfplotsset{compat=1.15}

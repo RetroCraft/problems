@@ -12,8 +12,8 @@ Frankly, it's more likely that they're wrong.
 Please let me know if you find a mistake though!
 Or, in the spirit of open source, make a [pull request](https://github.com/RetroCraft/problems/pulls) fixing it.
 
-* TOC
-{:toc}
+- TOC
+  {:toc}
 
 ## Computer Science
 
@@ -53,21 +53,22 @@ I don't implement the full design recipe in exercises, for obvious reasons (I'm 
 
 ### MATH 137 (F2020)
 
-| File                                         |     Complete?      | Notes                                  |
-| -------------------------------------------- | :----------------: | -------------------------------------- |
-| [Practice Assignment 1](./MATH137/PA01.pdf)  | :white_check_mark: |                                        |
-| [Practice Assignment 2](./MATH137/PA02.pdf)  | :white_check_mark: |                                        |
-| [Practice Assignment 3](./MATH137/PA03.pdf)  | :white_check_mark: |                                        |
-| [Practice Assignment 4](./MATH137/PA04.pdf)  | :white_check_mark: |                                        |
-| [Practice Assignment 5](./MATH137/PA05.pdf)  | :white_check_mark: |                                        |
-| [Practice Assignment MT](./MATH137/PAMT.pdf) | :white_check_mark: | Posted as `Practice AssignMT` on LEARN |
-| [Practice Assignment 6](./MATH137/PA06.pdf)  | :white_check_mark: |                                        |
-| [Practice Assignment 7](./MATH137/PA07.pdf)  | :white_check_mark: |                                        |
-| [Practice Assignment 8](./MATH137/PA08.pdf)  | :white_check_mark: |                                        |
-| [Practice Assignment 9](./MATH137/PA09.pdf)  | :white_check_mark: |                                        |
-| [Practice Assignment 10](./MATH137/PA10.pdf) | :white_check_mark: |                                        |
-| [Practice Assignment FE](./MATH137/PAFE.pdf) | :white_check_mark: |                                        |
-| [Practice Midterm 1](./MATH137/PM01.pdf)     | :white_check_mark: | Posted as `midterm_practice` on LEARN  |
+| File                                          |     Complete?      | Notes                                  |
+| --------------------------------------------- | :----------------: | -------------------------------------- |
+| [Practice Assignment 1](./MATH137/PA01.pdf)   | :white_check_mark: |                                        |
+| [Practice Assignment 2](./MATH137/PA02.pdf)   | :white_check_mark: |                                        |
+| [Practice Assignment 3](./MATH137/PA03.pdf)   | :white_check_mark: |                                        |
+| [Practice Assignment 4](./MATH137/PA04.pdf)   | :white_check_mark: |                                        |
+| [Practice Assignment 5](./MATH137/PA05.pdf)   | :white_check_mark: |                                        |
+| [Practice Assignment MT](./MATH137/PAMT.pdf)  | :white_check_mark: | Posted as `Practice AssignMT` on LEARN |
+| [Practice Assignment 6](./MATH137/PA06.pdf)   | :white_check_mark: |                                        |
+| [Practice Assignment 7](./MATH137/PA07.pdf)   | :white_check_mark: |                                        |
+| [Practice Assignment 8](./MATH137/PA08.pdf)   | :white_check_mark: |                                        |
+| [Practice Assignment 9](./MATH137/PA09.pdf)   | :white_check_mark: |                                        |
+| [Practice Assignment 10](./MATH137/PA10.pdf)  | :white_check_mark: |                                        |
+| [Practice Assignment FE](./MATH137/PAFE.pdf)  | :white_check_mark: |                                        |
+| [Practice Midterm 1](./MATH137/PM01.pdf)      | :white_check_mark: | Posted as `midterm_practice` on LEARN  |
+| [Practice Final F2019](./MATH137/PF2019F.pdf) | :white_check_mark: |                                        |
 
 ## Mistakes
 
