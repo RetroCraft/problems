@@ -1,8 +1,26 @@
+CmdLine {
+  -n3  # (a)^b vs {(a)}^b
+  -n9  # mismatch () []
+  -n17 # mismatch () []
+  -n21 # space on command
+  -n22 # comments
+  -n23 # f'''(x)
+  -n30 # multiple spaces
+  -n36 # allow parentheses after words (e.g. example(s) and f(x))
+  -n46 # $math$ vs \( math \)
+  -e16 # math mode never off
+}
+
 Silent {
   \land \lor \lnot
   \implies \Rarr \Larr \iff
+  \cap \cup \nearrow \searrow
 
   \evensidemargin
 
   \question
 }
+
+HyphDash { 1 2 3 } # hyphenated-word, Double--Name, em dash---break
+NumDash  { 2 }     # 123--456
+WordDash { 1 2 }     # en dash -- break
