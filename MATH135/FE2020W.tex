@@ -1,0 +1,259 @@
+\input{../header}
+\title{MATH 135 Winter 2020: Final Assignment}
+
+\begin{document}
+\thispagestyle{firstpage}
+\textbf{\@title}
+
+\begin{prob}
+  Let $p,q,r$ be distinct primes.
+  Determine $\gcd(p^{10}q^{20}r^{30},(p^2qr^2)^{10})$ in terms of $p,q,r$.
+\end{prob}
+\begin{sol}
+  Since $p$, $q$, and $r$ are distinct, the quantities $p^{10}q^{20}r^{30}$
+  and $(p^2qr^2)^{10} = p^{20}q^{10}r^{20}$ are in their UPF form.
+  Then, apply GCD PF\@: $\gcd(p^{10}q^{20}r^{30},p^{20}q^{10}r^{20}) = p^{10}q^{10}r^{20}$.
+\end{sol}
+
+\begin{prob}
+  Given that $[x_0] = [6]$ is a solution to $[12][x] = [8]$ in $\Z_{64}$, write down the complete solution.
+  Express your answer(s) in the form $[a]$, where $a$ is an integer and $0 \leq a < 64$.
+\end{prob}
+\begin{sol}
+  By the Modular Arithmetic Theorem, there are $\gcd(12,64) = 4$ solutions,
+  which are of the form $[6+\frac{64}{4}k]$ for $0 \leq k < 4$.
+  That is, $[x]$ is one of $[6]$, $[22]$, $[38]$, or $[54]$.
+\end{sol}
+
+\prob{Determine the units digit (i.e., the ones digit) of $7^{202}$.}
+\begin{sol}
+  We must evaluate $7^{202} \pmod{10}$.
+  Now, by \FLT, since $7 \nmid 10$, $7^9 \equiv 1 \pmod {10}$.
+  Then, $7^{202} \equiv 7^{9(22) + 4} \equiv 1^{22} \cdot 7^4 \equiv 49^2 \equiv 9^2 \equiv 81 \equiv 1 \pmod{10}$.
+
+  Therefore, the last digit is 1.
+\end{sol}
+
+\prob{Write $(2-2i)^6$ in standard form.}
+\begin{sol}
+  Notice that $2-2i = 2(1-i) = 2\sqrt{2}\cis(-\frac\pi4)$.
+  Then, we distribute and apply DMT\@: $(2\sqrt{2}\cis(-\frac\pi4))^6 = (2\sqrt{2})^6\cis(-\frac{3\pi}{2}) = 512\cis(\frac{\pi}{2})$.
+
+  It follows that in standard form, $(2-2i)^6 = 0 + 512i$.
+\end{sol}
+
+\begin{prob}
+  Find all $z\in\C$ that satisfy the equation $z^6 = 32z$.
+  You may express your solution(s) in polar form.
+\end{prob}
+\begin{sol}
+  We have $z^6 = 32z \iff z^5 = 32$.
+  In polar form, $32 = 32 \cis 0$.
+  By CNRT, we have the fifth roots of 32 are
+  \[ 2\cis 0, 2\cis\frac{2\pi}{5}, 2\cis\frac{4\pi}{5}, 2\cis\frac{6\pi}{5}, 2\cis\frac{8\pi}{5} \qedhere \]
+\end{sol}
+
+\begin{prob}
+  Determine all integer solutions $(x,y)$ to the linear Diophantine equation $21x+15y=72$
+  such that $x \geq 0$ and $y \geq 0$.
+\end{prob}
+\begin{sol}
+  We apply the EEA\@:
+  \begin{center}
+    \begin{tabular}{C|C|C|C}
+      x  & y  & q  & r \\ \hline
+      1  & 0  & 21     \\
+      0  & 1  & 15     \\
+      1  & -1 & 6  & 1 \\
+      -2 & 3  & 3  & 2
+    \end{tabular}
+  \end{center}
+  We can stop since $3 \mid 6$ and conclude $\gcd(21,15) = 3$.
+  Now, $21(-2) + 15(3) = 3$ and multiplying through by 24, we have $21(-48) + 15(72) = 72$.
+
+  It follows by the LDET that the set of all solutions is given by
+  \[ \{ (-48 + 5n, 72 - 7n) : n \in \Z \} \]
+  If both $x$ and $y$ are positive, then $-48 + 5n > 0 \iff n > \frac{48}{5} \iff n \geq 10$
+  and $72 - 7n > 0 \iff n < \frac{72}{7} \iff n \leq 10$.
+
+  The only such value is $n = 10$ so the only such solution is $x = 2$ and $y = 2$.
+\end{sol}
+
+\begin{prob}
+  Let $z,w\in\C$ such that $|z| = |w| = 2$ and $z\overline{w}=1+i$.
+  Determine $|z-w|^2$.
+\end{prob}
+\begin{sol}
+  Let $z = a+bi$ and $w = c+di$ be complex numbers with modulus 2 where $z\overline{w} = 1+i$.
+  Then, by definition, $a^2 + b^2 = c^2 + d^2 = \sqrt{2}$ and $(a+bi)(c-di) = 1+i$.
+  From the second equation, we have $(ac + bd) + (bc - ad)i = 1+i$.
+  Equating real parts, $ac + bd = 1$.
+  Now, \begin{align*}
+    |z-w|^2 & = |(a-c) + (b-d)|^2                      \\
+            & = (a-c)^2 + (b-d)^2                      \\
+            & = a^2 - 2ac + c^2 + b^2 - 2bc + d^2      \\
+            & = (a^2 + b^2) + (c^2 + d^2) - 2(ac + bd) \\
+            & = \sqrt{2} + \sqrt{2} - 2(1)             \\
+            & = 2\sqrt{2} - 2 \qedhere
+  \end{align*}
+\end{sol}
+
+\begin{prob}
+  You are an eavesdropper who has intercepted the ciphertext $C = 9$ sent using RSA\@.
+  You have obtained the public key $(29, 91)$ and have managed to factor $n = 91$ as $7 \cdot 13$.
+
+  Determine the original message $M$.
+\end{prob}
+\begin{sol}
+  Let $p = 7$ and $q = 13$, so our secret modulus is $8 \cdot 12 = 96$.
+  We determine the privkey $d$ knowing that $ed \equiv 29d \equiv 1 \pmod{96}$.
+  Solving by SMT, $29d \equiv d \equiv 1 \pmod{7}$ and $29d \equiv 3d \equiv 1 \pmod{13}$.
+
+  From the first congruence, $d = 7k + 1$ for some integer $k$.
+  Substituting, $3(7k+1) \equiv 21k + 3 \equiv 8k + 3 \equiv 1 \pmod{13}$.
+  Then, $8k \equiv 11 \pmod{13}$ and by inspection $k \equiv 3 \pmod{13}$.
+  Finally, $d = 7(13n + 3) + 1 = 91n + 22$ with integer $n$, or, $d \equiv 22 \pmod{91}$.
+  Therefore, $d = 22$.
+
+  We decode the messsage knowing $M \equiv C^d \equiv 9^{22} \pmod{91}$.
+  Repeatedly squaring, we have $9^2 \equiv 81 \equiv -10 \pmod{91}$,
+  $9^4 \equiv 100 \equiv 9 \pmod{91}$, $9^8 \equiv -10 \pmod{91}$, and $9^{16} \equiv 9 \pmod{91}$.
+
+  Therefore, $M \equiv 9^{16+4+2} \equiv (9)(9)(-10) \equiv 9(-90) \equiv 9(1) \equiv 9 \pmod{91}$, so $M = 9$.
+\end{sol}
+
+\begin{prob}
+  It is known that $3i$ is a root of the polynomial $f(x) = 2x^5 - 5x^4 + 18x^3 - 44x^2 + 9$.
+  \begin{enumerate}[(a)]
+    \item Write $f(x)$ as a product of irreducible polynomials in $\C[x]$.
+          \begin{sol}
+            The CPN gives that $f(x)$ has 5 complex roots, so we must find 5 complex linear factors.
+            By the CJRT, $-3i$ is also a root of $f(x)$.
+            Then, by the Factor Theorem, $(x-3i)(x+3i) = (x^2+9) \mid f(x)$.
+            By long division: \[ \polylongdiv{2x^5 - 5x^4 + 18x^3 - 44x^2 + 9}{x^2 + 9} \]
+            Inspecting candidates from the Rational Roots Theorem, we find $f(\frac12) = 0$.
+            
+            We divide by $(2x-1)$:
+            \[ \polylongdiv{2x^3 - 5x^2 + 1}{2x-1} \]
+            Finally, the quadratic formula gives $f(1\pm\sqrt{2}) = 0$.
+            From these five roots, we multiply the of irreducible first degree factors to get
+            \[ f(x) = (x-3i)(x+3i)(2x-1)(x-1+\sqrt{2})(x-1-\sqrt{2}) \qedhere \]
+          \end{sol}
+    \item Write $f(x)$ as a product of irreducible polynomials in $\R[x]$.
+          \begin{sol}
+            Since $\R[x] \subsetneq \C[x]$, we can consider the factorization from (a).
+            From (a), the only factors not in $\R[x]$ are $(x-3i)$ and $(x+3i)$. Then,
+            \[ f(x) = (x^2+9)(2x-1)(x-1+\sqrt{2})(x-1-\sqrt{2}) \qedhere \]
+          \end{sol}
+    \item Write $f(x)$ as a product of irreducible polynomials in $\Q[x]$.
+          \begin{sol}
+            Again, $\Q[x] \subsetneq \R[x]$.
+            The only factors in (b) not in $\Q[x]$ are $(x-1\pm\sqrt{2})$. Then,
+            \[ f(x) = (x^2+9)(2x-1)(x^2-2x-1) \qedhere \]
+          \end{sol}
+  \end{enumerate}
+\end{prob}
+
+\begin{prob}
+  True or False. Indicate whether each statement is true or false.
+  \begin{enumerate}[(a)]
+    \item For all $f(x) \in \R[x]$, if $f(x)$ has no real roots, then $f(x)$ is irreducible in $\R[x]$.
+
+          \fbox{True} \quad False
+    \item $\{x \in \Z : \gcd(x,20) = 1\} = \{y \in \Z : \gcd(2y,40) = 2\}$.
+
+          True \quad \fbox{False} \qquad \emph{RHS = \Z{} and LHS does not}
+    \item There are infinitely many integers $x$ satisfying the simultaneous congruence
+          \begin{align*}
+            2x & \equiv 4 \pmod 8 \\ x+1 & \equiv 5 \pmod 7
+          \end{align*}
+          \fbox{True} \quad False \qquad \emph{Simplifies to $x \equiv 18 \pmod{28}$}
+    \item For every $a\in\Z$, the LDE $(2a+1)x + ay = 1$ has a solution.
+
+          \fbox{True} \quad False \qquad \emph{Since $\gcd(2a+1,a) = \gcd(a,1) = 1$}
+    \item In $\Z_{48}$, the equation $[9][x] = [4]$ has exactly 3 solutions.
+
+          True \quad \fbox{False} \qquad \emph{There are none.}
+    \item For all $d \in \Z$, if $d \mid 10$ and $d \mid 15$
+          and $d \mid 10s + 15t$ for some $s,t\in\Z$, then $d = 5$.
+
+          True \quad \fbox{False} \qquad \emph{No special $d$ by DIC}
+    \item For all polynomials $f(x)$ with integer coefficients, if $f(\frac{\sqrt{2}}{1+i}) = 0$,
+          then $f(\frac{1+i}{\sqrt{2}}) = 0$.
+
+          \fbox{True} \quad False \qquad \emph{Since they are $\frac{\sqrt{2}}{2} \pm \frac{\sqrt{2}}{2}i$}
+  \end{enumerate}
+\end{prob}
+
+\begin{prob}
+  Prove that there does not exist an integer $x$ such that $x^2 \equiv 5 \pmod 6$.
+\end{prob}
+\begin{prf}
+  We exhaust the values of $x \pmod 6$:
+  \begin{center}
+    \begin{tabular}{C|C|C|C|C|C|C}
+      x \pmod{6}   & 0 & 1 & 2 & 3 & 4 & 5 \\ \hline
+      x^2 \pmod{6} & 0 & 1 & 4 & 3 & 4 & 1
+    \end{tabular}
+  \end{center}
+  Notice that no $x$ satisfies $x^2 \equiv 5 \pmod 6$.
+\end{prf}
+
+\begin{prob}
+  Let $p$ be an odd prime, and let $a$ be an odd integer such that $p \nmid a$.
+  Prove that \[ a^{p-1} \equiv 1 \pmod{2p}. \]
+\end{prob}
+\begin{prf}
+  Let $p$ be an odd prime, that is, $p \neq 2$, and $a$ be an odd integer not a multiple of $p$.
+  By \FLT, $a^{p-1} \equiv 1 \pmod p$.
+  Since $a$ is odd, $a \equiv 1 \pmod 2$ and $a^{p-1} \equiv 1 \pmod 2$ by CP\@.
+  Then, by SMT, $a^{p-1} \equiv 2 \pmod{2p}$.
+\end{prf}
+
+\begin{prob}
+  Prove that for all $a,b,c \in \Z$, $c \mid \gcd(a,c) \cdot \gcd(b,c)$ if and only if $c \mid ab$.
+\end{prob}
+\begin{prf}
+  Let $a$, $b$, and $c$ be integers, and say $\gcd(a,c) = g$ and $\gcd(b,c) = h$.
+  Then, by Bézout's Lemma, we can write $g = as + ct$ and $h = bu + cv$ for some integers $s,t,u,v$.
+  Expanding, $gh = (as + ct)(bu + cv) = asbu + ascv + ctbu + c^2tv = ab(su) + c(asv+tbu+ctv)$.
+
+  ($\Rarr$) Suppose that $c \mid gh$.
+  By definition, $g \mid a$ and $h \mid b$.
+  Then, $gn = a$ and $hm = b$ for some integers $n$ and $m$.
+  It follows that $gh(nm) = ab$ so $gh \mid ab$.
+  Finally, by TD, $c \mid ab$.
+
+  ($\Larr$) Suppose that $c \mid ab$.
+  Then, since $c \mid ab$ and $c \mid c$, by DIC as $su$ and $asv+tbu+ctv$ are integers, $c \mid gh$,
+  finishing the proof.
+\end{prf}
+
+\begin{prob}
+  Let $\theta \in \R$ be such that $2\sin\theta\cos\theta = \frac{1}{\sqrt{2}}$.
+  Prove that $\sin\theta+\cos\theta$ is irrational.
+\end{prob}
+\begin{prf}
+  Let $\theta$ be a real number and $2\sin\theta\cos\theta = \sin 2\theta = \frac{1}{\sqrt{2}}$.
+  Then, WLOG, we restrict $0 \leq \theta < 2\pi$,
+  so that $2\theta = \frac{\pi}{4}$ and $\theta = \frac{\pi}{8}$.
+
+  Now, recall the half-angle formulae for sine and cosine. We have
+  \[ \sin\theta = \sin(\frac{\pi/4}{2}) = \sqrt{\frac{1-\cos(\pi/4)}{2}} = \frac{\sqrt{2-\sqrt{2}}}{2} \]
+  and
+  \[ \cos\theta = \cos(\frac{\pi/4}{2}) = \sqrt{\frac{1+\cos(\pi/4)}{2}} = \frac{\sqrt{2+\sqrt{2}}}{2} \]
+  Then, $\sin\theta + \cos\theta = \frac{\sqrt{2-\sqrt{2}}+\sqrt{2+\sqrt{2}}}{2}$.
+  Let $a = \sin\theta+\cos\theta$, so that
+  \begin{align*}
+    2a          & = \sqrt{2-\sqrt{2}}+\sqrt{2+\sqrt{2}} \\
+    4a^2        & = 4+2\sqrt{2}                         \\
+    (a^2 - 1)^2 & = 2                                   \\
+    0           & = a^4 - 2a^2 -1
+  \end{align*}
+  Let $f(x) = x^4 - 2x^2 - 1$ so that $f(a) = 0$ and $a$ is a root of $f$.
+  Then, the Rational Roots Theorem states that candidates for rational roots of $f$ are $\pm 1$.
+  However, $f(1) = -2$ and $f(-1) = -2$.
+  Therefore, there are no rational roots of $f$, so $a$ is irrational.
+\end{prf}
+
+\end{document}

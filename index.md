@@ -50,6 +50,7 @@ I don't implement the full design recipe in exercises, for obvious reasons (I'm 
 | [Fall 2018 Midterm](./MATH135/MT2018F.pdf)   |  :white_check_mark:  |                                     |
 | [Fall 2019 Midterm](./MATH135/MT2019F.pdf)   |  :white_check_mark:  |                                     |
 | [Winter 2020 Midterm](./MATH135/MT2020W.pdf) |  :white_check_mark:  |                                     |
+| [Winter 2020 Final](./MATH135/FE2020W.pdf)   |  :white_check_mark:  |                                     |
 
 ### MATH 137 (F2020)
 
