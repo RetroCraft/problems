@@ -181,6 +181,25 @@ if $a \equiv b \pmod m$, then $a^n \equiv b^n \pmod m$.
 \end{proof}
 
 
+\question Solve \begin{align*}
+  3x - 2 & \equiv 7 \pmod{11}     \\
+  5      & \equiv 4x - 1 \pmod{9}
+\end{align*}
+\begin{proof}[Solution]
+  We can simplify these congruences by CAM to $3x \equiv 9 \pmod{11}$ and $4x \equiv 6 \pmod{9}$.
+  Since 11 is prime, we can apply CD to the first congruence to get $x \equiv 3 \pmod{11}$.
+  Then, $x = 11k + 3$ for some integer $k$. Substituting,
+  \begin{align*}
+    4(11k+3) & \equiv 6 \pmod{9}  \\
+    44k      & \equiv -6 \pmod{9} \\
+    -k       & \equiv -6 \pmod{9} \\
+    k        & \equiv 6 \pmod{9}
+  \end{align*}
+  Therefore, $k = 9n + 6$ for an integer $n$, and $x = 11(9n+6) + 3 = 99n + 69$.
+  Equivalently, by definition, $x \equiv 69 \pmod{99}$.
+\end{proof}
+
+
 \question The Chinese Remainder Theorem deals with the case where the moduli are coprime.
 We now investigate what happens if the moduli are not coprime.
 \begin{enumerate}[(a)]
