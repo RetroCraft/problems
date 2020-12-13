@@ -45,7 +45,7 @@ I don't implement the full design recipe in exercises, for obvious reasons (I'm 
 | [Extra Practice 7](./MATH135/EP07.pdf)       | :black_large_square: | Missing C01                         |
 | [Extra Practice 8](./MATH135/EP08.pdf)       |  :white_check_mark:  |                                     |
 | [Extra Practice 9](./MATH135/EP09.pdf)       |  :white_check_mark:  |                                     |
-| [Extra Practice 10](./MATH135/EP10.pdf)      | :black_large_square: | Missing RP10, challenges            |
+| [Extra Practice 10](./MATH135/EP10.pdf)      | :black_large_square: | Missing RP10, C01, C02              |
 | [Extra Practice 11](./MATH135/EP11.pdf)      | :black_large_square: | Missing C01                         |
 | [Fall 2018 Midterm](./MATH135/MT2018F.pdf)   |  :white_check_mark:  |                                     |
 | [Fall 2019 Midterm](./MATH135/MT2019F.pdf)   |  :white_check_mark:  |                                     |
