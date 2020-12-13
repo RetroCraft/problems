@@ -12,8 +12,8 @@ Frankly, it's more likely that they're wrong.
 Please let me know if you find a mistake though!
 Or, in the spirit of open source, make a [pull request](https://github.com/RetroCraft/problems/pulls) fixing it.
 
-- TOC
-  {:toc}
+- TOC \
+{:toc}
 
 ## Computer Science
 
