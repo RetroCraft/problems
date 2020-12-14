@@ -413,15 +413,16 @@ if $z^n=1$ and $z^k \neq 1$ for all $1 \leq k \leq n-1$.
                   By DMT, $z^m = \cis \frac{2mk\pi}{n}$.
 
                   Since $mk$ is an also an integer, $z^m$ is an $n$-th root of unity.
+                  We then write $z^m = \cis \frac{2l\pi}{n}$ for some integer $0 \leq l < n$.
 
                   Suppose for a contradiction that $z^m$ is not a primitive root,
                   and is also a $p$-th root of unity for some $0 < p < n$.
                   Then, $z^m = \cis \frac{2j\pi}{p}$ for an integer $0 \leq j < p$.
-                  From above, we now have $\cis\frac{2j\pi}{p} = \cis\frac{2k\pi}{n}$.
+                  From above, we now have $\cis\frac{2j\pi}{p} = \cis\frac{2l\pi}{n}$.
                   Values of $\cis \theta$ are unique for $0 \leq \theta < 2\pi$.
-                  We have both $0 \leq j < p$ and $0 \leq k < n$, so this is satisfied.
+                  We have both $0 \leq j < p$ and $0 \leq l < n$, so this is satisfied.
 
-                  It follows that $\frac{2j\pi}{p} = \frac{2k\pi}{n}$ and $jn = kp$.
+                  It follows that $\frac{2j\pi}{p} = \frac{2l\pi}{n}$ and $jn = lp$.
                   We can write $p \mid jn$ and by CAD, $p \mid j$.
                   However, this implies by BBD that $p \leq j$, which is a contradiction.
 
