@@ -86,7 +86,7 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 5. **MATH135/EP11/RP03(a)** Forgot the quadratic formula for a moment (Caitlin)
 6. **MATH135/EP08/RP05** Totally forgot a question entirely (Javin)
 7. **MATH135/EP11/RP01** Obviously, 2 + 1 = -1 (sooshi)
-8. **MATH135/EP10/RP15(b)** Reused variable letter causing confusion (sooshi)
+8. **MATH135/EP10/RP15(b)** Overcomplicated proof when it follows almost immediately from the previous question (sooshi)
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z40WHV9MJY"></script>
