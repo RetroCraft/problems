@@ -12,7 +12,7 @@ Frankly, it's more likely that they're wrong.
 Please let me know if you find a mistake though!
 Or, in the spirit of open source, make a [pull request](https://github.com/RetroCraft/problems/pulls) fixing it.
 
-- TOC \
+- TOC
 {:toc}
 
 ## Computer Science
@@ -45,7 +45,7 @@ I don't implement the full design recipe in exercises, for obvious reasons (I'm 
 | [Extra Practice 7](./MATH135/EP07.pdf)       | :black_large_square: | Missing C01                         |
 | [Extra Practice 8](./MATH135/EP08.pdf)       |  :white_check_mark:  |                                     |
 | [Extra Practice 9](./MATH135/EP09.pdf)       |  :white_check_mark:  |                                     |
-| [Extra Practice 10](./MATH135/EP10.pdf)      | :black_large_square: | Missing RP10, C01, C02              |
+| [Extra Practice 10](./MATH135/EP10.pdf)      | :black_large_square: | Missing RP10, C02                   |
 | [Extra Practice 11](./MATH135/EP11.pdf)      | :black_large_square: | Missing C01                         |
 | [Fall 2018 Midterm](./MATH135/MT2018F.pdf)   |  :white_check_mark:  |                                     |
 | [Fall 2019 Midterm](./MATH135/MT2019F.pdf)   |  :white_check_mark:  |                                     |
@@ -85,6 +85,7 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 4. **MATH135/EP06/RP05** Got the divides relation backwards for an incoherent proof (Quan)
 5. **MATH135/EP11/RP03(a)** Forgot the quadratic formula for a moment (Caitlin)
 6. **MATH135/EP08/RP05** Totally forgot a question entirely (Javin)
+7. **MATH135/EP11/RP01** Obviously, 2 + 1 = -1 (sooshi)
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z40WHV9MJY"></script>

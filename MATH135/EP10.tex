@@ -64,10 +64,10 @@
           Multiply through conjugates of the denominator:
           \begin{align*}
             \frac{(\sqrt2-i)^2}{(\sqrt2+i)(1-\sqrt2i)}
-             & = \frac{(1-2\sqrt{2}i)(\sqrt{2}-i)(1+\sqrt{2}i)}{(3)(-1)} \\
-             & = -\frac{(5-\sqrt2i)(\sqrt2-i)}{3}                        \\
-             & = -\frac{4\sqrt2-7i}{3}                                   \\
-             & = -\frac{4\sqrt2}{3}+\frac{7}{3}i \qedhere
+             & = \frac{(1-2\sqrt{2}i)(\sqrt{2}-i)(1+\sqrt{2}i)}{(3)(3)} \\
+             & = -\frac{(5-\sqrt2i)(\sqrt2-i)}{9}                        \\
+             & = -\frac{4\sqrt2-7i}{9}                                   \\
+             & = -\frac{4\sqrt2}{9}+\frac{7}{9}i \qedhere
           \end{align*}
         \end{proof}
   \item $(\sqrt5-i\sqrt3)^4$
@@ -490,7 +490,34 @@ For each $k\in\Z$, define $y_k\in\C$ by the formula \[ y_k = \omega^k u + \omega
 \question Let $z,w\in\C$.
 \begin{enumerate}[(a)]
   \item Prove that $|z+w| \leq |z| + |w|$.
+        \begin{proof}
+          This is the Triangle Inequality, for which a geometric proof is provided in Chapter 10.3.
+          In short, for complex numbers $z = a+bi$ and $w = c+di$,
+          we consider a triangle $\triangle OZW$ with points $O(0,0)$, $Z(a,b)$, and $W(c,d)$ in the complex plane.
+          Then, $|z| = \ell_{OZ}$, $|w| = \ell_{OW}$, and $|z+w| = \ell_{ZW}$.
+          The length of one side of a triangle cannot exceed the sum of the lengths of the other two sides.
+          
+          Equivalently, $\ell_{ZW} \leq \ell_{OZ} + \ell_{OW}$.
+        \end{proof}
   \item Prove that $\abs{|z| - |w|} \leq |z-w| \leq |z|+|w|$.
+        \begin{proof}
+          Let $z$ and $w$ be complex numbers.
+          We prove the inequalities separately.
+
+          We apply the Triangle Inequality with $z$ and $-w$.
+          Then, $|z + (-w)| \leq |z| + |-w|$ but $|-w| = |-1||w| = |w|$ by PM4,
+          so we have $|z-w| \leq |z| + |w|$.
+
+          Now, notice that $|z| = |(z-w) + w| \leq |z-w| + |w|$ so $|z| - |w| \leq |z-w|$.
+
+          Likewise, $|w| = |(w-z) + z| \leq |w-z| + |z|$ so $|z| - |w| \geq -|w-z|$.
+
+          Like the absolute value in \R, we have by PM4 $|w-z| = |-1||z-w| = 1|z-w| = |z-w|$,
+          so if we combine the above two inequalities, we have $\abs{|z| - |w|} \leq |z-w|$.
+
+          Equivalently, using the same triangle from above, this follows from the fact that
+          any one side of a triangle is longer than the difference of the other two sides.
+        \end{proof}
 \end{enumerate}
 
 \question Let $a,b,c\in\C$.
