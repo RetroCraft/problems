@@ -140,3 +140,55 @@
                   [else (cons (first lst) (insert elem (rest lst)))]))]
     (cond [(empty? lst) empty]
           [else (insert (first lst) (isort pred? (rest lst)))])))
+
+
+
+;;
+;; Exercise 9 
+;;
+
+;; (create-checker f answers) creates a predicate which checks if an application
+;;   to f produces a value in answers
+;; Examples:
+(check-expect ((create-checker string-length (list 0)) "") true)
+(check-expect ((create-checker string-length (list 1 2 3)) "long") false)
+(check-expect ((create-checker-v2 string-length (list 0)) "") true)
+(check-expect ((create-checker-v2 string-length (list 1 2 3)) "long") false)
+;; create-checker: (Str -> Num) (listof Num) -> (Str -> Bool)
+(define (create-checker f answers) (λ (s) (member? (f s) answers)))
+(define (create-checker-v2 f answers)
+  (local [(define (checker s) (member? (f s) answers))] checker))
+
+
+
+;;
+;; Exercise 10
+;;
+
+(define-struct gnode (key children))
+;; A GT (Generalized Tree) is a (make-gnode Nat (listof GT))
+
+(define gt-ex1
+  (make-gnode 78 (list (make-gnode 81 empty)
+                       (make-gnode 66 empty)
+                       (make-gnode 48 (list (make-gnode 37 empty)
+                                            (make-gnode 12 empty)))
+                       (make-gnode 11 empty))))
+(define gt-ex2
+  (make-gnode 78 (list (make-gnode 11 empty)
+                       (make-gnode 48 (list (make-gnode 12 empty)
+                                            (make-gnode 37 empty)))
+                       (make-gnode 66 empty)
+                       (make-gnode 81 empty))))
+
+;; (tested-gt-sum pred? gt) sums the keys of gt which satisfy pred?
+;; Examples:
+(check-expect (tested-gt-sum odd? gt-ex1) 129)
+(check-expect (tested-gt-sum odd? gt-ex2) 129)
+;; tested-gt-sum: (Nat -> Bool) GT -> Nat
+(define (tested-gt-sum pred? gt)
+  (local [(define tested-key
+            (cond [(pred? (gnode-key gt)) (gnode-key gt)] [else 0]))]
+    (cond [(empty? (gnode-children gt)) tested-key]
+          [else (foldr + tested-key (map (lambda (x) (tested-gt-sum pred? x))
+                                         (gnode-children gt)))])))
