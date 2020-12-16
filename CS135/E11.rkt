@@ -1,6 +1,6 @@
 ;; The first three lines of this file were inserted by DrRacket. They record metadata
 ;; about the language level of this file in a form that our tools can easily process.
-#reader(lib "htdp-beginner-abbr-reader.ss" "lang")((modname E11) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+#reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname E11) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #t)))
 ;;
 ;; ***************************************************
 ;; James Ah Yong
@@ -326,3 +326,83 @@
          (max (add1 (nl-max-depth (first nl)))
               (nl-max-depth (rest nl)))]
         [else (max 1 (nl-max-depth (rest nl)))]))
+
+
+
+;;
+;; Exercise 7
+;;
+
+(define-struct gnode (key children))
+;; A GT (Generalized Tree) is a (make-gnode Nat (listof GT))
+
+(define gt-ex1
+  (make-gnode 78 (list (make-gnode 81 empty)
+                       (make-gnode 66 empty)
+                       (make-gnode 48 (list (make-gnode 37 empty)
+                                            (make-gnode 12 empty)))
+                       (make-gnode 11 empty))))
+(define gt-ex2
+  (make-gnode 78 (list (make-gnode 11 empty)
+                       (make-gnode 48 (list (make-gnode 12 empty)
+                                            (make-gnode 37 empty)))
+                       (make-gnode 66 empty)
+                       (make-gnode 81 empty))))
+
+;; (reverse-gt gt) reverses the order of children on each node in gt
+;; Examples:
+(check-expect (reverse-gt gt-ex1) gt-ex2)
+(check-expect (reverse-gt gt-ex2) gt-ex1)
+;; reverse-gt: GT -> GT
+(define (reverse-gt gt)
+  (cond [(empty? (gnode-children gt)) (make-gnode (gnode-key gt) empty)]
+        [else (make-gnode (gnode-key gt)
+                          (reverse (map reverse-gt (gnode-children gt))))]))
+
+
+
+;;
+;; Exercise 8
+;;
+
+(define gt-ex3
+  (make-gnode 47 (list
+                  (make-gnode 31 (list
+                                  (make-gnode 14 empty)
+                                  (make-gnode 25 (list
+                                                  (make-gnode 10 empty)
+                                                  (make-gnode 13 empty)))))
+                  (make-gnode 78 (list
+                                  (make-gnode 82 empty)))
+                  (make-gnode 84 empty)
+                  (make-gnode 55 (list
+                                  (make-gnode 39 (list
+                                                  (make-gnode 32 empty)
+                                                  (make-gnode 34 empty)
+                                                  (make-gnode 36 empty)))
+                                  (make-gnode 33 empty)))
+                  (make-gnode 38 (list
+                                  (make-gnode 15 empty))))))
+
+;; (most-populated-level gt) finds the depth level of gt with the most elements
+;; Examples:
+(check-expect (most-populated-level gt-ex3) '(2 6))
+(check-expect (most-populated-level (make-gnode 69 empty)) '(0 1))
+;; most-populated-level: GT -> (list Nat Nat)
+(define (most-populated-level gt)
+  (local
+    [;; (count-level glst) counts the number of children at each depth of glst
+     ;; count-level: (listof GT) -> (listof Nat)
+     (define (count-level glst)
+       (cond [(empty? glst) (list 0)]
+             [else (cons (length glst)
+                         (count-level (foldr append empty
+                                             (map gnode-children glst))))]))
+     
+     (define lengths (count-level (list gt)))                ;; (listof Nat)
+     (define indices (build-list (length lengths) identity)) ;; (listof Nat)
+     (define pairs (map list indices lengths))]   ;; (listof (list Nat Nat))
+
+    (foldr (λ (x acc) (cond [(> (second x) (second acc)) x]
+                            [else acc]))
+           (first pairs) (rest pairs))))
