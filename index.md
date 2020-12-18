@@ -17,7 +17,7 @@ Or, in the spirit of open source, make a [pull request](https://github.com/Retro
 
 ## Computer Science
 
-### CS 135 (F2020)
+### CS 135 (F2020) <small>Designing Functional Programs</small>
 
 I don't implement the full design recipe in exercises, for obvious reasons (I'm lazy).
 
@@ -30,9 +30,25 @@ I don't implement the full design recipe in exercises, for obvious reasons (I'm 
 | [Module 15 Exercises]({{ page.gh }}/CS135/E15.rkt) | :white_check_mark: |       |
 | [Module 16 Exercises]({{ page.gh }}/CS135/E16.rkt) | :white_check_mark: |       |
 
+## Economics
+
+### ECON 120 (F2020) <small>Introduction to Microeconomics</small>
+
+No "practice", but figured this is a nice place to host my cheat sheets.
+They are created on Figma, which (once I figure out how to use the free education plan) can be found
+[here](https://www.figma.com/file/S33O0LmF0JFWizP911r8Py/ECON-120).
+
+| File                                   |
+| -------------------------------------- |
+| [Unit 1 Cheat Sheet](./ECON120/U1.pdf) |
+| [Unit 2 Cheat Sheet](./ECON120/U2.pdf) |
+| [Unit 3 Cheat Sheet](./ECON120/U3.pdf) |
+| [Unit 4 Cheat Sheet](./ECON120/U4.pdf) |
+| [Unit 5 Cheat Sheet](./ECON120/U5.pdf) |
+
 ## Math
 
-### MATH 135 (F2020)
+### MATH 135 (F2020) <small>Algebra for Honours Mathematics</small>
 
 | File                                         |      Complete?       | Notes                              |
 | -------------------------------------------- | :------------------: | ---------------------------------- |
@@ -52,7 +68,7 @@ I don't implement the full design recipe in exercises, for obvious reasons (I'm 
 | [Winter 2020 Midterm](./MATH135/MT2020W.pdf) |  :white_check_mark:  |                                    |
 | [Winter 2020 Final](./MATH135/FE2020W.pdf)   |  :white_check_mark:  |                                    |
 
-### MATH 137 (F2020)
+### MATH 137 (F2020) <small>Calculus I for Honours Mathematics</small>
 
 | File                                          |     Complete?      | Notes                                  |
 | --------------------------------------------- | :----------------: | -------------------------------------- |
