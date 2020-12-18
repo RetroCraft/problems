@@ -24,3 +24,6 @@ Silent {
 HyphDash { 1 2 3 } # hyphenated-word, Double--Name, em dash---break
 NumDash  { 2 }     # 123--456
 WordDash { 1 2 }     # en dash -- break
+
+UserWarnRegex = {
+}

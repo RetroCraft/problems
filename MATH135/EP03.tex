@@ -643,9 +643,34 @@ Prove that if $a \mid b$ and $b \mid c$ and $c \mid d$, then $a \mid d$.
 
 \question Let $n$ be an integer.
 Prove that if $2 \mid n$ and $3 \mid n$, then $6 \mid n$.
+\begin{proof}
+  Let $n$ be an integer such that $2 \mid n$ and $3 \mid n$.
+  Then, there exist integers $2p = n$ and $3q = n$.
+  Equivalently, $6p = 3n$ and $6q = 2n$.
+  Subtracting, $n = 6(p-q)$, and since $p-q$ is an integer, $6 \mid n$.
+\end{proof}
 
 \question Let $a,b,c\in\R$.
 Prove that if $a^2 + b^2 + c^2 = 1$, then $-1/2 \leq ab+bc+ca \leq 1$.
+\begin{proof}
+  Let $a$, $b$, and $c$ be real numbers.
+  Recall that squares of reals are non-negative.
+  Then, notice that we can create $2ab$-type terms in squares of binomials:
+  \begin{align*}
+    0            & \leq (a-b)^2 + (b-c)^2 + (c-a)^2          \\
+    0            & \leq 2a^2 + 2b^2 + 2c^2 - 2ab - 2bc - 2ca \\
+    0            & \leq (a^2 + b^2 + c^2) - (ab + bc + ca)   \\
+    ab + bc + ca & \leq 1
+  \end{align*}
+  Likewise, we can create these terms in the square of a trinomial:
+  \begin{align*}
+    0 & \leq (a+b+c)^2 \\
+    0 & \leq a^2 + b^2 + c^2 + 2ab + 2bc + 2ca \\
+    -(a^2 + b^2 + c^2) \leq 2(ab + bc + ca) \\
+    -\frac{1}{2} \leq ab + bc + ca
+  \end{align*}
+  Therefore, combining these inequalities, $-\frac{1}{2} \leq ab + bc + ca \leq 1$, as desired.
+\end{proof}
 
 \question Show that if $p$ and $p^2+2$ are prime, then $p^3+2$ is also prime.
 
@@ -655,8 +680,41 @@ Prove that if $a^2 + b^2 + c^2 = 1$, then $-1/2 \leq ab+bc+ca \leq 1$.
   there exists a positive real number $\delta$ such that for all real numbers $x$,
   if $\abs{x} < \delta$, then $\abs{3x-L} < \epsilon$.
 \end{quote}
+\begin{proof}
+  In symbolic form, with $\R^+ = \{ x \in \R : x > 0 \}$:
+  \[ \exists L\in\R, \forall \epsilon\in\R^+, \exists \delta\in\R^+, \forall x\in\R, |x|<\delta \implies |3x-L| < \epsilon \]
+  We propose $L = 0$.
+  Let $\epsilon > 0$.
+  Select $\delta = \frac{\epsilon}{3}$.
+  Now, suppose that $|x| < \delta$.
+  Then, $|3x - L| = |3x| = 3|x| < 3\delta = 3\frac{\epsilon}{3} = \epsilon$, as desired.
+\end{proof}
 
 \question Prove that there are no positive integers $a$ and $b$ such that $b^4+b+1 = a^4$.
+% \begin{proof}
+%   Let $a$ and $b$ be positive integers. We exhaust options for $a$ and $b$.
+
+%   ($2 \mid a$) Suppose that $a$ is even.
+%   Then, by TD, $2 \mid a^4$.
+%   Now, suppose for a contradiction that $b$ is even (meaning $b^4$ is also even).
+%   Then, $b^4 + b$ is even by DIC, so $b^4+b+1$ is odd.
+%   However, $b^4+b+1 = a^4$ which is even.
+%   Therefore, $b$ cannot be even.
+
+%   But if we suppose that $b$ is odd, we write $b = 2k+1$ for some integer $k$.
+%   Then, $b^4+b+1 = b(b^3 + 1) + 1 = b(8k^3+12k+6k+2) + 1 = 2b(4k^3+6k+3k+1) + 1$.
+%   This is odd, giving the same contradiction.
+
+%   Therefore, $a$ cannot be even.
+
+%   ($2 \nmid a$) Suppose that $a$ is odd.
+%   Then, we have that $a = 2k+1$ for some integer $k$.
+%   We can expand $a^2 = 4k^2 + 4k + 1 = 2(2k^2+2k) + 1$ which is odd.
+%   Generally, the square of an odd number is odd, so $a^4$ will also be odd.
+
+%   From above, $b^4+b+1$ is always odd.
+
+% \end{proof}
 
 \question Prove that the length of at least one side of a right-angled triangle with integer side lengths must be divisible by 3.
 
