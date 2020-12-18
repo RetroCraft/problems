@@ -88,13 +88,12 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 7. **MATH135/EP11/RP01** Obviously, 2 + 1 = -1 (sooshi)
 8. **MATH135/EP10/RP15(b)** Overcomplicated proof when it follows almost immediately from the previous question (sooshi)
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z40WHV9MJY"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-Z40WHV9MJY');
-</script>
 <script async defer data-domain="agony.retrocraft.ca" src="https://plausible.io/js/plausible.outbound-links.js"></script>
+<script>
+  window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }
+  document.addEventListener("click", function (event) {
+    if (!event.target.matches("a[href*='./'],a[href*=blob]")) return;
+    file = event.target.href.split("/");
+    plausible("View", { props: { file: file.pop(), class: file.pop() } });
+  }, false)
+</script>
