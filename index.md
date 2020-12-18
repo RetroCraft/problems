@@ -92,7 +92,7 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 <script>
   window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }
   document.addEventListener("click", function (event) {
-    if (!event.target.matches("a[href*='./'],a[href*=blob]")) return;
+    if (!event.target.matches("a[href$=rkt],a[href$=pdf]")) return;
     file = event.target.href.split("/");
     plausible("View", { props: { file: file.pop(), class: file.pop() } });
   }, false)
