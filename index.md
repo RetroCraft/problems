@@ -97,3 +97,4 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 
   gtag('config', 'G-Z40WHV9MJY');
 </script>
+<script async defer data-domain="agony.retrocraft.ca" src="https://plausible.io/js/plausible.outbound-links.js"></script>
