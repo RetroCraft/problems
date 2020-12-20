@@ -6,6 +6,8 @@ gh: https://github.com/RetroCraft/problems/blob/master
 This is an open archive of practice problems from the University of Waterloo CS/BBA program.
 These are published with the belief that they are permitted by relevant faculty,
 please [contact me](mailto:jahyong@uwaterloo.ca) if they are not and I will take them down.
+If you have found these useful, consider [buying me a coffee](https://ko-fi.com/jahyong)
+so I can stay up and make more of them during 1B.
 
 I make no guarantees that these solutions are remotely close to correct.
 Frankly, it's more likely that they're wrong.
@@ -42,14 +44,14 @@ The final exam cheat sheet is a work in progress.
 Please send me feedback for missing content and/or corrections!
 A final version will be published on Sunday (this notice will be gone)
 
-| File                                    |
-| --------------------------------------- |
-| [Unit 1 Cheat Sheet](./ECON120/U1.pdf)  |
-| [Unit 2 Cheat Sheet](./ECON120/U2.pdf)  |
-| [Unit 3 Cheat Sheet](./ECON120/U3.pdf)  |
-| [Unit 4 Cheat Sheet](./ECON120/U4.pdf)  |
-| [Unit 5 Cheat Sheet](./ECON120/U5.pdf)  |
-| [Exam Cheat Sheet](./ECON120/Final.pdf) |
+| File                                          |
+| --------------------------------------------- |
+| [Unit 1 Cheat Sheet](./ECON120/U1.pdf)        |
+| [Unit 2 Cheat Sheet](./ECON120/U2.pdf)        |
+| [Unit 3 Cheat Sheet](./ECON120/U3.pdf)        |
+| [Unit 4 Cheat Sheet](./ECON120/U4.pdf)        |
+| [Unit 5 Cheat Sheet](./ECON120/U5.pdf)        |
+| [Exam Cheat Sheet (WIP)](./ECON120/Final.pdf) |
 
 ## Math
 
