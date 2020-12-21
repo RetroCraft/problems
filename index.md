@@ -11,8 +11,8 @@ consider sending me a coffee:
 
 <div style="text-align:center"><script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('(add1 pain)', '#159957', 'Q5Q827K43');kofiwidget2.draw();</script></div>
 
-I make no guarantees that these solutions are remotely close to correct.
-Frankly, it's more likely that they're wrong.
+I make no guarantees that my work is remotely close to correct.
+Frankly, it's more likely that it's not.
 Please let me know if you find a mistake though!
 Or, in the spirit of open source, make a [pull request](https://github.com/RetroCraft/problems/pulls) fixing it.
 
@@ -108,6 +108,7 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 6. **MATH135/EP08/RP05** Totally forgot a question entirely (Javin)
 7. **MATH135/EP11/RP01** Obviously, 2 + 1 = -1 (sooshi)
 8. **MATH135/EP10/RP15(b)** Overcomplicated proof when it follows almost immediately from the previous question (sooshi)
+9. **ECON120/Final** Deadweight loss of monopoly is between MC and demand, not price and demand (Jimmy Zhan)
 
 <script async defer data-domain="agony.retrocraft.ca" src="https://plausible.io/js/plausible.outbound-links.js"></script>
 <script>
