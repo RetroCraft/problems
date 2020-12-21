@@ -6,11 +6,12 @@ gh: https://github.com/RetroCraft/problems/blob/master
 This is an open archive of practice problems from the University of Waterloo CS/BBA program.
 These are published with the belief that they are permitted by relevant faculty,
 please [contact me](mailto:jahyong@uwaterloo.ca) if they are not and I will take them down.
-If you have found these useful, consider [buying me a coffee](https://ko-fi.com/jahyong)
-so I can stay up and make more of them during 1B.
+If you find this useful, consider sending me a coffee so I can stay up and make more for 1B:
 
-I make no guarantees that these solutions are remotely close to correct.
-Frankly, it's more likely that they're wrong.
+<div style="text-align:center"><script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy me a coffee', '#159957', 'Q5Q827K43');kofiwidget2.draw();</script></div>
+
+I make no guarantees that my work is remotely close to correct.
+Frankly, it's more likely that they're not.
 Please let me know if you find a mistake though!
 Or, in the spirit of open source, make a [pull request](https://github.com/RetroCraft/problems/pulls) fixing it.
 
