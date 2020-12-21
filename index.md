@@ -44,14 +44,14 @@ The final exam cheat sheet is a work in progress.
 Please send me feedback for missing content and/or corrections!
 A final version will be published on Sunday (this notice will be gone)
 
-| File                                          |
-| --------------------------------------------- |
-| [Unit 1 Cheat Sheet](./ECON120/U1.pdf)        |
-| [Unit 2 Cheat Sheet](./ECON120/U2.pdf)        |
-| [Unit 3 Cheat Sheet](./ECON120/U3.pdf)        |
-| [Unit 4 Cheat Sheet](./ECON120/U4.pdf)        |
-| [Unit 5 Cheat Sheet](./ECON120/U5.pdf)        |
-| [Exam Cheat Sheet (WIP)](./ECON120/Final.pdf) |
+| File                                             |
+| ------------------------------------------------ |
+| [Unit 1 Cheat Sheet](./ECON120/U1.pdf)           |
+| [Unit 2 Cheat Sheet](./ECON120/U2.pdf)           |
+| [Unit 3 Cheat Sheet](./ECON120/U3.pdf)           |
+| [Unit 4 Cheat Sheet](./ECON120/U4.pdf)           |
+| [Unit 5 Cheat Sheet](./ECON120/U5.pdf)           |
+| [Exam Cheat Sheet (WIP v3)](./ECON120/Final.pdf) |
 
 ## Math
 
