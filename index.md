@@ -108,7 +108,8 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 6. **MATH135/EP08/RP05** Totally forgot a question entirely (Javin)
 7. **MATH135/EP11/RP01** Obviously, 2 + 1 = -1 (sooshi)
 8. **MATH135/EP10/RP15(b)** Overcomplicated proof when it follows almost immediately from the previous question (sooshi)
-9. **ECON120/Final** Deadweight loss of monopoly is between MC and demand, not price and demand (Jimmy Zhan)
+9. **ECON120/Final** (v1.0) Deadweight loss of monopoly is between MC and demand, not price and demand (Jimmy Zhan)
+9. **ECON120/Final** (v1.1) Wrong colour on tarriff supply and demand curves
 
 <script async defer data-domain="agony.retrocraft.ca" src="https://plausible.io/js/plausible.outbound-links.js"></script>
 <script>
