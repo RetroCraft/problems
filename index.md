@@ -40,10 +40,6 @@ No "practice", but figured this is a nice place to host my cheat sheets.
 They are created on Figma, which (once I figure out how to use the free education plan) can be found
 [here](https://www.figma.com/file/S33O0LmF0JFWizP911r8Py/ECON-120).
 
-The final exam cheat sheet is a work in progress.
-Please send me feedback for missing content and/or corrections!
-A final version will be published on Sunday (this notice will be gone)
-
 | File                                             |
 | ------------------------------------------------ |
 | [Unit 1 Cheat Sheet](./ECON120/U1.pdf)           |
@@ -51,7 +47,7 @@ A final version will be published on Sunday (this notice will be gone)
 | [Unit 3 Cheat Sheet](./ECON120/U3.pdf)           |
 | [Unit 4 Cheat Sheet](./ECON120/U4.pdf)           |
 | [Unit 5 Cheat Sheet](./ECON120/U5.pdf)           |
-| [Exam Cheat Sheet (WIP v3)](./ECON120/Final.pdf) |
+| [Exam Cheat Sheet](./ECON120/Final.pdf) |
 
 ## Math
 
