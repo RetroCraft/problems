@@ -3,19 +3,33 @@ layout: default
 gh: https://github.com/RetroCraft/problems/blob/master
 ---
 
-This is an open archive of practice problems from the University of Waterloo CS/BBA program.
-These are published with the belief that they are permitted by relevant faculty,
-please [contact me](mailto:jahyong@uwaterloo.ca) if they are not and I will take them down.
-If you find this useful and want me to endure more pain in 1B,
-consider sending me a coffee:
+This is an open archive of study materrial from my being a Waterloo and Laurier CS/BBA student.
+If you find it useful and want me to endure more pain in 1B,
+consider sending me a <s>coffee</s> bubble tea:
 
 <div style="text-align:center"><script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('(add1 pain)', '#159957', 'Q5Q827K43');kofiwidget2.draw();</script></div>
 
+## About
+{:.no_toc}
+
 I make no guarantees that my work is remotely close to correct.
 Frankly, it's more likely that it's not.
-Please let me know if you find a mistake though!
+Please [let me know](#contact) if you find a [mistake](#mistakes) though!
 Or, in the spirit of open source, make a [pull request](https://github.com/RetroCraft/problems/pulls) fixing it.
 
+These are published under information and belief that they are permitted by relevant faculty,
+please [contact me](#contact) if they are not and I will take them down.
+
+Unless otherwise specified, all content here is licensed under a
+Creative Commons Attribution ShareAlike 4.0 International License
+([CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)).
+This means you can do whatever you want with it,
+provided you (1) give credit and (2) also release your work openly.
+Non-free study resources behind hard paywalls suck.
+Learning is painful and agonizing enough as it is.
+
+### Table of Contents
+{:.no_toc}
 - TOC
 {:toc}
 
@@ -42,13 +56,13 @@ No "practice", but figured this is a nice place to host my cheat sheets.
 They are created on Figma, which (once I figure out how to use the free education plan) can be found
 [here](https://www.figma.com/file/S33O0LmF0JFWizP911r8Py/ECON-120).
 
-| File                                             |
-| ------------------------------------------------ |
-| [Unit 1 Cheat Sheet](./ECON120/U1.pdf)           |
-| [Unit 2 Cheat Sheet](./ECON120/U2.pdf)           |
-| [Unit 3 Cheat Sheet](./ECON120/U3.pdf)           |
-| [Unit 4 Cheat Sheet](./ECON120/U4.pdf)           |
-| [Unit 5 Cheat Sheet](./ECON120/U5.pdf)           |
+| File                                    |
+| --------------------------------------- |
+| [Unit 1 Cheat Sheet](./ECON120/U1.pdf)  |
+| [Unit 2 Cheat Sheet](./ECON120/U2.pdf)  |
+| [Unit 3 Cheat Sheet](./ECON120/U3.pdf)  |
+| [Unit 4 Cheat Sheet](./ECON120/U4.pdf)  |
+| [Unit 5 Cheat Sheet](./ECON120/U5.pdf)  |
 | [Exam Cheat Sheet](./ECON120/Final.pdf) |
 
 ## Math
@@ -109,7 +123,16 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 7. **MATH135/EP11/RP01** Obviously, 2 + 1 = -1 (sooshi)
 8. **MATH135/EP10/RP15(b)** Overcomplicated proof when it follows almost immediately from the previous question (sooshi)
 9. **ECON120/Final** (v1.0) Deadweight loss of monopoly is between MC and demand, not price and demand (Jimmy Zhan)
-9. **ECON120/Final** (v1.1) Wrong colour on tarriff supply and demand curves
+10. **ECON120/Final** (v1.1) Wrong colour on tarriff supply and demand curves
+
+## Contact
+
+Did you find a mistake?
+Reach out by filing an [issue on GitHub](https://github.com/RetroCraft/problems/issues)
+or by one of [email](mailto:jahyong@uwaterloo.ca),
+[Facebook](https://facebook.com/james.ahyong),
+[Instagram](https://instagram.com/james.ahyong),
+and Discord (`@retrocraft#6259`).
 
 <script async defer data-domain="agony.retrocraft.ca" src="https://plausible.io/js/plausible.outbound-links.js"></script>
 <script>
