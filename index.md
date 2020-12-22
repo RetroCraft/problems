@@ -30,6 +30,7 @@ Learning is painful and agonizing enough as it is.
 
 ### Table of Contents
 {:.no_toc}
+
 - TOC
 {:toc}
 
@@ -105,6 +106,14 @@ They are created on Figma, which (once I figure out how to use the free educatio
 | [Practice Assignment FE](./MATH137/PAFE.pdf)  | :white_check_mark: |                                        |
 | [Practice Midterm 1](./MATH137/PM01.pdf)      | :white_check_mark: | Posted as `midterm_practice` on LEARN  |
 | [Practice Final F2019](./MATH137/PF2019F.pdf) | :white_check_mark: |                                        |
+
+### MATH 146 (W1989) <small>Linear Algebra I (Advanced)</small>
+
+I found an old copy of my father's _Linear Algebra, 2nd edition_ by Hoffman and Kunze
+from when he was at Waterloo (and had the guts to take 14x courses).
+I have no idea if anyone at all would find these useful, but here are
+[my solutions so far](./MATH146/HK.pdf).
+Note that I use the notation from the book, which might hurt when MATH 136 starts.
 
 ## Mistakes
 

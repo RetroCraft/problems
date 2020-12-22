@@ -56,6 +56,7 @@
 \newcommand{\Rarr}{\Rightarrow}
 \newcommand{\Larr}{\Leftarrow}
 \newcommand{\Harr}{\Leftrightarrow}
+\newcommand{\harr}{\leftrightarrow}
 \usepackage{mathtools} % for \DeclarePairedDelimiter macro
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
@@ -85,6 +86,11 @@
 \newcommand{\ilim}[1]{\lim_{#1\to\infty}}
 \newcommand\at[2]{\left.#1\right|_{#2}}
 \usepackage{cancel}
+
+% Linear Algebra
+\newcommand{\m}[1]{\begin{bmatrix}#1\end{bmatrix}} % \m{1&2\\3&4}
+\newcommand{\tm}[1]{\begin{bmatrixsmall}#1\end{bmatrixsmall}} % \tm{1&2\\3&4}
+\newcommand{\xto}{\xrightarrow} % \xto{R_1 \harr R_2}
 
 % Links
 \usepackage{hyperref,cleveref}
