@@ -243,7 +243,94 @@
     \end{split}
   \end{equation*}
   which after a few scalar multiplications is the identity matrix.
-  Therefore, $X = \m{0\\0\\0}$ is the only solution.
+  Therefore, $(0,0,0)$ is the only solution.
+\end{sol}
+
+\begin{xca}
+  If \[ A = \m{6&-4&0 \\ 4&-2&0 \\ -1&0&3} \]
+  find all solutions of $AX = 2X$ and all solutions of $AX = 3X$.
+  (The symbol $cX$ denotes the matrix each entry of which is $c$ times the corresponding entry of $X$.)
+\end{xca}
+\begin{sol}
+  We can represent the matrix equation $AX = 2X$ with the system
+  \[ \systeme{6x - 4y = 2x, 4x - 2y = 2y, -x + 3z = 2z} \]
+  which can be simplified to the homogenous system
+  \[ \systeme{4x - 4y = 0, 4x - 4y = 0, -x + z = 0} \]
+  or, equivalently, $\m{4&-4&0 \\ 4&-4&0 \\ -1&0&1}X = 0$. We now row-reduce:
+  \begin{equation*}
+    \begin{split}
+      \m{4&-4&0 \\ 4&-4&0 \\ -1&0&1}
+      & \xto{R_2 - R_1} \m{4&-4&0 \\ 0&0&0 \\ -1&0&1}
+      \xto{R_1 + 4R_3} \m{0&-4&4 \\ 0&0&0 \\ -1&0&1}
+      \xto{\frac14 R_1} \m{0&-1&1 \\ 0&0&0 \\ -1&0&1} \\
+      & \xto{-R_1 \harr -R_3} \m{1&0&-1 \\ 0&0&0 \\ 0&1&-1}
+      \xto{R_2 \harr R_3} \m{1&0&-1 \\ 0&1&-1 \\ 0&0&0}
+    \end{split}
+  \end{equation*}
+  This is equivalent to the equations $x - y = 0$ and $y - z = 0$, so $x = y = z$, that is,
+  the solutions are of the form $(c,c,c)$ for some $c$.
+
+  We now do the same with $AX = 3X$, giving the system
+  \[
+    \systeme{6x - 4y = 3x, 4x - 2y = 3y, -x + 3z = 3z}
+    \iff
+    \systeme{3x - 4y = 0, 4x - 5y = 0, -x = 0}
+  \]
+  By inspection, $x = 0$, which implies $y = 0$, so the solution is $(0,0,c)$ for some $c$.
+\end{sol}
+
+\begin{xca}
+  Find a row-reduced matrix which is row-equivalent to
+  \[ A = \m{i&-(1+i)&0 \\ 1&-2&1 \\ 1&2i&-1} \]
+\end{xca}
+\begin{sol}
+  We row-reduce by elementary row operations:
+  \begin{equation*}
+    \begin{split}
+      \m{i&-(1+i)&0 \\ 1&-2&1 \\ 1&2i&-1}
+      & \xto{R_2 + iR_1} \m{i&-1-i&0 \\ 0&-1-i&1 \\ 1&2i&-1}
+      \xto{R_3 + iR_1} \m{i&-1-i&0 \\ 0&-1-i&1 \\ 0&1+i&-1} \\
+      & \xto{R_1 + R_3} \m{i&0&-1 \\ 0&-1-i&1 \\ 0&1+i&-1}
+      \xto{R_3 + R_2} \m{i&0&-1 \\ 0&-1-i&1 \\ 0&0&0} \\
+      & \xto{-iR_1} \m{1&0&i \\ 0&-1-i&1 \\ 0&0&0}
+      \xto{-\frac{1-i}{2}R_2} \m{1&0&i \\ 0&1&-\frac{1-i}{2} \\ 0&0&0}
+    \end{split}
+  \end{equation*}
+  which is in row-reduced form.
+\end{sol}
+
+\begin{xca}
+  Prove that the following two matrices are not row-equivalent:
+  \[ A = \m{2&0&0 \\ a&-1&0 \\ b&c&3} \qq{and} B = \m{1&1&2 \\ -2&0&1 \\ 1&3&5} \]
+\end{xca}
+\begin{sol}
+  We row-reduce the two matrices and compare them.
+  Consider matrix $A$:
+  \begin{equation*}
+    \begin{split}
+      A & \xto{\frac12 R_1} \m{1&0&0 \\ a&-1&0 \\ b&c&3}
+      \xto{R_2 - aR_1} \m{1&0&0 \\ 0&-1&0 \\ b&c&3}
+      \xto{-R_2} \m{1&0&0 \\ 0&1&0 \\ b&c&3} \\
+      & \xto{R_3 - bR_1} \m{1&0&0 \\ 0&1&0 \\ 0&c&3}
+      \xto{R_3 - cR_2} \m{1&0&0 \\ 0&1&0 \\ 0&0&3}
+      \xto{\frac13 R_3} \m{1&0&0 \\ 0&1&0 \\ 0&0&1}
+    \end{split}
+  \end{equation*}
+  Therefore, the equation $AX = 0$ has one solution $(0,0,0)$.
+
+  Now, consider matrix $B$:
+  \begin{equation*}
+    \begin{split}
+      B & \xto{R_2 + 2R_1} \m{1&1&2 \\ 0&2&3 \\ 1&3&5}
+      \xto{R_3 - R_1} \m{1&1&2 \\ 0&2&3 \\ 0&2&3}
+      \xto{R_3 - R_2} \m{1&1&2 \\ 0&2&3 \\ 0&0&0} \\
+      & \xto{\frac12 R_2} \m{1&1&2 \\ 0&1&\frac32 \\ 0&0&0}
+      \xto{R_1 - R_2} \m{1&0&\frac12 \\ 0&1&\frac32 \\ 0&0&0}
+    \end{split}
+  \end{equation*}
+  Therefore, the equation $BX = 0$ has the solutions $(-\frac12c, -\frac32c, c)$ for any $c$.
+
+  Since the solution sets are not equivalent, the matrices are not row-equivalent.
 \end{sol}
 
 \end{document}
