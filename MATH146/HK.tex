@@ -1,9 +1,11 @@
 \input{../header}
+\usepackage[titles]{tocloft}
 \title{MATH 146 Fall 1989: Hoffman--Kunze \emph{Linear Algebra}, 2nd ed.}
+\renewcommand*\contentsname{\@title} % janky way to deal with chapter title styling
 
 \begin{document}
 \thispagestyle{firstpage}
-\textbf{\@title}
+\tableofcontents
 
 \section{Linear Equations}
 \subsection{Fields}\label{sec:fields}
@@ -139,7 +141,7 @@
   Therefore, $(F,+,\cdot)$ is a field.
 \end{prf}
 
-\begin{xca}
+\begin{xca}\label{xca:homeq}
   Prove that if two homogenous systems of linear equations in two unknowns have the same solutions,
   then they are equivalent.
 \end{xca}
@@ -331,6 +333,135 @@
   Therefore, the equation $BX = 0$ has the solutions $(-\frac12c, -\frac32c, c)$ for any $c$.
 
   Since the solution sets are not equivalent, the matrices are not row-equivalent.
+\end{sol}
+
+\begin{xca}
+  Let \[ A = \m{a&b\\c&d} \] be a $2 \times 2$ matrix with complex entries.
+  Suppose that $A$ is row-reduced and also that $a+b+c+d=0$.
+  Prove that there are exactly three such matrices.
+\end{xca}
+\begin{prf}
+  For $A$ to be row-reduced, the first row is all zero, begins with a 1, or is $\m{0&1}$.
+
+  If the first row is zero ($a = 0$ and $b = 0$), then $c+d = 0$.
+  Likewise, the second row must either be zero (in which case $c = d = 0$),
+  begin with a 1 (in which case $c = 1$ and $d = -1$),
+  or be $\m{0&1}$ (but $c+d = 0$).
+  This gives two options: $A = \m{0&0\\0&0}$ and $\m{0&0\\1&-1}$.
+
+  If the first row begins with 1, then $c = 0$ and $b+d = -1$.
+  Again, the second row is either zero (so $b = -1$ and $d = 0$),
+  begin with a 1 (but $c = 0$),
+  or be $\m{0&1}$ (but then $a$ cannot be 1).
+  This also gives two options: $A = \m{0&0\\0&0}$ and $\m{1&-1\\0&0}$.
+
+  Finally, if the first row is $\m{0&1}$, the second row must be $\m{0&0}$,
+  but then $a+b+c+d \neq 0$.
+
+  Therefore, there are only three matrices $A$, namely,
+  $\m{0&0\\0&0}$, $\m{1&-1\\0&0}$, and $\m{0&0\\1&-1}$.
+\end{prf}
+
+\begin{xca}
+  Prove that the interchange of two rows of a matrix can be accomplished by
+  a finite sequence of elementary row operations of the other two types.
+\end{xca}
+\begin{prf}
+  Let $A$ be a matrix with rows $R_1, R_2, \dotsc, R_n$.
+  Without loss of generality, we interchange $R_1 \harr R_2$.
+
+  We represent the matrix as $A = \m{R_1 \\ R_2 \\ \vdots \\ R_n}$ and row-reduce:
+  \begin{equation*}
+    \m{R_1 \\ R_2 \\ \vdots \\ R_n}
+    \xto{R_1 + R_2} \m{R_1 + R_2 \\ R_2 \\ \vdots \\ R_n}
+    \xto{R_2 - R_1} \m{R_1 + R_2 \\ -R_1 \\ \vdots \\ R_n}
+    \xto{R_1 + R_2} \m{R_2 \\ -R_1 \\ \vdots \\ R_n}
+    \xto{-R_2} \m{R_2 \\ R_1 \\ \vdots \\ R_n}
+  \end{equation*}
+  completing the proof.
+\end{prf}
+
+\begin{xca}
+  Consider the system of equations $AX = 0$ where \[ A = \m{a&b \\ c&d} \]
+  is a $2 \times 2$ matrix over the field $F$. Prove the following:
+  \setlength\parskip{0pt}
+  \begin{enumerate}[(a)]
+    \item If every entry of $A$ is 0, then every pair $(x_1, x_2)$ is a solution of $AX = 0$.
+    \item If $ad-bc \neq 0$, the system $AX = 0$ has only the trivial solution $x_1 = x_2 = 0$.
+    \item If $ad-bc = 0$ and some entry of $A$ is different from 0,
+          then there is a solution $(x_1^0, x_2^0)$ such that
+          $(x_1, x_2)$ is a solution if and only if there is a scalar $y$ such that
+          $x_1 = yx_1^0$ and $x_2 = yx_2^0$.
+  \end{enumerate}
+\end{xca}
+\begin{prf}
+  Suppose that every entry of $A$ is zero.
+  Then, $AX = 0$ is equivalent to the system $0x_1 + 0x_2 = 0$ and $0x_1 + 0x_2 = 0$.
+  Both equations simplify to $0 = 0$.
+  Therefore, the solution set is $(x_1, x_2)$ for any such pair, as desired in (a).
+
+  Otherwise, suppose that $ad - bc \neq 0$.
+  We can then apply the generic solution for a linear system in two equations with two unknowns
+  (see \cref{xca:homeq}):
+  \[ x_1 = \frac{d(0) - b(0)}{ad - bc} = 0 \qq{and} x_2 = \frac{a(0) - c(0)}{ad - bc} = 0 \]
+  as desired in (b).
+
+  Finally, suppose that $ad - bc = 0$ and some entry of $A$ is non-zero.
+  We take without loss of generality (through row reduction and variable symmetry) that $a \neq 0$.
+  Then, we can say $d = \frac{bc}{a}$.
+  It follows that $\frac{c}{a}(ax_1 + bx_2) = cx_1 + dx_2$.
+  Therefore, the first equation implies the second.
+
+  Now, the first equation is equivalently expressed $x_1 = -\frac{b}{a}x_2$.
+  Thus, the solutions to both equations are $(c, -\frac{b}{a}c)$ for any $c$.
+  Equivalently, with the solution $x_1^0 = 1$ and $x_2^0 = -\frac{b}{a}$,
+  they are all of the form $(yx_1^0, yx_2^0)$ for some scalar $y$, as desired in (c).
+\end{prf}
+
+\subsection{Row-Reduced Echelon Matrices}
+
+\begin{xca}
+  Find all solutions to the following system of equations by row-reducing the coefficient matrix:
+  \[ \systeme{\frac13x_1 + 2x_2 - 6x_3 = 0, -4x_1 + 5x_3 = 0, -3x_1 + 6x_2 - 13x_3 = 0, -\frac73x_1 + 2x_2 - \frac83x_3 = 0} \]
+\end{xca}
+\begin{sol}
+  Do what the problem says:
+  \begin{equation*}
+    \begin{split}
+      \m{\frac13&2&-6 \\ -4&0&5 \\ -3&6&-13 \\ -\frac73&2&-\frac83}
+      & \xto{R_1 - R_4} \m{\frac83&0&-\frac{10}3 \\ -4&0&5 \\ -3&6&-13 \\ -\frac73&2&-\frac83}
+      \xto{R_2 + \frac32 R_1} \m{\frac83&0&-\frac{10}3 \\ 0&0&0 \\ -3&6&-13 \\ -\frac73&2&-\frac83} \\
+      & \xto{R_3 - 3R_4} \m{\frac83&0&-\frac{10}3 \\ 0&0&0 \\ 4&0&-5 \\ -\frac73&2&-\frac83}
+      \xto{R_1 - \frac23 R_3} \m{0&0&0 \\ 0&0&0 \\ 4&0&-5 \\ -\frac73&2&-\frac83}
+      \xto{R_4 + \frac7{12} R_3} \m{0&0&0 \\ 0&0&0 \\ 4&0&-5 \\ 0&2&-\frac{67}{12}} \\
+      & \xto{\frac14 R_3}
+      \xto{\frac12 R_4} \m{0&0&0 \\ 0&0&0 \\ 1&0&-\frac52 \\ 0&1&-\frac{67}{24}}
+      \xto{R_1 \harr R_3}
+      \xto{R_2 \harr R_4} \m{1&0&-\frac52 \\ 0&1&-\frac{67}{24} \\ 0&0&0 \\ 0&0&0}
+    \end{split}
+  \end{equation*}
+  Therefore, $x_1 = \frac52 x_3$ and $x_2 = \frac{67}{24} x_3$,
+  so for any scalar $c$, there is a solution $(\frac52c, \frac{67}{24}c, c)$.
+\end{sol}
+
+\begin{xca}
+  Find a row-reduced echelon matrix which is row-equivalent to \[ A = \m{1&-i \\ 2&2 \\ i&1+i}. \]
+  What are the solutions of $AX = 0$?
+\end{xca}
+\begin{sol}
+  We have:
+  \begin{equation*}
+    \begin{split}
+      A & \xto{R_2 - 2R_1} \m{1&-i \\ 0&2-2i \\ i&1+i}
+      \xto{R_3 - \frac{i}{2}R_2} \m{1&-i \\ 0&2-2i \\ i&0}
+      \xto{\frac{1+i}{4}R_2}
+      \xto{-iR_3} \m{1&-i \\ 0&1 \\ 1&0} \\
+      & \xto{R_1 - R_3}
+      \xto{R_1 + iR_2} \m{0&0 \\ 0&1 \\ 1&0}
+      \xto{R_1 \harr R_3} \m{1&0 \\ 0&1 \\ 0&0}
+    \end{split}
+  \end{equation*}
+  Therefore, the only solution is the trivial one where $X$ is the zero vector.
 \end{sol}
 
 \end{document}
