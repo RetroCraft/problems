@@ -218,30 +218,30 @@
   \[ \systeme[x_1x_2]{{(1-i)}x_1 - ix_2 = 0, 2x_1 + {(1-i)}x_2 = 0} \]
 \end{xca}
 \begin{sol}
-  We express the solutions to $AX = 0$ by row-reducing $A = \m{1-i&-i\\2&i-1}$:
+  We express the solutions to $AX = 0$ by row-reducing $A = \mqty(1-i&-i\\2&i-1)$:
   \[
-    \m{1-i&-i\\2&i-1}
-    \xto{R_1 - \frac{1-i}{2}R_2} \m{0&0\\2&i-1}
-    \xto{R_1 \harr R_2} \m{2&i-1\\0&0}
-    \xto{\frac12 R_1} \m{1&\frac{i-1}{2}\\0&0}
+    \mqty(1-i&-i\\2&i-1)
+    \xto{R_1 - \frac{1-i}{2}R_2} \mqty(0&0\\2&i-1)
+    \xto{R_1 \harr R_2} \mqty(2&i-1\\0&0)
+    \xto{\frac12 R_1} \mqty(1&\frac{i-1}{2}\\0&0)
   \]
   Therefore, the solutions are $(c, \frac{i-1}{2}c)$ for any $c$.
 \end{sol}
 
 \begin{xca}
-  If \[ A = \m{3&-1&2 \\ 2&1&1 \\ 1&-3&0} \] find all solutions of $AX = 0$ by row-reducing $A$.
+  If \[ A = \mqty(3&-1&2 \\ 2&1&1 \\ 1&-3&0) \] find all solutions of $AX = 0$ by row-reducing $A$.
 \end{xca}
 \begin{sol}
   Row-reduce $A$:
   \begin{equation*}
     \begin{split}
-      \m{3&-1&2 \\ 2&1&1 \\ 1&-3&0}
-      & \xto{R_1 - 3R_3} \m{0&8&2 \\ 2&1&1 \\ 1&-3&0}
-      \xto{R_2 - 2R_3} \m{0&8&2 \\ 0&7&1 \\ 1&-3&0}
-      \xto{R_1 \harr R_3} \m{1&-3&0 \\ 0&7&1 \\ 0&8&2} \\
-      & \xto{R_2 - \frac12 R_3} \m{1&-3&0 \\ 0&3&0 \\ 0&8&2}
-      \xto{R_1 + R_3} \m{1&0&0 \\ 0&3&0 \\ 0&8&2}
-      \xto{R_3 - \frac83 R_2} \m{1&0&0 \\ 0&3&0 \\ 0&0&2}
+      \mqty(3&-1&2 \\ 2&1&1 \\ 1&-3&0)
+      & \xto{R_1 - 3R_3} \mqty(0&8&2 \\ 2&1&1 \\ 1&-3&0)
+      \xto{R_2 - 2R_3} \mqty(0&8&2 \\ 0&7&1 \\ 1&-3&0)
+      \xto{R_1 \harr R_3} \mqty(1&-3&0 \\ 0&7&1 \\ 0&8&2) \\
+      & \xto{R_2 - \frac12 R_3} \mqty(1&-3&0 \\ 0&3&0 \\ 0&8&2)
+      \xto{R_1 + R_3} \mqty(1&0&0 \\ 0&3&0 \\ 0&8&2)
+      \xto{R_3 - \frac83 R_2} \mqty(1&0&0 \\ 0&3&0 \\ 0&0&2)
     \end{split}
   \end{equation*}
   which after a few scalar multiplications is the identity matrix.
@@ -249,7 +249,7 @@
 \end{sol}
 
 \begin{xca}
-  If \[ A = \m{6&-4&0 \\ 4&-2&0 \\ -1&0&3} \]
+  If \[ A = \mqty(6&-4&0 \\ 4&-2&0 \\ -1&0&3) \]
   find all solutions of $AX = 2X$ and all solutions of $AX = 3X$.
   (The symbol $cX$ denotes the matrix each entry of which is $c$ times the corresponding entry of $X$.)
 \end{xca}
@@ -258,15 +258,15 @@
   \[ \systeme{6x - 4y = 2x, 4x - 2y = 2y, -x + 3z = 2z} \]
   which can be simplified to the homogenous system
   \[ \systeme{4x - 4y = 0, 4x - 4y = 0, -x + z = 0} \]
-  or, equivalently, $\m{4&-4&0 \\ 4&-4&0 \\ -1&0&1}X = 0$. We now row-reduce:
+  or, equivalently, $\mqty(4&-4&0 \\ 4&-4&0 \\ -1&0&1)X = 0$. We now row-reduce:
   \begin{equation*}
     \begin{split}
-      \m{4&-4&0 \\ 4&-4&0 \\ -1&0&1}
-      & \xto{R_2 - R_1} \m{4&-4&0 \\ 0&0&0 \\ -1&0&1}
-      \xto{R_1 + 4R_3} \m{0&-4&4 \\ 0&0&0 \\ -1&0&1}
-      \xto{\frac14 R_1} \m{0&-1&1 \\ 0&0&0 \\ -1&0&1} \\
-      & \xto{-R_1 \harr -R_3} \m{1&0&-1 \\ 0&0&0 \\ 0&1&-1}
-      \xto{R_2 \harr R_3} \m{1&0&-1 \\ 0&1&-1 \\ 0&0&0}
+      \mqty(4&-4&0 \\ 4&-4&0 \\ -1&0&1)
+      & \xto{R_2 - R_1} \mqty(4&-4&0 \\ 0&0&0 \\ -1&0&1)
+      \xto{R_1 + 4R_3} \mqty(0&-4&4 \\ 0&0&0 \\ -1&0&1)
+      \xto{\frac14 R_1} \mqty(0&-1&1 \\ 0&0&0 \\ -1&0&1) \\
+      & \xto{-R_1 \harr -R_3} \mqty(1&0&-1 \\ 0&0&0 \\ 0&1&-1)
+      \xto{R_2 \harr R_3} \mqty(1&0&-1 \\ 0&1&-1 \\ 0&0&0)
     \end{split}
   \end{equation*}
   This is equivalent to the equations $x - y = 0$ and $y - z = 0$, so $x = y = z$, that is,
@@ -283,19 +283,19 @@
 
 \begin{xca}
   Find a row-reduced matrix which is row-equivalent to
-  \[ A = \m{i&-(1+i)&0 \\ 1&-2&1 \\ 1&2i&-1} \]
+  \[ A = \mqty(i&-(1+i)&0 \\ 1&-2&1 \\ 1&2i&-1) \]
 \end{xca}
 \begin{sol}
   We row-reduce by elementary row operations:
   \begin{equation*}
     \begin{split}
-      \m{i&-(1+i)&0 \\ 1&-2&1 \\ 1&2i&-1}
-      & \xto{R_2 + iR_1} \m{i&-1-i&0 \\ 0&-1-i&1 \\ 1&2i&-1}
-      \xto{R_3 + iR_1} \m{i&-1-i&0 \\ 0&-1-i&1 \\ 0&1+i&-1} \\
-      & \xto{R_1 + R_3} \m{i&0&-1 \\ 0&-1-i&1 \\ 0&1+i&-1}
-      \xto{R_3 + R_2} \m{i&0&-1 \\ 0&-1-i&1 \\ 0&0&0} \\
-      & \xto{-iR_1} \m{1&0&i \\ 0&-1-i&1 \\ 0&0&0}
-      \xto{-\frac{1-i}{2}R_2} \m{1&0&i \\ 0&1&-\frac{1-i}{2} \\ 0&0&0}
+      \mqty(i&-(1+i)&0 \\ 1&-2&1 \\ 1&2i&-1)
+      & \xto{R_2 + iR_1} \mqty(i&-1-i&0 \\ 0&-1-i&1 \\ 1&2i&-1)
+      \xto{R_3 + iR_1} \mqty(i&-1-i&0 \\ 0&-1-i&1 \\ 0&1+i&-1) \\
+      & \xto{R_1 + R_3} \mqty(i&0&-1 \\ 0&-1-i&1 \\ 0&1+i&-1)
+      \xto{R_3 + R_2} \mqty(i&0&-1 \\ 0&-1-i&1 \\ 0&0&0) \\
+      & \xto{-iR_1} \mqty(1&0&i \\ 0&-1-i&1 \\ 0&0&0)
+      \xto{-\frac{1-i}{2}R_2} \mqty(1&0&i \\ 0&1&-\frac{1-i}{2} \\ 0&0&0)
     \end{split}
   \end{equation*}
   which is in row-reduced form.
@@ -303,19 +303,19 @@
 
 \begin{xca}
   Prove that the following two matrices are not row-equivalent:
-  \[ A = \m{2&0&0 \\ a&-1&0 \\ b&c&3} \qq{and} B = \m{1&1&2 \\ -2&0&1 \\ 1&3&5} \]
+  \[ A = \mqty(2&0&0 \\ a&-1&0 \\ b&c&3) \qq{and} B = \mqty(1&1&2 \\ -2&0&1 \\ 1&3&5) \]
 \end{xca}
 \begin{sol}
   We row-reduce the two matrices and compare them.
   Consider matrix $A$:
   \begin{equation*}
     \begin{split}
-      A & \xto{\frac12 R_1} \m{1&0&0 \\ a&-1&0 \\ b&c&3}
-      \xto{R_2 - aR_1} \m{1&0&0 \\ 0&-1&0 \\ b&c&3}
-      \xto{-R_2} \m{1&0&0 \\ 0&1&0 \\ b&c&3} \\
-      & \xto{R_3 - bR_1} \m{1&0&0 \\ 0&1&0 \\ 0&c&3}
-      \xto{R_3 - cR_2} \m{1&0&0 \\ 0&1&0 \\ 0&0&3}
-      \xto{\frac13 R_3} \m{1&0&0 \\ 0&1&0 \\ 0&0&1}
+      A & \xto{\frac12 R_1} \mqty(1&0&0 \\ a&-1&0 \\ b&c&3)
+      \xto{R_2 - aR_1} \mqty(1&0&0 \\ 0&-1&0 \\ b&c&3)
+      \xto{-R_2} \mqty(1&0&0 \\ 0&1&0 \\ b&c&3) \\
+      & \xto{R_3 - bR_1} \mqty(1&0&0 \\ 0&1&0 \\ 0&c&3)
+      \xto{R_3 - cR_2} \mqty(1&0&0 \\ 0&1&0 \\ 0&0&3)
+      \xto{\frac13 R_3} \mqty(1&0&0 \\ 0&1&0 \\ 0&0&1)
     \end{split}
   \end{equation*}
   Therefore, the equation $AX = 0$ has one solution $(0,0,0)$.
@@ -323,11 +323,11 @@
   Now, consider matrix $B$:
   \begin{equation*}
     \begin{split}
-      B & \xto{R_2 + 2R_1} \m{1&1&2 \\ 0&2&3 \\ 1&3&5}
-      \xto{R_3 - R_1} \m{1&1&2 \\ 0&2&3 \\ 0&2&3}
-      \xto{R_3 - R_2} \m{1&1&2 \\ 0&2&3 \\ 0&0&0} \\
-      & \xto{\frac12 R_2} \m{1&1&2 \\ 0&1&\frac32 \\ 0&0&0}
-      \xto{R_1 - R_2} \m{1&0&\frac12 \\ 0&1&\frac32 \\ 0&0&0}
+      B & \xto{R_2 + 2R_1} \mqty(1&1&2 \\ 0&2&3 \\ 1&3&5)
+      \xto{R_3 - R_1} \mqty(1&1&2 \\ 0&2&3 \\ 0&2&3)
+      \xto{R_3 - R_2} \mqty(1&1&2 \\ 0&2&3 \\ 0&0&0) \\
+      & \xto{\frac12 R_2} \mqty(1&1&2 \\ 0&1&\frac32 \\ 0&0&0)
+      \xto{R_1 - R_2} \mqty(1&0&\frac12 \\ 0&1&\frac32 \\ 0&0&0)
     \end{split}
   \end{equation*}
   Therefore, the equation $BX = 0$ has the solutions $(-\frac12c, -\frac32c, c)$ for any $c$.
@@ -336,30 +336,30 @@
 \end{sol}
 
 \begin{xca}
-  Let \[ A = \m{a&b\\c&d} \] be a $2 \times 2$ matrix with complex entries.
+  Let \[ A = \mqty(a&b\\c&d) \] be a $2 \times 2$ matrix with complex entries.
   Suppose that $A$ is row-reduced and also that $a+b+c+d=0$.
   Prove that there are exactly three such matrices.
 \end{xca}
 \begin{prf}
-  For $A$ to be row-reduced, the first row is all zero, begins with a 1, or is $\m{0&1}$.
+  For $A$ to be row-reduced, the first row is all zero, begins with a 1, or is $\mqty(0&1)$.
 
   If the first row is zero ($a = 0$ and $b = 0$), then $c+d = 0$.
   Likewise, the second row must either be zero (in which case $c = d = 0$),
   begin with a 1 (in which case $c = 1$ and $d = -1$),
-  or be $\m{0&1}$ (but $c+d = 0$).
-  This gives two options: $A = \m{0&0\\0&0}$ and $\m{0&0\\1&-1}$.
+  or be $\mqty(0&1)$ (but $c+d = 0$).
+  This gives two options: $A = \mqty(0&0\\0&0)$ and $\mqty(0&0\\1&-1)$.
 
   If the first row begins with 1, then $c = 0$ and $b+d = -1$.
   Again, the second row is either zero (so $b = -1$ and $d = 0$),
   begin with a 1 (but $c = 0$),
-  or be $\m{0&1}$ (but then $a$ cannot be 1).
-  This also gives two options: $A = \m{0&0\\0&0}$ and $\m{1&-1\\0&0}$.
+  or be $\mqty(0&1)$ (but then $a$ cannot be 1).
+  This also gives two options: $A = \mqty(0&0\\0&0)$ and $\mqty(1&-1\\0&0)$.
 
-  Finally, if the first row is $\m{0&1}$, the second row must be $\m{0&0}$,
+  Finally, if the first row is $\mqty(0&1)$, the second row must be $\mqty(0&0)$,
   but then $a+b+c+d \neq 0$.
 
   Therefore, there are only three matrices $A$, namely,
-  $\m{0&0\\0&0}$, $\m{1&-1\\0&0}$, and $\m{0&0\\1&-1}$.
+  $\mqty(0&0\\0&0)$, $\mqty(1&-1\\0&0)$, and $\mqty(0&0\\1&-1)$.
 \end{prf}
 
 \begin{xca}
@@ -370,19 +370,19 @@
   Let $A$ be a matrix with rows $R_1, R_2, \dotsc, R_n$.
   Without loss of generality, we interchange $R_1 \harr R_2$.
 
-  We represent the matrix as $A = \m{R_1 \\ R_2 \\ \vdots \\ R_n}$ and row-reduce:
+  We represent the matrix as $A = \mqty(R_1 \\ R_2 \\ \vdots \\ R_n)$ and row-reduce:
   \begin{equation*}
-    \m{R_1 \\ R_2 \\ \vdots \\ R_n}
-    \xto{R_1 + R_2} \m{R_1 + R_2 \\ R_2 \\ \vdots \\ R_n}
-    \xto{R_2 - R_1} \m{R_1 + R_2 \\ -R_1 \\ \vdots \\ R_n}
-    \xto{R_1 + R_2} \m{R_2 \\ -R_1 \\ \vdots \\ R_n}
-    \xto{-R_2} \m{R_2 \\ R_1 \\ \vdots \\ R_n}
+    \mqty(R_1 \\ R_2 \\ \vdots \\ R_n)
+    \xto{R_1 + R_2} \mqty(R_1 + R_2 \\ R_2 \\ \vdots \\ R_n)
+    \xto{R_2 - R_1} \mqty(R_1 + R_2 \\ -R_1 \\ \vdots \\ R_n)
+    \xto{R_1 + R_2} \mqty(R_2 \\ -R_1 \\ \vdots \\ R_n)
+    \xto{-R_2} \mqty(R_2 \\ R_1 \\ \vdots \\ R_n)
   \end{equation*}
   completing the proof.
 \end{prf}
 
 \begin{xca}
-  Consider the system of equations $AX = 0$ where \[ A = \m{a&b \\ c&d} \]
+  Consider the system of equations $AX = 0$ where \[ A = \mqty(a&b \\ c&d) \]
   is a $2 \times 2$ matrix over the field $F$. Prove the following:
   \setlength\parskip{0pt}
   \begin{enumerate}[(a)]
@@ -428,16 +428,16 @@
   Do what the problem says:
   \begin{equation*}
     \begin{split}
-      \m{\frac13&2&-6 \\ -4&0&5 \\ -3&6&-13 \\ -\frac73&2&-\frac83}
-      & \xto{R_1 - R_4} \m{\frac83&0&-\frac{10}3 \\ -4&0&5 \\ -3&6&-13 \\ -\frac73&2&-\frac83}
-      \xto{R_2 + \frac32 R_1} \m{\frac83&0&-\frac{10}3 \\ 0&0&0 \\ -3&6&-13 \\ -\frac73&2&-\frac83} \\
-      & \xto{R_3 - 3R_4} \m{\frac83&0&-\frac{10}3 \\ 0&0&0 \\ 4&0&-5 \\ -\frac73&2&-\frac83}
-      \xto{R_1 - \frac23 R_3} \m{0&0&0 \\ 0&0&0 \\ 4&0&-5 \\ -\frac73&2&-\frac83}
-      \xto{R_4 + \frac7{12} R_3} \m{0&0&0 \\ 0&0&0 \\ 4&0&-5 \\ 0&2&-\frac{67}{12}} \\
+      \mqty(\frac13&2&-6 \\ -4&0&5 \\ -3&6&-13 \\ -\frac73&2&-\frac83)
+      & \xto{R_1 - R_4} \mqty(\frac83&0&-\frac{10}3 \\ -4&0&5 \\ -3&6&-13 \\ -\frac73&2&-\frac83)
+      \xto{R_2 + \frac32 R_1} \mqty(\frac83&0&-\frac{10}3 \\ 0&0&0 \\ -3&6&-13 \\ -\frac73&2&-\frac83) \\
+      & \xto{R_3 - 3R_4} \mqty(\frac83&0&-\frac{10}3 \\ 0&0&0 \\ 4&0&-5 \\ -\frac73&2&-\frac83)
+      \xto{R_1 - \frac23 R_3} \mqty(0&0&0 \\ 0&0&0 \\ 4&0&-5 \\ -\frac73&2&-\frac83)
+      \xto{R_4 + \frac7{12} R_3} \mqty(0&0&0 \\ 0&0&0 \\ 4&0&-5 \\ 0&2&-\frac{67}{12}) \\
       & \xto{\frac14 R_3}
-      \xto{\frac12 R_4} \m{0&0&0 \\ 0&0&0 \\ 1&0&-\frac52 \\ 0&1&-\frac{67}{24}}
+      \xto{\frac12 R_4} \mqty(0&0&0 \\ 0&0&0 \\ 1&0&-\frac52 \\ 0&1&-\frac{67}{24})
       \xto{R_1 \harr R_3}
-      \xto{R_2 \harr R_4} \m{1&0&-\frac52 \\ 0&1&-\frac{67}{24} \\ 0&0&0 \\ 0&0&0}
+      \xto{R_2 \harr R_4} \mqty(1&0&-\frac52 \\ 0&1&-\frac{67}{24} \\ 0&0&0 \\ 0&0&0)
     \end{split}
   \end{equation*}
   Therefore, $x_1 = \frac52 x_3$ and $x_2 = \frac{67}{24} x_3$,
@@ -445,23 +445,142 @@
 \end{sol}
 
 \begin{xca}
-  Find a row-reduced echelon matrix which is row-equivalent to \[ A = \m{1&-i \\ 2&2 \\ i&1+i}. \]
+  Find a row-reduced echelon matrix which is row-equivalent to \[ A = \mqty(1&-i \\ 2&2 \\ i&1+i). \]
   What are the solutions of $AX = 0$?
 \end{xca}
 \begin{sol}
   We have:
   \begin{equation*}
     \begin{split}
-      A & \xto{R_2 - 2R_1} \m{1&-i \\ 0&2-2i \\ i&1+i}
-      \xto{R_3 - \frac{i}{2}R_2} \m{1&-i \\ 0&2-2i \\ i&0}
+      A & \xto{R_2 - 2R_1} \mqty(1&-i \\ 0&2-2i \\ i&1+i)
+      \xto{R_3 - \frac{i}{2}R_2} \mqty(1&-i \\ 0&2-2i \\ i&0)
       \xto{\frac{1+i}{4}R_2}
-      \xto{-iR_3} \m{1&-i \\ 0&1 \\ 1&0} \\
+      \xto{-iR_3} \mqty(1&-i \\ 0&1 \\ 1&0) \\
       & \xto{R_1 - R_3}
-      \xto{R_1 + iR_2} \m{0&0 \\ 0&1 \\ 1&0}
-      \xto{R_1 \harr R_3} \m{1&0 \\ 0&1 \\ 0&0}
+      \xto{R_1 + iR_2} \mqty(0&0 \\ 0&1 \\ 1&0)
+      \xto{R_1 \harr R_3} \mqty(1&0 \\ 0&1 \\ 0&0)
     \end{split}
   \end{equation*}
   Therefore, the only solution is the trivial one where $X$ is the zero vector.
 \end{sol}
+
+\begin{xca}
+  Describe explicitly all $2 \times 2$ row-reduced echelon matrices.
+\end{xca}
+\begin{prf}
+  Trivially, the zero matrix is in row-reduced echelon form.
+
+  If only one entry is non-zero, then row multiplication gives $\mqty(1&0\\0&0)$ or $\mqty(0&1\\0&0)$.
+
+  If two diagonal entries are non-zero, row multiplication and interchange gives $I$.
+
+  If three entries are non-zero and the zero entry is in the bottom-right, row reduction gives
+  \begin{equation*}
+    \mqty(a&b \\ c&0) \xto{R_2 - \frac{c}{a}R_1} \mqty(a&b \\ 0&0) \xto{\frac{1}{a}R_2} \mqty(1&\frac{b}{a} \\ 0&0)
+  \end{equation*}
+  The other three cases likewise reduce to $I$.
+
+  Therefore, $2 \times 2$ row-reduced echelon matrices are $0^{2\times2}$, $I$,
+  or $\mqty(1&c \\ 0&0)$ for some scalar $c$.
+\end{prf}
+
+\begin{xca}
+  Consider the system of equations
+  \[ \systeme{x_1 - x_2 + 2x_3 = 1, 2x_1 + 2x_3 = 1, x_1 - 3x_2 + 4x_3 = 2} \]
+  Does this system have a solution? If so, describe explicitly all solutions.
+\end{xca}
+\begin{prf}
+  We row-reduce the augmented matrix of the system:
+  \begin{equation*}
+    \begin{split}
+      \mqty(1&-1&2&1 \\ 2&0&2&1 \\ 1&-3&4&2)
+      & \xto{R_2 - R_1} \mqty(1&-1&2&1 \\ 1&1&0&0 \\ 1&-3&4&2)
+      \xto{R_3 - 2R_1} \mqty(1&-1&2&1 \\ 1&1&0&0 \\ -1&-1&0&0) \\
+      & \xto{R_3 + R_2} \mqty(1&-1&2&1 \\ 1&1&0&0 \\ 0&0&0&0)
+      \xto{R_1 + R_2} \mqty(2&0&2&1 \\ 1&1&0&0 \\ 0&0&0&0) \\
+      & \xto{\frac12 R_1} \mqty(1&0&1&\frac12 \\ 1&1&0&0 \\ 0&0&0&0)
+      \xto{R_2 - R_1} \mqty(1&0&1&\frac12 \\ 0&1&-1&-\frac12 \\ 0&0&0&0)
+    \end{split}
+  \end{equation*}
+  Therefore, $x_1 + x_3 = \frac12$ and $x_2 - x_3 = -\frac12$.
+  Solving this system, $x_1 = -x_2$ and $x_3 = x_2 + \frac12$.
+  Thus, we have the solution set $(-c,c,c+\frac12)$ for all $c$.
+\end{prf}
+
+\begin{xca}
+  Give an example of a system of two linear equations in two unknowns which has no solution.
+\end{xca}
+\begin{sol}
+  The system $x_1 + x_2 = 1$ and $x_1 + x_2 = 2$ has no solution, since $1 \neq 2$.
+\end{sol}
+
+\begin{xca}
+  Show that the system
+  \[ \systeme{x_1 - 2x_2 + x_3 + 2x_4 = 1, x_1 + x_2 - x_3 + x_4 = 2, x_1 + 7x_2 - 5x_3 - x_4 = 3} \]
+  has no solution.
+\end{xca}
+\begin{prf}
+  We apply elementary row operations to the augmented matrix of the system:
+  \begin{equation*}
+    \mqty(1&-2&1&2&1 \\ 1&1&-1&1&2 \\ 1&7&-5&-1&3)
+    \xto{R_3 - R_2}
+    \xto{R_2 - R_1}
+    \xto{R_3 - 2R_2} \mqty(1&-2&1&2&1 \\ 0&3&-2&-1&1 \\ 0&0&0&0&-1)
+  \end{equation*}
+  Clearly, $0 \neq -1$, so there are no solutions to this system.
+\end{prf}
+
+\begin{xca}
+  Find all solutions of
+  \[
+    \systeme{
+      2x_1 - 3x_2 - 7x_3 + 5x_4 + 2x_5 = -2,
+      x_1 - 2x_2 - 4x_3 + 3x_4 + x_5 = -2,
+      2x_1 - 4x_3 + 2x_4 + x_5 = 3,
+      x_1 - 5x_2 - 7x_3 + 6x_4 + 2x_5 = -7
+    }
+  \]
+\end{xca}
+\begin{sol}
+  Row-reduce the (very big) augmented matrix of the system:
+  \begin{equation*}
+    \begin{split}
+      & \mqty(2&-3&-7&5&2&-2 \\ 1&-2&-4&3&1&-2 \\ 2&0&-4&2&1&3 \\ 1&-5&-7&6&2&-7)
+      \xto{R_1 - R_4} \mqty(1&2&0&-1&0&5 \\ 1&-2&-4&3&1&-2 \\ 2&0&-4&2&1&3 \\ 1&-5&-7&6&2&-7) \\
+      & \xto{R_2 - R_3} \mqty(1&2&0&-1&0&5 \\ -1&-2&0&1&0&-5 \\ 2&0&-4&2&1&3 \\ 1&-5&-7&6&2&-7)
+      \xto{R_2 + R_1} \mqty(1&2&0&-1&0&5 \\ 0&0&0&0&0&0 \\ 2&0&-4&2&1&3 \\ 1&-5&-7&6&2&-7) \\
+      & \xto{R_4 - R_1} \mqty(1&2&0&-1&0&5 \\ 0&0&0&0&0&0 \\ 2&0&-4&2&1&3 \\ 0&-7&-7&7&2&12)
+      \xto{R_3 - 2R_1} \mqty(1&2&0&-1&0&5 \\ 0&0&0&0&0&0 \\ 0&-4&-4&4&1&-7 \\ 0&-7&-7&7&2&12) \\
+      & \xto{R_3 - \frac47 R_4} \mqty(1&2&0&-1&0&5 \\ 0&0&0&0&0&0 \\ 0&0&0&0&-\frac17&-\frac17 \\ 0&-7&-7&7&2&12)
+      \xto{-7R_3} \xto{R_4 - 2R_3} \xto{-\frac17 R_4}
+      \mqty(1&2&0&-1&0&5 \\ 0&0&0&0&0&0 \\ 0&0&0&0&1&1 \\ 0&1&1&-1&0&2) \\
+      & \xto{R_1 - 2R_4} \xto{R_2 \harr R_4}
+      \mqty(1&0&-2&1&0&1 \\ 0&1&1&-1&0&2 \\ 0&0&0&0&1&1 \\ 0&0&0&0&0&0)
+    \end{split}
+  \end{equation*}
+  Therefore, $x_1 = 2x_3 - x_4 + 1$, $x_2 = -x_3 + x_4 + 2$, and $x_5 = 1$.
+  The solutions are $(2c_1 - c_2 + 1, c_2 - c_1 + 2, c_1, c_2, 1)$ for arbitrary $c_1$ and $c_2$.
+\end{sol}
+
+\begin{xca}
+  Let $A = \mqty(3&-1&2 \\ 2&1&1 \\ 1&-3&0)$.
+
+  For which triples $(y_1, y_2, y_3)$ does the system $AX = Y$ have a solution?
+\end{xca}
+\begin{prf}
+  We row-reduce the coefficient matrix:
+  \begin{equation*}
+    \begin{split}
+      & \mqty(3&-1&2 \\ 2&1&1 \\ 1&-3&0)
+      \xto{R_1 - 3R_3} \mqty(0&8&2 \\ 2&1&1 \\ 1&-3&0)
+      \xto{R_2 - 2R_3} \mqty(0&8&2 \\ 0&7&1 \\ 1&-3&0)
+      \xto{R_1 - R_2} \mqty(0&1&1 \\ 0&7&1 \\ 1&-3&0) \\
+      & \xto{R_2 - 7R_1} \xto{-\frac16 R_2} \mqty(0&1&1 \\ 0&0&1 \\ 1&-3&0)
+      \xto{R_1 - R_2} \xto{R_3 + 3R_1} \xto{R_1 \harr R_2} \xto{R_2 \harr R_3}
+      \mqty(\imat{3})
+    \end{split}
+  \end{equation*}
+  Therefore, solutions exist for any triple $(y_1, y_2, y_3)$.
+\end{prf}
 
 \end{document}
