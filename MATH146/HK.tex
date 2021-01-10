@@ -7,6 +7,8 @@
 
 \section{Linear Equations}
 \subsection{Fields}\label{sec:fields}
+Notational note: Hoffman \& Kunze prefer italic $F$ to blackboard $\F$.
+
 \subsection{Systems of Linear Equations}
 
 \xca{Verify that the set of complex numbers described in Example 1.2.4 is a subfield of $C$.}
@@ -102,7 +104,7 @@
   Verify that the set $F$, together with these two operations, is a field.
 \end{xca}
 \begin{prf}
-  We prove the nine properties from \cref{sec:fields}:
+  We prove the nine properties from \Cref{sec:fields}:
   \begin{enumerate}
     \item Consider the only case of distinct $x$ and $y$ in $F$, $0 + 1 = 1 + 0 = 1$.
     \item Exhaust the 8 cases:
@@ -196,7 +198,7 @@
   Prove that each field of characteristic zero contains a copy of the rational number field.
 \end{xca}
 \begin{prf}
-  As in \cref{xca:ratsf}, it suffices to embed the integers.
+  As in \Cref{xca:ratsf}, it suffices to embed the integers.
   Let $(F, +_F, \cdot_F)$ be a field of characteristic zero and $n$ be a non-negative integer.
   Then, there is an additive identity $1_F$.
   Let $n_F = 1_F + 1_F + \dotsb + 1_F$ with $|n|$ copies of $1_F$.
@@ -400,7 +402,7 @@
 
   Otherwise, suppose that $ad - bc \neq 0$.
   We can then apply the generic solution for a linear system in two equations with two unknowns
-  (see \cref{xca:homeq}):
+  (see \Cref{xca:homeq}):
   \[ x_1 = \frac{d(0) - b(0)}{ad - bc} = 0 \qq{and} x_2 = \frac{a(0) - c(0)}{ad - bc} = 0 \]
   as desired in (b).
 
@@ -585,7 +587,7 @@
 
 \begin{xca}
   Let $A = \mqty[3&-6&2&-1 \\ -2&4&1&3 \\ 0&0&1&1 \\ 1&-2&1&0]$.
-  
+
   For which $(y_1, y_2, y_3, y_4)$ does the system of equations $AX = Y$ have a solution?
 \end{xca}
 \begin{sol}
@@ -619,6 +621,8 @@ Even though Hoffman \& Kunze define matrix multiplication in summation notation,
 I use the ``column vector'' (loosly, since vectors are not introduced until Chapter 2) definition
 from Wolczuk's MATH 136 Course Notes to avoid confusing myself.
 
+These are shown to be equivalent in \Cref{xca:vecmult} anyways.
+
 \begin{xca}
   Let $A = \mqty[2&-1&1 \\ 1&2&1]$, $B = \mqty[3\\1\\-1]$, and $C = \mqty[1&-1]$.
 
@@ -631,7 +635,7 @@ from Wolczuk's MATH 136 Course Notes to avoid confusing myself.
   Likewise, $AB = \mqty[4\\4]$, so $CAB = \mqty[4-4] = \mqty[0]$.
 \end{sol}
 
-\begin{xca}
+\begin{xca}\label{xca:152}
   Let $A = \mqty[1&-1&1 \\ 2&0&1 \\ 3&0&1]$ and $B = \mqty[2&-2 \\ 1&3 \\ 4&4]$.
 
   Verify directly that $A(AB) = A^2B$.
@@ -644,7 +648,7 @@ from Wolczuk's MATH 136 Course Notes to avoid confusing myself.
   On the right-hand side, $A^2 = \mqty[A\mqty[1\\2\\3] & A\mqty[-1\\0\\0] & A\mqty[1\\1\\1]] = \mqty[2&-1&1 \\ 5&-2&3 \\ 6&-3&4]$.
 
   Then, $A^2B = \mqty[A^2\mqty[2\\1\\4] & A^2\mqty[-2\\3\\4]] = \mqty[7&-3 \\ 20&-4 \\ 25&-5]$.
-  
+
   The calculations agree.
 \end{sol}
 
@@ -659,5 +663,213 @@ from Wolczuk's MATH 136 Course Notes to avoid confusing myself.
 
   Two examples of this are $\mqty[0&0\\1&0]$ and $\mqty[0&0\\2&0]$.
 \end{sol}
+
+\begin{xca}
+  For the matrix $A$ of \Cref{xca:152}, find elementary matrices $E_1, E_2, \dotsc E_k$
+  such that $E_k \dotsm E_2 E_1 A = I$.
+\end{xca}
+\begin{sol}
+  Recall from Theorem 1.9 that every elementary row operation is equivalent to multiplication
+  by an elementary matrix.
+  We row-reduce $A$ to the identity matrix, then list the equivalent matrices:
+  \begin{equation*}
+    \begin{split}
+      & \mqty[1&-1&1 \\ 2&0&1 \\ 3&0&1]
+      \xto{R_2 - 2R_1} \mqty[1&-1&1 \\ 0&2&-1 \\ 3&0&1]
+      \xto{R_3 - 3R_1} \mqty[1&-1&1 \\ 0&2&-1 \\ 0&3&-2]
+      \xto{R_3 - R_2} \mqty[1&-1&1 \\ 0&2&-1 \\ 0&1&0] \\
+      & \xto{R_2 - 2R_3} \mqty[1&-1&1 \\ 0&0&-1 \\ 0&1&0]
+      \xto{-R_2} \mqty[1&-1&1 \\ 0&0&1 \\ 0&1&0]
+      \xto{R_2 \harr R_3} \mqty[1&-1&1 \\ 0&1&0 \\ 0&0&1]
+      \xto{R_1 - R_3} \xto{R_1 + R_2} I
+    \end{split}
+  \end{equation*}
+  Then, we have the elementary matrix multiplication
+  \begin{equation*}
+    \smqty[1&1&0\\0&1&0\\0&0&1]\smqty[1&0&-1\\0&1&0\\0&0&1]\smqty[1&0&0\\0&0&1\\0&1&0]
+    \smqty[1&0&0\\0&-1&0\\0&0&1]\smqty[1&0&0\\0&1&-2\\0&0&1]\smqty[1&0&0\\0&1&0\\0&-1&1]
+    \smqty[1&0&0\\0&1&0\\-3&0&1]\smqty[1&0&0\\-2&1&0\\0&0&1]A = I \qedhere
+  \end{equation*}
+\end{sol}
+
+\begin{xca}
+  Let $A = \mqty[1&-1\\2&2\\1&0]$ and $B = \mqty[3&1\\4&-4]$.
+
+  Is there a matrix $C$ such that $CA = B$?
+\end{xca}
+\begin{sol}
+  The matrix $C$, if it exists, must be $3 \times 2$. Then,
+  \[ \mqty[a&b&c\\d&e&f]\mqty[1&-1\\2&2\\1&0] = \mqty[a+2b+c&-a+2b\\d+2e+f&-d+2e] = \mqty[3&1\\4&-4] \]
+  We solve two systems of linear equations:
+  \[ \systeme{a+2b+c=3,-a+2b=1} \qq{and} \systeme{d+2e+f=4,-d+2e=-4} \]
+  These are pretty simple and can be solved by inspection.
+  For arbitrary $a$ and $d$, we have $b = \frac{1+a}{2}$, $c = 2-2a$, $e = \frac{d-4}{2}$, and $f = 8-2d$.
+  We pick a matrix $C$ with $a = d = 0$ and verify that
+  \[ \mqty[0&\frac12&2\\0&-2&8]\mqty[1&-1\\2&2\\1&0] = \mqty[3&1\\4&-4] \]
+  as desired.
+\end{sol}
+
+\begin{xca}\label{xca:vecmult}
+  Let $A$ be an $m \times n$ matrix and $B$ an $n \times k$ matrix.
+  Show that the columns of $C = AB$ are linear combinations of the columns of $A$.
+  If $\alpha_1,\dotsc,\alpha_n$ are the columns of $A$ and $\gamma_1,\dotsc,\gamma_k$ are the columns of $C$,
+  then \[ \gamma_i = \sum_{r=1}^n B_{rj}\alpha_r. \]
+\end{xca}
+\begin{prf}
+  We are essentially asking to equate the standard definition of matrix multiplication with
+  the column vector-wise one from MATH 136.
+
+  We have that $C_{ij} = \sum_{r=1}^n A_{ir}B_{rj}$.
+  Then, by properties of matrix addition and matrix-scalar multiplication,
+  \begin{equation*}
+    \gamma_j = \mqty[C_{0j} \\ C_{1j} \\ \vdots \\ C_{kj}]
+    = \mqty[\sum_{r=1}^n A_{0r}B_{rj} \\ \sum_{r=1}^n A_{1r}B_{rj} \\ \vdots \\ \sum_{r=1}^n A_{kr}B_{rj}]
+    = \sum_{r=1}^n B_{rj} \mqty[A_{0r} \\ A_{1r} \\ \vdots \\ A_{kr}]
+    = \sum_{r=1}^n B_{rj} \alpha_r
+  \end{equation*}
+  as desired.
+\end{prf}
+
+% \begin{xca}
+%   Let $A$ and $B$ be $2 \times 2$ matrices such that $AB = I$. Prove that $BA = I$.
+% \end{xca}
+% TODO: 1.5.7 (follows from invertability but idk how to do otherwise)
+
+% \begin{xca}
+%   Let \[ C = \mqty[C_{11}&C_{12}\\C_{21}&C_{22}] \] be a $2 \times 2$ matrix.
+%   We inquire when it is possible to find $2 \times 2$ matrices $A$ and $B$ such that $C = AB - BA$.
+%   Prove that such matrices can be found if and only if $C_{11} + C_{22} = 0$.
+% \end{xca}
+% TODO: 1.5.8
+
+\subsection{Invertible Matrices}
+
+\begin{xca}\label{xca:rpa}
+  Let $A = \mqty[1&1&1&0 \\ -1&0&3&5 \\ 1&-2&1&1]$.
+
+  Find a row-reduced echelon matrix $R$ which is row-equivalent to $A$
+  and an invertible $3 \times 3$ matrix $P$ such that $R = PA$.
+\end{xca}
+\begin{sol}
+  We row-reduce the matrix $A$, repeating the operations with $I$:
+  \begin{equation*}
+    \begin{split}
+      & \bmqty[cccc|ccc]{1&2&1&0 & 1&0&0 \\ -1&0&3&5 & 0&1&0 \\ 1&-2&1&1 & 0&0&1}
+      \to \bmqty[cccc|ccc]{1&0&-3&-5 & 0&-1&0 \\ 1&-2&1&1 & 0&0&1 \\ 1&2&1&0 & 1&0&0} \\
+      & \to \bmqty[cccc|ccc]{1&0&-3&-5 & 0&-1&0 \\ 0&-2&4&6 & 0&1&1 \\ 0&2&4&5 & 1&1&0}
+      \to \bmqty[cccc|ccc]{1&0&-3&-5 & 0&-1&0 \\ 0&1&-2&-3 & 0&-\frac12&-\frac12 \\ 0&0&8&11 & 1&2&1} \\
+      & \to \bmqty[cccc|ccc]{1&0&0&-\frac78 & \frac38&-\frac14&\frac38 \\ 0&1&0&-\frac14 & \frac14&0&-\frac14 \\ 0&0&1&\frac{11}8 & \frac18&\frac14&\frac18}
+    \end{split}
+  \end{equation*}
+  Therefore, we let $R = \mqty[\mqty{\imat{3}} & \mqty{-\frac78\\-\frac14\\\frac{11}8}]$,
+  and $P = \mqty[\frac38&-\frac14&\frac38 \\ \frac14&0&-\frac14 \\ \frac18&\frac14&\frac18]$.
+  It follows that $R = PA$, and as a product of invertible elementary matrices, $P$ is invertible.
+\end{sol}
+
+\setcounter{section}{7}
+\section{Inner Product Spaces}
+
+\subsection{Inner Products}
+
+Notational note: Hoffman \& Kunze use the notation $\ip{\alpha}{\beta}$ for the inner product of vectors $\alpha$ and $\beta$,
+whereas Wolczuk would prefer $\ev{\vb{a}, \vb{b}}$ for vectors $\vb a$ and $\vb b$.
+
+\begin{xca}
+  Let $V$ be a vector space and $\ip{\quad}$ an inner product on $V$.
+  Show that (a) $\ip{0}{\beta}=0$ for all $\beta$ in $V$ and (b) if $\ip{\alpha}{\beta} = 0$ for all $\beta$ in $V$, then $\alpha = 0$.
+\end{xca}
+\begin{prf}
+  For the first part, let $\alpha$ and $\beta \in V$.
+  Consider the quantity $\ip{0\alpha}{\beta}$.
+  It follows from linearity that $0\ip{\alpha}{\beta} = \ip{0}{\beta} = 0$.
+
+  Now, suppose that $\ip{\alpha}{\beta} = 0$.
+  Indeed, as $\beta$ is arbitrary, this holds when $\beta = \alpha$.
+  Then, $\ip{\alpha} = 0$.
+  However, since inner products are positive definite, $\alpha = 0$.
+\end{prf}
+
+\begin{xca}
+  Let $V$ be a vector space over $F$.
+  Show that the sum of two inner products on $V$ is an inner product on $V$.
+  Is the difference of two inner products an inner product?
+  Show that a positive multiple of an inner product is an inner product.
+\end{xca}
+\begin{prf}
+  Let $p_1(\alpha,\beta)$ and $p_2(\alpha,\beta)$ be inner products on $V$.
+
+  Now, let $s(\alpha,\beta) = p_1(\alpha, \beta) + p_2(\alpha, \beta)$.
+  Then, we show the axioms of an inner product:
+  \begin{align*}
+    s(\alpha+\beta,\gamma)
+     & = p_1(\alpha+\beta,\gamma)+p_2(\alpha+\beta,\gamma)                                   \\
+     & = p_1(\alpha,\gamma) + p_1(\beta,\gamma) + p_2(\alpha,\gamma) + p_2(\beta,\gamma)     \\
+     & = (p_1(\alpha,\gamma) + p_2(\alpha,\gamma)) + (p_1(\beta,\gamma) + p_2(\beta,\gamma)) \\
+     & = s(\alpha,\gamma) + s(\beta,\gamma)                                                  \\
+    s(c\alpha, \beta)
+     & = p_1(c\alpha, \beta) + p_2(c\alpha, \beta)                                           \\
+     & = cp_1(\alpha,\beta) + cp_2(\alpha,\beta)                                             \\
+     & = cs(\alpha,\beta)                                                                    \\
+    s(\beta,\alpha)
+     & = p_1(\beta,\alpha) + p_2(\beta,\alpha)                                               \\
+     & = \overline{p_1(\alpha,\beta)} + \overline{p_2(\alpha,\beta)}                         \\
+     & = \overline{p_1(\alpha,\beta) + p_2(\alpha,\beta)}                                    \\
+     & = \overline{s(\alpha,\beta)}
+  \end{align*}
+  Finally, the sum of positive values is certainly positive.
+  Therefore, $s$ is an inner product.
+
+  Now, the difference of inner products is \emph{not} an inner product.
+  If we let the two inner products be the same, the resulting function always produces zero.
+
+  Let $\ip{\quad}$ be an inner product.
+  Then, for some positive real $k$:
+  \begin{align*}
+    k\ip{\alpha+\beta}{\gamma} & = k(\ip{\alpha}{\gamma}+\ip{\beta}{\gamma}) = k\ip{\alpha}{\gamma} + k\ip{\beta}{\gamma} \\
+    k\ip{c\alpha}{\beta}       & = k(c\ip{\alpha}{\beta}) = c(k\ip{\alpha}{\beta})                                        \\
+    k\ip{\beta}{\alpha}        & = k\overline{\ip{\alpha}{\beta}} = \overline{k\ip{\alpha}{\beta}}
+  \end{align*}
+  Finally, multiplying two positive values maintains positivity.
+\end{prf}
+
+\begin{xca}
+  Describe explicitly all inner products on $\R^1$ and on $\C^1$.
+\end{xca}
+% TODO: 8.1.3 (is it not just multiplication + 8.1.2?)
+
+\begin{xca}
+  Verify that the standard inner product on $F^n$ is an inner product.
+\end{xca}
+\begin{prf}
+  Let $\ip{\quad}$ be the standard inner product on $F^n$.
+  Then, for vectors $\alpha = (x_1,\dotsc,x_n)$,
+  $\beta = (y_1,\dotsc,y_n)$, and $\gamma = (z_1,\dotsc,z_n)$,
+  it follows by properties of the summation that
+  \[
+    \ip{\alpha+\beta}{\gamma} = \sum_{j=1}^k (x_j+y_j)\bar z_j
+    = \sum_{j=1}^k x_j \bar z_j + \sum_{j=1}^k y_j \bar z_j
+    = \ip{\alpha}{\gamma} + \ip{\beta}{\gamma}
+  \]
+  and
+  \[
+    \ip{c\alpha}{\beta} = \sum_{j=1}^k cx_j\bar z_j
+    = c\sum_{j=1}^k x_j \bar z_j
+    = c\ip{\alpha}{\beta}
+  \]
+  giving linearity. Conjugate symmetry follows from properties of the conjugate:
+  \[
+    \ip{\beta}{\alpha} = \sum_{j=1}^k y_j \bar x_j
+    = \overline{(\overline{\textstyle\sum_{j=1}^k y_j \bar x_j})}
+    = \overline{(\textstyle\sum_{j=1}^k \bar y_j \bar{\bar{x}}_j)}
+    = \overline{(\textstyle\sum_{j=1}^k x_j \bar y_j)}
+    = \overline{\ip{\alpha}{\beta}}
+  \]
+  Finally, consider $\ip{\alpha} = \sum_{j=1}^k x_j \bar x_j = \sum_{j=1}^k |x_j|^2$.
+  As squares, these terms are all non-negative.
+  If $\alpha \neq 0$, then one of the $x_j$ is non-zero for some $j$.
+  The sum includes the term $x_j^2 > 0$, so the sum is positive.
+
+  Therefore, the standard inner product on $F^n$ is indeed an inner product.
+\end{prf}
 
 \end{document}

@@ -1,21 +1,41 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{agony}
+
+%
+% Load packages
+%
+
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions\relax
 \LoadClass[11pt]{article}
+\usepackage{xparse}
 
-\usepackage{physics}
-\usepackage{amsfonts,amsmath,amssymb}
-\usepackage{systeme}
-\sysdelim..
-\usepackage{polynom}
-\usepackage{enumerate}
+% Formatting
+\usepackage[titles]{tocloft}
+\renewcommand*\contentsname{\@title}
 \usepackage{titlesec}
 \usepackage{fancyhdr}
 \usepackage{multicol}
 \usepackage[dvipsnames]{xcolor}
-\usepackage{tikz,pgfplots}
-\pgfplotsset{compat=1.15}
+\usepackage{array} % for \newcolumntype macro
+\usepackage{enumerate}
+
+% Math
+\usepackage{amsfonts,amsmath,amssymb}
+\usepackage{physics}
+\usepackage{cancel}
+\usepackage{systeme}
+\sysdelim.. % no curly braces
+\usepackage{polynom}
+\usepackage{mathtools} % for \DeclarePairedDelimiter macro
+
+% Figures
+% \usepackage{tikz,pgfplots}
+% \pgfplotsset{compat=1.15}
+
+%
+% Styles
+%
 
 \headheight 13.6pt
 \setlength{\headsep}{10pt}
@@ -80,9 +100,6 @@
 %
 
 \newcommand{\thetitle}{\@title}
-% Janky title typesetting for TOC
-\usepackage[titles]{tocloft}
-\renewcommand*\contentsname{\@title}
 
 % properly typeset ε-δ (epsilon en dash delta)
 \newcommand{\epsdel}[1][\delta]{\ensuremath{\epsilon\mathit{\textnormal{--}}#1}}
@@ -100,13 +117,11 @@
   \end{enumerate}}
 
 % Typesetting
-\usepackage{array}   % for \newcolumntype macro
 \newcolumntype{C}{>{$}c<{$}} % math version of "C" column type
 \newcommand{\dlim}[2]{\lim\limits_{#1\to#2}} % totally not \dfrac ripoff
 \newcommand{\dilim}[1]{\dlim{#1}{\infty}} % infinite limits
 \newcommand{\ilim}[1]{\lim_{#1\to\infty}}
 \newcommand\at[2]{\left.#1\right|_{#2}}
-\usepackage{cancel}
 
 % Sets
 \newcommand{\N}{\ensuremath{\mathbb{N}}}
@@ -129,15 +144,15 @@
 \newcommand{\Larr}{\Leftarrow}
 \newcommand{\Harr}{\Leftrightarrow}
 \newcommand{\harr}{\leftrightarrow}
-\usepackage{mathtools} % for \DeclarePairedDelimiter macro
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 \newcommand{\dyx}{\dv{y}{x}}
 
 % Linear Algebra
 \newcommand{\xto}{\xrightarrow} % \xto{R_1 \harr R_2}
-% add optional argument to ams *matrix environments (see tex.se 2233)
+% add optional argument for augmented matrices to ams *matrix environments and physics bmqty (tex.se 2233)
 \renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
   \hskip -\arraycolsep
   \let\@ifnextchar\new@ifnextchar
   \array{#1}}
+\RenewDocumentCommand{\bmqty}{om}{\IfValueTF{#1}{\begin{bmatrix}[#1]#2\end{bmatrix}}{\begin{bmatrix}#2\end{bmatrix}}}
