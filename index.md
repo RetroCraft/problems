@@ -10,6 +10,7 @@ consider sending me a <s>coffee</s> bubble tea:
 <div style="text-align:center"><script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('(add1 pain)', '#159957', 'Q5Q827K43');kofiwidget2.draw();</script></div>
 
 ## About
+
 {:.no_toc}
 
 I make no guarantees that my work is remotely close to correct.
@@ -29,10 +30,11 @@ Non-free study resources behind hard paywalls suck.
 Learning is painful and agonizing enough as it is.
 
 ### Table of Contents
+
 {:.no_toc}
 
 - TOC
-{:toc}
+  {:toc}
 
 ## Computer Science
 
@@ -106,6 +108,12 @@ They are created on Figma, which (once I figure out how to use the free educatio
 | [Practice Assignment FE](./MATH137/PAFE.pdf)  | :white_check_mark: |                                        |
 | [Practice Midterm 1](./MATH137/PM01.pdf)      | :white_check_mark: | Posted as `midterm_practice` on LEARN  |
 | [Practice Final F2019](./MATH137/PF2019F.pdf) | :white_check_mark: |                                        |
+
+### MATH 138 (W2021) <small>Calculus II for Honours Mathematics</small>
+
+| File                                        |     Complete?      | Notes |
+| ------------------------------------------- | :----------------: | ----- |
+| [Practice Assignment 1](./MATH138/PA01.pdf) | :white_check_mark: |       |
 
 ### MATH 146 (W1989) <small>Linear Algebra I (Advanced)</small>
 

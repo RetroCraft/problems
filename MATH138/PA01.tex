@@ -1,0 +1,142 @@
+\documentclass{agony}
+\title{MATH 138 Winter 2021: Practice Assignment 1}
+
+\begin{document}
+
+\begin{prob}
+  For this problem, you will need the following formulas:
+  \begin{equation*}
+    \sum_{i=1}^n i = \frac{n(n+1)}{2}\qc
+    \sum_{i=1}^n i^2 = \frac{n(n+1)(2n+1)}{6},\qq{and}
+    \sum_{i=1}^n i^3 = \frac{n^2(n+1)^2}{4}
+  \end{equation*}
+  In each case, find the integral using Riemann sums (that is, Theorem 1 on page 17)
+  and not the Fundamental Theorem of Calculus.
+  \begin{enumerate}[(a)]
+    \item $\dint_0^4 x^2 + 2x \dd{x}$
+    \item $\dint_1^3 2x^3 + x - 1 \dd{x}$
+  \end{enumerate}
+\end{prob}
+\begin{sol}
+  We first note that both integrands are polynomial and therefore continuous.
+  Therefore, we may apply the Integrability Theorem for Continuous Functions.
+
+  Using regular $n$-partitions, for (a), $t_i = a + i\Delta t = \frac{4i}{n}$. Then,
+  \begin{align*}
+    \int_0^4 x^2 + 2x \dd{x}
+     & = \ilim{n} \sum_{i=1}^n \left(\left(\frac{4i}{n}\right)^2 + 2\left(\frac{4i}{n}\right)\right) \frac{b-a}{n} \\
+     & = \ilim{n} \frac{4}{n} \sum_{i=1}^n \left(\frac{16i^2}{n^2} + \frac{8i}{n}\right)                           \\
+     & = \ilim{n} \frac{32}{n^2} \left( \frac{2}{n} \sum_{i=1}^n i^2 + \sum_{i=1}^n i \right)                      \\
+     & = \ilim{n} \frac{32}{n^2} \left( \frac{(n+1)(2n+1)}{3} + \frac{n(n+1)}{2} \right)                           \\
+     & = \ilim{n} \left(\frac{64n(n+1)(2n+1)}{6n^3} + \frac{16n(n+1)}{n^2}\right)                                  \\
+     & = \frac{112}{3}
+  \end{align*}
+  Likewise for (b), with regular $n$-partitions, $t_i = a+i\Delta t = 1+\frac{2i}{n}$ and
+  \begin{align*}
+    \int_1^3 2x^3 + x - 1 \dd{x}
+     & = \ilim{n} \sum_{i=1}^n \left( 2\left(1+\frac{2i}{n}\right)^3 + 1 + \frac{2i}{n} - 1 \right)\frac{b-a}{n}                                            \\
+     & = \ilim{n} \frac{4}{n} \sum_{i=1}^n \left( 1 + \frac{6i}{n} + 3\left(\frac{2i}{n}\right)^2 + \left(\frac{2i}{n}\right)^3 + \frac{i}{n} \right)       \\
+     & = \ilim{n} \frac{4}{n} \sum_{i=1}^n \left( 1 + \frac{7i}{n} + \frac{12i^2}{n^2} + \frac{8i^3}{n^3} \right)                                           \\
+     & = \ilim{n} \frac{4}{n} \left( \sum_{i=1}^n 1 + \frac{7}{n} \sum_{i=1}^n i + \frac{12}{n^2} \sum_{i=1}^n i^2 + \frac{8}{n^3} \sum_{i=1}^n i^3 \right) \\
+     & = \ilim{n} \frac{4}{n} \left( n + \frac{7(n+1)}{2} + \frac{12(n+1)(2n+1)}{6n} + \frac{8(n+1)^2}{4n} \right)                                          \\
+     & = \ilim{n} \left( 4 + \frac{14(n+1)}{n} + \frac{8(n+1)(2n+1)}{n^2} + \frac{8(n+1)^2}{n^2} \right)                                                    \\
+     & = 42
+  \end{align*}
+  where we simplify following the rules for infinite limits of rational functions.
+\end{sol}
+
+\begin{prob}
+  Express the following Riemann sums as definite integrals on the given interval,
+  where $x_i$ is a point in the $i$\textsuperscript{th} subinterval,
+  and the partition is regular. Do not evaluate them.
+  \begin{enumerate}[(a)]
+    \item $\displaystyle\ilim{n}\sum_{i=1}^n\left(\frac{e^{x_i}}{x_i}\right)\frac{6}{n}$ on $[1,7]$.
+    \item $\displaystyle\ilim{n}\sum_{i=1}^n\sqrt{x_i + \ln(x_i + 1)}\,\frac{3}{n}$ on $[2,5]$.
+  \end{enumerate}
+\end{prob}
+\begin{sol}
+  For (a), note that $\frac{b-a}{n} = \frac{6}{n}$.
+  Therefore, $f(x_i) = \frac{e^{x_i}}{x_i}$.
+
+  Likewise for (b), we deduce that $f(x_i) = \sqrt{x_i+\ln(x_i+1)}$.
+
+  Notice that the target integrands, namely, $\frac{e^x}{x}$ and $\sqrt{x+\ln(x+1)}$ are continuous,
+  we apply the Integrability Theorem for Continuous Functions in reverse.
+  Therefore, we have both
+  \[
+    \ilim{n}\sum_{i=1}^n\left(\frac{e^{x_i}}{x_i}\right)\frac{6}{n} = \int_1^7 \frac{e^x}{x} \dd{x}
+    \quad
+    \ilim{n}\sum_{i=1}^n\sqrt{x_i + \ln(x_i + 1)}\,\frac{3}{n} = \!\int_2^5\!\!\!\sqrt{x+\ln(x+1)} \dd{x}
+    \qedhere
+  \]
+\end{sol}
+
+\begin{prob}
+  Without evaluating the definite integral prove that
+  \[ \frac{\sqrt2 \pi}{24} \leq \int_{\pi/6}^{\pi/4} \cos(x) \dd{x} \leq \frac{\sqrt3 \pi}{24} \]
+\end{prob}
+\begin{prf}
+  We apply Property 3 from Theorem 2.
+  Notice that on the interval $[\frac\pi4, \frac\pi6]$,
+  we have that $\frac{\sqrt2}{2} \leq \cos(x) \leq \frac{\sqrt3}{2}$.
+  Therefore, since $\frac{\pi}{4}-\frac{\pi}{6} = \frac{\pi}{12}$,
+  we have a lower bound of $\frac{\sqrt2}{2}(\frac{\pi}{12}) = \frac{\sqrt2 \pi}{24}$
+  and an upper bound of $\frac{\sqrt3}{2}(\frac{\pi}{12}) = \frac{\sqrt3 \pi}{24}$,
+  as desired.
+\end{prf}
+
+\begin{prob}
+  Consider the function
+  \[ f(x) = \begin{cases*}
+      1   & if $x$ is an irrational number \\
+      \pi & if $x$ is a rational number
+    \end{cases*} \]
+  Prove that $f$ is not integrable on $[0, 1]$.
+\end{prob}
+\begin{prf}
+  Recall that it is a property of the continuum that for any interval $I$,
+  there exists both a rational number and an irrational number on $I$.
+
+  Let $P^{(n)}$ be the regular $n$-th partition of $[0, 1]$.
+
+  Let $S_n^1$ be the Riemann sum associated with $P^{(n)}$ where $c_i$ is irrational for all $i$.
+  Then, $f(c_i) = 1$ for all $i$, and $S_n^1$ traces out the rectangle
+  bounded by the origin and $(1,1)$ with area $1$.
+
+  Likewise, let $S_n^2$ be the Riemann sum associated with $P^{(n)}$
+  where $c_i$ is rational for all $i$.
+  Then, $S_n^2$ traces out the rectangle bounded by the origin and $(1, \pi)$ with area $\pi$.
+
+  Since these do not agree, by the definition of integrability, $f$ is not integrable.
+\end{prf}
+
+\begin{prob}
+  Let $f$ be a continuous function.
+  If $f_{ave}[a,b]$ denotes the average value of $f$ on the interval $[a,b]$,
+  and $a < c < b$, prove that
+  \[ f_{ave}[a,b] = \frac{c-a}{b-a}f_{ave}[a,c] + \frac{b-c}{b-a}f_{ave}[c,b]. \]
+\end{prob}
+\begin{prf}
+  Recall the average value of $f$ on $[a,b]$ is defined as $\frac{1}{b-a}\int_a^b f(x) \dd{x}$.
+  Therefore, our desired statement is equivalent to
+  \begin{align*}
+    \frac{1}{b-a}\int_a^b f(x) \dd{x} & = \frac{c-a}{b-a}\left(\frac{1}{c-a}\int_a^c f(x) \dd{x}\right) + \frac{b-c}{b-a}\left(\frac{1}{b-c}\int_c^b f(x) \dd{x}\right) \\
+    \frac{1}{b-a}\int_a^b f(x) \dd{x} & = \frac{1}{b-a}\left(\int_a^c f(x) \dd{x} +\int_c^b f(x) \dd{x}\right)                                                          \\
+    \int_a^b f(x) \dd{x}              & = \int_a^c f(x) \dd{x} +\int_c^b f(x) \dd{x}
+  \end{align*}
+  which is simply Theorem 3.
+\end{prf}
+
+\begin{prob}
+  If $f$ is a continuous function and $\dint_1^3 f(x) \dd{x} = 8$,
+  prove that there exists $c\in[1,3]$ such that $f(c) = 4$.
+\end{prob}
+\begin{prf}
+  First, notice the average value of $f$ on $[1,3]$ is
+  $\dfrac{1}{3-1}\dint_1^3 f(x) \dd{x} = \dfrac12(8) = 4$.
+  
+  Then, since $f$ is continuous,
+  the conclusion follows from the Average Value Theorem.
+\end{prf}
+
+\end{document}

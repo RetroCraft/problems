@@ -118,6 +118,7 @@
 
 % Typesetting
 \newcolumntype{C}{>{$}c<{$}} % math version of "C" column type
+\newcommand{\dint}{\displaystyle\int}
 \newcommand{\dlim}[2]{\lim\limits_{#1\to#2}} % totally not \dfrac ripoff
 \newcommand{\dilim}[1]{\dlim{#1}{\infty}} % infinite limits
 \newcommand{\ilim}[1]{\lim_{#1\to\infty}}
@@ -131,6 +132,7 @@
 \newcommand{\C}{\ensuremath{\mathbb{C}}}
 \newcommand{\F}{\ensuremath{\mathbb{F}}}
 \newcommand{\U}{\ensuremath{\mathcal{U}}}
+\renewcommand{\O}{\ensuremath{\mathcal{O}}}
 \newcommand{\sym}{\mathbin{\triangle}}
 
 % Functions
