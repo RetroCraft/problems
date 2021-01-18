@@ -18,7 +18,10 @@
 \usepackage{multicol}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{array} % for \newcolumntype macro
+
 \usepackage{enumerate}
+\usepackage[shortlabels]{enumitem} % remove space before enums
+\setlist[enumerate]{topsep=0pt}
 
 % Math
 \usepackage{amsfonts,amsmath,amssymb}
@@ -103,6 +106,7 @@
 
 % properly typeset ε-δ (epsilon en dash delta)
 \newcommand{\epsdel}[1][\delta]{\ensuremath{\epsilon\mathit{\textnormal{--}}#1}}
+\newcommand{\nr}[1]{\refstepcounter{equation}\label{#1}\tag{\theequation}} % label in * env
 \newcommand{\by}[1]{& \text{by #1}}
 \newcommand{\IH}{\by{inductive hypothesis}}
 \newcommand{\pf}[2]{%
@@ -110,11 +114,7 @@
 \ensuremath{p_1^{\tmp{1}}p_2^{\tmp{2}}\cdots p_#2^{\tmp{#2}}}}
 \newcommand{\FLT}{F\ensuremath{\ell}T}
 % multiple choice (remove spacing between items)
-\newenvironment{choices}
-{\begin{enumerate}[(a)]
-    \setlength{\parskip}{0ex}
-    }{
-  \end{enumerate}}
+\newenvironment{choices}{\begin{enumerate}[(a),nosep]}{\end{enumerate}}
 
 % Typesetting
 \newcolumntype{C}{>{$}c<{$}} % math version of "C" column type
@@ -151,6 +151,8 @@
 \newcommand{\dyx}{\dv{y}{x}}
 
 % Linear Algebra
+\newcommand{\vui}{\mathbf{\hat{\textnormal{\bfseries\i}}}}
+\newcommand{\vuj}{\mathbf{\hat{\textnormal{\bfseries\j}}}}
 \newcommand{\xto}{\xrightarrow} % \xto{R_1 \harr R_2}
 % add optional argument for augmented matrices to ams *matrix environments and physics bmqty (tex.se 2233)
 \renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
