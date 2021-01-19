@@ -10,7 +10,6 @@ consider sending me a <s>coffee</s> bubble tea:
 <div style="text-align:center"><script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('(add1 pain)', '#159957', 'Q5Q827K43');kofiwidget2.draw();</script></div>
 
 ## About
-
 {:.no_toc}
 
 I make no guarantees that my work is remotely close to correct.
@@ -89,6 +88,10 @@ They are created on Figma, which (once I figure out how to use the free educatio
 | [Winter 2020 Midterm](./MATH135/MT2020W.pdf) |  :white_check_mark:  |                                    |
 | [Winter 2020 Final](./MATH135/FE2020W.pdf)   |  :white_check_mark:  |                                    |
 
+### MATH 136 (W2021) <small>Linear Algebra I for Honours Mathematics</small>
+
+A collection of theorems can be found [here](./MATH136/ref.html).
+
 ### MATH 137 (F2020) <small>Calculus I for Honours Mathematics</small>
 
 | File                                          |     Complete?      | Notes                                  |
@@ -109,6 +112,8 @@ They are created on Figma, which (once I figure out how to use the free educatio
 | [Practice Final F2019](./MATH137/PF2019F.pdf) | :white_check_mark: |                                        |
 
 ### MATH 138 (W2021) <small>Calculus II for Honours Mathematics</small>
+
+A collection of theorems can be found [here](./MATH138/ref.html).
 
 | File                                        |     Complete?      | Notes |
 | ------------------------------------------- | :----------------: | ----- |
