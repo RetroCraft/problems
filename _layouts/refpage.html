@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: "en-US" }}">
+  <head>
+    <meta charset="UTF-8">
+    
+    <script async defer data-domain="agony.retrocraft.ca" src="https://plausible.io/js/plausible.outbound-links.js"></script>
+    <script>
+      window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }
+    </script>
+
+    {% seo %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+    <style>
+      @media screen and (max-width: 128em) {
+        .main-content {
+          padding-left: 0;
+          padding-right: 0;
+        }
+      }
+
+      .main-content {
+        max-width: 128rem;
+        text-align: center;
+      }
+
+      .main-content table {
+        display: inline;
+      }
+
+      #defs tr>*:nth-of-type(2) { text-align: right }
+      #defs tr>*:nth-of-type(3) { text-align: left }
+
+      #thms tr>*:nth-of-type(2) { text-align: right; border-right: 0; }
+      #thms tr>*:nth-of-type(3) { text-align: right; border-left: 0; border-right: 0; }
+      #thms tr>*:nth-of-type(4) { text-align: left; border-left: 0; }
+    </style>
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">{{ page.title | default: site.title | default: site.github.repository_name }}</h1>
+      <h2 class="project-tagline">{{ page.description | default: site.description | default: site.github.project_tagline }}</h2>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      {{ content }}
+
+      <h1>Definitions</h1>
+
+      <table id="defs">
+        <thead>
+          <tr>
+            <th>Name (Reference)</th>
+            <th>Given</th>
+            <th>Definition</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for def in site.data[page.class].definitions %}
+            <tr>
+              <td>{{ def.name | markdownify }}</td>
+              <td>{{ def.from | markdownify }}</td>
+              <td>{{ def.to | markdownify }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <h1>Theorems</h1>
+
+      <table id="thms">
+        <thead>
+          <tr>
+            <th>Name (Reference)</th>
+            <th>Given</th>
+            <th></th>
+            <th>Conclusion</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for def in site.data[page.class].theorems %}
+            <tr>
+              <td>{{ def.name | markdownify }}</td>
+              <td>{{ def.from | markdownify }}</td>
+              <td>${{def.arrow}}$</td>
+              <td>{{ def.to | markdownify }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner">
+          <a href="{{ site.github.repository_url }}">{{ site.github.repository_name }}</a>
+          is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a>.
+        </span>
+        Content licensed CC-BY-SA.
+      </footer>
+    </main>
+    
+    <script src="{{ '/assets/js/mathjax.js?v=' | append: site.github.build_revision | relative_url }}"></script>
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+---
+---
+
+@import '{{ site.theme }}';
+
+@media print {
+  header,
+  .site-footer-owner {
+    display: none;
+  }
+}
+
+.main-content {
+  table {
+    page-break-inside: auto;
+
+    p {
+      margin: 0;
+    }
+
+    ol {
+      list-style: lower-roman;
+      margin: 0 1.25rem;
+      padding: 0;
+    }
+  }
+}
+
+tr {
+  page-break-inside: avoid;
+  page-break-after: auto;
+}
+h1 {
+  page-break-after: avoid;
+}

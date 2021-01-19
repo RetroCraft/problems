@@ -30,11 +30,10 @@ Non-free study resources behind hard paywalls suck.
 Learning is painful and agonizing enough as it is.
 
 ### Table of Contents
-
 {:.no_toc}
 
 - TOC
-  {:toc}
+{:toc}
 
 ## Computer Science
 
@@ -150,13 +149,3 @@ or by one of [email](mailto:jahyong@uwaterloo.ca),
 [Facebook](https://facebook.com/james.ahyong),
 [Instagram](https://instagram.com/james.ahyong),
 and Discord (`@retrocraft#6259`).
-
-<script async defer data-domain="agony.retrocraft.ca" src="https://plausible.io/js/plausible.outbound-links.js"></script>
-<script>
-  window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }
-  document.addEventListener("click", function (event) {
-    if (!event.target.matches("a[href$=rkt],a[href$=pdf]")) return;
-    file = event.target.href.split("/");
-    plausible("View", { props: { file: file.pop(), class: file.pop() } });
-  }, false)
-</script>

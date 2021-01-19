@@ -154,9 +154,26 @@
 \newcommand{\vui}{\mathbf{\hat{\textnormal{\bfseries\i}}}}
 \newcommand{\vuj}{\mathbf{\hat{\textnormal{\bfseries\j}}}}
 \newcommand{\xto}{\xrightarrow} % \xto{R_1 \harr R_2}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\Perp}{Perp}
+\DeclareMathOperator{\Span}{Span}
 % add optional argument for augmented matrices to ams *matrix environments and physics bmqty (tex.se 2233)
 \renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
   \hskip -\arraycolsep
   \let\@ifnextchar\new@ifnextchar
   \array{#1}}
 \RenewDocumentCommand{\bmqty}{om}{\IfValueTF{#1}{\begin{bmatrix}[#1]#2\end{bmatrix}}{\begin{bmatrix}#2\end{bmatrix}}}
+% allow redefinition of inner product separator
+\newcommand{\ipsep}{\middle\vert}
+\RenewDocumentCommand{\innerproduct}{ s m g }
+{\IfBooleanTF{#1}
+  { % No resize
+    \IfNoValueTF{#3}
+    {\vphantom{#2}\left\langle\smash{#2}\ipsep\smash{#2}\right\rangle}
+    {\vphantom{#2#3}\left\langle\smash{#2}\ipsep\smash{#3}\right\rangle}
+  }
+  { % Auto resize
+    \IfNoValueTF{#3}
+    {\left\langle{#2}\ipsep{#2}\right\rangle}
+    {\left\langle{#2}\ipsep{#3}\right\rangle}
+  }}
