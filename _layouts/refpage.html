@@ -21,6 +21,12 @@
         }
       }
 
+      @media print {
+        body {
+          font-size: 9px;
+        }
+      }
+
       .main-content {
         max-width: 128rem;
         text-align: center;
@@ -33,9 +39,10 @@
       #defs tr>*:nth-of-type(2) { text-align: right }
       #defs tr>*:nth-of-type(3) { text-align: left }
 
-      #thms tr>*:nth-of-type(2) { text-align: right; border-right: 0; }
-      #thms tr>*:nth-of-type(3) { text-align: right; border-left: 0; border-right: 0; }
-      #thms tr>*:nth-of-type(4) { text-align: left; border-left: 0; }
+      #thms tr>*:nth-of-type(2) { text-align: right; border-right: 0; padding-right: 0; }
+      #thms tr>*:nth-of-type(2) ol { margin-right: 0; }
+      #thms tr>*:nth-of-type(3) { text-align: right; border-left: 0; border-right: 0; padding-left: 0; padding-right: 0; }
+      #thms tr>*:nth-of-type(4) { text-align: left; border-left: 0; padding-left: 0; }
     </style>
   </head>
   <body>
