@@ -1,0 +1,259 @@
+\documentclass{agony}
+\title{MATH 138 Winter 2021: Practice Assignment 2}
+
+\begin{document}
+
+\begin{prob}
+  \begin{enumerate}[(a)]
+    \item Find the average value of $f(x) = x^2 + 2x + 1$ on $[1,5]$.
+    \item For $f(x) = \frac1x$, find $c\in\R$ such that
+          $f(c)$ equals the average value of $f$ on $[1,5]$.
+    \item Find all values of $a,b\in\R$ where $b>0$ so that
+          the average value of $f(x) = 3x^2 + ax$ on $[0,b]$ is zero.
+  \end{enumerate}
+\end{prob}
+\begin{sol}
+  Recall the definition of the average value and calculate (a):
+  \begin{align*}
+    f_{avg}([1,5])
+     & = \frac{1}{5-1}\int_1^5 x^2 + 2x + 1 \dd{x}                                          \\
+     & = \frac{1}{4}\left(\int_1^5 x^2 \dd{x} + \int_1^5 2x \dd{x} + \int_1^5 \dd x \right) \\
+     & = \left(\frac{1}{12}x^3 + \frac{1}{4}x^2 + \frac{1}{4}x\middle)\right|_1^5           \\
+     & = \left(\frac{5^3}{12}+\frac{5^2}{4}+\frac{5}{4}\right)
+    - \left(\frac{1^3}{12}+\frac{1^2}{4}+\frac{1}{4}\right)                                 \\
+     & = \frac{52}{3}
+  \end{align*}
+
+  For (b), we find the average value then solve for $c$:
+  \begin{align*}
+    f_{avg}([1,3])
+    = \frac{1}{3-1}\int_1^3 \frac{\dd{x}}{x}
+    = \left.\frac{1}{2}\ln(|x|)\right|_1^3
+    = \frac{\ln3-\ln1}{2}
+    = \frac{\ln3}{2}
+  \end{align*}
+  And since $f(x) = \frac{1}{x}$, $f(\frac{2}{\ln3}) = \frac{\ln3}{2}$.
+
+  In (c), we just solve:
+  \begin{align*}
+    f_{avg}([0,b]) & = \frac{1}{b-0} \int_0^b 3x^2 + ax \dd{x}                  \\
+    0              & = \frac{1}{b}\left(x^3 + \frac{a}{2}x^2\middle)\right|_0^b \\
+    0              & = b\left(b + \frac{a}{2}\right)
+  \end{align*}
+  Therefore, either $b = 0$ or $a = -2b$.
+  But $b > 0$, so we have that $a = -2b$.
+\end{sol}
+
+\begin{prob}
+  Suppose $h$ is a function such that $h(1) = -4$, $h'(1) = 7$, $h''(1) = 3$,
+  $h(2) = 0$, $h'(2) = 15$, $h''(2) = 16$, and $h''$ is continuous everywhere.
+  Evaluate $\int_1^2 h''(x) \dd{x}$.
+\end{prob}
+\begin{sol}
+  Apply the Fundamental Theorem of Calculus:
+  \begin{align*}
+    \int_1^2 h''(x) \dd{x} = h'(2) - h'(1) = 15 - 7 = 8
+  \end{align*}
+  since $h'$ is an antiderivative to $h''$.
+\end{sol}
+
+\begin{prob}
+  Use the Fundamental Theorem of Calculus
+  to find the \textbf{derivative} of each function:
+  \begin{enumerate}[(a)]
+    \item $f(x) = {\displaystyle\int_1^{x^5}}\sin(t)\ln(t^2) \dd{t}$
+    \item $g(x) = {\displaystyle\int_{\sin(x)}^{\cos(x)}}e^{t^2} \dd{t}$
+  \end{enumerate}
+\end{prob}
+\begin{sol}
+  We apply the Extended Version of the Fundamental Theorem of Calculus.
+  \begin{align*}
+    f'(x) & = \sin(x^5)\ln(x^{10})(5x^4) - \sin(1)\ln(1)(0)             \\
+          & = 50x^4\sin(x^5)\ln(x)                                      \\
+    g'(x) & = e^{\cos[2](x)}(-\sin x) - e^{\sin[2](x)}(\cos x) \qedhere
+  \end{align*}
+\end{sol}
+
+\begin{prob}
+  Find the following definite integrals using any method:
+  \begin{enumerate}[(a)]
+    \item $\int_0^2 x^3 + 3^x \dd{x}$
+    \item $\int_0^4 (4-x)\sqrt{x} \dd{x}$
+  \end{enumerate}
+\end{prob}
+\begin{sol}
+  Evaluate (a) by FTC:\@
+  \[
+    \int_0^2 x^3 + 3^x \dd{x}
+    = \left. \frac{1}{4}x^3 + \frac{1}{\ln 3}3^x \right|_0^2
+    = \frac{16}{4} + \frac{9}{\ln 3} - \frac{1}{\ln 3}
+    = 4+\frac{8}{\ln 3}
+  \]
+  Expand the integrand of (b), $(4-x)\sqrt{x} = 4x^{1/2} - x^{3/2}$, then apply FTC:\@
+  \[
+    \int_0^4 4\sqrt{x} - x^{3/2} \dd{x}
+    = \left. \frac{8}{3}x^{3/2} - \frac{2}{5}x^{5/2} \right|_0^4
+    = \frac{128}{15} \qedhere
+  \]
+\end{sol}
+
+\begin{prob}
+  Find a function $f$ and a number $a\in\R$ such that
+  \[ 6+\int_a^x \frac{f(t)}{t^2}\dd{t} = 2\sqrt{x} \]
+  for all $x > 0$
+\end{prob}
+\begin{sol}
+  We differentiate both sides using FTC1, supposing $f$ is continuous:
+  \begin{align*}
+    \dv{x}(6+\int_a^x \frac{f(t)}{t^2}\dd{t}) & = \dv{x}(2\sqrt{x})  \\
+    0+\dv{x}(\int_a^x \frac{f(t)}{t^2}\dd{t}) & = \frac{1}{\sqrt{x}} \\
+    \frac{f(x)}{x^2}                          & = \frac{1}{\sqrt{x}} \\
+    f(x)                                      & = x^{3/2}
+  \end{align*}
+  We now must select $a$.
+  Since we know $f$, we can now find the definite integral with FTC2:
+  \begin{align*}
+    6+\int_a^x \frac{t^{3/2}}{t^2}\dd{t} & = 2\sqrt{x}     \\
+    \int_a^x \frac{1}{\sqrt{t}} \dd{t}   & = 2\sqrt{x} - 6 \\
+    2\sqrt{x} - 2\sqrt{a}                & = 2\sqrt{x} - 6 \\
+    a                                    & = 9
+  \end{align*}
+  Therefore, the solution is $f(x) = x^{3/2}$ and $a=9$.
+\end{sol}
+
+\begin{prob}
+  Prove that $\displaystyle\int_0^{\pi/6}\cos(x^2)\dd{x} \geq \frac{1}{2}$
+  by comparing $\cos(x^2)$ to $\cos(x)$
+\end{prob}
+\begin{sol}
+  Notice first that on $[0,\frac\pi6]$, $x^2 \geq x$ since $\frac\pi6 < 1$.
+  As $\cos(x)$ is decreasing, $\cos(x^2) \geq \cos(x)$.
+  Then, $\int_0^{\pi/6} \cos(x^2) \dd{x} \geq \int_0^{\pi/6} \cos(x) \dd{x}$.
+  But $\at{\sin(x)}{0}^{\pi/6} = \sin(\frac\pi6) = \frac12$.
+\end{sol}
+
+\begin{prob}
+  The Fundamental Theorem of Calculus is a very powerful theorem,
+  but relies on us being able to find an antiderivative,
+  which is not always possible.
+
+  For example, $f(x) = e^{-x^2}$ does not have an elementary antiderivative
+  (that is, an antiderivative made up of elementary functions).
+  However, it does have an antiderivative since it is continuous,
+  and it is very important in probability, statistics, and engineering.
+  Define the \textbf{error function} to be
+  \[ \erf(x) = \frac{2}{\sqrt{\pi}}\int_0^x e^{-t^2} \dd{t} \]
+  \begin{enumerate}[(a)]
+    \item Show that
+          $\int_a^b e^{-t^2} \dd{t} = \frac{\sqrt{\pi}}{2}(\erf(b)-\erf(a))$
+    \item Show that the function $y = e^{x^2}\erf(x)$ satisfies
+          the differential equation $y' = 2xy + \frac{2}{\sqrt{\pi}}$
+  \end{enumerate}
+\end{prob}
+\begin{sol}
+  Notice that the error function is an antiderivative of $e^{-x^2}$ up to a multiple,
+  so we can say that $\int e^{-x^2} \dd{x} = \frac{\sqrt{\pi}}{2}\erf(x)$.
+
+  Then, part (a) is a restatement of FTC2.
+
+  For part (b), we simply differentiate both sides.
+  We can use FTC1 since $e^{-x^2}$ is continuous at $x=0$.
+  \begin{align*}
+    y' & = \dv{x}(e^{x^2}\erf(x))                                                               \\
+       & = \dv{x}(e^{x^2})\erf(x) + e^{x^2}\dv{x}(\frac{2}{\sqrt{\pi}}\int_0^x e^{-t^2} \dd{t}) \\
+       & = 2xe^{x^2}\erf(x) + \frac{2}{\sqrt{\pi}}e^{x^2}e^{-x^2}                               \\
+       & = 2xe^{x^2}\erf(x) + \frac{2}{\sqrt{\pi}}e^0                                           \\
+       & = 2xy + \frac{2}{\sqrt{\pi}}
+  \end{align*}
+  completing the proof.
+\end{sol}
+
+\begin{prob}
+  Evaluate the following integrals.
+\end{prob}
+\begin{enumerate}[(a)]
+  \item $\displaystyle\int \frac{3}{\sqrt{2x+1}} \dd{x}$
+        \begin{sol}
+          Let $u = 2x+1$, so $\dd{u} = 2\dd{x}$:
+          \begin{align*}
+            \int \frac{3}{\sqrt{2x+1}} \dd{x}
+             & = \int \frac{3}{2\sqrt{u}} \dd{u} \\
+             & = 3\sqrt{u} + C                   \\
+             & = 3\sqrt{2x+1} + C \qedhere
+          \end{align*}
+        \end{sol}
+  \item $\displaystyle\int_{11}^{16} \frac{x}{\sqrt{x-7}} \dd{x}$
+        \begin{sol}
+          Let $u = x-7$, so $\dd{u} = \dd{x}$:
+          \begin{align*}
+            \int_{11}^{16} \frac{x}{\sqrt{x-7}} \dd{x}
+             & = \int_{4}^{9} \frac{u+7}{\sqrt{u}} \dd{u}          \\
+             & = \int_{4}^{9} \sqrt{u} + \frac{7}{\sqrt{u}} \dd{u} \\
+             & = \at{\frac{2}{3}u^{3/2} + 14\sqrt{u}}{4}^9         \\
+             & = \frac{80}{3} \qedhere
+          \end{align*}
+        \end{sol}
+  \item $\displaystyle\int (x^2-1)e^{x^3-3x} \dd{x}$
+        \begin{sol}
+          Let $u = x^3 - 3x$ so $\dd{u} = 3(x^2 - 1) \dd{x}$:
+          \begin{equation*}
+            \int (x^2-1)e^{x^3-3x} \dd{x}
+            = \int \frac{1}{3} e^u \dd{u}
+            = \frac{1}{3} e^u + C
+            = \frac{1}{3} e^{x^3+3x} + C \qedhere
+          \end{equation*}
+        \end{sol}
+  \item $\displaystyle\int \frac{\sqrt{2+\ln(x)}}{x} \dd{x}$
+        \begin{sol}
+          Let $u = 2+\ln(x)$ so $\dd{u} = \frac{\dd{x}}{x}$:
+          \begin{equation*}
+            \int \frac{\sqrt{2+\ln(x)}}{x} \dd{x}
+            = \int \sqrt{u} \dd{u}
+            = \frac{2}{3}u^{3/2} + C
+            = \frac{2}{3}(2+\ln(x))^{3/2} + C \qedhere
+          \end{equation*}
+        \end{sol}
+  \item $\displaystyle\int \frac{x^2+2}{x^3+6x+3} \dd{x}$
+        \begin{sol}
+          Let $u = x^3 + 6x + 3$ so $\dd{u} = 3(x^2+2)\dd{x}$:
+          \begin{equation*}
+            \int \frac{x^2+2}{x^3+6x+3} \dd{x}
+            = \int \frac{1}{3u} \dd{u}
+            = \frac{1}{3} \ln\abs{u} + C
+            = \frac{1}{3} \ln\abs{x^3 + 6x + 3} + C \qedhere
+          \end{equation*}
+        \end{sol}
+  \item $\displaystyle\int_0^{\frac\pi4} \sqrt{1-\cos(4x)} \dd{x}$
+  \begin{sol}
+    Recall that $\cos 2\theta = 1-2\sin^2\theta$.
+    Then, we can rewrite the integral:
+    \begin{equation*}
+      \int_0^{\frac\pi4} \sqrt{1-\cos(4x)} \dd{x}
+      = \int_0^{\frac\pi4} \sqrt{2\sin^2(2x)} \dd{x}
+      = \int_0^{\frac\pi4} \sin(2x)\sqrt{2} \dd{x}
+    \end{equation*}
+    since $\sin 2x$ is non-negative on $[0,\frac\pi4]$.
+    Let $u = 2x$ so $\dd{u} = 2\dd{x}$ and
+    \begin{equation*}
+      \int_0^{\frac\pi4} \sin(2x)\sqrt{2} \dd{x}
+      = \int_0^{\frac\pi2} \frac{\sqrt{2}}{2} \sin(u) \dd{u}
+      = \at{-\frac{\sqrt{2}}{2}\cos(u)}{0}^{\frac\pi2}
+      = \frac{\sqrt{2}}{2} \qedhere
+    \end{equation*}
+  \end{sol}
+  \item $\displaystyle\int \frac{x^5+x-1}{x^3+1} \dd{x}$ by first performing polynomial long division.
+        \begin{sol}
+          First, do polynomial long division:
+          \[ \polylongdiv{x^5+x-1}{x^3+1} \]
+          Then, we can rewrite the integral and factor:
+          \begin{align*}
+            \int \frac{x^5+x-1}{x^3+1} \dd{x}
+             & = \int x^2 - \frac{x^2 - x + 1}{(x+1)(x^2 - x + 1)} \dd{x} \\
+             & = \int x^2 - \frac{1}{x+1} \dd{x}                          \\
+             & = \frac{1}{3}x^3 - \ln\abs{x+1} + C \qedhere
+          \end{align*}
+        \end{sol}
+\end{enumerate}
+
+
+\end{document}
