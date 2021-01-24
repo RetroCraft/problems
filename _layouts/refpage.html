@@ -25,6 +25,10 @@
         body {
           font-size: 9px;
         }
+
+        header {
+          display: none;
+        }
       }
 
       .main-content {
@@ -36,67 +40,53 @@
         display: inline;
       }
 
-      #defs tr>*:nth-of-type(2) { text-align: right }
-      #defs tr>*:nth-of-type(3) { text-align: left }
+      .defs tr>*:nth-of-type(2) { text-align: right }
+      .defs tr>*:nth-of-type(3) { text-align: left }
 
-      #thms tr>*:nth-of-type(2) { text-align: right; border-right: 0; padding-right: 0; }
-      #thms tr>*:nth-of-type(2) ol { margin-right: 0; }
-      #thms tr>*:nth-of-type(3) { text-align: right; border-left: 0; border-right: 0; padding-left: 0; padding-right: 0; }
-      #thms tr>*:nth-of-type(4) { text-align: left; border-left: 0; padding-left: 0; }
+      .thms tr>*:nth-of-type(2) { text-align: right; border-right: 0; padding-right: 0; }
+      .thms tr>*:nth-of-type(2) ol { margin-right: 0; }
+      .thms tr>*:nth-of-type(3) { text-align: right; border-left: 0; border-right: 0; padding-left: 0; padding-right: 0; }
+      .thms tr>*:nth-of-type(4) { text-align: left; border-left: 0; padding-left: 0; }
     </style>
   </head>
   <body>
     <header class="page-header" role="banner">
       <h1 class="project-name">{{ page.title | default: site.title | default: site.github.repository_name }}</h1>
       <h2 class="project-tagline">{{ page.description | default: site.description | default: site.github.project_tagline }}</h2>
+      <a href="/" class="btn">Back</a>
+      <a href="https://github.com/retrocraft/problems/tree/master/_data/{{ page.class }}.yml" class="btn">View on GitHub</a>
     </header>
 
     <main id="content" class="main-content" role="main">
       {{ content }}
 
-      <h1>Definitions</h1>
-
-      <table id="defs">
-        <thead>
-          <tr>
-            <th>Name (Reference)</th>
-            <th>Given</th>
-            <th>Definition</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for def in site.data[page.class].definitions %}
+      {% for section in site.data[page.class] %}
+        {{ section.title | markdownify }}
+        <table class={{ section.class }}>
+          <thead>
             <tr>
-              <td>{{ def.name | markdownify }}</td>
-              <td>{{ def.from | markdownify }}</td>
-              <td>{{ def.to | markdownify }}</td>
+              <th>Name (Reference)</th>
+              <th>Given</th>
+              {% if section.class == "thms" %}
+                <th></th>
+              {% endif %}
+              <th>Conclusion</th>
             </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-
-      <h1>Theorems</h1>
-
-      <table id="thms">
-        <thead>
-          <tr>
-            <th>Name (Reference)</th>
-            <th>Given</th>
-            <th></th>
-            <th>Conclusion</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for def in site.data[page.class].theorems %}
-            <tr>
-              <td>{{ def.name | markdownify }}</td>
-              <td>{{ def.from | markdownify }}</td>
-              <td>${{def.arrow}}$</td>
-              <td>{{ def.to | markdownify }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {% for def in section.defs %}
+              <tr>
+                <td>{{ def.name | markdownify }}</td>
+                <td>{{ def.from | markdownify }}</td>
+                {% if section.class == "thms" %}
+                  <td>${{def.arrow}}$</td>
+                {% endif %}
+                <td>{{ def.to | markdownify }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endfor %}
 
       <footer class="site-footer">
         <span class="site-footer-owner">
@@ -104,6 +94,7 @@
           is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a>.
         </span>
         Content licensed CC-BY-SA.
+        <a href="//ko-fi.com/jahyong">Support the pain and agony!</a>
       </footer>
     </main>
     
