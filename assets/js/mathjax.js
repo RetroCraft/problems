@@ -136,6 +136,7 @@ window.MathJax = {
       at: ['\\left.#1\\right|_{#2}', 2],
       // linalg
       xto: '\\xrightarrow',
+      harr: '\\leftrightarrow',
       ip: ['\\ev{#1,\\,#2}', 2],
       Proj: '\\operatorname{Proj}',
       Perp: '\\operatorname{Perp}',

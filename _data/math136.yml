@@ -11,7 +11,7 @@
       to: $\vb v\vdot\vb w = v_1 w_1 + \dotsb + v_n w_n$
     - name: Angle (2.6)
       from: $\vb v, \vb w \in \R^n$
-      to: $\theta = \arccos(\dfrac{\vb v\vdot\vb w}{\norm{\vb v}\norm{\vb w}})$
+      to: $\theta = \arccos(\dfrac{\vb v\vdot\vb w}{\norm{\vb v}\norm{\vb w}}) \in [0,\pi]$
     - name: Standard Inner Product in $\F^n$ (3.5)
       from: $\vb v = (v_1,\dotsc,v_n)^T \in \F^n$, $\vb w = (w_1,\dotsc,w_n)^T \in \F^n$
       to: $\ip{\vb v}{\vb w} = v_1 \bar w_1 + \dotsb + v_n \bar w_n$
@@ -78,6 +78,39 @@
         $\vb p, \vb v, \vb w\in\R^3$,
         $\vb v \neq 0$, $\vb w \not\in \Span(\\{ \vb v \\})$
       to: $(\vb v \cp \vb w) \vdot (\vb x - \vb p) = 0$
+    - name: Linear System (7A.2/7A.3)
+      from: |
+        $a_{11},\dotsc,a_{mn}\in\F$ (coefficients),
+        $b_1,\dotsc,b_m\in\F$ (RHS),
+        $x_1,\dotsc,x_n\in\F$ (unknowns)
+      to: |
+        $(*)\;\left\\{\begin{align}
+          a_{11}x_1 + a_{12}x_2 + \dotsb + a_{1n}x_n & = b_1 & (e_1) \\\\\\\\
+          a_{21}x_1 + a_{22}x_2 + \dotsb + a_{2n}x_n & = b_2 & (e_2)\\\\\\\\
+          \vdots\quad\quad\quad\quad                         \\\\\\\\
+          a_{m1}x_1 + a_{m2}x_2 + \dotsb + a_{mn}x_n & = b_m & (e_m)
+        \end{align}\right.$
+    - name: Solution to a Linear System (7A.4/7A.5)
+      from: Linear system
+      to: |
+        1. Single solution $\vb x = (\vb x_1,\vb x_2,\dotsc,\vb x_n) \in \F^n$
+        1. Solution set $S \subseteq \F^n$
+    - name: Consistency (7A.6)
+      from: Linear system
+      to: The solution set is non-empty (otherwise _inconsistent_)
+    - name: Equivalent (7A.7)
+      from: Two linear systems
+      to: The solution sets are equal
+    - name: Elementary Operations (7B.8)
+      from: Distinct equations $e_i$ and $e_j$
+      to: |
+        1. Interchange: $e_i \harr e_j$
+        1. Multiply: $e_i \to k e_i$, $k \in \F \setminus\\{0\\}$
+        1. Add: $e_i = e_i + ce_j$, $c \in \F \setminus \\{0\\}$
+    - name: Triviality (7.B9)
+      from: Equation $e_i$
+      to: |
+        $e_i \equiv 0 = 0$ (otherwise _non-trivial_)
 
 - title: "## Theorems"
   class: thms
@@ -134,3 +167,7 @@
         1. $\norm{\vb z} = \norm{\vb u}\norm{\vb v}\sin\theta$
         1. The right-hand rule
         1. Linearity in both arguments (Lemma 4.2)
+    - name: Solution Set to a Linear System (Theorem 7A.1)
+      from: Solution set $S$ to system $(*)$
+      arrow: \implies
+      to: $\abs{S} \in \\{0, 1, \abs{\F}\\}$

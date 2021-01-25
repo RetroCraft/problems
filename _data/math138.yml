@@ -1,4 +1,4 @@
-- title: "## Definitions"
+- title: '## Definitions'
   class: defs
   defs:
     - name: Partition (§1.2, p. 13)
@@ -42,7 +42,7 @@
       to: |
         $\int f(x) \dd{x} = \\{ F : F' = f \\} = \\{ F(x) + C : C \in \R \\}$
 
-- title: "## Theorems"
+- title: '## Theorems'
   class: thms
   defs:
     - name: Integrability Theorem for Continuous Functions (thm. 1.1, p. 17)
@@ -94,11 +94,52 @@
     ## Definitions
   class: defs
   defs:
-    
-- title: "## Theorems"
+    - name: Local Extrema (§3.13, p. 197)
+      from: $f(c)$ exists
+      to: $I=(a,b)$ exists so $f(c) = \min f(I)$ (or max)
+    - name: Antiderivative (§4.2.1, p. 213)
+      from: $f(I)$ exists
+      to: Function $F$ where $F'(x) = f(x)$ for all $x\in I$.
+    - name: Increasing/Decreasing (§4.2.2, p. 219)
+      from: $f(I)$ exists
+      to: |
+        For all $x_1,x_2\in I$ with $x_1 < x_2$:
+        1. Increasing on $I$ if $f(x_1) < f(x_2)$
+        1. Decreasing on $I$ if $f(x_1) > f(x_2)$
+        1. Non-increasing on $I$ if $f(x_1) \leq f(x_2)$
+        1. Non-decreasing on $I$ if $f(x_1) \geq f(x_2)$
+        1. Monotone if non-increasing or non-decreasing
+    - name: Concavity
+      from: $f(I)$ exists
+      to: |
+        For all pairs of points $a$ and $b$ in $I$,
+        the secant line from $(a, f(a))$ to $(b, f(b))$
+        is above (up) or below (down) the graph of $f$.
+    - name: Inflection Point
+      from: $f(c)$ exists
+      to: |
+        1. $f \in C^0(c)$
+        1. Concavity changes at $c$
+- title: '## Theorems'
   class: thms
   defs:
     - name: Intermediate Value Theorem (thm. 2.16 [IVT], p. 116)
       from: $f \in C^0([a,b])$, $\alpha \in f((a,b))$
       arrow: \implies
       to: $\exists c\in(a,b)$, $f(c) = \alpha$
+    - name: Mean Value Theorem (thm. 4.1 [MVT], p. 210)
+      from: $f \in C^0([a,b])$, $f'([a,b])$
+      arrow: \implies
+      to: $c\in(a,b)$ where $f'(c) = \frac{f(b)-f(a)}{b-a}$
+    - name: Increasing/Decreasing Function Theorem (thm. 4.6, p. 220)
+      from: $f'(I)$ exists
+      arrow: \implies
+      to: |
+        1. $f'$ positive on $I$ $\implies$ $f$ increasing on $I$
+        1. $f'$ negative on $I$ $\implies$ $f$ decreasing on $I$
+        1. $f'$ non-positive on $I$ $\implies$ $f$ non-increasing on $I$
+        1. $f'$ non-negative on $I$ $\implies$ $f$ non-decreasing on $I$
+    - name: Bounded Derivative Theorem (thm. 4.7, p. 222)
+      from: $f\in C^0([a,b])$, $f'((a,b)) \subseteq [m,M]$
+      arrow: \implies
+      to: $f(a) + m(x-a) \leq f(x) \leq f(a) + M(x-a)$ for $x \in [a,b]$
