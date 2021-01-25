@@ -1,0 +1,68 @@
+\documentclass{agony}
+\title{MATH 138 Winter 2021: Practice Assignment 3}
+
+\begin{document}
+
+\begin{prob}
+  Evaluate the following integrals
+\end{prob}
+\begin{enumerate}[(a)]
+  \item $\displaystyle\int \frac{\dd x}{x^2\sqrt{x^2 - 16}}$
+  \item $\displaystyle\int_0^3 \frac{x}{\sqrt{36 - x^2}} \dd{x}$
+        using a trigonometric substitution
+  \item $\displaystyle\int_0^{\pi/2} \frac{\cos x}{\sqrt{1 + \sin^2 x}} \dd{x}$
+  \item $\displaystyle\int \frac{x^5}{\sqrt{x^2 + 2}} \dd{x}$
+  \item $\displaystyle\int_1^3 x^5 \ln x^2 \dd{x}$
+  \item $\displaystyle\int e^{2x} \cos x \dd{x}$
+  \item $\displaystyle\int_0^2 e^{2x} \cos e^x \dd{x}$
+  \item $\displaystyle\int \arcsin x \dd{x}$
+  \item $\displaystyle\int \frac{x^2 - x + 6}{x^3 + 3x} \dd{x}$
+  \item $\displaystyle\int \frac{x^2 - 5x + 16}{(2x+1)(x-2)^2} \dd{x}$
+  \item $\displaystyle\int \frac{\sin x \cos x}{\sin^4 x + \cos^4 x} \dd{x}$
+  \item $\displaystyle\int \frac{x \ln x}{\sqrt{x^2 - 1}} \dd{x}$
+  \item $\displaystyle\int \frac{\sec x \cos 2x}{\sin x + \sec x} \dd{x}$
+\end{enumerate}
+
+\begin{prob}
+  An integrand with trigonometric functions in the numerator and denominator
+  can often be converted to a rational integrand using the substitution
+  $u = \tan(x/2)$ or $x = 2\tan^{-1} u = 2 \arctan u$.
+\end{prob}
+\begin{enumerate}[(a)]
+  \item With this substitution,
+        prove that $\cos x = \frac{1-u^2}{1+u^2}$ and $\sin x = \frac{2u}{1+u^2}$.
+  \item Using this substitution and part (a), evaluate the following integrals:
+        \begin{enumerate}[i.]
+          \item $\displaystyle\int \frac{1}{1+\cos x} \dd{x}$
+          \item $\displaystyle\int \frac{\dd{x}}{1 - \cos x + \sin x}$
+        \end{enumerate}
+\end{enumerate}
+
+\begin{prob}
+  It has been shown that $\int e^{x^2} \dd{x}$ and $\int x^2 e^{x^2} \dd{x}$
+  do not have elementary antiderivatives.
+  However, $\int (2x^2 + 1)e^{x^2} \dd{x}$ does.
+  Evaluate \[ \int(2x^2 + 1)e^{x^2} \dd{x} \]
+  [Hint: integration by parts]
+\end{prob}
+
+\begin{prob}
+  \begin{enumerate}[(a)]
+    \item Evaluate $\displaystyle\int_0^1 \frac{x^4(1-x^4)}{1+x^2} \dd{x}$.
+    \item Prove, using part (a), that $\frac{22}{7} > \pi$.
+  \end{enumerate}
+\end{prob}
+
+\begin{prob}
+  Use integration by parts to prove each of the following
+  \emph{reduction formulas}, for integers $n \geq 2$:
+\end{prob}
+\begin{enumerate}[(a)]
+  \item $\displaystyle\int (\ln x)^n \dd{x}
+          = x(\ln x)^n - n\int (\ln x)^{n-1} \dd{x}$
+  \item $\displaystyle\int x^n(\ln x)^n \dd{x}
+          = \frac{x^{n+1}(\ln x)^n}{n+1}
+          - \frac{n}{n+1}\int x^n(\ln x)^{n-1} \dd{x}$
+\end{enumerate}
+
+\end{document}
