@@ -8,19 +8,194 @@
 \end{prob}
 \begin{enumerate}[(a)]
   \item $\displaystyle\int \frac{\dd x}{x^2\sqrt{x^2 - 16}}$
+        \begin{sol}
+          Let $x = 4\sec\theta$ so $\dd{x} = 4\sec\theta\tan\theta\dd{\theta}$:
+          \begin{align*}
+            \int \frac{4\sec\theta\tan\theta}{16\sec^2\theta\sqrt{16\tan^2\theta}} \dd{\theta}
+             & = \int \frac{\dd\theta}{16\sec\theta}      \\
+             & = \frac{1}{16} \int \cos\theta \dd{\theta} \\
+             & = -\frac{\sin\theta}{16} + C               \\
+             & = \frac{\sqrt{x^2-16}}{16x} + C \qedhere
+          \end{align*}
+        \end{sol}
   \item $\displaystyle\int_0^3 \frac{x}{\sqrt{36 - x^2}} \dd{x}$
         using a trigonometric substitution
+        \begin{sol}
+          Let $x = 6\sin\theta$ so $\dd{x} = 6\cos\theta\dd{\theta}$:
+          \begin{align*}
+            \int_0^{\pi/3} \frac{(6\sin\theta)6\cos\theta}{6\cos\theta} \dd{\theta}
+             & = \int_0^{\pi/3} 6\sin\theta \dd{\theta} \\
+             & = -6\cos\theta \big|_0^{\pi/3}           \\
+             & = -3\sqrt{3} + 6 \qedhere
+          \end{align*}
+        \end{sol}
   \item $\displaystyle\int_0^{\pi/2} \frac{\cos x}{\sqrt{1 + \sin^2 x}} \dd{x}$
+        \begin{sol}
+          Let $u = \sin x$ so $\dd{u} = \cos x\dd{x}$:
+          \begin{align*}
+            \int_0^{1} \frac{\dd{u}}{\sqrt{1 + u^2}}
+          \end{align*}
+          Now, let $u = \tan\theta$ so $\dd{u} = \sec^2\theta\dd{\theta}$:
+          \begin{align*}
+            \int_0^{\pi/4} \frac{\sec^2\theta\dd{\theta}}{\sqrt{\sec^2\theta}}
+             & = \int_0^{\pi/4} \sec\theta\dd{\theta}          \\
+             & = \ln\abs{\sec\theta+\tan\theta}\Big|_0^{\pi/4} \\
+             & = \ln\abs{\sqrt{2} + 1} - \ln\abs{1 + 0}        \\
+             & = \ln(\sqrt{2} + 1) \qedhere
+          \end{align*}
+        \end{sol}
   \item $\displaystyle\int \frac{x^5}{\sqrt{x^2 + 2}} \dd{x}$
+        \begin{sol}
+          Let $x = \sqrt{2}\tan\theta$ so $\dd{x} = \sqrt{2}\sec^2\theta$:
+          \begin{align*}
+            \int \frac{8\tan^5\theta\sec^2\theta}{\sqrt{2}\sec\theta} \dd{\theta}
+             & = 4\sqrt{2}\int \tan^4\theta\sec\theta\tan\theta\dd{\theta}
+          \end{align*}
+          Now let $u = \sec\theta$ so $\dd{u} = \tan\theta\sec\theta\dd{\theta}$:
+          \begin{align*}
+            4\sqrt{2} \int \tan^4\theta \dd{u}
+             & = 4\sqrt{2} \int (u^2 - 1)^2 \dd{u}                                                                                                 \\
+             & = 4\sqrt{2} \int u^4 - 2u^2 - 1 \dd{u}                                                                                              \\
+             & = 4\sqrt{2} \left( \frac{1}{5}u^5 - \frac{2}{3}u^3 - u \right) + C                                                                  \\
+             & = 4\sqrt{2} \left( \frac{1}{5}\sec^5\theta - \frac{2}{3}\sec^3\theta - \sec\theta \right) + C                                       \\
+             & = 4\sqrt{2} \left( \frac{(x^2+4)^{5/2}}{20\sqrt{2}} - \frac{2(x^2+4)^{3/2}}{6\sqrt{2}} - \frac{(x^2+4)^{1/2}}{\sqrt{2}} \right) + C \\
+             & = \frac{(x^2+4)^{5/2}}{5} - \frac{4(x^2+4)^{3/2}}{3} - 4(x^2+4)^{1/2} + C \qedhere
+          \end{align*}
+        \end{sol}
   \item $\displaystyle\int_1^3 x^5 \ln x^2 \dd{x}$
+        \begin{sol}
+          Let $u = \ln x^2 = 2\ln x$ and $\dd{v} = x^5 \dd{x}$.
+          Then, $\dd{u} = \frac{2}{x} \dd{x}$ and $v = \frac{1}{6}x^6$:
+          \begin{align*}
+            \frac{x^6\ln x}{3}\Big|_1^3 - \int_1^3 \frac{1}{3}x^5 \dd{x}
+             & = \frac{x^6\ln x}{3} - \frac{1}{18} x^6 \Big|_1^3 \\
+             & = 243\ln 3 - \frac{81}{2} + \frac{1}{18}          \\
+             & = 243\ln 3 - \frac{364}{9} \qedhere
+          \end{align*}
+        \end{sol}
   \item $\displaystyle\int e^{2x} \cos x \dd{x}$
+        \begin{sol}
+          Let $u = e^{2x}$ and $\dd{v} = \cos x \dd{x}$.
+          Then, $\dd{u} = 2e^{2x} \dd{x}$ and $v = -\sin x$:
+          \begin{align*}
+            \int e^{2x} \cos x \dd{x} = -e^{2x}\sin x + 2 \int e^{2x}\sin x \dd{x}
+          \end{align*}
+          If we integrate by parts again,
+          with $u = e^{2x}$ and $\dd{v} = \sin x\dd{x}$,
+          we have $\dd{u} = 2e^{2x} \dd{x}$ and $v = -\cos x$:
+          \begin{align*}
+            \int e^{2x} \cos x \dd{x}
+             & = -e^{2x}\sin x - 2e^{2x}\cos x - 4 \int e^{2x}\cos x \dd{x}       \\
+            5\int e^{2x} \cos x \dd{x}
+             & = -e^{2x}\sin x - 2e^{2x}\cos x                                    \\
+            \int e^{2x} \cos x \dd{x}
+             & = -\frac{1}{5} e^{2x}\sin x - \frac{2}{5}e^{2x}\cos x + C \qedhere
+          \end{align*}
+        \end{sol}
   \item $\displaystyle\int_0^2 e^{2x} \cos e^x \dd{x}$
+        \begin{sol}
+          First, let $u = e^x$, so $\dd{u} = e^x \dd{x}$:
+          \[ \int_0^2 e^{2x} \cos e^x \dd{x} = \int_1^{e^2} u \cos u \dd{u} \]
+          Now, integrate by parts:
+          \[ \int u \cos u \dd{u} = u\sin u - \int \sin u \dd{u} = u\sin u + \cos u + C \]
+          and evaluate at the bounds:
+          \begin{align*}
+            \int_1^{e^2} u \cos u \dd{u}
+             & = u\sin u + \cos u \,\Big|_1^{e^2}                  \\
+             & = e^2\sin e^2 + \cos e^2 - \sin 1 - \cos 1 \qedhere
+          \end{align*}
+        \end{sol}
   \item $\displaystyle\int \arcsin x \dd{x}$
+        \begin{sol}
+          Let $x = \sin u$, so $\dd{x} = \cos u \dd{u}$ and
+          \begin{equation*}
+            \int \arcsin x \dd{x}
+            = \int \arcsin(\sin u) \cos u \dd{u}
+            = \int u \cos u \dd{u}
+            = \cos u + u\sin u + C
+          \end{equation*}
+          by part (g). Now, $\cos u = \sqrt{1-\sin^2 u} = \sqrt{1-x^2}$, so
+          \[ \int \arcsin x \dd{x} = \sqrt{1-x^2} + x\arcsin x + C \qedhere \]
+        \end{sol}
   \item $\displaystyle\int \frac{x^2 - x + 6}{x^3 + 3x} \dd{x}$
+        \begin{sol}
+          First, factor: $x^3 + 3x = x(x^2 + 3)$.
+          We must decompose the fraction:
+          \[ \frac{x^2 - x + 6}{x^3 + 3x} = \frac{A}{x} + \frac{Bx+C}{x^2 + 3} \]
+          Now, if $x^2 - x + 6 = A(x^2 + 3) + Bx^2 +Cx = (A+B)x^2 + Cx + 3A$,
+          we can equate coefficients and determine $A = 2$, $C = -1$,
+          and $A+B = 2+B = 1$ so $B = -1$.
+          Therefore,
+          \begin{align*}
+            \int \frac{x^2 - x + 6}{x^3 + 3x} \dd{x}
+             & = \int \frac{2}{x} - \frac{x}{x^2+3} - \frac{1}{x^2+3} \dd{x}                             \\
+             & = 2\ln\abs{x} - \frac{1}{2}\ln(x^2+3) - \frac{1}{\sqrt{3}}\arctan(\frac{x}{\sqrt{3}}) + C
+            \qedhere
+          \end{align*}
+        \end{sol}
   \item $\displaystyle\int \frac{x^2 - 5x + 16}{(2x+1)(x-2)^2} \dd{x}$
+        \begin{sol}
+          The denominator is factored, so we directly apply decomposition:
+          \[ \frac{x^2-5x+16}{(2x+1)(x-2)^2} = \frac{A}{2x+1}+\frac{B}{x-2}+\frac{C}{(x-2)^2} \]
+          Now, if $x^2 - 5x + 16 = A(x-2)^2 + B(2x+1)(x-2) +  C(2x+1)$,
+          we can substitute $x = 2$ to find $10 = 5C \iff C = 2$
+          and $x = -\frac12$ to find $\frac{75}{4} = \frac{25}{4}A \iff A = 3$.
+          Finally, we can deduce that $(A+2B)x^2 = x^2$, so $B = -1$. Therefore,
+          \begin{align*}
+            \int \frac{x^2 - 5x + 16}{(2x+1)(x-2)^2} \dd{x}
+             & = \int \frac{3}{2x+1} - \frac{1}{x-2} + \frac{2}{(x-2)^2} \dd{x}       \\
+             & = \frac{3}{2}\ln\abs{2x+1} - \ln\abs{x-2} - \frac{2}{x-2} + C \qedhere
+          \end{align*}
+        \end{sol}
   \item $\displaystyle\int \frac{\sin x \cos x}{\sin^4 x + \cos^4 x} \dd{x}$
+        \begin{sol}
+          Let $u = \sin^2 x$ and $\dd{u} = 2\sin x\cos x \dd{x}$:
+          \begin{align*}
+            \int \frac{\sin x \cos x}{\sin^4 x + \cos^4 x} \dd{x}
+             & = \int \frac{\dd u}{2(u^2 + (1-u)^2)}        \\
+             & = \int \frac{\dd u}{4u^2 - 4u + 2}           \\
+             & = \int \frac{\dd u}{(2u - 1)^2 + 1}          \\
+             & = \frac12\arctan(2u-1) + C                   \\
+             & = \frac12\arctan(2\sin^2 x - 1) + C \qedhere
+          \end{align*}
+        \end{sol}
   \item $\displaystyle\int \frac{x \ln x}{\sqrt{x^2 - 1}} \dd{x}$
+        \begin{sol}
+          Let $u = \sqrt{x^2 - 1}$ so $\dd{u} = \frac{x}{\sqrt{x^2-1}}\dd{x}$:
+          \begin{equation*}
+            \int \frac{x \ln x}{\sqrt{x^2 - 1}} \dd{x}
+            = \int \ln(\sqrt{u^2+1}) \dd{u}
+            = \int \frac12\ln(u^2+1) \dd{u}
+          \end{equation*}
+          We now integrate by parts, with $u = \ln(u^2+1)$ and $\dd{v} = \dd{u}$:
+          \begin{align*}
+            \int \frac12\ln(u^2+1) \dd{u}
+             & = \frac12 u\ln(u^2+1) - \int \frac{2u(u)}{2(u^2 + 1)} \dd{u}             \\
+             & = \frac12 u\ln(u^2+1) - \int \frac{u^2}{u^2 + 1} \dd{u}                  \\
+             & = \frac12 u\ln(u^2+1) - \int 1 - \frac{1}{u^2 + 1} \dd{u}                \\
+             & = \frac12 u\ln(u^2+1) - u + \arctan u + C                                \\
+             & = \frac12 \sqrt{x^2-1}\ln x^2 - \sqrt{x^2-1} + \arctan(\sqrt{x^2-1}) + C \\
+             & = \sqrt{x^2-1}\ln x - \sqrt{x^2-1} + \arcsec(\sqrt{x^2-1}) + C
+          \end{align*}
+          since we can draw the triangle to deduce that if $\theta = \arctan\sqrt{x^2-1}$,
+          then $\cos\theta = \frac{1}{x}$ and $\theta = \arcsec x$.
+        \end{sol}
   \item $\displaystyle\int \frac{\sec x \cos 2x}{\sin x + \sec x} \dd{x}$
+        \begin{sol}
+          We apply trig identities to simplify:
+          \begin{equation*}
+            \int \frac{\sec x \cos 2x}{\sin x + \sec x} \dd{x}
+            = \int \frac{\cos 2x}{\sin x\cos x + 1} \dd{x}
+            = \int \frac{2\cos 2x}{\sin 2x + 2} \dd{x}
+          \end{equation*}
+          Now let $u = \sin 2x + 2$ so $\dd{u} = 2\cos 2x \dd{x}$:
+          \begin{equation*}
+            \int \frac{2\cos 2x}{\sin 2x + 2} \dd{x}
+            = \int \frac{\dd{u}}{u} \dd{x}
+            = \ln\abs{u} + C
+            = \ln\abs{\sin 2x + 2} + C \qedhere
+          \end{equation*}
+        \end{sol}
 \end{enumerate}
 
 \begin{prob}
@@ -31,10 +206,46 @@
 \begin{enumerate}[(a)]
   \item With this substitution,
         prove that $\cos x = \frac{1-u^2}{1+u^2}$ and $\sin x = \frac{2u}{1+u^2}$.
+        \begin{prf}
+          If $u = \tan\frac{x}{2}$ then $\sec^2\frac{x}{2} = u^2 + 1$,
+          so $\cos\frac{x}{2} = \frac{1}{\sqrt{u^2+1}}$.
+
+          But $\cos x = 2\cos^2\frac{x}{2} - 1 = \frac{2}{u^2+1} - 1 = \frac{1-u^2}{1+u^2}$.
+
+          Likewise, $u = \frac{\sin\frac{x}{2}}{\cos\frac{x}{2}}$ so
+          $\sin\frac{x}{2} = \frac{u}{\sqrt{u^2+1}}$.
+          Then, $\sin x = 2\cos\frac{x}{2}\sin\frac{x}{2} = \frac{2u}{u^2+1}$.
+        \end{prf}
   \item Using this substitution and part (a), evaluate the following integrals:
         \begin{enumerate}[i.]
           \item $\displaystyle\int \frac{1}{1+\cos x} \dd{x}$
+                \begin{sol}
+                  Let $u = \tan\frac{x}{2}$
+                  then $\dd{u} = \frac12\sec^2\frac{x}{2} \dd{x} = \frac12(1+u^2)\dd{x}$:
+                  \begin{equation*}
+                    \int \frac{1}{1+\cos x} \dd{x}
+                    = \int \frac{1}{1+\frac{1-u^2}{1+u^2}}\cdot\frac{2}{1+u^2} \dd{u}
+                    = \int \dd{u}
+                    = \tan\frac{x}{2} + C \qedhere
+                  \end{equation*}
+                \end{sol}
           \item $\displaystyle\int \frac{\dd{x}}{1 - \cos x + \sin x}$
+                \begin{sol}
+                  Again, $u = \tan\frac{x}{2}$ and $\dd{x} = \frac{2}{1+u^2}\dd{u}$:
+                  \begin{equation*}
+                    \int \frac{\dd{x}}{1 - \cos x + \sin x}
+                    = \int \frac{\frac{2}{1+u^2}}{1 - \frac{1-u^2}{1+u^2} + \frac{2u}{1+u^2}} \dd{u}
+                    = \int \frac{\dd{u}}{u^2 + u}
+                  \end{equation*}
+                  Now, separate the fraction as $\frac{1}{u^2+u} = \frac{1}{u} - \frac{1}{u+1}$, so
+                  \begin{align*}
+                    \int \frac{1}{u^2 + u} \dd{u}
+                     & = \int \frac{1}{u} - \frac{1}{u+1} \dd{u}                         \\
+                     & = \ln\abs{u} - \ln\abs{u+2} + C                                   \\
+                     & = \ln\abs{\frac{u}{u+1}} + C                                      \\
+                     & = \ln\abs{\frac{\tan\frac{x}{2}}{\tan\frac{x}{2}+1}} + C \qedhere
+                  \end{align*}
+                \end{sol}
         \end{enumerate}
 \end{enumerate}
 
@@ -52,6 +263,20 @@
     \item Prove, using part (a), that $\frac{22}{7} > \pi$.
   \end{enumerate}
 \end{prob}
+\begin{sol}
+  Expand and divide: $x^4(1-x^4) = x^8 - 4x^7 + 6x^6 - 4x^5 + x^4$ and
+  \[ \polylongdiv{x^8 - 4x^7 + 6x^6 - 4x^5 + x^4}{x^2 + 1} \]
+  Therefore,
+  \begin{align*}
+    \int_0^1 \frac{x^4(1-x^4)}{1+x^2} \dd{x}
+     & = \int_0^1 x^6 - 4x^5 + 5x^4 - 4x^2 + 4 - \frac{4}{x^2 + 1} \dd{x}                  \\
+     & = \at{\qty(\frac17 x^7 - \frac23 x^6 + x^5 - \frac43 x^3 + 2x^2 - 4\arctan x)}{0}^1 \\
+     & = \frac{22}{7} - \pi \qedhere
+  \end{align*}
+  Now, on the interval $[0,1]$, the integral is non-negative since the integrand is non-negative.
+  Therefore, $\frac{22}{7}-\pi \geq 0$, i.e., $\frac{22}{7} > \pi$
+  (since $\pi$ is irrational).
+\end{sol}
 
 \begin{prob}
   Use integration by parts to prove each of the following
