@@ -34,6 +34,19 @@ Learning is painful and agonizing enough as it is.
 - TOC
 {:toc}
 
+## Business
+
+Quizlet flashcards are not mine.
+Thank Imaad for them.
+
+### BUS 111 (F2020) <small>Introduction to the Business Environment</small>
+
+Flashcards available for [PEST factors](https://quizlet.com/ca/553312795/bu111-final-review-f2020-all-pest-factors-flash-cards/) and [strategic expansion](https://quizlet.com/ca/553644800/bu111-final-review-f2020-intl-business-strategic-expansion-flash-cards/).
+
+### BUS 121 (W2021) <small>Functional Areas of the Organization</small>
+
+[Flashcard set](https://quizlet.com/ca/562677348/bu121-functional-areas-of-the-organization-flash-cards/) for the whole course so far.
+
 ## Computer Science
 
 ### CS 135 (F2020) <small>Designing Functional Programs</small>
