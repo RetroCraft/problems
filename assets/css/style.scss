@@ -17,9 +17,18 @@
     p {
       margin: 0;
     }
+  }
 
+  .thms,
+  .defs {
     ol {
       list-style: lower-roman;
+    }
+
+    ul,
+    ol {
+      text-align: left;
+      display: inline-block;
       margin: 0 1.25rem;
       padding: 0;
     }

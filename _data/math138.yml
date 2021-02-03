@@ -12,9 +12,9 @@
       to: $P^{(n)} = \\{t_n\\}$ where $\Delta t_i = \frac{b-a}{n}$
     - name: Riemann Sum (§1.2, p. 13)
       from: |
-        1. Partition $\\{t_n\\}$ of $I$
-        2. Bounded $f:I\to\R$
-        3. $c_i \in [t_{i-1},t_i]$ for $i \geq 1$
+        - Partition $\\{t_n\\}$ of $I$
+        - Bounded $f:I\to\R$
+        - $c_i \in [t_{i-1},t_i]$ for $i \geq 1$
       to: $S = \sum\limits_{i=1}^n f(c_i) \Delta t_i$
     - name: Right-Hand Riemann Sum (§1.2, p. 15)
       from: Riemann Sum requirements
@@ -24,9 +24,9 @@
       to: $S = \sum\limits_{i=1}^n f(t_{i-1}) \Delta t_i$
     - name: Definite Integral/Integrability (§1.2, p. 16)
       from: |
-        1. $\forall$ partition sequence $\\{P_n\\}$ with $\norm{P_n} \to 0$
-        2. Riemann sums $S_i$ of $P_i$
-        3. $\exists$ limit $S_i \to I$
+        - Sequences $\\{P_n\\}$ with $\norm{P_n} \to 0$
+        - Riemann sums $S_i$ of $P_i$
+        - $\exists$ limit $S_i \to I$
       to: $I = \displaystyle\int_a^b f(t) \dd{t}$
     - name: Identical Limits of Integration (§1.3.1, p. 20)
       from: $f(a)$ exists
@@ -41,20 +41,32 @@
       from: $f$ integrable
       to: |
         $\int f(x) \dd{x} = \\{ F : F' = f \\} = \\{ F(x) + C : C \in \R \\}$
+    - name: Type I Improper Integral (§2.4, p. 82)
+      from: $f$ integrable
+      to: |
+        1. $\int_a^\infty f(x) \dd{x} = \lim\limits_{b\to\infty} \int_a^b f(x) \dd{x}$
+        1. $\int_{-\infty}^a f(x) \dd{x} = \lim\limits_{b\to-\infty} \int_b^a f(x) \dd{x}$
+        1. $\int_{-\infty}^\infty f(x) \dd{x} = \int_{-\infty}^c f(x) \dd{x} + \int_c^\infty f(x) \dd{x}$
+    - name: Type II Improper Integral (§2.4, p. 97)
+      from: $f$ integrable except at asymptote $c\in[a,b]$
+      to: |
+        1. $\int_c^b = \lim\limits_{t\to c^+} \int_t^b f(x) \dd{x}$
+        1. $\int_a^c = \lim\limits_{t\to c^-} \int_a^t f(x) \dd{x}$
+        1. $\int_a^b = \int_a^c f(x) \dd{x} + \int_c^b f(x) \dd{x}$
 
 - title: '## Theorems'
   class: thms
   defs:
     - name: Integrability Theorem for Continuous Functions (thm. 1.1, p. 17)
       from: |
-        1. $f \in C^0([a,b])$
-        2. Any regular $n$-partition Riemann sum $S_n$
+        - $f \in C^0([a,b])$
+        - Any regular $n$-partition Riemann sum $S_n$
       arrow: \implies
       to: $\displaystyle\int_a^b f(t) \dd{t} = \lim_{n\to\infty}S_n$
     - name: Properties of Integrals (thm. 1.2, p. 18)
       from: |
-        1. $\int_a^b f(t) \dd{t}$
-        2. $\int_a^b g(t) \dd{t}$
+        - $\int_a^b f(t) \dd{t}$
+        - $\int_a^b g(t) \dd{t}$
       arrow: \implies
       to: |
         1. $\forall c\in\R$, $\int_a^b c f(t) \dd{t} = c\int_a^b f(t) \dd{t}$
@@ -87,6 +99,37 @@
       from: $g \in C^1([a,b])$, $f \in C^0(g([a,b]))$
       arrow: \implies
       to: $\int_{x=a}^{x=b} f(g(x)) g'(x) \dd{x} = \int_{u=g(a)}^{u=g(b)} f(u) \dd{u}$
+    - name: Integration by Parts (thm. 2.1, p. 71)
+      from: $f,g \in C^1([a,b])$
+      arrow: \implies
+      to: $\int_a^b f(x) g'(x) \dd{x} = f(x)g(x)\big\vert_a^b - \int_a^b f'(x)g(x) \dd{x}$
+    - name: Monotone Convergence Theorem for Functions (thm. 2.5 [MCTF], p. 89)
+      from: |
+        - $f$ non-decreasing on $[a,\infty)$
+        - $S = f([a,\infty))$
+      arrow: \implies
+      to: |
+        - If $S$ bounded above, $f(x) \to \operatorname{lub} S$
+        - Else, $f(x) \to \infty$
+    - name: $p$-Test for Type I Improper Integrals (thm. 2.3, p. 85)
+      from: $p > 1$
+      arrow: \iff
+      to: $\int_1^\infty \frac{1}{x^p} \dd{x} = \frac{1}{p-1}$
+    - name: Comparison Test for Type I Improper Integrals (thm. 2.6, p. 90)
+      from: |
+        $0 \leq f(x) \leq g(x)$ for all $x \geq a$
+      arrow: \implies
+      to: |
+        1. If $\int_a^\infty g(x)$ converges, so does $\int_a^\infty f(x)$
+        1. If $\int_a^\infty f(x)$ diverges, so does $\int_a^\infty g(x)$
+    - name: Absolute Convergence Theorem for Improper Integrals (thm. 2.7, p. 93)
+      from: $\int_a^\infty \abs{f(x)} \dd{x}$ converges
+      arrow: \implies
+      to: $\int_a^\infty f(x) \dd{x}$ converges
+    - name: $p$-Test for Type II Improper Integrals (thm. 2.3, p. 85)
+      from: $p < 1$
+      arrow: \iff
+      to: $\int_0^1 \frac{1}{x^p} \dd{x} = \frac{1}{1-p}$
 
 - title: |
     # MATH 137 Reference
@@ -127,6 +170,12 @@
       from: $f \in C^0([a,b])$, $\alpha \in f((a,b))$
       arrow: \implies
       to: $\exists c\in(a,b)$, $f(c) = \alpha$
+    - name: Local Extrema Theorem (thm. 3.11, p. 201)
+      from: |
+        - $c$ local extrema for $f$
+        - $f'(c)$ exists
+      arrow: \implies
+      to: $f'(c) = 0$
     - name: Mean Value Theorem (thm. 4.1 [MVT], p. 210)
       from: $f \in C^0([a,b])$, $f'([a,b])$
       arrow: \implies

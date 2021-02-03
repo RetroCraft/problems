@@ -7,7 +7,7 @@ This is an open archive of study materrial from my being a Waterloo and Laurier 
 If you find it useful and want me to endure more pain in 1B,
 consider sending me a <s>coffee</s> bubble tea:
 
-<div style="text-align:center"><script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('(add1 pain)', '#159957', 'Q5Q827K43');kofiwidget2.draw();</script></div>
+<div style="text-align:center"><script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('++pain;', '#159957', 'Q5Q827K43');kofiwidget2.draw();</script></div>
 
 ## About
 {:.no_toc}
@@ -17,8 +17,11 @@ Frankly, it's more likely that it's not.
 Please [let me know](#contact) if you find a [mistake](#mistakes) though!
 Or, in the spirit of open source, make a [pull request](https://github.com/RetroCraft/problems/pulls) fixing it.
 
-These are published under information and belief that they are permitted by relevant faculty,
-please [contact me](#contact) if they are not and I will take them down.
+If you want to use my `agony` document class for $\LaTeX$,
+feel free to [download it](./agony.cls) and look through the macros.
+
+Everything here is published under information and belief that it is permitted by relevant faculty;
+please [contact me](#contact) if anything is not and I will take them down.
 
 Unless otherwise specified, all content here is licensed under a
 Creative Commons Attribution ShareAlike 4.0 International License
@@ -36,16 +39,16 @@ Learning is painful and agonizing enough as it is.
 
 ## Business
 
-Quizlet flashcards are not mine.
-Thank Imaad for them.
+Quizlet flashcards are not mine: thank Imaad for them.
 
 ### BUS 111 (F2020) <small>Introduction to the Business Environment</small>
 
-Flashcards available for [PEST factors](https://quizlet.com/ca/553312795/bu111-final-review-f2020-all-pest-factors-flash-cards/) and [strategic expansion](https://quizlet.com/ca/553644800/bu111-final-review-f2020-intl-business-strategic-expansion-flash-cards/).
+Flashcards available for [PEST factors](https://quizlet.com/ca/553312795/bu111-final-review-f2020-all-pest-factors-flash-cards/)
+and [strategic expansion](https://quizlet.com/ca/553644800/bu111-final-review-f2020-intl-business-strategic-expansion-flash-cards/).
 
 ### BUS 121 (W2021) <small>Functional Areas of the Organization</small>
 
-[Flashcard set](https://quizlet.com/ca/562677348/bu121-functional-areas-of-the-organization-flash-cards/) for the whole course so far.
+[Flashcard set (WIP)](https://quizlet.com/ca/562677348/bu121-functional-areas-of-the-organization-flash-cards/) for the whole course so far.
 
 ## Computer Science
 
@@ -78,6 +81,10 @@ They are created on Figma, which (once I figure out how to use the free educatio
 | [Unit 4 Cheat Sheet](./ECON120/U4.pdf)  |
 | [Unit 5 Cheat Sheet](./ECON120/U5.pdf)  |
 | [Exam Cheat Sheet](./ECON120/Final.pdf) |
+
+### ECON 140 (W2021) <small>Introduction to Macroeconomics</small>
+
+Cheat sheets coming soon!
 
 ## Math
 

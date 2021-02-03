@@ -163,6 +163,7 @@
   \let\@ifnextchar\new@ifnextchar
   \array{#1}}
 \RenewDocumentCommand{\bmqty}{om}{\IfValueTF{#1}{\begin{bmatrix}[#1]#2\end{bmatrix}}{\begin{bmatrix}#2\end{bmatrix}}}
+\RenewDocumentCommand{\pmqty}{om}{\IfValueTF{#1}{\begin{pmatrix}[#1]#2\end{pmatrix}}{\begin{pmatrix}#2\end{pmatrix}}}
 % allow redefinition of inner product separator
 \newcommand{\ipsep}{\middle\vert}
 \RenewDocumentCommand{\innerproduct}{ s m g }

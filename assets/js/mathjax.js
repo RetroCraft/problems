@@ -141,6 +141,10 @@ window.MathJax = {
       Proj: '\\operatorname{Proj}',
       Perp: '\\operatorname{Perp}',
       Span: '\\operatorname{Span}',
+      REF: '\\operatorname{REF}',
+      RREF: '\\operatorname{RREF}',
+      nullity: '\\operatorname{nullity}',
+      amat: ['\\left(\\begin{array}{#1}#2\\end{array}\\right)', 2],
     },
     pairedDelimiters: {
       abs: ['\\lvert', '\\rvert'],
