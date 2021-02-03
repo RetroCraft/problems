@@ -32,6 +32,11 @@
       margin: 0 1.25rem;
       padding: 0;
     }
+
+    mjx-container[jax='CHTML'][display='true'] {
+      margin: 0;
+      text-align: inherit;
+    }
   }
 }
 

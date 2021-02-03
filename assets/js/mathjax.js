@@ -111,7 +111,6 @@ window.MathJax = {
   },
   loader: { load: ['[tex]/ams', '[tex]/mhchem', '[tex]/physics'] },
   tex: {
-    inlineMath: [['$', '$'], ['\\(', '\\)']],
     packages: { '[+]': ['pairedDelimiters', 'ams', 'mhchem', 'physics'] },
     macros: {
       sym: '\\mathbin{\\triangle}',

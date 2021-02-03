@@ -2,99 +2,99 @@
   class: defs
   defs:
     - name: Linearity
-      from: $F:\F\to\F$, $x,y,z\in\F$
+      from: $$F:\F\to\F$$, $$x,y,z\in\F$$
       to: |
-        1. $F(x+y) = F(x) + F(y)$
-        2. $F(zx) = zF(x)$
-    - name: Dot Product in $\R^n$ (2.1)
-      from: $\vb v = (v_1,\dotsc,v_n)^T$, $\vb w = (w_1,\dotsc,w_n)^T \in \R^n$
-      to: $\vb v\vdot\vb w = v_1 w_1 + \dotsb + v_n w_n$
+        1. $$F(x+y) = F(x) + F(y)$$
+        2. $$F(zx) = zF(x)$$
+    - name: Dot Product in $$\R^n$$ (2.1)
+      from: $$\vb v = (v_1,\dotsc,v_n)^T$$, $$\vb w = (w_1,\dotsc,w_n)^T \in \R^n$$
+      to: $$\vb v\vdot\vb w = v_1 w_1 + \dotsb + v_n w_n$$
     - name: Angle (2.6)
-      from: $\vb v, \vb w \in \R^n$
-      to: $\theta = \arccos(\dfrac{\vb v\vdot\vb w}{\norm{\vb v}\norm{\vb w}}) \in [0,\pi]$
-    - name: Standard Inner Product in $\F^n$ (3.5)
-      from: $\vb v = (v_1,\dotsc,v_n)^T \in \F^n$, $\vb w = (w_1,\dotsc,w_n)^T \in \F^n$
-      to: $\ip{\vb v}{\vb w} = v_1 \bar w_1 + \dotsb + v_n \bar w_n$
+      from: $$\vb v, \vb w \in \R^n$$
+      to: $$\theta = \arccos(\dfrac{\vb v\vdot\vb w}{\norm{\vb v}\norm{\vb w}}) \in [0,\pi]$$
+    - name: Standard Inner Product in $$\F^n$$ (3.5)
+      from: $$\vb v = (v_1,\dotsc,v_n)^T \in \F^n$$, $$\vb w = (w_1,\dotsc,w_n)^T \in \F^n$$
+      to: $$\ip{\vb v}{\vb w} = v_1 \bar w_1 + \dotsb + v_n \bar w_n$$
     - name: Length (2.3/3.2)
-      from: $\vb v\in\F^n$
-      to: $\norm{\vb v} = \sqrt{\ip{\vb v}{\vb v}}$
+      from: $$\vb v\in\F^n$$
+      to: \$$\norm{\vb v} = \sqrt{\ip{\vb v}{\vb v}}$$
     - name: Unit Vector (2.4)
-      from: $\vu v\in\F^n$
-      to: $\norm{\vu v} = 1$
+      from: $$\vu v\in\F^n$$
+      to: $$\norm{\vu v} = 1$$
     - name: Orthogonality (2.5/3.3)
-      from: $\vb u, \vb v\in\F^n$
-      to: $\ip{\vb u}{\vb v} = 0$  
+      from: $$\vb u, \vb v\in\F^n$$
+      to: $$\ip{\vb u}{\vb v} = 0$$  
     - name: Projection (2.7/3.4)
-      from: $\vb v,\vb w\in\F^n$, $\vb v \neq 0$
+      from: $$\vb v,\vb w\in\F^n$$, $$\vb v \neq 0$$
       to: |
-        $\Proj_{\vb w}(\vb v)
+        $$\Proj_{\vb w}(\vb v)
         = \dfrac{\ip{\vb v}{\vb w}\vb w}{\norm{\vb w}^2}
-        = \ip{\vb v}{\vu w}\vu w$
+        = \ip{\vb v}{\vu w}\vu w$$
     - name: (Scalar) Component (2.8)
-      from: $\vb v,\vb w\in\F^n$, $\vb v \neq 0$
-      to: $\norm{\vb v}\cos\theta$  
+      from: $$\vb v,\vb w\in\F^n$$, $$\vb v \neq 0$$
+      to: $$\norm{\vb v}\cos\theta$$  
     - name: Remainder (2.9)
-      from: $\vb z,\vb w\in\F^n$, $\vb w \neq 0$
-      to: $\Perp_{\vb w}(\vb v) = \vb v - \Proj_{\vb w}(\vb v)$  
+      from: $$\vb z,\vb w\in\F^n$$, $$\vb w \neq 0$$
+      to: $$\Perp_{\vb w}(\vb v) = \vb v - \Proj_{\vb w}(\vb v)$$  
     - name: Cross Product (4.1)
-      from: $\vb u = (u_1,u_2,u_3)^T$, $\vb v = (v_1,v_2,v_3) \in \R^3$
-      to: $\vb u \cp \vb v = \mqty(u_2 v_3 - u_3 v_2 \\\\ -{(u_1 v_3 - u_3 v_1)} \\\\ u_1 v_2 - u_2 v_1)$  
+      from: $$\vb u = (u_1,u_2,u_3)^T$$, $$\vb v = (v_1,v_2,v_3) \in \R^3$$
+      to: $$\vb u \cp \vb v = \mqty(u_2 v_3 - u_3 v_2 \\ -{(u_1 v_3 - u_3 v_1)} \\ u_1 v_2 - u_2 v_1)$$  
     - name: Linear Combination (5.1)
-      from: $\vb v_1,\dotsc,\vb v_p \in \F^n$, $a_1,\dotsc,a_p \in \F$
-      to: $a_1 \vb v_1 + \dotsb + a_p \vb v_p$  
+      from: $$\vb v_1,\dotsc,\vb v_p \in \F^n$$, $$a_1,\dotsc,a_p \in \F$$
+      to: $$a_1 \vb v_1 + \dotsb + a_p \vb v_p$$  
     - name: Span (5.2)
-      from: $\vb v_1,\dotsc,\vb v_p \in \F^n$
+      from: $$\vb v_1,\dotsc,\vb v_p \in \F^n$$
       to: |
-        $\Span(\\{\vb v_1,\dotsc,\vb v_p\\})
-        = \\{a_1 \vb v_1 + \dotsb + a_p \vb v_p : a_1,\dotsc,a_p \in \F \\}$
+        $$\Span(\\{\vb v_1,\dotsc,\vb v_p\\})
+        = \\{a_1 \vb v_1 + \dotsb + a_p \vb v_p : a_1,\dotsc,a_p \in \F \\}$$
     - name: Line (6A.3)
-      from: $\vb v,\vb w\in\R^n$, $\vb w \neq 0$
+      from: $$\vb v,\vb w\in\R^n$$, $$\vb w \neq 0$$
       to: |
-        $L = \\{ \vb v + t\vb w : t\in\R \\}$.
-        If $\vb v \in \Span(\\{ \vb w \\})$, then $L = \Span(\\{ \vb w \\})$
+        $$L = \\{ \vb v + t\vb w : t\in\R \\}$$.
+        If $$\vb v \in \Span(\\{ \vb w \\})$$, then $$L = \Span(\\{ \vb w \\})$$
     - name: Vector Equation of a Line (6A.2/6A.4)
-      from: $\vb v,\vb w\in\R^n$, $\vb w \neq 0$
-      to: $\vb x = \vb v + t\vb w$  
+      from: $$\vb v,\vb w\in\R^n$$, $$\vb w \neq 0$$
+      to: $$\vb x = \vb v + t\vb w$$  
     - name: Parametric (Scalar) Equations of a Line (6A.1/6A.5)
       from: |
-        $\vb v = (v_1,\dotsc,v_n)^T$,
-        $\vb w = (w_1,\dotsc,w_n)^T\in\R^n$,
-        $\vb w \neq 0$
-      to: $\begin{cases}x_1=v_1+t w_1 \\\\ \quad\quad\vdots \\\\ x_n=v_n+t w_n\end{cases}$
+        $$\vb v = (v_1,\dotsc,v_n)^T$$,
+        $$\vb w = (w_1,\dotsc,w_n)^T\in\R^n$$,
+        $$\vb w \neq 0$$
+      to: $$\begin{cases}x_1=v_1+t w_1 \\ \quad\quad\vdots \\ x_n=v_n+t w_n\end{cases}$$
     - name: Plane (6B.7/6B.9)
       from: |
-        $\vb p, \vb v, \vb w \in \R^n$,
-        $\vb v \neq 0$, $\vb w \not\in \Span(\\{ \vb v \\})$
+        $$\vb p, \vb v, \vb w \in \R^n$$,
+        $$\vb v \neq 0$$, $$\vb w \not\in \Span(\\{ \vb v \\})$$
       to: |
-        $\Pi = \\{ \vb p + s\vb v + t\vb w : s,t\in\R \\}$.
-        If $\vb p = \vb 0$, then $\Pi = \Span(\\{ \vb v, \vb w \\})$
+        $$\Pi = \\{ \vb p + s\vb v + t\vb w : s,t\in\R \\}$$.
+        If $$\vb p = \vb 0$$, then $$\Pi = \Span(\\{ \vb v, \vb w \\})$$
     - name: Vector Equation of a Plane (6B.8/6B.10)
       from: |
-        $\vb p, \vb v, \vb w \in \R^n$,
-        $\vb v \neq 0$, $\vb w \not\in \Span(\\{ \vb v \\})$
-      to: $\vb x = \vb p + s\vb v + t\vb w$
-    - name: Scalar Equation of a Plane in $\R^3$ (6B.11)
+        $$\vb p, \vb v, \vb w \in \R^n$$,
+        $$\vb v \neq 0$$, $$\vb w \not\in \Span(\\{ \vb v \\})$$
+      to: $$\vb x = \vb p + s\vb v + t\vb w$$
+    - name: Scalar Equation of a Plane in $$\R^3$$ (6B.11)
       from: |
-        $\vb p, \vb v, \vb w\in\R^3$,
-        $\vb v \neq 0$, $\vb w \not\in \Span(\\{ \vb v \\})$
-      to: $(\vb v \cp \vb w) \vdot (\vb x - \vb p) = 0$
+        $$\vb p, \vb v, \vb w\in\R^3$$,
+        $$\vb v \neq 0$$, $$\vb w \not\in \Span(\\{ \vb v \\})$$
+      to: $$(\vb v \cp \vb w) \vdot (\vb x - \vb p) = 0$$
     - name: Linear System (7A.2/7A.3)
       from: |
-        $a_{11},\dotsc,a_{mn}\in\F$ (coefficients),
-        $b_1,\dotsc,b_m\in\F$ (RHS),
-        $x_1,\dotsc,x_n\in\F$ (unknowns)
+        $$a_{11},\dotsc,a_{mn}\in\F$$ (coefficients),
+        $$b_1,\dotsc,b_m\in\F$$ (RHS),
+        $$x_1,\dotsc,x_n\in\F$$ (unknowns)
       to: |
-        $(*)\;\left\\{\begin{align}
-          a_{11}x_1 + a_{12}x_2 + \dotsb + a_{1n}x_n & = b_1 & (e_1) \\\\ 
-          a_{21}x_1 + a_{22}x_2 + \dotsb + a_{2n}x_n & = b_2 & (e_2) \\\\ 
-          \vdots\quad\quad\quad\quad                                 \\\\ 
+        $$(*)\;\left\{\begin{align}
+          a_{11}x_1 + a_{12}x_2 + \dotsb + a_{1n}x_n & = b_1 & (e_1) \\ 
+          a_{21}x_1 + a_{22}x_2 + \dotsb + a_{2n}x_n & = b_2 & (e_2) \\ 
+          \vdots\quad\quad\quad\quad                                 \\ 
           a_{m1}x_1 + a_{m2}x_2 + \dotsb + a_{mn}x_n & = b_m & (e_m)
-        \end{align}\right.$
+        \end{align}\right.$$
     - name: Solution to a Linear System (7A.4/7A.5)
       from: Linear system
       to: |
-        1. Single solution $\vb x = (\vb x_1,\vb x_2,\dotsc,\vb x_n) \in \F^n$
-        1. Solution set $S \subseteq \F^n$
+        1. Single solution $$\vb x = (\vb x_1,\vb x_2,\dotsc,\vb x_n) \in \F^n$$
+        1. Solution set $$S \subseteq \F^n$$
     - name: Consistency (7A.6)
       from: Linear system
       to: The solution set is non-empty (otherwise _inconsistent_)
@@ -102,116 +102,144 @@
       from: Two linear systems
       to: The solution sets are equal
     - name: Elementary Operations (7B.8)
-      from: Distinct equations $e_i$ and $e_j$
+      from: Distinct equations $$e_i$$ and $$e_j$$
       to: |
-        1. Interchange: $e_i \harr e_j$
-        1. Multiply: $e_i \to k e_i$, $k \in \F \setminus\\{0\\}$
-        1. Add: $e_i = e_i + ce_j$, $c \in \F \setminus \\{0\\}$
+        1. Interchange: $$e_i \harr e_j$$
+        1. Multiply: $$e_i \to k e_i$$, $$k \in \F \setminus\\{0\\}$$
+        1. Add: $$e_i = e_i + ce_j$$, $$c \in \F \setminus \\{0\\}$$
     - name: Triviality (7.B9)
-      from: Equation $e_i$
+      from: Equation $$e_i$$
       to: |
-        $e_i \equiv 0 = 0$ (otherwise _non-trivial_)
+        $$e_i \equiv 0 = 0$$ (otherwise _non-trivial_)
     - name: Coefficient Matrix (8A.1)
       from: Linear system
       to: |
-        $A = \mqty(
-          a_{11}&a_{12}&\dotsb&a_{1n} \\\\ 
-          a_{21}&a_{22}&\dotsb&a_{2n} \\\\ 
-          \vdots&\vdots&\ddots&\vdots \\\\ 
+        $$A = \mqty(
+          a_{11}&a_{12}&\dotsb&a_{1n} \\ 
+          a_{21}&a_{22}&\dotsb&a_{2n} \\ 
+          \vdots&\vdots&\ddots&\vdots \\ 
           a_{m1}&a_{m2}&\dotsb&a_{mn}
-        ) \in M_{m\times n}$
+        ) \in M_{m\times n}$$
     - name: Augmented Matrix (8A.2)
       from: Linear system
       to: |
-        $B = (A\vert\vb{b}) = \amat{cccc\\|c}{
-          a_{11} & a_{12} & \dotsb & a_{1n} & b_1 \\\\ 
-          a_{21} & a_{22} & \dotsb & a_{2n} & b_2 \\\\ 
-          \vdots & \vdots & \ddots & \vdots & \vdots \\\\ 
+        $$B = (A\vert\vb{b}) = \amat{cccc\\|c}{
+          a_{11} & a_{12} & \dotsb & a_{1n} & b_1 \\ 
+          a_{21} & a_{22} & \dotsb & a_{2n} & b_2 \\ 
+          \vdots & \vdots & \ddots & \vdots & \vdots \\ 
           a_{m1} & a_{m2} & \dotsb & a_{mn} & b_n
-        } \in M_{m\times(n+1)}$
+        } \in M_{m\times(n+1)}$$
     - name: Row Echelon Form (8B.7)
-      from: $A\in M_{m\times n}$
+      from: $$A\in M_{m\times n}$$
       to: |
-        - $\REF(A)$ is equivalent to $A$
+        - $$\REF(A)$$ is equivalent to $$A$$
         - Zero rows are at the bottom
         - First entry in non-zero row is right of first entry in lower rows
     - name: Row-Reduced Echelon Form (8B.11)
-      from: $\REF(A)$
+      from: $$\REF(A)$$
       to: |
-        - $\RREF(A)$ is equivalent to $\REF(A)$
+        - $$\RREF(A)$$ is equivalent to $$\REF(A)$$
         - All pivots are 1
         - A pivot is the only value in its column
     - name: Rank (9.1)
-      from: $A\in M_{m\times n}$
-      to: $\rank(A)$ is the number of pivots in $\RREF(A)$
+      from: $$A\in M_{m\times n}$$
+      to: $$\rank(A)$$ is the number of pivots in $$\RREF(A)$$
     - name: Nullity (9.2)
-      from: $A\in M_{m\times n}$
-      to: $\nullity(A) = n - \rank(A)$
+      from: $$A\in M_{m\times n}$$
+      to: $$\nullity(A) = n - \rank(A)$$
+    - name: Homogenous (10A.1)
+      from: System $$(A\vert\vb b)$$
+      to: $$\vb b = \vb 0$$
+    - name: Nullspace (10A.2)
+      from: Coefficient matrix $$A$$
+      to: '$$N(A) = \\{ \vb x : A\vb x = \vb 0 \\}$$'
+    - name: Matrix Multiplication (11A.2a)
+      from: $$A\in M_{m\times n}$$, $$\vb x \in \F^n$$
+      to: |
+        $$A\vb x = \mqty(
+          a_{11}x_1 + a_{12}x_2 + \dotsb + a_{1n}x_n \\ 
+          a_{21}x_1 + a_{12}x_2 + \dotsb + a_{2n}x_n \\ 
+          \vdots \\ 
+          a_{m1}x_1 + a_{m2}x_2 + \dotsb + a_{mn}x_n
+        )$$
+        or $${(A\vb x)}_i = \sum_{j=1}^n a_{ij} x_j$$
+    - name: Matrix Multiplication by Columns (11A.2b)
+      from: $$A\in M_{m\times n}$$, $$\vb x \in \F^n$$
+      to: $$A\vb x = x_1\vb a_1 + x_2\vb a_2 + \dotsb + x_n \vb a_n$$
+    - name: Matrix Multiplication by Rows (11A.2c)
+      from: $$A\in M_{m\times n}$$, $$\vb x \in \F^n$$
+      to: |
+        $$A\vb x = \mqty(
+          \vb A^1_1 x_1 + \vb A^1_2 x_2 + \dotsb + \vb A^1_n x_n \\ 
+          \vb A^2_1 x_1 + \vb A^2_2 x_2 + \dotsb + \vb A^2_n x_n \\ 
+          \vdots \\ 
+          \vb A^m_1 x_1 + \vb A^m_2 x_2 + \dotsb + \vb A^m_n x_n 
+        )$$
 
 - title: "## Theorems"
   class: thms
   defs:
     - name: Properties of Complex Conjugation (Lemma I3.4)
-      from: $z,w\in\C$
+      from: $$z,w\in\C$$
       arrow: \implies
       to: |
-        1. $\overline{(\bar z)} = z$
-        1. $\overline{(wz)} = \bar w \bar z$
-        1. $\overline{(w+z)} = \bar w + \bar z$
-        1. $z + \bar z = 2\Re(z)$
-        1. $z - \bar z = 2i\Im(z)$
+        1. $$\overline{(\bar z)} = z$$
+        1. $$\overline{(wz)} = \bar w \bar z$$
+        1. $$\overline{(w+z)} = \bar w + \bar z$$
+        1. $$z + \bar z = 2\Re(z)$$
+        1. $$z - \bar z = 2i\Im(z)$$
     - name: Properties of the Modulus (Lemma I3.5)
-      from: $z,w\in\C$
+      from: $$z,w\in\C$$
       arrow: \implies
       to: |
-        1. $\abs{z} \geq 0$ and $\abs{z} = 0 \iff z = 0$
-        1. $\abs{\bar z} = \abs{z}$
-        1. $\abs{zw} = \abs{z}\abs{w}$
-        1. $\abs{z+w} \leq \abs{z} + \abs{w}$ (Triangle Inequality)
+        1. $$\abs{z} \geq 0$$ and $$\abs{z} = 0 \iff z = 0$$
+        1. $$\abs{\bar z} = \abs{z}$$
+        1. $$\abs{zw} = \abs{z}\abs{w}$$
+        1. $$\abs{z+w} \leq \abs{z} + \abs{w}$$ (Triangle Inequality)
     - name: Properties of Zero (Lemma 1.4)
-      from: $\vb v \in \F^n$, $a \in \F$, $a\vb v = \vb 0$
+      from: $$\vb v \in \F^n$$, $$a \in \F$$, $$a\vb v = \vb 0$$
       arrow: \implies
-      to: $\vb v = \vb 0$ or $a = 0$
+      to: $$\vb v = \vb 0$$ or $$a = 0$$
     - name: Properties of the Dot Product (Lemma 2.1)
-      from: $\vb v,\vb w,\vb z\in\R^n$ and $a\in\R$
+      from: $$\vb v,\vb w,\vb z\in\R^n$$ and $$a\in\R$$
       arrow: \implies
       to: |
-        1. $\vb v \vdot \vb w = \vb w \vdot \vb v$ (symmetry)
-        1. $(\vb v + \vb w)\vdot\vb z = \vb v \vdot \vb z + \vb w \vdot \vb z$
-        1. $(a\vb w)\vdot \vb v = a(\vb w \vdot \vb v)$
-        1. $\vb v\vdot\vb v \geq 0$ and $\vb v \vdot \vb v = 0 \iff \vb v = \vb 0$ (non-negativity)
-    - name: Properties of the Standard Inner Product on $\C^n$ (Lemma 3.1)
-      from: $\vb v,\vb w,\vb z\in\C^n$ and $a\in\C$
+        1. $$\vb v \vdot \vb w = \vb w \vdot \vb v$$ (symmetry)
+        1. $$(\vb v + \vb w)\vdot\vb z = \vb v \vdot \vb z + \vb w \vdot \vb z$$
+        1. $$(a\vb w)\vdot \vb v = a(\vb w \vdot \vb v)$$
+        1. $$\vb v\vdot\vb v \geq 0$$ and $$\vb v \vdot \vb v = 0 \iff \vb v = \vb 0$$ (non-negativity)
+    - name: Properties of the Standard Inner Product on $$\C^n$$ (Lemma 3.1)
+      from: $$\vb v,\vb w,\vb z\in\C^n$$ and $$a\in\C$$
       arrow: \implies
       to: |
-        1. $\ip{\vb v}{\vb w} = \overline{\ip{\vb w}{\vb v}}$ (conjugate symmetry)
-        1. $\ip{\vb v + \vb w}{\vb z} = \ip{\vb v}{\vb z} + \ip{\vb w}{\vb z}$
-        1. $\ip{a\vb w}{\vb v} = a\ip{\vb w}{\vb v}$
-        1. $\ip{\vb v}{\vb v} \geq 0$ and $\ip{\vb v}{\vb v} = 0 \iff \vb v = \vb 0$ (non-negativity)
+        1. $$\ip{\vb v}{\vb w} = \overline{\ip{\vb w}{\vb v}}$$ (conjugate symmetry)
+        1. $$\ip{\vb v + \vb w}{\vb z} = \ip{\vb v}{\vb z} + \ip{\vb w}{\vb z}$$
+        1. $$\ip{a\vb w}{\vb v} = a\ip{\vb w}{\vb v}$$
+        1. $$\ip{\vb v}{\vb v} \geq 0$$ and $$\ip{\vb v}{\vb v} = 0 \iff \vb v = \vb 0$$ (non-negativity)
     - name: Properties of the Length (Lemma 2.2/3.2)
-      from: $\vb v\in\F^n$ and $a\in\F$
+      from: $$\vb v\in\F^n$$ and $$a\in\F$$
       arrow: \implies
       to: |
-        1. $\norm{a\vb v} = \abs{a}\norm{\vb v}$
-        1. $\norm{\vb v} \geq 0$ and $\norm{\vb v} = 0 \iff \vb v = \vb 0$
+        1. $$\norm{a\vb v} = \abs{a}\norm{\vb v}$$
+        1. $$\norm{\vb v} \geq 0$$ and $$\norm{\vb v} = 0 \iff \vb v = \vb 0$$
     - name: Properties of the Cross Product (Lemma 4.1)
-      from: $\vb u,\vb v\in\R^3$ and $\vb z = \vb u \cp \vb v$
+      from: $$\vb u,\vb v\in\R^3$$ and $$\vb z = \vb u \cp \vb v$$
       arrow: \implies
       to: |
-        1. $\vb z\vdot\vb u = 0$ and $\vb z\vdot\vb v = 0$
-        1. $\vb v\cp\vb u = -\vb z$ (skew symmetry)
-        1. $\norm{\vb z} = \norm{\vb u}\norm{\vb v}\sin\theta$
+        1. $$\vb z\vdot\vb u = 0$$ and $$\vb z\vdot\vb v = 0$$
+        1. $$\vb v\cp\vb u = -\vb z$$ (skew symmetry)
+        1. $$\norm{\vb z} = \norm{\vb u}\norm{\vb v}\sin\theta$$
         1. The right-hand rule
         1. Linearity in both arguments (Lemma 4.2)
     - name: Solution Set to a Linear System (Theorem 7A.1)
-      from: Solution set $S$ to system $(*)$
+      from: Solution set $$S$$ to system $$(*)$$
       arrow: \implies
-      to: $\abs{S} \in \\{0, 1, \abs{\F}\\}$
+      to: $$\abs{S} \in \\{0, 1, \abs{\F}\\}$$
     - name: Lemma 9.1
-      from: System $(A\vert\vb{b})$ is consistent
+      from: System $$(A\vert\vb{b})$$ is consistent
       arrow: \iff
-      to: $\rank(A) = \rank(A\vert\vb{b})$
+      to: $$\rank(A) = \rank(A\vert\vb{b})$$
     - name: Rank-Nullity Theorem (Lemma 9.2)
-      from: $A\in M_{m\times n}$ is consistent
+      from: $$A\in M_{m\times n}$$ is consistent
       arrow: \implies
-      to: Solution set has $\nullity(A)$ parameters. 
+      to: Solution set has $$\nullity(A)$$ parameters. 

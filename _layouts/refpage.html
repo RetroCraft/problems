@@ -79,7 +79,7 @@
                 <td>{{ def.name | markdownify }}</td>
                 <td>{{ def.from | markdownify }}</td>
                 {% if section.class == "thms" %}
-                  <td>${{def.arrow}}$</td>
+                  <td>\( {{def.arrow}} \)</td>
                 {% endif %}
                 <td>{{ def.to | markdownify }}</td>
               </tr>
