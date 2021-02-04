@@ -4,7 +4,7 @@ gh: https://github.com/RetroCraft/problems/blob/master
 home: yes
 ---
 
-This is an open archive of study materrial from my being a Waterloo and Laurier CS/BBA student.
+This is an open archive of study material from my being a Waterloo and Laurier CS/BBA student.
 If you find it useful and want me to endure more pain in 1B,
 consider sending me a <s>coffee</s> bubble tea:
 

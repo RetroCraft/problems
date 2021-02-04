@@ -62,10 +62,10 @@ $$\begin{align}
 where the only changes from above are that
 - \$$C = a + bY_D$$
   - $$Y_D = Y - T$$ is **disposable income**
-    - $$T = T_0 + tY$$ is **taxes**
-      - $$T_0$$ is **autonomous tax** that doesn't depend on GDP, like CERB
-      - $$t$$ is the **marginal tax rate**
-- $$G = G_0$$ is **desired government spending**, which we set to a constant
+    - $$T = T_0 + tY$$ is **net tax revenue**
+      - $$T_0$$ is **autonomous tax** that doesn't depend on GDP, including transfers like CERB
+      - $$t$$ is the **net tax rate** of all taxes net of subsidies
+- $$G = G_0$$ is **desired government expenditure**, which we set to a constant
 
 ### Adding Trade
 
@@ -81,3 +81,7 @@ where the variables are the same except
   - $$X = X_0$$ is **desired exports**, which we set to a constant
   - $$IM = mY$$ is **desired imports**
     - $$m$$ is the **marginal propensity to import**
+
+## Government Policy
+
+The **budget balance** is $$T - G$$ where $$T$$ is net tax revenue and $$G$$ is government expenditure.
