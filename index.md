@@ -87,6 +87,9 @@ They are created on Figma, which (once I figure out how to use the free educatio
 
 Cheat sheets coming soon!
 
+I hastily put together an [equation sheet](./ECON140/ref.html) after lecture on the 4th.
+Let me know if there's mistakes.
+
 ## Math
 
 ### MATH 135 (F2020) <small>Algebra for Honours Mathematics</small>
