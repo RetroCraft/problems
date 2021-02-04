@@ -1,6 +1,7 @@
 ---
 layout: default
 gh: https://github.com/RetroCraft/problems/blob/master
+home: yes
 ---
 
 This is an open archive of study materrial from my being a Waterloo and Laurier CS/BBA student.
