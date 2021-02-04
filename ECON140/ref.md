@@ -27,9 +27,20 @@ We have a few basic metrics:
 - $$\frac{\Delta Y}{\Delta AE} = z$$ is the **marginal propensity to spend**
 - $$\frac{\Delta A}{\Delta Y_e} = \frac{1}{1-z}$$ is the **simple multiplier**
 
+All our models will be *linear*, that is, $$AE = A + zY$$.
+This should make it easy to identify $$A$$ and $$z$$.
+The term with no $$Y$$-dependency is called *autonomous* and with is called *induced*.
+
+Assuming linearity also gives us the really nice equation $$Y_e = \frac{A}{1-z}$$.
+
+### Super Simple Model
+
 In our simple model, we **ignore government and trade**, so that we can say
 
-$$\begin{align}AE & = C + I \\ & = (a + I_0) + (b)Y\end{align}$$
+$$\begin{align}
+  AE & = C + I \\
+     & = \underbrace{(a + I_0)}_{A} + \underbrace{(b)}_zY
+\end{align}$$
 
 where
 - $$C = a + bY$$ is **desired consumption**
@@ -38,18 +49,33 @@ where
     The opposite (*marginal propensity to save*) is $$1-b$$.
 - $$I = I_0$$ is **desired investment**, which we set to a constant
 
-Since this is linear, we can immediately conclude that $$a+I_0$$ is autonomous spending and $$z = b$$.
-We can also find the simple multiplier $$\frac{1}{1-b}$$.
-
-## Adding Government
+### Adding Government
 
 We now add government expenditure.
 
-$$\begin{align}AE & = C + I + T \\ & = \underbrace{(a - bT_0 + I_0)}_{A} + \underbrace{b(1-t)}_{z}Y\end{align}$$
+$$\begin{align}
+  AE & = C + I + G \\
+     & = \underbrace{(a + I_0 - bT_0)}_{A} + \underbrace{b(1-t)}_{z}Y
+\end{align}$$
 
 where the only changes from above are that
 - \$$C = a + bY_D$$
   - $$Y_D = Y - T$$ is **disposable income**
-- $$T = T_0 + tY$$ is **desired taxes**
+- $$G = T = T_0 + tY$$ is **desired taxes** (or government expenditure)
   - $$T_0$$ is **autonomous tax** that doesn't depend on GDP, like CERB
   - $$t$$ is the **marginal tax rate**
+
+### Adding Trade
+
+Lecture hasn't happened yet so I'm doing some hard guesswork here.
+
+$$\begin{align}
+  AE & = C + I + G + NX \\
+     & = \underbrace{(a + I_0 - bT_0 + X)}_{A} + \underbrace{(b(1-t) - m)}_{z}Y
+\end{align}$$
+
+where the variables are the same except
+- $$NX = X - IM$$ is **desired net exports**
+  - $$X$$ is **desired exports**, which we make autonomous
+  - $$IM = mY$$ is **desired imports**
+    - $$m$$ is the **marginal propensity to import**
