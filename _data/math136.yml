@@ -242,4 +242,29 @@
     - name: Rank-Nullity Theorem (Lemma 9.2)
       from: $$A\in M_{m\times n}$$ is consistent
       arrow: \implies
-      to: Solution set has $$\nullity(A)$$ parameters. 
+      to: Solution set has $$\nullity(A)$$ parameters.
+    - name: Linearity of Matrix Multiplication (Lemma 11A.1)
+      from: $$A \in M_{m\times n}$$, $$\vb x,\vb y\in\F^n$$, $$c\in\F$$
+      arrow: \implies
+      to: |
+        1. $$A(\vb x + \vb y) = A\vb x + A\vb y$$
+        1. $$A(c\vb x) = cA\vb x$$
+    - name: Lemma 11B.2
+      from: Homogenous solution $$S$$, $$\vb x_1, \vb x_2 \in S$$, $$c\in\F$$
+      arrow: \implies
+      to: |
+        1. $$(\vb x_1 + \vb x_2) \in S$$
+        1. $$c\vb x_1 \in S$$
+    - name: Relation between $$\tilde S$$ and $$S$$ (Lemma 11B.3/11B.4)
+      from: Homogenous solution $$S$$, inhomogeneous solution $$\tilde S$$
+      arrow: \implies
+      to: |
+        1. $$(\vb y_1 - \vb y_2) \in S$$ for any $$\vb y_1,\vb y_2 \in \tilde S$$
+        1. $$\tilde S = \{ \vb y_p + \vb x : \vb x \in S \}$$ given $$\vb y_p \in S$$
+    - name: Relation between inhomogeneous solutions (Lemma 11B.5)
+      from: Inhomogeneous solutions $$\vb p_1 \in \tilde S_1$$ and $$\vb p_2 \in \tilde S_2$$
+      arrow: \implies
+      to: |
+        - $$\tilde S_2 = \{ \vb p_2 + (\vb z - \vb p_1) : \vb z \in \tilde S_1 \}$$
+        - If $$\tilde S_1 = \{ \vb p_1 + W\vb a : \vb a \in \F^n \}$$
+          then $$\tilde S_2 = \{ \vb p_2 + W\vb a : \vb a \in \F^n \}$$
