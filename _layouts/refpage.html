@@ -39,14 +39,6 @@
       .main-content table {
         display: inline;
       }
-
-      .defs tr>*:nth-of-type(2) { text-align: right }
-      .defs tr>*:nth-of-type(3) { text-align: left }
-
-      .thms tr>*:nth-of-type(2) { text-align: right; border-right: 0; padding-right: 0; }
-      .thms tr>*:nth-of-type(2) ol, .thms tr>*:nth-of-type(2) ul { margin-right: 0; }
-      .thms tr>*:nth-of-type(3) { text-align: right; border-left: 0; border-right: 0; padding-left: 0; padding-right: 0; }
-      .thms tr>*:nth-of-type(4) { text-align: left; border-left: 0; padding-left: 0; }
     </style>
   </head>
   <body>
@@ -66,22 +58,26 @@
           <thead>
             <tr>
               <th>Name (Reference)</th>
-              <th>Given</th>
-              {% if section.class == "thms" %}
-                <th></th>
-              {% endif %}
-              <th>Conclusion</th>
+              <th class="stmt" colspan="{% if section.class == "thms" %}3{% else %}2{% endif %}">
+                Statement
+              </th>
             </tr>
           </thead>
           <tbody>
             {% for def in section.defs %}
               <tr>
                 <td>{{ def.name | markdownify }}</td>
-                <td>{{ def.from | markdownify }}</td>
-                {% if section.class == "thms" %}
-                  <td>\( {{def.arrow}} \)</td>
+                {% if def.stmt %}
+                  <td class="stmt" colspan="{% if section.class == "thms" %}3{% else %}2{% endif %}">
+                    {{ def.stmt | markdownify }}
+                  </td>
+                {% else %}
+                  <td>{{ def.from | markdownify }}</td>
+                  {% if section.class == "thms" %}
+                    <td>\( {{def.arrow}} \)</td>
+                  {% endif %}
+                  <td>{{ def.to | markdownify }}</td>
                 {% endif %}
-                <td>{{ def.to | markdownify }}</td>
               </tr>
             {% endfor %}
           </tbody>

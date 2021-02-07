@@ -48,11 +48,11 @@
         1. $$\int_{-\infty}^a f(x) \dd{x} = \lim\limits_{b\to-\infty} \int_b^a f(x) \dd{x}$$
         1. $$\int_{-\infty}^\infty f(x) \dd{x} = \int_{-\infty}^c f(x) \dd{x} + \int_c^\infty f(x) \dd{x}$$
     - name: Type II Improper Integral (§2.4, p. 97)
-      from: $$f$$ integrable except at asymptote $$c\in[a,b]$$
+      from: $$f$$ integrable except at asymptote $$c\in(a,b)$$
       to: |
-        1. $$\int_c^b = \lim\limits_{t\to c^+} \int_t^b f(x) \dd{x}$$
-        1. $$\int_a^c = \lim\limits_{t\to c^-} \int_a^t f(x) \dd{x}$$
-        1. $$\int_a^b = \int_a^c f(x) \dd{x} + \int_c^b f(x) \dd{x}$$
+        1. $$\int_c^b f(x) \dd{x} = \lim\limits_{t\to c^+} \int_t^b f(x) \dd{x}$$
+        1. $$\int_a^c f(x) \dd{x} = \lim\limits_{t\to c^-} \int_a^t f(x) \dd{x}$$
+        1. $$\int_a^b f(x) \dd{x} = \int_a^c f(x) \dd{x} + \int_c^b f(x) \dd{x}$$
 
 - title: '## Theorems'
   class: thms
@@ -166,6 +166,10 @@
 - title: '## Theorems'
   class: thms
   defs:
+    - name: Fundamental Trigonometric Limit (thm. 2.8, p. 84)
+      stmt: $$\lim_{x\to\infty} \frac{\sin x}{x} = 0$$
+    - name: Fundamental Log Limit (thm. 2.10, p. 95)
+      stmt: $$\lim_{x\to\infty} \frac{\ln x}{x} = 0$$
     - name: Intermediate Value Theorem (thm. 2.16 [IVT], p. 116)
       from: $$f \in C^0([a,b])$$, $$\alpha \in f((a,b))$$
       arrow: \implies
