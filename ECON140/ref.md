@@ -34,6 +34,9 @@ The term with no $$Y$$-dependency is called *autonomous* and with is called *ind
 
 Assuming linearity also gives us the really nice equation $$Y_e = \frac{A}{1-z}$$.
 
+This also gives a relation for change in marginal propensity to spend:
+$$Y_{e_2} = \frac{1-z_1}{1-z_2}Y_{e_1}$$.
+
 ### Super Simple Model
 
 In our simple model, we **ignore government and trade**, so that we can say
@@ -48,6 +51,7 @@ where
   - $$a$$ is **autonomous consumption**
   - $$b$$ is the **marginal propensity to consume**.
     The opposite (*marginal propensity to save*) is $$1-b$$.
+    The **savings function** is $$-A + (1-b)Y$$.
 - $$I = I_0$$ is **desired investment**, which we set to a constant
 
 ### Adding Government
