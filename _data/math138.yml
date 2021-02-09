@@ -53,6 +53,21 @@
         1. $$\int_c^b f(x) \dd{x} = \lim\limits_{t\to c^+} \int_t^b f(x) \dd{x}$$
         1. $$\int_a^c f(x) \dd{x} = \lim\limits_{t\to c^-} \int_a^t f(x) \dd{x}$$
         1. $$\int_a^b f(x) \dd{x} = \int_a^c f(x) \dd{x} + \int_c^b f(x) \dd{x}$$
+    - name: Area Between Curves (§3.1)
+      from: $$f,g\in C^0([a,b])$$
+      to: $$A = \int_a^b \abs{f(x)-g(x)} \dd{x}$$
+    - name: Volume of Revolution (Disk I, §3.2)
+      from: $$f \in C^0([a,b])$$, $$f \geq 0$$
+      to: $$V = \int_a^b \pi f(x)^2 \dd{x}$$
+    - name: Volume of Revolution (Disk II, §3.2)
+      from: $$f,g\in C^0([a,b])$$, $$0 \leq f \leq g$$
+      to: $$V = \int_a^b \pi(g(x)^2 - f(x)^2) \dd{x}$$
+    - name: Volume of Revolution (Shell, §3.3)
+      from: $$a \geq 0$$, $$f,g\in C^0([a,b])$$, $$f \leq g$$
+      to: $$V = \int_a^b 2 \pi x (g(x) - f(x)) \dd{x}$$
+    - name: Arc Length (§3.4)
+      from: $$f \in C^1([a,b])$$
+      to: $$S = \int_a^b \sqrt{1+f'(x)^2} \dd{x}$$
 
 - title: '## Theorems'
   class: thms
