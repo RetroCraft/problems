@@ -41,10 +41,13 @@ $$Y_{e_2} = \frac{1-z_1}{1-z_2}Y_{e_1}$$.
 
 In our simple model, we **ignore government and trade**, so that we can say
 
-$$\begin{align}
-  AE & = C + I \\
-     & = \underbrace{(a + I_0)}_{A} + \underbrace{(b)}_zY
-\end{align}$$
+<div class="derivations">
+  $$\begin{align}
+    AE & = C + I \\
+      & = \underbrace{(a + I_0)}_{A} + \underbrace{(b)}_zY
+  \end{align}$$
+  <video src="SimpleModel.mp4" controls width="380"></video>
+</div>
 
 where
 - $$C = a + bY$$ is **desired consumption**
@@ -58,10 +61,13 @@ where
 
 We now add government expenditure.
 
-$$\begin{align}
-  AE & = C + I + G \\
-     & = \underbrace{(a + I_0 - bT_0 + G_0)}_{A} + \underbrace{b(1-t)}_{z}Y
-\end{align}$$
+<div class="derivations">
+  $$\begin{align}
+    AE & = C + I + G \\
+      & = \underbrace{(a + I_0 - bT_0 + G_0)}_{A} + \underbrace{b(1-t)}_{z}Y
+  \end{align}$$
+  <video src="WithGovernment.mp4" controls width="380"></video>
+</div>
 
 where the only changes from above are that
 - \$$C = a + bY_D$$
@@ -73,12 +79,15 @@ where the only changes from above are that
 
 ### Adding Trade
 
-Lecture hasn't happened yet so I'm doing some hard guesswork here.
+Adding the most annoying thing of all: the rest of the world.
 
-$$\begin{align}
-  AE & = C + I + G + NX \\
-     & = \underbrace{(a + I_0 - bT_0 + G_0 + X_0)}_{A} + \underbrace{(b(1-t) - m)}_{z}Y
-\end{align}$$
+<div class="derivations">
+  $$\begin{align}
+    AE & = C + I + G + NX \\
+      & = \underbrace{(a + I_0 - bT_0 + G_0 + X_0)}_{A} + \underbrace{(b(1-t) - m)}_{z}Y
+  \end{align}$$
+  <video src="WithTrade.mp4" controls width="380"></video>
+</div>
 
 where the variables are the same except
 - $$NX = X - IM$$ is **desired net exports**

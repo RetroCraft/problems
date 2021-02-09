@@ -76,6 +76,16 @@
   }
 }
 
+.derivations {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  video {
+    margin: 1rem;
+  }
+}
+
 tr {
   page-break-inside: avoid;
   page-break-after: auto;
