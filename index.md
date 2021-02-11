@@ -86,10 +86,15 @@ They are created on Figma, which (once I figure out how to use the free educatio
 
 ### ECON 140 (W2021) <small>Introduction to Macroeconomics</small>
 
-Cheat sheets coming soon!
-
 I hastily put together an [equation sheet](./ECON140/ref.html) after lecture on the 4th.
 Let me know if there's mistakes.
+
+Cheat sheets are being provided on my pay-what-you-want store.
+Set the price based on your marginal propensity to consume cheat sheets.
+
+| File                                                 |
+| ---------------------------------------------------- |
+| [Test 1 Cheat Sheet](https://ko-fi.com/s/3c60df39f2) |
 
 ## Math
 
