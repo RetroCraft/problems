@@ -92,9 +92,12 @@ Let me know if there's mistakes.
 Cheat sheets are being provided on my pay-what-you-want store.
 Set the price based on your marginal propensity to consume cheat sheets.
 
-| File                                                 |
-| ---------------------------------------------------- |
-| [Test 1 Cheat Sheet](https://ko-fi.com/s/3c60df39f2) |
+| File                                                 | Last Updated               |
+| ---------------------------------------------------- | -------------------------- |
+| [Test 1 Cheat Sheet](https://ko-fi.com/s/3c60df39f2) | Feb 12, 8:20pm (version 2) |
+
+Might also be helpful: Will put toegether a compilation of sample
+[algebraic solution processes](https://cdn.discordapp.com/attachments/755580436398473226/809696310043213835/NuMbEr_1_iN_StUdEnt_SaTisFactiOn.pdf).
 
 ## Math
 
@@ -175,6 +178,7 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 8. **MATH135/EP10/RP15(b)** Overcomplicated proof when it follows almost immediately from the previous question (sooshi)
 9. **ECON120/Final** (v1.0) Deadweight loss of monopoly is between MC and demand, not price and demand (Jimmy Zhan)
 10. **ECON120/Final** (v1.1) Wrong colour on tarriff supply and demand curves
+11. **ECON140/Test 1** (v1.1) NX curve description under AE curve section, simple multiplier given as A/Y not Y/A (Trisha)
 
 ## Contact
 
