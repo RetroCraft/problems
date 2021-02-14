@@ -11,7 +11,6 @@ Note that numbered subreferences like "Definition 1.2" refer to Topic 1, Definit
 
 $$S^+$$ is the positive subset of $$S$$.
 Set complements are denoted $$A\setminus B$$.
-The range of a function $$F$$ is $$R(F)$$.
 
 We notate a **vector** in boldface as $$\vb v = \mqty(1\\2\\3) = (1,2,3)^T \in \Z^3$$.
 The generic field $$\F$$ is either $$\R$$ or $$\C$$.

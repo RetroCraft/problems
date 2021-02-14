@@ -2,7 +2,7 @@
   class: defs
   defs:
     - name: Linearity
-      from: $$F:\F\to\F$$, $$x,y,z\in\F$$
+      from: $$F:A \to B$$, $$x,y \in A$$, scalar $$z$$
       to: |
         1. $$F(x+y) = F(x) + F(y)$$
         2. $$F(zx) = zF(x)$$
@@ -105,8 +105,8 @@
       from: Distinct equations $$e_i$$ and $$e_j$$
       to: |
         1. Interchange: $$e_i \harr e_j$$
-        1. Multiply: $$e_i \to k e_i$$, $$k \in \F \setminus\\{0\\}$$
-        1. Add: $$e_i = e_i + ce_j$$, $$c \in \F \setminus \\{0\\}$$
+        1. Multiply: $$e_i \to k e_i$$, $$k \in \F \setminus\{0\}$$
+        1. Add: $$e_i = e_i + ce_j$$, $$c \in \F \setminus \{0\}$$
     - name: Triviality (7.B9)
       from: Equation $$e_i$$
       to: |
@@ -153,7 +153,7 @@
     - name: Nullspace (10A.2)
       from: Coefficient matrix $$A$$
       to: '$$N(A) = \\{ \vb x : A\vb x = \vb 0 \\}$$'
-    - name: Matrix Multiplication (11A.2a)
+    - name: Matrix-Vector Multiplication (11A.2a)
       from: $$A\in M_{m\times n}$$, $$\vb x \in \F^n$$
       to: |
         $$A\vb x = \mqty(
@@ -163,10 +163,10 @@
           a_{m1}x_1 + a_{m2}x_2 + \dotsb + a_{mn}x_n
         )$$
         or $${(A\vb x)}_i = \sum_{j=1}^n a_{ij} x_j$$
-    - name: Matrix Multiplication by Columns (11A.2b)
+    - name: Matrix-Vector Multiplication by Columns (11A.2b)
       from: $$A\in M_{m\times n}$$, $$\vb x \in \F^n$$
       to: $$A\vb x = x_1\vb a_1 + x_2\vb a_2 + \dotsb + x_n \vb a_n$$
-    - name: Matrix Multiplication by Rows (11A.2c)
+    - name: Matrix-Vector Multiplication by Rows (11A.2c)
       from: $$A\in M_{m\times n}$$, $$\vb x \in \F^n$$
       to: |
         $$A\vb x = \mqty(
@@ -175,6 +175,56 @@
           \vdots \\ 
           \vb A^m_1 x_1 + \vb A^m_2 x_2 + \dotsb + \vb A^m_n x_n 
         )$$
+    - name: Matrix Multiplication (11C.7)
+      from: $$A\in M_{m\times n}$$, $$B\in M_{n\times p}$$
+      to: $$AB = (A\vb b_1, A\vb b_2, \dotsc, A\vb b_p)$$
+    - name: Column Space (11C.8)
+      from: $$A \in M_{m \times n}$$
+      to: $$\Col(A) = \Span(\{ \vb a_1, \vb a_2, \dotsc, \vb a_n \})$$
+    - name: Square Matrix (12B.5)
+      from: $$A \in M_{m\times n}$$
+      to: $$m = n$$
+    - name: Symmetric (12B.6)
+      from: $$A \in M_{n\times n}$$
+      to: $$A = A^T$$
+    - name: Skew-Symmetric (12B.6)
+      from: $$A \in M_{n\times n}$$
+      to: $$A = -A^T$$
+    - name: Upper Triangular ($$U\sym$$12B.7)
+      from: $$A \in M_{n\times n}$$
+      to: $$a_{ij} = 0$$ if $$i > j$$
+    - name: Lower Triangular ($$L\sym$$, 12B.8)
+      from: $$A \in M_{n\times n}$$
+      to: $$a_{ij} = 0$$ if $$i < j$$
+    - name: Diagonal (12B.9)
+      from: $$A \in M_{n\times n}$$
+      to: $$a_{ij} = 0$$ if $$i \neq j$$
+    - name: Main Diagonal (12B.10)
+      from: $$A \in M_{n\times n}$$
+      to: $$(a_{11}, a_{22}, \dotsc, a_{nn})$$
+    - name: Identity Matrix (12B.11)
+      stmt: |
+        $$I_n = \mqty(1&0&\cdots&0\\0&1&\cdots&0\\\vdots&\vdots&\ddots&0\\0&0&0&1)$$
+        and $$AI_n = I_nA = A$$ for all $$A\in M_{n\times n}$$
+    - name: Matrix Function (13A.1)
+      from: $$A \in M_{n\times n}$$
+      to: |
+        $$T_A : \F^n \to \F^m$$, $$T_A(\vb x) = A\vb x$$
+    - name: Linear Transformation (13A.2)
+      from: '$$F : \F^n \to \F^m$$'
+      to: $$F$$ is linear
+    - name: Range (13A.3)
+      from: '$$T : \F^n \to \F^m$$'
+      to: '$$R(T) = \{ T(\vb x) : \vb x \in \F^n \}$$'
+    - name: Nullspace (13A.5)
+      from: '$$T : \F^n \to \F^m$$'
+      to: '$$N(T) = \{ \vb x \in \F^n : T(\vb x) = \vb 0_{\F^m} \}$$'
+    - name: Onto (13A.4)
+      from: '$$T : \F^n \to \F^m$$'
+      to: $$R(T) = \F^m$$
+    - name: One-to-One (13A.6)
+      from: '$$T : \F^n \to \F^m$$'
+      to: $$\vb x \neq \vb y \implies T(\vb x) \neq T(\vb y)$$
 
 - title: "## Theorems"
   class: thms
@@ -268,3 +318,55 @@
         - $$\tilde S_2 = \{ \vb p_2 + (\vb z - \vb p_1) : \vb z \in \tilde S_1 \}$$
         - If $$\tilde S_1 = \{ \vb p_1 + W\vb a : \vb a \in \F^n \}$$
           then $$\tilde S_2 = \{ \vb p_2 + W\vb a : \vb a \in \F^n \}$$
+    - name: Lemma 11C.6
+      from: System $$A\vb x = \vb b$$ is consistent
+      arrow: \iff
+      to: $$\vb b \in \Col(A)$$
+    - name: Properties of Matrix Addition (Lemma 12A.1)
+      from: $$A,B,C \in M_{m \times n}$$
+      arrow: \implies
+      to: |
+        1. $$A+B = B+A$$
+        1. $$(A+B)+C = A+(B+C)$$
+        1. $$\exists \O \in M_{m\times n}, \O A=A\O=A$$
+        1. $$\exists {-A} \in M_{m\times n}, A+(-A) = \O$$
+    - name: Properties of Matrix-Scalar Multiplication (Lemma 12A.2)
+      from: $$A,B\in M_{m\times n}$$, $$C\in M_{n\times p}$$, $$c,d\in\F$$
+      arrow: \implies
+      to: |
+        1. $$cA = Ac$$
+        1. $$c(A+B) = cA + cB$$
+        1. $$(c+d)A = cA + dA$$
+        1. $$c(dA) = (cd)A$$
+        1. $$c(AC) = (cA)C = A(cC)$$
+    - name: Properties of the Transpose (Lemma 12A.3)
+      from: $$A,B\in M_{m\times n}$$, $$c\in\F$$
+      arrow: \implies
+      to: |
+        1. $$(A+B)^T = A^T + B^T$$
+        1. $$(cA)^T = cA^T$$
+        1. $$(A^T)^T = A$$
+    - name: Properties of Matrix Multiplication (Lemma 12A.4)
+      from: $$A,G\in M_{m\times n}$$, $$B,D\in M_{n\times p}$$, $$C\in M_{p\times q}$$
+      arrow: \implies
+      to: |
+        1. $$(A+G)B = AB + GB$$
+        1. $$A(B+D) = AB + AD$$
+        1. $$(AB)C = A(BC)$$
+        1. $$(AB)^T = B^T A^T$$
+    - name: Zero Under Linearity (Lemma 13A.3)
+      from: '$$T: \F^n \to \F^m$$ linear'
+      arrow: \implies
+      to: $$T(\vb 0_{\F^n}) = \vb 0_{\F^m}$$
+    - name: Range of Matrix Function (Lemma 13A.4)
+      from: $$A \in M_{m\times n}$$
+      arrow: \implies
+      to: $$R(T_A) = \Col(A)$$
+    - name: Onto Matrix Characterization (Corollary 13A.1/13A.2)
+      from: $$A \in M_{m\times n}$$ is onto
+      arrow: \iff
+      to: $$\Col(A) = \F^m \iff \rank(A) = m$$
+    - name: One-to-One Matrix Characterization (Lemma 13A.6)
+      from: $$A \in M_{m\times n}$$ is one-to-one
+      arrow: \iff
+      to: $$N(T_A) = \{ \vb 0_{\F^n} \}$$ $$\iff$$ $$\nullity(A) = 0$$ $$\iff$$ $$\rank(A) = n$$

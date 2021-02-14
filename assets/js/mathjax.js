@@ -143,6 +143,8 @@ window.MathJax = {
       REF: '\\operatorname{REF}',
       RREF: '\\operatorname{RREF}',
       nullity: '\\operatorname{nullity}',
+      Col: '\\operatorname{Col}',
+      O: '\\mathbb{O}',
       amat: ['\\left(\\begin{array}{#1}#2\\end{array}\\right)', 2],
     },
     pairedDelimiters: {
