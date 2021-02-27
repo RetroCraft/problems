@@ -766,6 +766,129 @@ These are shown to be equivalent in \Cref{xca:vecmult} anyways.
   It follows that $R = PA$, and as a product of invertible elementary matrices, $P$ is invertible.
 \end{sol}
 
+\begin{xca}
+  Do \Cref{xca:rpa}, but with $A = \mqty[2&0&i \\ 1&-3&-i \\ i&1&1]$
+\end{xca}
+\begin{sol}
+  Again, we perform row-reduction alongside $I$:
+  \begin{equation*}
+    \begin{split}
+      & \bmqty[ccc|ccc]{2&0&i & 1&0&0 \\ 1&-3&-i & 0&1&0 \\ i&1&1 & 0&0&1}
+      \to \bmqty[ccc|ccc]{1&0&\frac12i & \frac12&0&0 \\ 1&-3&-i & 0&1&0 \\ i&1&1 & 0&0&1}
+      \to \bmqty[ccc|ccc]{1&0&\frac12i & \frac12&0&0 \\ 0&-3&-\frac32i & -\frac12&1&0 \\ 0&1&1-\frac12i & -\frac12i&0&1} \\
+      & \to \bmqty[ccc|ccc]{1&0&\frac12i & \frac12&0&0 \\ 0&0&3-3i & -\frac12+\frac32i&1&3 \\ 0&1&1-\frac12i & -\frac12i&0&1}
+      \to \bmqty[ccc|ccc]{1&0&\frac12i & \frac12&0&0 \\ 0&0&1 & -\frac13+\frac16i&\frac16+\frac16i&\frac12+\frac12i \\ 0&1&1-\frac12i & -\frac12i&0&1} \\
+      & \to \bmqty[ccc|ccc]{
+        1&0&0 & \frac13&\frac1{30}-\frac1{10}i&\frac1{10}-\frac3{10}i \\
+        0&1&0 & 0&-\frac3{10}-\frac1{10}i&\frac1{10}-\frac3{10}i \\
+        0&0&1 & -\frac13i&\frac15-\frac1{15}i&\frac35+\frac15i
+      } \qedhere
+    \end{split}
+  \end{equation*}
+\end{sol}
+
+\begin{xca}
+  For each of the two matrices
+  \[ \mqty[2&5&-1\\4&-1&2\\6&4&1] \qand \mqty[1&-1&2\\3&2&4\\0&-2&1] \]
+  use elementary row operations to discover whether it is invertible,
+  and to find the inverse in case it is.
+\end{xca}
+\begin{sol}
+  We row-reduce the first matrix:
+  \begin{equation*}
+    \begin{split}
+      & \bmqty[ccc|ccc]{2&5&-1 & 1&0&0 \\ 4&-1&2 & 0&1&0 \\ 6&4&1 & 0&0&1}
+      \to \bmqty[ccc|ccc]{2&5&-1 & 1&0&0 \\ 0&-11&4 & -2&1&0 \\ 0&-11&4 & -3&0&1}
+      \to \bmqty[ccc|ccc]{2&5&-1 & 1&0&0 \\ 0&-11&4 & -2&1&0 \\ 0&0&0 & -5&-1&1}
+    \end{split}
+  \end{equation*}
+  so the first matrix is not invertible.
+
+  Now, row-reduce the second matrix:
+  \begin{equation*}
+    \begin{split}
+      & \bmqty[ccc|ccc]{1&-1&2 & 1&0&0 \\ 3&2&4 & 0&1&0 \\ 0&-2&1 & 0&0&1}
+      \to \bmqty[ccc|ccc]{1&-1&2 & 1&0&0 \\ 0&5&-2 & -3&1&0 \\ 0&-2&1 & 0&0&1}
+      \to \bmqty[ccc|ccc]{1&-1&2 & 1&0&0 \\ 0&1&0 & -3&1&2 \\ 0&-2&1 & 0&0&1} \\
+      & \to \bmqty[ccc|ccc]{1&-1&2 & 1&0&0 \\ 0&1&0 & -3&1&2 \\ 0&0&1 & -6&2&1}
+      \to \bmqty[ccc|ccc]{1&0&0 & 10&-3&8 \\ 0&1&0 & -3&1&2 \\ 0&0&1 & -6&2&5}
+    \end{split}
+  \end{equation*}
+  Therefore, the inverse is $\mqty[10&-3&8 \\ -3&1&2 \\ -6&2&5]$.
+\end{sol}
+
+\begin{xca}
+  Let $A = \mqty[5&0&0 \\ 1&5&0 \\ 0&1&5]$.
+
+  For which $X$ does there exist a scalar $C$ such that $AX = cX$?
+\end{xca}
+\begin{sol}
+  Perform the generic matrix multiplication:
+  \[
+    \mqty[5&0&0 \\ 1&5&0 \\ 0&1&5] \mqty[x \\ y \\ z]
+    = \mqty[5x \\ x+5y \\ y+5z] = c\mqty[x \\ y \\ z]
+  \]
+  Now, element-wise, if $c = 5$, then $x+5y=5y$ so $x=0$ but $y+5z=5z$ so $y=0$.
+  Then, $X = (0,0,z)$ for any $z$.
+  Otherwise, $5x = cx$ so $c=0$ and everything goes to zero, so we have $X=(0,0,0)$.
+
+  Therefore, $X = (0,0,z)$ for any $z$.
+\end{sol}
+
+\section{Vector Spaces}
+
+\subsection{Vector Spaces}
+
+\begin{xca}
+  If $F$ is a field, verify that $F^n$ is a vector space over $F$.
+\end{xca}
+\begin{prf}
+  Let $\alpha = (a_1,\dotsc,a_n)$, $\beta = (b_1,\dotsc,b_n)$,
+  $\gamma = (c_1,\dotsc,c_n)$, and $k$, $l$ be in $F$.
+  Then we can verify the axioms for vector addition:
+  \begin{enumerate}[(a)]
+    \item $\alpha + \beta = (a_1+b_1,\dotsc,a_n+b_n) = (b_1+a_1,\dotsc,b_n+a_n) = \beta + \alpha$
+    \item $\alpha + (\beta + \gamma) = (a_1+(b_1+c_1),\dotsc,a_n+(b_n+c_n)) = ((a_1+b_1)+c_1,\dotsc,(a_n+b_n)+c_n) = (\alpha + \beta) + \gamma$
+    \item Let $0 = (0,\dotsc,0)$, then $\alpha+0 = (a_1+0,\dotsc,a_n+0) = \alpha$
+    \item Let $-\alpha = (-a_1,\dotsc,-a_n)$, then $\alpha+(-\alpha) = (a_1-a_1,\dotsc,a_n-a_n) = 0$
+  \end{enumerate}
+  and for vector multiplication:
+  \begin{enumerate}[(a)]
+    \item $1\alpha = (1a_1,\dotsc,1a_n) = (a_1,\dotsc,a_n) = \alpha$
+    \item $(k l)\alpha = (k l a_1,\dotsc,k_1 k_2 a_n) = (k(l a_1),\dotsc,k_1(k_2 a_n)) = k(l\alpha)$
+    \item $k(\alpha+\beta) = (k(a_1+b_1),\dotsc,k(a_n+b_n)) = (ka_1+kb_1,\dotsc,ka_n+kb_n) = (ka_1,\dotsc,ka_n) + (kb_1,\dotsc,kb_n) = k\alpha + k\beta$
+    \item $(k+l)\alpha = ((k+l)a_1,\dotsc,(k+l)a_n) = (ka_1+la_1,\dotsc,ka_n+la_n) = k\alpha + l\alpha$
+  \end{enumerate}
+  Since they are all satisfied, $F^n$ is a vector space over $F$.
+\end{prf}
+
+\begin{xca}
+  If $V$ is a vector space over the field $F$, verify that
+  \[ (\alpha_1 + \alpha_2) + (\alpha_3 + \alpha_4) = [\alpha_2 + (\alpha_3 + \alpha_1)] + \alpha_4 \]
+  for all vectors $\alpha_1,\alpha_2,\alpha_3,$ and $\alpha_4$ in $V$.
+\end{xca}
+\begin{prf}
+  We apply the properties of vector addition:
+  \begin{align*}
+    (\alpha_1 + \alpha_2) + (\alpha_3 + \alpha_4)
+     & = (\alpha_2 + \alpha_1) + (\alpha_3 + \alpha_4)          \\
+     & = [(\alpha_2 + \alpha_1) + \alpha_3] + \alpha_4          \\
+     & = [\alpha_2 + (\alpha_1 + \alpha_3)] + \alpha_4          \\
+     & = [\alpha_2 + (\alpha_3 + \alpha_1)] + \alpha_4 \qedhere
+  \end{align*}
+\end{prf}
+
+\begin{xca}
+  If $C$ is the field of complex numbers, which vectors $C^3$ are linear combinations
+  of $(1,0,-1)$, $(0,1,1)$, and $(1,1,1)$.
+\end{xca}
+\begin{sol}
+  Notice that the matrix is invertible:
+  \[ \mqty[1&0&1\\0&1&1\\-1&1&1] \to \mqty[1&0&-1\\0&1&1\\1&0&0] \to \mqty[1&0&0\\0&1&0\\0&0&1] \]
+  Therefore, for any vector $Y$, we can find a vector $AX = Y$ by $A^{-1}Y$.
+\end{sol}
+
+
 \setcounter{section}{7}
 \section{Inner Product Spaces}
 
