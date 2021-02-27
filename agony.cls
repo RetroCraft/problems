@@ -5,6 +5,8 @@
 % Load packages
 %
 
+\newif\if@loadtikz
+\DeclareOption{tikz}{\@loadtikztrue}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions\relax
 \LoadClass[11pt]{article}
@@ -33,8 +35,12 @@
 \usepackage{mathtools} % for \DeclarePairedDelimiter macro
 
 % Figures
-% \usepackage{tikz,pgfplots}
-% \pgfplotsset{compat=1.15}
+\if@loadtikz
+  \RequirePackage{tikz,pgfplots}
+  \pgfplotsset{compat=1.15}
+  \usepgfplotslibrary{fillbetween}
+  \usetikzlibrary{patterns}
+\fi
 
 %
 % Styles
@@ -131,7 +137,7 @@
 \newcommand{\R}{\ensuremath{\mathbb{R}}}
 \newcommand{\C}{\ensuremath{\mathbb{C}}}
 \newcommand{\F}{\ensuremath{\mathbb{F}}}
-\newcommand{\U}{\ensuremath{\mathcal{U}}}
+\renewcommand{\U}{\ensuremath{\mathcal{U}}}
 \renewcommand{\O}{\ensuremath{\mathcal{O}}}
 \newcommand{\sym}{\mathbin{\triangle}}
 
@@ -157,6 +163,7 @@
 \DeclareMathOperator{\Proj}{Proj}
 \DeclareMathOperator{\Perp}{Perp}
 \DeclareMathOperator{\Span}{Span}
+\DeclareMathOperator{\Col}{Col}
 % add optional argument for augmented matrices to ams *matrix environments and physics bmqty (tex.se 2233)
 \renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
   \hskip -\arraycolsep
@@ -164,6 +171,8 @@
   \array{#1}}
 \RenewDocumentCommand{\bmqty}{om}{\IfValueTF{#1}{\begin{bmatrix}[#1]#2\end{bmatrix}}{\begin{bmatrix}#2\end{bmatrix}}}
 \RenewDocumentCommand{\pmqty}{om}{\IfValueTF{#1}{\begin{pmatrix}[#1]#2\end{pmatrix}}{\begin{pmatrix}#2\end{pmatrix}}}
+% function mqty
+\newcommand{\fmqty}[1]{\pqty{\pmqty{#1}}}
 % allow redefinition of inner product separator
 \newcommand{\ipsep}{\middle\vert}
 \RenewDocumentCommand{\innerproduct}{ s m g }

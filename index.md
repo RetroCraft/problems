@@ -50,7 +50,7 @@ and [strategic expansion](https://quizlet.com/ca/553644800/bu111-final-review-f2
 
 ### BUS 121 (W2021) <small>Functional Areas of the Organization</small>
 
-[Flashcard set (WIP)](https://quizlet.com/ca/562677348/bu121-functional-areas-of-the-organization-flash-cards/) for the whole course so far.
+[Flashcard set (WIP)](https://quizlet.com/mian8680/folders/bu121-winter-2021/sets) for the whole course so far.
 
 ## Computer Science
 

@@ -206,7 +206,7 @@
       stmt: |
         $$I_n = \mqty(1&0&\cdots&0\\0&1&\cdots&0\\\vdots&\vdots&\ddots&0\\0&0&0&1)$$
         and $$AI_n = I_nA = A$$ for all $$A\in M_{n\times n}$$
-    - name: Matrix Function (13A.1)
+    - name: Transformation of a Matrix (13A.1)
       from: $$A \in M_{n\times n}$$
       to: |
         $$T_A : \F^n \to \F^m$$, $$T_A(\vb x) = A\vb x$$
@@ -225,6 +225,9 @@
     - name: One-to-One (13A.6)
       from: '$$T : \F^n \to \F^m$$'
       to: $$\vb x \neq \vb y \implies T(\vb x) \neq T(\vb y)$$
+    - name: Matrix of a Transformation (13B.7)
+      from: '$$T : \F^n \to \F^m$$, basis $$S$$'
+      to: $$[T]_S = \pqty{T(\vb e_1), T(\vb e_2), \dotsc, T(\vb e_n)}$$
 
 - title: "## Theorems"
   class: thms
@@ -366,7 +369,15 @@
       from: $$A \in M_{m\times n}$$ is onto
       arrow: \iff
       to: $$\Col(A) = \F^m \iff \rank(A) = m$$
-    - name: One-to-One Matrix Characterization (Lemma 13A.6)
+    - name: One-to-One Matrix Characterization (Lemma 13A.6/Corollary 13A.3)
       from: $$A \in M_{m\times n}$$ is one-to-one
       arrow: \iff
       to: $$N(T_A) = \{ \vb 0_{\F^n} \}$$ $$\iff$$ $$\nullity(A) = 0$$ $$\iff$$ $$\rank(A) = n$$
+    - name: Matrix/Transformation Determination (Remarks 13B.3/13B.4, Lemma 13B.7)
+      from: '$$A \in M_{m\times n}$$, $$T : \F^n \to \F^m$$'
+      arrow: \implies
+      to: |
+        - $$[T_A]_S = A$$ (13B.3)
+        - $$T_{[T]_S} = T$$ (13B.4)
+        - $$T(\vb x) = [T]_S\vb x$$ (13B.7)
+

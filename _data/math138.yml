@@ -68,6 +68,10 @@
     - name: Arc Length (§3.4)
       from: $$f \in C^1([a,b])$$
       to: $$S = \int_a^b \sqrt{1+f'(x)^2} \dd{x}$$
+    - name: Separable Differential Equation (§4.2)
+      stmt: $$y' = f(x) g(y)$$
+    - name: First-Order Linear Differentiable Equations (FOLDE, §4.3)
+      stmt: $$y' = f(x) y + g(x)$$
 
 - title: '## Theorems'
   class: thms
@@ -145,6 +149,10 @@
       from: $$p < 1$$
       arrow: \iff
       to: $$\int_0^1 \frac{1}{x^p} \dd{x} = \frac{1}{1-p}$$
+    - name: Solving First-Order Linear Differential Equations (thm 4.1, p. 135)
+      from: $$f,g\in C^0$$, $$y' = f(x)y + g(y)$$
+      arrow: \implies
+      to: $$y = \frac{1}{I(x)}\int g(x)I(x) \dd{x}$$ where $$I(x) = e^{-\int f(x) \dd{x}}$$
 
 - title: |
     # MATH 137 Reference
