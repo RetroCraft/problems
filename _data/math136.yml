@@ -190,7 +190,7 @@
     - name: Skew-Symmetric (12B.6)
       from: $$A \in M_{n\times n}$$
       to: $$A = -A^T$$
-    - name: Upper Triangular ($$U\sym$$12B.7)
+    - name: Upper Triangular ($$U\sym$$, 12B.7)
       from: $$A \in M_{n\times n}$$
       to: $$a_{ij} = 0$$ if $$i > j$$
     - name: Lower Triangular ($$L\sym$$, 12B.8)
@@ -228,6 +228,27 @@
     - name: Matrix of a Transformation (13B.7)
       from: '$$T : \F^n \to \F^m$$, basis $$S$$'
       to: $$[T]_S = \pqty{T(\vb e_1), T(\vb e_2), \dotsc, T(\vb e_n)}$$
+    - name: Invertibility of Matrix (13C.10)
+      from: $$A \in M_{n \times n}$$, $$B \in M_{n \times n}$$, $$AB=BA=I_n$$
+      to: $$A^{-1} = B$$
+    - name: Singular Matrix (13C.11)
+      from: $$A \in M_{n \times n}$$
+      to: $$A$$ is not invertible
+    - name: Submatrix (15A.1)
+      from: $$A \in M_{n \times n}$$
+      to: $$M_{ij}(A) \in M_{(n-1)\times(n-1)}$$ missing $$i$$th row and $$j$$th column
+    - name: Determinant (15A.2)
+      from: $$A \in M_{1 \times 1}$$, $$B \in M_{2\times 2}$$
+      to: $$\det(A) = a_{11}$$, $$\det(B) = a_{11}a_{22} - a_{12}a_{21}$$
+    - name: Cofactor (15A.6)
+      from: $$A \in M_{n \times n}$$
+      to: $$C_{ij}(A) = (-1)^{i+j} \det(M_{ij}(A))$$
+    - name: $$I$$th Row Expansion (15A.4)
+      from: $$A \in M_{n \times n}$$, $$I \leq n$$
+      to: $$\det(A) = \sum_{j=1}^n a_{Ij} C_{Ij}(A)$$
+    - name: $$J$$th Column Expansion (15A.5)
+      from: $$A \in M_{n \times n}$$, $$J \leq n$$
+      to: $$\det(A) = \sum_{i=1}^n a_{iJ} C_{iJ}(A)$$
 
 - title: "## Theorems"
   class: thms
@@ -380,4 +401,50 @@
         - $$[T_A]_S = A$$ (13B.3)
         - $$T_{[T]_S} = T$$ (13B.4)
         - $$T(\vb x) = [T]_S\vb x$$ (13B.7)
-
+    - name: Linearity of Composite Function (Lemma 13C.9)
+      from: '$$T_1 : \F^n \to \F^m$$, $$T_2 : \F^m \to \F^p$$'
+      arrow: \implies
+      to: $$T_2 \circ T_1$$ is linear
+    - name: Matrix of Composite Function (Lemma 13C.10)
+      from: '$$T_1 : \F^n \to \F^m$$, $$T_2 : \F^m \to \F^p$$'
+      arrow: \implies
+      to: $$[T_2 \circ T_1]_S = [T_2]_S [T_1]_S$$
+    - name: Unique Inverse (Lemma 13C.11)
+      from: $$A,B \in M_{n \times n}(\F)$$, $$AB=BA=I_n$$
+      arrow: \implies
+      to: $$B$$ is unique
+    - name: Lemma 13C.12
+      from: $$A \in M_{n \times n}$$ invertible
+      arrow: \implies
+      to: $$A\vb x = \vb b$$ has solution $$\vb x = A^{-1}\vb b$$
+    - name: Properties of Inverse (Lemma 13C.13)
+      from: $$A,B \in M_{n \times n}$$ and invertible
+      arrow: \implies
+      to: |
+        1. $$(A^T)^{-1} = (A^{-1})^T$$
+        2. $$(cA)^{-1} = c^{-1}A^{-1}$$ for $$c \neq 0$$
+        3. $$(AB)^{-1} = B^{-1}A^{-1}$$
+        4. $$C,D\in M_{n\times p}$$, $$AC=AD \iff C=D$$
+        5. $$C\in M_{n\times p}$$, $$AC = \O \iff C=\O$$
+    - name: Left/Right Inverse (Lemma 14.1)
+      from: $$A,B \in M_{n \times n}$$, $$AB = I_n$$
+      arrow: \iff
+      to: $$BA = I_n$$
+    - name: Invertibility of Matrix (Lemma 14.2)
+      from: $$A \in M_{n \times n}$$ invertible
+      arrow: \iff
+      to: $$\rank(A) = n$$
+    - name: Determinant of Transpose (Lemma 15A.1)
+      from: $$A \in M_{n \times n}$$
+      arrow: \implies
+      to: $$\det(A^T) = \det(A)$$
+    - name: Determinant of Triangular Matrix (Lemma 15A.2)
+      from: $$A \in M_{n \times n}$$, $$U\sym$$ or $$L\sym$$
+      arrow: \implies
+      to: $$\det(A) = \prod a_{ii}$$
+    - name: Properties of Determinant (Theorem 15A.1)
+      from: $$A \in M_{n \times n}$$
+      arrow: \implies
+      to: |
+        1. $$\det(A)$$ skew-symmetric under row/column interchange
+        2. $$\det(A)$$ linear on rows/columns
