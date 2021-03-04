@@ -5,7 +5,8 @@
 
 @media print {
   header,
-  .site-footer-owner {
+  .site-footer-owner,
+  [id^=kofi-widget-overlay] {
     display: none;
   }
 }

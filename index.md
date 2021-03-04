@@ -4,11 +4,10 @@ gh: https://github.com/RetroCraft/problems/blob/master
 home: yes
 ---
 
-This is an open archive of study material from my being a Waterloo and Laurier CS/BBA student.
-If you find it useful and want me to endure more pain in 1B,
-consider sending me a <s>coffee</s> bubble tea:
-
-<div style="text-align:center"><script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('++pain;', '#159957', 'Q5Q827K43');kofiwidget2.draw();</script></div>
+This is an open archive from my being a Waterloo and Laurier CS/BBA student.
+If you find it useful and want me to endure more pain,
+consider sending me a <s>coffee</s> bubble tea.
+Minus Stripe/PayPal's 30¢ transaction fee, of course.
 
 ## About
 {:.no_toc}
