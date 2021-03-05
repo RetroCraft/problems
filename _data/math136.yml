@@ -38,7 +38,7 @@
       to: $$\Perp_{\vb w}(\vb v) = \vb v - \Proj_{\vb w}(\vb v)$$  
     - name: Cross Product (4.1)
       from: $$\vb u = (u_1,u_2,u_3)^T$$, $$\vb v = (v_1,v_2,v_3) \in \R^3$$
-      to: $$\vb u \cp \vb v = \mqty(u_2 v_3 - u_3 v_2 \\ -{(u_1 v_3 - u_3 v_1)} \\ u_1 v_2 - u_2 v_1)$$  
+      to: $$\vb u \cp \vb v = \mqty(u_2 v_3 - u_3 v_2 \\ -{(u_1 v_3 - u_3 v_1)} \\ u_1 v_2 - u_2 v_1) = \det(\mqty(\vb i&\vb j&\vb k\\u_1&u_2&u_3\\v_1&v_2&v_3))$$
     - name: Linear Combination (5.1)
       from: $$\vb v_1,\dotsc,\vb v_p \in \F^n$$, $$a_1,\dotsc,a_p \in \F$$
       to: $$a_1 \vb v_1 + \dotsb + a_p \vb v_p$$  
@@ -249,6 +249,9 @@
     - name: $$J$$th Column Expansion (15A.5)
       from: $$A \in M_{n \times n}$$, $$J \leq n$$
       to: $$\det(A) = \sum_{i=1}^n a_{iJ} C_{iJ}(A)$$
+    - name: Adjoint/Adjunct Matrix (15C.7)
+      from: $$A \in M_{n \times n}$$
+      to: $$(\adj(A))_{ij} = C_{ji}(A)$$ (transpose of cofactor matrix)
 
 - title: "## Theorems"
   class: thms
@@ -448,3 +451,46 @@
       to: |
         1. $$\det(A)$$ skew-symmetric under row/column interchange
         2. $$\det(A)$$ linear on rows/columns
+    - name: EROs and the Determinant (Corollary 15B.4)
+      from: $$A \in M_{n \times n}$$ and $$B$$ is $$A$$ after an ERO of type
+      arrow: \implies
+      to: |
+        1. $$\det(B) = -\det(A)$$
+        2. $$\det(B) = m\det(A)$$
+        3. $$\det(B) = \det(A)$$
+    - name: Corollary 15B.5
+      from: $$A \in M_{n \times n}$$ and $$B$$ is $$A$$ after elementary matrices $$E_1,\dotsc,E_q$$
+      arrow: \implies
+      to: $$\det(B) = \det(E_q \cdots E_1 A) = \det(E_q)\cdots\det(E_1)\det(A)$$
+    - name: Determinants and Invertibiliy (Corollary 15B.7)
+      from: $$A \in M_{n \times n}$$ invertible
+      arrow: \iff
+      to: $$\det(A) \neq 0$$
+    - name: Determinant of Product (Corollary 15B.8)
+      from: $$A,B \in M_{n \times n}$$
+      arrow: \implies
+      to: $$\det(AB) = \det(A)\det(B)$$
+    - name: Determinant of Inverse (Corollary 15B.9)
+      from: $$A \in M_{n \times n}$$ invertible
+      arrow: \implies
+      to: $$\det(A^{-1}) \neq \det(A)^{-1}$$
+    - name: Lemma 15C.3
+      from: $$A \in M_{n \times n}$$
+      arrow: \implies
+      to: $A\adj(A) = \adj(A)A = \det(A)I_n$$
+    - name: Corollary 15C.10
+      from: $$A \in M_{n \times n}$$ invertible
+      arrow: \implies
+      to: $$A^{-1} = \frac{1}{\det(A)}\adj(A)$$
+    - name: Cramer's Rule (Lemma 15C.4)
+      from: $$A \in M_{n \times n}$$ invertible, $$A\vb x = \vb b$$
+      arrow: \implies
+      to: $$x_j = \frac{\det(B_j)}{\det(A)}$$ where $$B_j$$ is $$A$$ with $$\vb a_j = \vb b$$
+    - name: Parallelogram Area (Lemma 15C.5)
+      from: Parallelogram bounded by $$\vb v = (v_1,v_2)^T$$, $$\vb w = (w_1,w_2)^T$$
+      arrow: \implies
+      to: $$A = \abs{\det(\mqty(v_1&v_2\\w_1&w_2))}$$
+    - name: Scalar Triple Product (Lemma 15C.6)
+      from: Parallelipiped bounded by $$\vb x$$, $$\vb y$$, $$\vb z$$
+      arrow: \implies
+      to: $$V = STP(\vb x,\vb y,\vb z) = \det((\vb x,\vb y,\vb z))$$

@@ -144,6 +144,7 @@ window.MathJax = {
       RREF: '\\operatorname{RREF}',
       nullity: '\\operatorname{nullity}',
       Col: '\\operatorname{Col}',
+      adj: '\\operatorname{adj}',
       O: '\\mathbb{O}',
       amat: ['\\left(\\begin{array}{#1}#2\\end{array}\\right)', 2],
     },

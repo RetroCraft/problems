@@ -139,6 +139,7 @@
 \newcommand{\F}{\ensuremath{\mathbb{F}}}
 \renewcommand{\U}{\ensuremath{\mathcal{U}}}
 \renewcommand{\O}{\ensuremath{\mathcal{O}}}
+\newcommand{\Mnn}{\ensuremath{M_{n \times n}}}
 \newcommand{\sym}{\mathbin{\triangle}}
 
 % Functions
@@ -164,6 +165,7 @@
 \DeclareMathOperator{\Perp}{Perp}
 \DeclareMathOperator{\Span}{Span}
 \DeclareMathOperator{\Col}{Col}
+\DeclareMathOperator{\adj}{adj}
 % add optional argument for augmented matrices to ams *matrix environments and physics bmqty (tex.se 2233)
 \renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
   \hskip -\arraycolsep
