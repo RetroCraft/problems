@@ -477,7 +477,7 @@
     - name: Lemma 15C.3
       from: $$A \in M_{n \times n}$$
       arrow: \implies
-      to: $A\adj(A) = \adj(A)A = \det(A)I_n$$
+      to: $$A\adj(A) = \adj(A)A = \det(A)I_n$$
     - name: Corollary 15C.10
       from: $$A \in M_{n \times n}$$ invertible
       arrow: \implies
@@ -493,4 +493,4 @@
     - name: Scalar Triple Product (Lemma 15C.6)
       from: Parallelipiped bounded by $$\vb x$$, $$\vb y$$, $$\vb z$$
       arrow: \implies
-      to: $$V = STP(\vb x,\vb y,\vb z) = \det((\vb x,\vb y,\vb z))$$
+      to: $$V = STP(\vb x,\vb y,\vb z) = \vb x \vdot (\vb y \cp \vb z) = \det((\vb x,\vb y,\vb z))$$
