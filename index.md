@@ -71,17 +71,13 @@ I don't implement the full design recipe in exercises, for obvious reasons (I'm 
 ### ECON 120 (F2020) <small>Introduction to Microeconomics</small>
 
 No "practice", but figured this is a nice place to host my cheat sheets.
-They are created on Figma, which (once I figure out how to use the free education plan) can be found
+They are created on Figma, and the source files are available
 [here](https://www.figma.com/file/S33O0LmF0JFWizP911r8Py/ECON-120).
 
-| File                                    |
-| --------------------------------------- |
-| [Unit 1 Cheat Sheet](./ECON120/U1.pdf)  |
-| [Unit 2 Cheat Sheet](./ECON120/U2.pdf)  |
-| [Unit 3 Cheat Sheet](./ECON120/U3.pdf)  |
-| [Unit 4 Cheat Sheet](./ECON120/U4.pdf)  |
-| [Unit 5 Cheat Sheet](./ECON120/U5.pdf)  |
-| [Exam Cheat Sheet](./ECON120/Final.pdf) |
+If you just want the sheets, you can get them all at my
+[Ko-Fi shop](https://ko-fi.com/s/e3b6a8b0d7)
+(which is, as always, pay-what-you-want).
+They remain on this [GitHub repository]({{ page.gh }}/ECON120) too.
 
 ### ECON 140 (W2021) <small>Introduction to Macroeconomics</small>
 
