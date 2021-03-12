@@ -133,6 +133,7 @@ window.MathJax = {
       dilim: ['\\dlim{#1}{\\infty}', 1],
       ilim: ['\\lim_{#1\\to\\infty}', 1],
       at: ['\\left.#1\\right|_{#2}', 2],
+      isum: ['\\sum_{#1}^{\\infty}', 1, '1'],
       // linalg
       xto: '\\xrightarrow',
       harr: '\\leftrightarrow',
@@ -145,6 +146,8 @@ window.MathJax = {
       nullity: '\\operatorname{nullity}',
       Col: '\\operatorname{Col}',
       adj: '\\operatorname{adj}',
+      diag: '\\operatorname{diag}',
+      Mnn: 'M_{n \\times n}',
       O: '\\mathbb{O}',
       amat: ['\\left(\\begin{array}{#1}#2\\end{array}\\right)', 2],
     },

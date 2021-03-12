@@ -252,6 +252,47 @@
     - name: Adjoint/Adjunct Matrix (15C.7)
       from: $$A \in M_{n \times n}$$
       to: $$(\adj(A))_{ij} = C_{ji}(A)$$ (transpose of cofactor matrix)
+    - name: Eigenvector (16A.1)
+      from: $$A \in \Mnn$$, $$\vb x \neq \vb 0$$, $$\lambda \in \F$$
+      to: $$A\vb x = \lambda \vb x$$
+    - name: Eigenvalue Equation (16A.2)
+      from: $$A \in \Mnn$$, $$\vb x \neq \vb 0$$, $$\lambda \in \F$$
+      to: $$(A - \lambda I)\vb x = \vb 0$$
+    - name: Characteristic Polynomial (16A.3)
+      from: $$A \in \Mnn$$
+      to: $$\Delta_A(t) = \det(A - tI) \in \F[t]$$ (roots are eigenvalues)
+    - name: Eigenspace (16A.4)
+      from: $$A \in \Mnn$$, $$\lambda_1$$ eigenvalue of $$A$$
+      to: $$E_{\lambda_1} = N(A - \lambda_1 I)$$
+    - name: Similarity (16B.5)
+      from: $$A,B \in \Mnn$$
+      to: $$\exists Q \in \Mnn$$, $$Q^{-1}AQ = B$$
+    - name: Similarity Transformation (16B.6)
+      from: $$Q \in \Mnn$$
+      to: '$$T: \Mnn \to \Mnn$$, $$T(A) = Q^{-1}AQ$$'
+    - name: Trace (16B.7)
+      from: $$A \in \Mnn$$
+      to: $$\tr(A) = \sum_{i=1}^n a_{ii}$$
+    - name: Diagonalizable (16B.8)
+      from: $$A \in \Mnn$$
+      to: $$\exists D$$ diagonal matrix, $$A$$ similar to $$D$$
+    - name: Subspace (17A.1)
+      from: $$V \subseteq \F^n$$
+      to: |
+        1. $$\vb 0 \in V$$
+        2. $$\forall \vb x,\vb y \in V$$, $$\vb x + \vb y \in V$$
+        3. $$\forall \vb x \in V$$ and $$c \in \F$, $$c\vb x \in V$$
+    - name: Trivial Subspace (Example 17A.1)
+      stmt: $$V = \{\vb 0\}$$ and $$V = \F^n$$
+    - name: Linear (In)dependence (17A.2/17A.3)
+      from: $$\vb v_1,\vb v_2,\dotsc,\vb v_p$$
+      to: $$\exists c_1,c_2,\dotsc,c_p \in \F\setminus\{0\}$$, $$c_1\vb v_1 + \dotsb + c_p\vb v_p = \vb 0$$
+    - name: Basis (17A.4)
+      from: $$B = \{\vb v_1,\vb v_2,\dotsc,\vb v_p\}$$ basis for $$V$$
+      to: |
+        1. $$B \subseteq V$$
+        2. $$\span(B) = V$$
+        3. $$B$$ is linearly independent
 
 - title: "## Theorems"
   class: thms
@@ -494,3 +535,78 @@
       from: Parallelipiped bounded by $$\vb x$$, $$\vb y$$, $$\vb z$$
       arrow: \implies
       to: $$V = STP(\vb x,\vb y,\vb z) = \vb x \vdot (\vb y \cp \vb z) = \det((\vb x,\vb y,\vb z))$$
+    - name: Similarity Invariants (Lemma 16B.1)
+      from: $$A$$ and $$B$$ similar
+      arrow: \implies
+      to: $$\det(A) = \det(B)$$ and $$\tr(A) = \tr(B)$$
+    - name: Diagonalization I (Lemma 16B.2)
+      from: $$A \in \Mnn$$ with distinct eigenpairs $$(\lambda_1,\vb v_1),\dotsc,(\lambda_n,\vb v_n)$$
+      arrow: \implies
+      to: If $$P = (\vb v_1,\dotsc,\vb v_n)$$, $$P^{-1}AP = \diag(\lambda_1,\dotsc,\lambda_n)$$
+    - name: Properties of the Characteristic Polynomial (Lemma 16B.3)
+      from: $$A \in \Mnn$$
+      arrow: \implies
+      to: |
+        1. $$\Delta_A(t) = b_0 + b_1 t + \dotsb + b_n t^n$$
+        2. $$b_n = (-1)^n$$
+        3. $$b_{n-1} = (-1)^{n-1}\tr(A)$$
+        4. $$b_0 = \det(A)$$
+    - name: Properties of the Complex $$\Delta_A$$ (Lemma 16B.4)
+      from: $$A \in \Mnn(\C)$$
+      arrow: \implies
+      to: |
+        1. $$\sum_{i=1}^n \lambda_i = \tr(A) = (-1)^{n-1} b_{n-1}$$
+        2. $$\prod_{i=1}^n \lambda_i = \det(A) = b_0$$
+    - name: Lemma 16B.5 ($$\R$$) / Corollary 16B.1 ($$\C$$)
+      from: $$A \in \Mnn$$ invertible
+      arrow: \iff
+      to: $$0$$ not an eigenvalue of $$A$$
+    - name: Lemma 16B.6
+      from: $$A,B \in \Mnn$$ similar
+      arrow: \implies
+      to: $$\Delta_A(t) = \Delta_B(t)$$
+    - name: Subspace Characterization (Lemma 17A.1)
+      from: $$V \subseteq \F^n$$ is a subspace
+      arrow: \iff
+      to: |
+        1. $$V \neq \varnothing$$
+        2. $$\forall \vb x,\vb y \in V$$ and $$c \in \F$$, $$c\vb x + \vb y \in V$$
+    - name: Example 17A.1
+      stmt: |
+        - $$\Span(S)$$ is a subspace of $$\F^n$$ for any non-empty $$S \subseteq \F^n$$
+        - $$\Col(A)$$ is a subspace of $$\F^m$$ for any $$A \in M_{m \times n}$$
+        - Solution set to $$A\vb x = \vb 0$$ is a subspace of $$\F^n$$
+        - $$E_\lambda$$ is a subspace of $$\F^n$$ if $$\lambda$$ is an eigenvalue of $$A$$
+        - $$R(T)$$ is a subspace of $$\F^m$$ for $$T : \F^n \to \F^m$$
+        - $$N(T)$$ is a subspace of $$\F^n$$
+    - name: Lemma 17B.2
+      from: $$0 \in S \subseteq \F^n$$
+      arrow: \implies
+      to: $$S$$ linearly dependent
+    - name: Lemma 17B.3
+      from: $$S = \{\vb x\}$$ is linearly dependent
+      arrow: \iff
+      to: $$\vb x = \vb 0$$
+    - name: Lemma 17B.4
+      from: $$\abs{S} = 2$$ is linearly dependent
+      arrow: \iff
+      to: One vector is a scalar multiple of the other
+    - name: Lemma 17B.5
+      from: |
+        - $$S = \{\vb v_1,\dotsc,\vb v_p\}$$
+        - $$A = (\vb v_1,\dotsc,\vb v_p)$$
+        - $$U$$ the set of $$A$$'s pivot columns
+      arrow: \implies
+      to: |
+        - $$S$$ linearly independent $$\iff$$ $$\rank(A) = p$$
+        - $$U$$ linearly independent
+        - $$U \subsetneq V \subseteq S$$ linearly dependent
+        - $$\Span(U) = \Span(S)$$
+    - name: Lemma 17B.6
+      from: $$S$$ linearly independent, $$S \cup \{\vb w\}$$ linearly dependent
+      arrow: \iff
+      to: $$\vb w \in \Span(S)$$
+    - name: Lemma 17B.7
+      from: $$S$$ linearly independent, $$\vb v \in S$$
+      arrow: \implies
+      to: $$S \setminus \{\vb v\}$$ linearly independent
