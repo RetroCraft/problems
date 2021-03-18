@@ -291,7 +291,7 @@
       from: $$B = \{\vb v_1,\vb v_2,\dotsc,\vb v_p\}$$ basis for $$V$$
       to: |
         1. $$B \subseteq V$$
-        2. $$\span(B) = V$$
+        2. $$\Span(B) = V$$
         3. $$B$$ is linearly independent
 
 - title: "## Theorems"
@@ -514,7 +514,7 @@
     - name: Determinant of Inverse (Corollary 15B.9)
       from: $$A \in M_{n \times n}$$ invertible
       arrow: \implies
-      to: $$\det(A^{-1}) \neq \det(A)^{-1}$$
+      to: $$\det(A^{-1}) = \det(A)^{-1}$$
     - name: Lemma 15C.3
       from: $$A \in M_{n \times n}$$
       arrow: \implies
