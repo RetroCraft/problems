@@ -293,6 +293,13 @@
         1. $$B \subseteq V$$
         2. $$\Span(B) = V$$
         3. $$B$$ is linearly independent
+    - name: Dimension (17C.5)
+      from: $$B$$ basis for $$V$$
+      to: $$\dim(V) = \abs{B}$$
+    - name: Standard Basis (17C.6)
+      stmt: |
+        $$S = \{ \vb e_1,\dotsc,\vb e_n \} \subset \F^n$$,
+        $$(\vb e_1,\dotsc,\vb e_n) = I_n$$
 
 - title: "## Theorems"
   class: thms
@@ -602,6 +609,10 @@
         - $$U$$ linearly independent
         - $$U \subsetneq V \subseteq S$$ linearly dependent
         - $$\Span(U) = \Span(S)$$
+    - name: Corollary 17B.1
+      from: $$S \subseteq \F^n$$, $$\abs{S} > n$$
+      arrow: \implies
+      to: $$S$$ linearly dependent
     - name: Lemma 17B.6
       from: $$S$$ linearly independent, $$S \cup \{\vb w\}$$ linearly dependent
       arrow: \iff
@@ -610,3 +621,23 @@
       from: $$S$$ linearly independent, $$\vb v \in S$$
       arrow: \implies
       to: $$S \setminus \{\vb v\}$$ linearly independent
+    - name: Lemma 17C.8
+      from: $$V$$ subspace of $$\F^n$$, $$S \subset V$$
+      arrow: \implies
+      to: $$\Span(S)$$ subspace of $$V$$
+    - name: Lemma 17C.9
+      from: $$\Span(\{\vb v_1,\dotsc,\vb v_p\}) = \F^n$$
+      arrow: \iff
+      to: $$\rank((\vb v_1,\dotsc,\vb v_p)) = n$$
+    - name: Lemma 17C.10
+      from: Basis $$S$$ for $$\F^n$$
+      arrow: \implies
+      to: $$\abs{S} = n$$
+    - name: Lemma 17C.11
+      from: $$S \subset \F^n$$ linearly independent with $$\abs{S} = n$$
+      arrow: \iff
+      to: $$\Span(S) = \F^n$$
+    - name: Unique Representation (Theorem 17C.1)
+      from: $$B = \{\vb v_i\}$$ basis for $$\F^n$$, $$\vb x \in \F^n$$
+      arrow: \implies
+      to: Unique $$c_i$$ where $$\sum c_i\vb v_i = \vb x$$
