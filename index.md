@@ -90,6 +90,7 @@ Set the price based on your marginal propensity to consume cheat sheets.
 | File                                                 | Last Updated               |
 | ---------------------------------------------------- | -------------------------- |
 | [Test 1 Cheat Sheet](https://ko-fi.com/s/3c60df39f2) | Feb 12, 8:20pm (version 2) |
+| [Test 2 Cheat Sheet](https://ko-fi.com/s/8c50c38761) | Mar 18, 10:50pm (draft)    |
 
 Might also be helpful: Will put toegether a compilation of sample
 [algebraic solution processes](https://cdn.discordapp.com/attachments/755580436398473226/809696310043213835/NuMbEr_1_iN_StUdEnt_SaTisFactiOn.pdf).
