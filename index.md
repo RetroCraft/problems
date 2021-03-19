@@ -87,10 +87,13 @@ Let me know if there's mistakes.
 Cheat sheets are being provided on my pay-what-you-want store.
 Set the price based on your marginal propensity to consume cheat sheets.
 
+Versioning is semantic: anything that is wrong/serious bumps the major version,
+aesthetic changes bump the minor version.
+
 | File                                                 | Last Updated               |
 | ---------------------------------------------------- | -------------------------- |
 | [Test 1 Cheat Sheet](https://ko-fi.com/s/3c60df39f2) | Feb 12, 8:20pm (version 2) |
-| [Test 2 Cheat Sheet](https://ko-fi.com/s/8c50c38761) | Mar 19, 2:00pm (v1.0)      |
+| [Test 2 Cheat Sheet](https://ko-fi.com/s/8c50c38761) | Mar 19, 2:47pm (v1.1)      |
 
 Might also be helpful: Will put toegether a compilation of sample
 [algebraic solution processes](https://cdn.discordapp.com/attachments/755580436398473226/809696310043213835/NuMbEr_1_iN_StUdEnt_SaTisFactiOn.pdf).
