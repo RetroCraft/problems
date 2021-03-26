@@ -161,6 +161,7 @@
 \newcommand{\vui}{\mathbf{\hat{\textnormal{\bfseries\i}}}}
 \newcommand{\vuj}{\mathbf{\hat{\textnormal{\bfseries\j}}}}
 \newcommand{\xto}{\xrightarrow} % \xto{R_1 \harr R_2}
+\newcommand{\cbm}[2]{\ensuremath{{}_{#1}[I]{}_{#2}}} % change of basis matrix
 \DeclareMathOperator{\Proj}{Proj}
 \DeclareMathOperator{\Perp}{Perp}
 \DeclareMathOperator{\Span}{Span}

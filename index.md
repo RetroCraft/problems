@@ -51,6 +51,8 @@ and [strategic expansion](https://quizlet.com/ca/553644800/bu111-final-review-f2
 
 [Flashcard set (WIP)](https://quizlet.com/mian8680/folders/bu121-winter-2021/sets) for the whole course so far.
 
+Study materials by [Ace](https://ko-fi.com/augustace) are also published before each assessment.
+
 ## Computer Science
 
 ### CS 135 (F2020) <small>Designing Functional Programs</small>
