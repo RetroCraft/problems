@@ -281,7 +281,7 @@
       to: |
         1. $$\vb 0 \in V$$
         2. $$\forall \vb x,\vb y \in V$$, $$\vb x + \vb y \in V$$
-        3. $$\forall \vb x \in V$$ and $$c \in \F$, $$c\vb x \in V$$
+        3. $$\forall \vb x \in V$$ and $$c \in \F$$, $$c\vb x \in V$$
     - name: Trivial Subspace (Example 17A.1)
       stmt: $$V = \{\vb 0\}$$ and $$V = \F^n$$
     - name: Linear (In)dependence (17A.2/17A.3)
