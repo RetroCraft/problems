@@ -318,6 +318,32 @@
     - name: Geometric Multiplicity (19B.5)
       from: $$A \in \Mnn$$, $$\lambda$$ eigenvalue
       to: $$g_\lambda = \dim(E_\lambda)$$
+    - name: Properties of $$\{\vb 0\}$$ (20.1)
+      stmt: |
+        $$\Span(\varnothing) = \{\vb 0\}$$
+        so $$\varnothing$$ is a basis for $$\{\vb 0\}$$
+        and $$\dim(\{\vb 0\}) = 0$$
+    - name: Vector Space (21A.1)
+      from: |
+        - Set $$V$$ of "vectors"
+        - "Addition" $$\oplus:V^2\to V$$
+        - Field $$(\F, +, \times)$$ of "scalars"
+        - "Multiplication" $$\odot:V\times\F\to V$$
+      to: |
+        For all $$\vb v,\vb w,\vb z \in V$$ and $$c,d\in\F$$, there is closure:
+        1. $$\vb v \oplus \vb w \in V$$
+        2. $$c \odot \vb v \in V$$
+
+        and eight axioms hold:
+
+        1. $$\vb v \oplus \vb w = \vb w \oplus \vb v$$ (additive commutativity)
+        2. $$(\vb v \oplus \vb w) \oplus \vb z = \vb v \oplus \vb w \oplus \vb z$$ (additive associativity)
+        3. $$\exists \vb 0 \in V$$ where $$\vb v \oplus \vb 0 = \vb v$$ (additive identity)
+        4. $$\exists (-\vb v) \in V$$ where $$\vb v \oplus (-\vb v) = \vb 0$$ (additive inverse)
+        5. $$c \odot (\vb v \oplus \vb w) = (c \odot \vb v) \oplus (c \odot \vb w)$$ (vector distributivity)
+        6. $$(c+d)\odot \vb v = (c\odot \vb v) + (d\odot \vb v)$$ (scalar distributivity)
+        7. $$(c\times d)\odot \vb v = c \odot (d\odot \vb v)$$ (multiplicative compatibility)
+        8. $$1 \odot \vb v = \vb v$$ (multiplicative identity)
 
 - title: "## Theorems"
   class: thms
@@ -716,3 +742,46 @@
         with $$h(t)$$ irreducible and $$A$$ is diagonalizable
       arrow: \iff
       to: $$h(t) = 1$$ and $$a_{\lambda_i} = g_{\lambda_i}$$ for all $$i$$
+    - name: Lemma 20.1
+      from: $$V$$ subspace of $$\F^n$$
+      arrow: \implies
+      to: |
+        $$\exists W \subseteq V$$ linearly independent,
+        $$\Span(W) = V$$, and $$\abs{W} \leq n$$
+    - name: Lemma 20.2
+      from: $$V$$ subspace with $$U$$ and $$W$$ bases
+      arrow: \implies
+      to: $$\abs{U} = \abs{W}$$
+    - name: Replacement Theorem (Lemma 20.3)
+      from: $$V \neq \{\vb 0\}$$ subspace of $$\F^n$$ with basis $$W$$
+      arrow: \implies
+      to: $$\exists B$$ basis for $$\F^n$$, replacing some standard basis with vectors from $$W$$
+    - name: Remark 20.1
+      from: $$A \in \Mnn$$
+      arrow: \implies
+      to: $$\rank(A) = \dim(\Col(A))$$
+    - name: Rank-Nullity Theorem (Theorem 20.1)
+      from: $$A \in \Mnn$$
+      arrow: \implies
+      to: $$\begin{aligned}n &= \dim(\Col(A)) + \dim(N(A))\\ &= \rank(A) + \nullity(A)\end{aligned}$$
+    - name: Lemma 21B.1
+      from: Vector space $$(V,\oplus,\F,\odot)$$
+      arrow: \implies
+      to: $$\vb 0 \in V$$ unique
+    - name: Lemma 21B.2
+      from: $$\vb v \in V$$
+      arrow: \implies
+      to: $$(-\vb v) \in V$$ unique
+    - name: Lemma 21B.3
+      from: $$\vb v \in V$$, $$a \in \F$$
+      arrow: \implies
+      to: $$0\odot\vb v = \vb 0$$ and $$a\odot\vb 0 = \vb 0$$
+    - name: Lemma 21B.4
+      from: $$\vb v \in V$$
+      arrow: \implies
+      to: $$(-\vb v) = (-1)\odot\vb v$$
+    - name: Lemma 21B.5
+      from: $$\vb v \in V$$, $$a \in \F$$, $$a\odot\vb v = \vb 0$$
+      arrow: \implies
+      to: $$\vb v = \vb 0$$ or $$a = 0$$
+

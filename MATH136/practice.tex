@@ -1,0 +1,217 @@
+\documentclass{agony}
+\title{MATH 136 Winter 2021}
+\newcommand{\sub}[3][1]{%
+\let\tmp\relax\newcommand\tmp[1]{#2}
+\ensuremath{\tmp{#1},\dotsc,\tmp{#3}}}
+
+\begin{document}
+
+\section{Exercises to Prepare for Test 3}
+
+\begin{prob}
+  Let $C \in \Mnn(\F)$ be invertible, and let $\sub{\vb v_#1}{k} \in \F^n$.
+  Prove that if $\qty{\sub{\vb v_#1}{k}}$ is linearly independent,
+  then so is $\qty{\sub{C\vb v_#1}{k}}$.
+\end{prob}
+\begin{prf}[from Rajvi]
+  Suppose that $\sum a_i C \vb v_i = \vb 0$.
+  We must show that all $a_i = 0$.
+
+  By the linearity of matrix multiplication,
+  $\sum a_i C \vb v_i = C\sum a_i \vb v_i$.
+  However, since $C$ is invertible, we have $\sum a_i \vb v_i = \vb 0$.
+  Since $\{\vb v_i\}$ is linearly independent,
+  this only occurs if all $a_i = 0$.
+\end{prf}
+\begin{prf}[more complicated]
+  Proceed by the contrapositive.
+
+  Suppose that $\{C\vb v_i\}$ is linearly dependent.
+  Then, $\sum a_i C\vb v_i = \vb 0$ for some non-zero $a_i$.
+  By linearity, $C\sum a_i \vb v_i = \vb 0$.
+  Since $C$ is invertible, $\sum a_i \vb v_i = \vb 0$.
+  This is exactly what it means for $\{\vb v_i\}$ to be linearly dependent.
+\end{prf}
+
+\begin{prob}
+  Let $L: \F^n \to \F^m$ be a linear mapping, and let $\sub{\vb v_#1}{k} \in \F^n$.
+\end{prob}
+\begin{enumerate}[(a)]
+  \item Prove or disprove: if $L$ is one-to-one and
+        $\qty{\sub{L(\vb v_#1)}{k}}$ is linearly independent,
+        then so is $\qty{\sub{\vb v_#1}{k}}$.
+        \begin{prf}
+          Proceed by the contrapositive.
+          Suppose that $\{\vb v_i\}$ is linearly dependent,
+          so $\sum c_i \vb v_i = \vb 0$ for non-zero $c_i$.
+          Now, if we apply $L$ to both sides, $\sum c_i L(\vb v_i) = L(\vb 0)$ by linearity.
+          But $L(\vb 0) = \vb 0$, so we are done.
+        \end{prf}
+  \item Prove or disprove: if $\qty{\sub{\vb v_#1}{k}}$
+        is linearly independent, then so is \\ $\qty{\sub{L(\vb v_#1)}{k}}$.
+        \begin{sol}
+          For a counterexample, define $L$ by the mapping $\vb x \mapsto \vb 0$.
+
+          Then, $L(\vb v_1) = \vb 0$ so any set containing it is linearly dependent.
+        \end{sol}
+\end{enumerate}
+
+\begin{prob}
+  Let $A \in \Mnn(\F)$.
+  We say that $A$ is nilpotent if there exists a positive integer $n$
+  such that $A^n=\O_{n \times n}$.
+  Prove that $\lambda=0$ is the only eigenvalue of $A$.
+\end{prob}
+\begin{prf}
+  Start by taking the determinant on both sides.
+  Then, $\det(A^n) = \det(A)^n = \det(\O) = 0$.
+  Therefore, $\det(A) = 0$.
+
+  Then, we have a non-trivial solution $\vb x$ to $A\vb x = \vb 0$.
+  But this is just $A\vb x = \lambda \vb x$ for $\lambda = 0$.
+  Therefore, 0 is an eigenvalue of $A$.
+
+  Now, we prove uniqueness.
+  Suppose that $A\vb x = \lambda \vb x$ for arbitrary $\lambda$ and non-zero $\vb x$.
+  Multiply on the left by $A^{n-1}$.
+  Then, $A^n\vb x = A^{n-1}\lambda\vb x$.
+  But this expands as $A^n\vb x = \lambda^n\vb x$.
+  Since $A^n = \O$, we have $\vb 0 = \lambda^n\vb x$.
+  But $\vb x$ is non-zero, so $\lambda^n = 0$ and $\lambda = 0$.
+
+  Therefore, the only eigenvalue of $A$ is 0.
+\end{prf}
+
+\begin{prob}
+  Let $\sub{\vb v_#1}{n} \in \F^n$,
+  and let $\sub{c_#1}{n} \in \F$ be non-zero scalars.
+  Prove that if $\qty{\sub{\vb v_#1}{n}}$ is a basis of $\F^n$,
+  then so is $\qty{\sub{c_#1 \vb v_#1}{n}}$.
+\end{prob}
+\begin{prf}
+  We must show that $\qty{c_i \vb v_i}$ is both spanning and linearly independent.
+
+  For spanning, notice that it follows trivially from the definition
+  that multiplying a term of a linear combination by a non-zero scalar
+  does not change the span.
+
+  Let $B = \{\vb v_i\}$ and let $[C]_B = diag(c_i)$.
+  Then, $C\vb v_i = c_i\vb v_i$ and $C$ is invertible since it is diagonal.
+  But by Q01, $\{C\vb v_i\}$ is linearly independent.
+  Therefore, since $\{c_i \vb v_i\}$ is spanning and linearly independent, it is a basis.
+\end{prf}
+
+\begin{prob}
+  Let $\sub{\vb v_#1}{n} \in \F^n$, and let $B$ be a basis of $\F^n$.
+  Prove that $\qty{\sub{\vb v_#1}{n}}$ is a basis of $\F^n$
+  if and only if $\qty{\sub{[\vb v_#1]_B}{n}}$ is a basis of $\F^n$.
+\end{prob}
+\begin{prf}
+  Notice that the proof goes in both directions if we consider bases generally.
+  Again, we must show spanning and linear independence.
+
+  Since $\{\vb v_i\}$ is a basis, the matrix $(\vb v_i)$ is invertible.
+  Then, $([\vb v_i]_B) = [(\vb v_i)]_B = \cbm{B}{S}(\vb v_i)\cbm{S}{B}$
+  must also be invertible as the product of invertible matrices.
+  Therefore, $\{[\vb v_i]_B\}$ is invertible and therefore spanning.
+
+  Proceed as in Q04 to show linear independence with $C = \cbm{B}{S}$.
+
+  Conversely, consider when $B = S$ and $S = B$.
+\end{prf}
+
+\begin{prob}
+  Let $\sub{\vb v_#1}{n} \in \F^n$.
+  Prove that if for every vector $\vb x \in \F^n$,
+  there exist unique scalars $\sub{c_#1}{n} \in \F$
+  such that $\vb x = c_1\vb v_1 + \dotsb + c_n\vb v_n$,
+  then $\qty{\sub{\vb v_#1}{n}}$ is a basis of $\F^n$.
+\end{prob}
+\begin{prf}
+  We must prove spanning and linear independence.
+  Spanning follows immediately from the hypothesis by definition.
+
+  By Lemma 17C.11, $\{\vb v_i\}$ is linearly independent since there are $n$ vectors.
+
+  Therefore, it is a basis.
+\end{prf}
+
+\begin{prob}
+  Find all real numbers $a$ and $b$ such that
+  $\Span\qty(\qty{\mqty(1\\2\\1), \mqty(1\\a\\2), \mqty(0\\1\\b)}) \neq \R^3$.
+\end{prob}
+\begin{sol}
+  Consider $A = \mqty(1&1&0 \\ 2&a&1 \\ 1&2&b)$.
+  We consider when $\Col(A) \neq \R^3$.
+
+  By the Rank-Nullity Theorem, we must find when $N(A) \neq \{\vb 0\}$.
+  This occurs only when $\det(A) = 0$.
+  Expanding the determinant, $ab - 2b - 1 = 0$, so $b = \frac{1}{a-2}$.
+
+  Therefore, for all $(a,b) \in \{(k,\frac{1}{k-2}) : k \in \R\setminus\{2\}\}$,
+  $\Col(A) \neq \R^3$.
+\end{sol}
+
+\begin{prob}
+  Let $V = \qty{\mqty(a^2\\b\\b) : a,b\in\R}$ be a subset of $\F^3$.
+  Prove or disprove:
+\end{prob}
+\begin{enumerate}[(a)]
+  \item If $\F=\R$, then $V$ is a subspace of $\F^3$.
+  \item If $\F=\C$, then $V$ is a subspace of $\F^3$.
+        \begin{sol}
+          Notice that $V$ is defined as a subset of $\R^3$ since the parameters are in $\R$.
+          Then, we know $\vb x = (1,0,0)^T \in V$ with $a = 1$ and $b = 0$.
+
+          However, $-2\vb x = (-2,0,0)^T \not\in V$ because there exists
+          no $a \in \R$ such that $a^2 = -2$.
+          Therefore, $V$ is not closed under scalar multiplication.
+
+          Since $-2 \in \R$ and $-2 \in \C$, $V$ is neither a subspace of $\R^3$ nor $\C^3$.
+        \end{sol}
+\end{enumerate}
+
+\begin{prob}
+  We call a square matrix $A$ idempotent if $A^2=A$.
+  Prove that if $A$ is idempotent, then so is $I-A$.
+  Is the converse of this statement true? Explain why or why not.
+\end{prob}
+\begin{prf}
+  Suppose that $A^2 = A$.
+  Then, $(I-A)^2 = (I-A)(I-A) = I^2 - AI - IA + A^2 = I - 2A + A^2 = I-A$
+  by properties of the identity matrix and the distributivity of matrix multiplication.
+  Therefore, $I-A$ is idempotent.
+
+  Suppose conversely that $(I-A)^2 = I-A$.
+  Then, $I - 2A + A^2 = I - A$ as above, but then $-A + A^2 = \mathbb{O}$.
+  It follows $A = A^2$ and $A$ is idempotent.
+\end{prf}
+
+\begin{prob}
+  Let $A, B \in \Mnn(\F)$.
+\end{prob}
+\begin{enumerate}[(a)]
+  \item Prove or disprove: if $\vb v$ is an eigenvector of both $A$ and $B$,
+        then it is an eigenvector of both $A B$ and $B A$.
+        \begin{prf}
+          Suppose $A\vb v = \lambda_A \vb v$ and $B\vb v = \lambda_B \vb v$.
+
+          If we multiply the first equation by $B$,
+          we have $BA\vb v = B\lambda_A \vb v = \lambda_A B\vb v = \lambda_A \lambda_B \vb v$.
+
+          If we instead multiply the second by $A$,
+          we have $AB\vb v = A\lambda_B \vb v = \lambda_B A\vb v = \lambda_B \lambda_A \vb v$.
+
+          Therefore, $\vb v$ is an eigenvector of $AB$ and $BA$.
+        \end{prf}
+  \item Prove or disprove: if $\lambda$ is an eigenvalue of both $A$ and $B$,
+        then it is an eigenvalue of both $A B$ and $B A$
+        \begin{sol}
+          We consider for a counterexample $A = B = \mqty(2&0\\0&1)$.
+          Then, $\lambda = 2$ is an eigenvalue of $A$ and $B$.
+
+          However, $AB = BA = \mqty(4&0\\0&1)$ and $\lambda = 2$ is not an eigenvalue.
+        \end{sol}
+\end{enumerate}
+
+\end{document}
