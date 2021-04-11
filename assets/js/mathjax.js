@@ -133,7 +133,7 @@ window.MathJax = {
       dilim: ['\\dlim{#1}{\\infty}', 1],
       ilim: ['\\lim_{#1\\to\\infty}', 1],
       at: ['\\left.#1\\right|_{#2}', 2],
-      isum: ['\\sum_{#1}^{\\infty}', 1, '1'],
+      isum: ['\\sum_{#1}^{\\infty}', 1, 'n=1'],
       // linalg
       xto: '\\xrightarrow',
       harr: '\\leftrightarrow',

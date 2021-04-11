@@ -88,6 +88,15 @@
       stmt: |
         $$\isum (-1)^{n-1} a_n = a_1 - a_2 + a_3 - a_4 + \dotsb$$ or
         $$\isum (-1)^{n} a_n = - a_1 + a_2 - a_3 + \dotsb$$ with $$a_n$$ positive
+    - name: Interval and Radius of Convergence (§6.1, p. 234)
+      from: $$\isum[n=0] a_n(x-a)^n$$
+      to: |
+        - $$I = \{ x_0 : \isum[n=0] a_n(x_0-a)^n \text{ converges } \}$$
+        - $$R = \begin{cases}
+            \operatorname{lub}(\{\abs{x_0 - a} : x_0 \in I\}) & \text{$I$ bounded} \\
+            \infty                                            & \text{$I$ unbounded}
+          \end{cases}$$
+
 
 - title: '## Theorems'
   class: thms
@@ -227,6 +236,120 @@
         3. $$\ilim{n} a_n = 0$$
       arrow: \implies
       to: $$\isum (-1)^{n-1}a_n$$ converges with $$\abs{S - S_k} \leq a_{k+1}$$
+    - name: Absolute Convergence Theorem (thm 5.11, p. 214)
+      from: $$\isum \abs{a_n}$$ converges
+      arrow: \implies
+      to: $$\isum a_n$$ converges
+    - name: Rearrangement Theorem (thm. 5.12, p. 218)
+      from: |
+        - $$\sum a_n$$ absolutely convergent
+        - $$\sum c_n$$ conditionally convergent
+      arrow: \implies
+      to: |
+        - $$\sum b_n$$ any rearrangement of $$a_n$$ convergent
+        - for any $$\alpha \in \R$$ or $$\alpha = \pm \infty$$, exists $$\sum d_n = \alpha$$ rearrangement of $$c_n$$
+    - name: Ratio Test (thm. 5.13, p. 221)
+      from: $$\isum a_n$$ with $$\ilim{n}\abs{\frac{a_{n+1}}{a_n}}=L$$
+      arrow: \implies
+      to: |
+        - $$0 \leq L < 1$$, converges absolutely
+        - $$L > 1$$, diverges
+        - $$L = 1$$, indeterminate
+    - name: Polynomials vs. Factorials (thm. 5.14, p. 224)
+      from: $$x \in \R$$
+      arrow: \implies
+      to: $$\ilim{n} \frac{x^n}{n!} = 0$$
+    - name: Root Test (thm. 5.15, p. 228)
+      from: $$\isum a_n$$ with $$\ilim{n} \sqrt[n]{\abs{a_n}} = L$$
+      arrow: \implies
+      to: |
+        - $$0 \leq L < 1$$, converges absolutely
+        - $$L > 1$$, diverges
+        - $$L = 1$$, indeterminate
+    - name: Fundamental Convergence Theorem for Power Series (thm. 6.1, p. 234)
+      from: $$\isum[n=0] a_n(x-a)^n$$ with radius of convergence $$R$$
+      arrow: \implies
+      to: |
+        - $$R = 0$$, converges for $$x = a$$ and diverges otherwise
+        - $$0 < R < \infty$$, converges absolutely if $$\abs{x-a} < R$$ and diverges if $$\abs{x-a}>R$$
+        - $$R = \infty$$, converges absolutely everywhere
+    - name: Test for Radius of Convergence (thm. 6.2, p. 237)
+      from: $$\isum[n=0] a_n(x-a)^n$$ with $$\ilim{n} \abs{\frac{a_{n+1}}{a_n}} = L$$
+      arrow: \implies
+      to: |
+        - $$0 < L < \infty$$, then $$R = \frac1L$$
+        - $$L = 0$$, then $$R = \infty$$
+        - $$L = \infty$$, then $$R = 0$$
+    - name: Equivalence of Radius of Convergence (thm. 6.3, p. 239)
+      from: $$\isum[n=0] a_n(x-a)^n$$ with $$R$$, $$p,q\in\R[x]$$
+      arrow: \implies
+      to: $$\isum[n=0] \frac{p(x)a_n(x-a)^n}{q(x)}$$ has same $$R$$
+    - name: Abel's Theorem (thm. 6.4, p. 241)
+      from: $$f(x) = \isum[n=0] a_n(x-a)^n$$ with $$I$$
+      arrow: \implies
+      to: $$f \in C^0(I)$$
+    - name: Addition of Power Series (thm. 6.5, p. 242)
+      from: $$f(x) = \isum[n=0] a_n(x-a)^n$$, $$g(x) = \isum[n=0] b_n(x-a)^n$$
+      arrow: \implies
+      to: $$(f+g)(x) = \isum[n=0] (a_n + b_n)(x-a)^n$$ has $$R = \min\{R_f,R_g\}$$ and $$I=I_f\cap I_g$$
+    - name: Multiplication of Power Series (thm. 6.6, p. 242)
+      from: $$f(x) = \isum[n=0] a_n(x-a)^n$$
+      arrow: \implies
+      to: $$(x-a)^m f(x) = \isum[n=0] a_n(x-a)^{m+n}$$ with same $$R$$ and $$I$$
+    - name: Power Series of Composite Functions (thm. 6.7, p. 243)
+      from: $$f(x) = \isum[n=0] a_n(x-a)^n$$
+      arrow: \implies
+      to: |
+        $$f(c\cdot x^m) = \isum[n=0] (a_n\cdot c^n)x^{mn}$$
+        with $$I = \{ x\in\R : c\cdot x^m \in I_f \}$$ and $$R = \sqrt[m]{\frac{R_f}{\abs{c}}}$$
+    - name: Term-by-Term Differentiation of Power Series (thm. 6.8, p. 246)
+      from: $$f(x) = \isum[n=0] a_n(x-a)^n$$ with $$R > 0$$
+      arrow: \implies
+      to: $$f'(x) = \isum[n=1] na_n(x-a)^{n-1}$$ on $$x \in (a-R,a+R)$$
+    - name: Uniqueness of Power Series (thm. 6.9, p. 252)
+      from: $$f(x) = \isum[n=0] a_n(x-a)^n$$ with $$R > 0$$
+      arrow: \implies
+      to: $$a_n = \frac{f^{(n)}(a)}{n!}$$
+    - name: Term-by-Term Integration of Power Series (thm. 6.10, p. 254)
+      from: $$f(x) = \isum[n=0] a_n(x-a)^n$$ with $$R > 0$$ and $$[c,b] \subset (a-R,a+R)$$
+      arrow: \implies
+      to: $$\int_c^b f(x) \dd{x} = \isum[n=0] \frac{a_n}{n+1}((b-a)^{n+1} - (c-a)^{n+1})$$
+    - name: Taylor's Theorem (thm. 6.11, p. 270)
+      from: $$f^{(n+1)}$$ exists on $$a \in I$$
+      arrow: \implies
+      to: $$f(x) - T_{n,a}(x) = R_{n,a}(x) = \frac{f^{(n+1)}(c)}{(n+1)!}(x-a)^{n+1}$$ for a $$c \in I$$
+    - name: Taylor's Approximation Theorem I (thm. 6.12, p. 274)
+      from: $$f^{(k+1)} \in C^0[-1,1]$$
+      arrow: \implies
+      to: Exists $$M$$ where $$\abs{f(x) - T_{k,0}} \leq M\abs{x}^{k+1}$$ on $$x \in [-1,1]$$
+    - name: Convergence Theorem for Taylor Series (thm. 6.13, p. 283)
+      from: $$f \in C^\infty(I)$$ where $$f^{(k)} \leq M \in \R$$ on $$I$$
+      arrow: \implies
+      to: $$f(x) = \isum[n=0] \frac{f^{(n)}(a)}{n!}(x-a)^n$$ along $$I$$
+    - name: Generalized Binomial Theorem (thm. 6.15, p. 288)
+      from: $$a \in \R$$ and $$x \in (-1,1)$$
+      to: $$(1+x)^\alpha = 1 + \isum[n=1]\frac{\alpha(\alpha-1)(\alpha-2)\cdots(\alpha-n+1)}{n!}x^n$$
+
+- title: '## Series'
+  class: defs
+  defs:
+    - name: Geometric Series
+      from: $$\isum[n=0] x^n = \frac{1}{1-x}$$
+      to: $$R = 1$$
+    - name: Exponential Series
+      from: $$\isum[n=0] \frac{x^n}{n!} = e^x$$
+      to: $$R = \infty$$
+    - name: Trigonometric Series
+      from: |
+        $$\isum[n=0] (-1)^n\frac{x^{2n}}{(2n)!} = \cos(x)$$<br>
+        $$\isum[n=0] (-1)^n\frac{x^{2n+1}}{(2n+1)!} = \sin(x)$$
+      to: $$R = \infty$$
+    - name: Alternating Series
+      from: $$\isum \frac{(-1)^{1-n}}{n}x^{n} = \ln(1+x)$$
+      to: $$R = 1$$
+    - name: Binomial Series
+      from: $$\isum \binom{r}{n}x^n = 1 + \isum \frac{r(r-1)\cdots(r-n+1)}{n!}x^n = (1+x)^r$$
+      to: $$R = 1$$
 
 - title: |
     # MATH 137 Reference
