@@ -149,9 +149,7 @@ A collection of theorems can be found [here](./MATH136/ref.html).
 
 A collection of theorems can be found [here](./MATH138/ref.html).
 
-| File                                        |     Complete?      | Notes |
-| ------------------------------------------- | :----------------: | ----- |
-| [Practice Assignment 1](./MATH138/PA01.pdf) | :white_check_mark: |       |
+Jimmy has notes for [series](./MATH138/Jimmy05.pdf) and [Taylor series](./MATH138/Jimmy06.pdf).
 
 ### MATH 146 (W1989) <small>Linear Algebra I (Advanced)</small>
 
