@@ -3,6 +3,7 @@
 \newcommand{\sub}[3][1]{%
 \let\tmp\relax\newcommand\tmp[1]{#2}
 \ensuremath{\tmp{#1},\dotsc,\tmp{#3}}}
+\newcommand{\B}{\mathcal{B}}
 
 \begin{document}
 
@@ -213,5 +214,281 @@
           However, $AB = BA = \mqty(4&0\\0&1)$ and $\lambda = 2$ is not an eigenvalue.
         \end{sol}
 \end{enumerate}
+
+\pagebreak
+\section{Exercises to Prepare for the Exam}
+
+Sourced from Piazza \href{https://piazza.com/class/kjijvfqga7d7aj?cid=4051}{@4051}.
+
+\begin{prob}
+  We say that a subset $\{\sub{\vb v_#1}{k}\}$ of $\C^n$ is orthogonal
+  if $\ev{\vb v_i,\vb v_j} = 0$ for all $i \neq j$.
+  Prove that $\{\sub{\vb v_#1}{k}\}$ is orthogonal if and only if
+  $\{\sub{\overline{\vb v_#1}}{k}\}$ is orthogonal.
+\end{prob}
+\begin{prf}
+  Suppose that $\{\sub{\vb v_#1}{k}\}$ is orthogonal.
+  Then, $\ev{\vb v_i,\vb v_j} = 0$ for all $i \neq j$.
+
+  But $ \ev{\overline{\vb v_i},\overline{\vb v_j}}
+  = \sum \overline{v_{ii}} v_{ji}
+   = \overline{\sum v_{ii} \overline{v_{ji}}}
+     = \overline{\ev{\vb v_i,\vb v_j}} = \overline{0} = 0$.
+  Thus, $\{\sub{\overline{\vb v_#1}}{k}\}$ is orthogonal.
+
+  Conversely, notice that $\overline{\overline{\vb v_i}} = \vb v_i$ for any vector.
+\end{prf}
+
+\begin{prob}
+  Let $A \in \Mnn$ be diagonalizable with not necessarily distinct
+  eigenvalues $\sub{\lambda_#1}{n}$.
+  Prove that $B = A - \lambda_1I$ is diagonalizable.
+  What are the eigenvalues of $B$?
+\end{prob}
+\begin{prf}
+  Let $\B = \{\vb v_i\}$ be the eigenvectors of $A$ with eigenvalues $\lambda_i$.
+
+  Then, $B\vb v_i = (A-\lambda_1I)\vb v_i = A\vb v_i - \lambda_1\vb v_i = (\lambda_i - \lambda_1)\vb v_i$
+  for all $i$.
+
+  Therefore, $[B]_\B = \operatorname{diag}(0,\lambda_2-\lambda_1,\dotsc,\lambda_n-\lambda_1)$
+  so $B$ is diagonalizable.
+  Notice that because $|\B| = n$, these are the only eigenvalues of $B$.
+\end{prf}
+
+\begin{prob}
+  Let $B \in \Mnn$. Prove or disprove:
+  if $B^2\vb x = \vb 0$ for some $\vb x \neq \vb 0$, then $B$ is not invertible.
+\end{prob}
+\begin{prf}
+  Recall that by the Invertible Matrix Theorem,
+  $B^2\vb x = \vb 0$ for some $\vb x \neq \vb 0$ iff $B^2$ is not invertible.
+  Proceed by the contrapositive.
+  Suppose that $B$ is invertible.
+  Then, $B^2 = BB$ must be invertible as the product of invertible matrices.
+\end{prf}
+
+\begin{prob}
+  Let $A \in \Mnn$ be diagonal
+  with not necessarily distinct non-zero eigenvalues $\sub{\lambda_#1}{k}$.
+  Prove that there exist eigenvectors $\sub{\vb v_#1}{k}$ of $A$
+  such that the set $B = \{\sub{\vb v_#1}{k}\}$ is a basis of $\Col(A)$.
+\end{prob}
+\begin{prf}
+  Notice that the diagonal entries of $A$ are either the $k$ non-zero eigenvalues or zero.
+  Therefore, $\rank(A) = \dim(\Col(A)) = k$, since all other columns are zero.
+
+  Without loss of generality, suppose that $\lambda_i$ is in the $i$th column of $A$.
+  Then, $A\vb e_i = \lambda_i \vb e_i$ for each standard basis vector with $i \leq k$.
+  Notice also that $\vb e_i$ is an eigenvector of $A$.
+  Also, since $\lambda_i$ is non-zero,
+  $A(\lambda_i^{-1}\vb e_i) = \vb e_i$ so we have $\vb e_i \in \Col(A)$.
+
+  Now, let $\vb v_i = \vb e_i$ for each $i \leq k$.
+  The set $B$ is linearly independent as a subset of $S$ with $|B| = k$ and $B \subset \Col(A)$.
+  By Lemma 17C.11, it is a basis for $\Col(A)$.
+\end{prf}
+
+\begin{prob}
+  Let $T : \F^n \to \F^n$ be a linear transformation. Prove or disprove:
+  if $T$ is not invertible, then there exists a basis $B$ for $\F^n$
+  for which the matrix $[T]_B$ has a column of zeroes.
+\end{prob}
+\begin{prf}
+  Suppose $T$ is not invertible.
+  Recall that by the Invertible Matrix Theorem,
+  the nullity of $T$ is at least 1.
+  Therefore, there exists a basis $B_1$ of $N(T)$ with $|B_1| \geq 1$.
+
+  Then, by the Replacement Theorem, there exists a basis $B$ for $\F^n$
+  consisting of $B_1$ and some of the standard basis vectors.
+  Now, let $\vb v \in B_1$.
+  Then, $T\vb v = \vb 0$, so the column of $[T]_B$ corresponding to $\vb v$ has all zero entries.
+\end{prf}
+
+\begin{prob}
+  Let $T$ be an invertible linear operator on $\F^n$.
+\end{prob}
+\begin{enumerate}[(a)]
+  \item Show that if $\lambda$ is an eigenvalue of $T$
+        then $\lambda^{-1}$ is an eigenvalue of $T^{-1}$.
+        \begin{prf}
+          Let $T(\vb v) = \lambda \vb v$.
+          Then, $\vb v = T^{-1}(T(\vb v)) = \lambda T^{-1}(\vb v)$
+          and so $T^{-1}(\vb v) = \lambda^{-1}\vb v$.
+        \end{prf}
+  \item Show that the eigenspace of $T$ corresponding to $\lambda$
+        is equal to the eigenspace of $T^{-1}$ corresponding to $\lambda^{-1}$.
+        \begin{prf}
+          Notice that in (a) the same vector $\vb v$ was the eigenvector of
+          $T$ corresponding to $\lambda$ and of $T^{-1}$ corresponding to $\lambda^{-1}$.
+
+          Therefore, $E_{\lambda}(T) = \Span(\{\vb v,\dotsc\}) = E_{\lambda^{-1}}(T^{-1})$.
+        \end{prf}
+  \item Prove or disprove: $T$ is diagonalizable iff $T^{-1}$ is diagonalizable.
+        \begin{prf}
+          Recall that $T$ is diagonalizable iff $T$ has $n$ linearly independent eigenvectors.
+          However, the eigenvectors of $T$ and $T^{-1}$ are the same.
+          Therefore, $T^{-1}$ is diagonalizable iff $T$ has $n$ linearly independent eigenvectors
+          iff $T$ is diagonalizable.
+        \end{prf}
+\end{enumerate}
+
+\begin{prob}
+  Suppose that $A \in \Mnn$ has two distinct eigenvalues $\lambda_1$ and $\lambda_2$.
+  Show that if the geometric multiplicity of one of the eigenvalues is $n-1$,
+  then $A$ must be diagonalizable.
+  Is the converse true?
+\end{prob}
+\begin{prf}
+  Suppose $g_{\lambda_1} = n-1$.
+  Then, by definition, a basis $B_1$ for $E_{\lambda_1}$ has $n-1$ vectors.
+
+  Now, let $B_2$ be a basis for $E_{\lambda_2}$.
+  By Lemma 19B.6, $E_{\lambda_1} \cup E_{\lambda_2}$ is linearly independent.
+  But if $\dim(B_2) > 1$, then $\dim(E_{\lambda_1} \cup E_{\lambda_2}) > n$.
+  Therefore, $\dim(B_2) = g_{\lambda_2} = 1$.
+
+  We now have $n$ linearly independent eigenvectors, so $A$ is diagonalizable.
+
+  The converse is not true. Consider $A = \operatorname{diag}(1,2,3)$.
+  No eigenvalue has multiplicity 2.
+\end{prf}
+
+\begin{prob}
+  Suppose $A \in \Mnn$ is similar to the upper triangular matrix
+  $\mqty(1&2&3&\cdots&n \\ 0&2&3&\cdots&n \\ 0&0&3&\cdots&n \\ \vdots&\vdots&\ddots&\ddots&\vdots \\ 0&0&\cdots&0&n)$.
+
+  Show that $A$ is diagonalizable.
+\end{prob}
+\begin{sol}
+  Let $B$ be the given upper triangular matrix.
+  Then, we can evaluate along the diagonal $\Delta_B(t) = (1-t)(2-t)(3-t)\cdots(n-t)$.
+
+  Since $A$ is similar to $B$, it has the same characteristic polynomial.
+  That is, $A$ also has eigenvalues $\lambda = 1,\dotsc,n$.
+  Since there are $n$ distinct eigenvalues, $A$ is diagonalizable.
+\end{sol}
+
+\begin{prob}
+  Let $X = (\sub{\vb v_#1}{k})$ and $Y = (\sub{\vb u_#1}{k})$ be in $M_{n\times k}$.
+
+  Prove that if $\Col(X) \subseteq \Col(Y)$,
+  then there exists $A \in M_{k\times k}$ such that $X = YA$.
+\end{prob}
+\begin{prf}
+
+\end{prf}
+
+\begin{prob}
+  Suppose that $L : \F^4 \to \F^7$ is linear.
+  Prove that $R(L) \neq \F^7$.
+\end{prob}
+\begin{prf}
+  Suppose $R(L) = \F^7$. Then, $\dim(\Col(L)) = 7$.
+  However, there are only four columns of $[L]_S$.
+  Therefore, $\dim(\Col(L)) \leq 4$, so by contradiction, $R(L) \neq \F^7$.
+\end{prf}
+
+\begin{prob}
+  Let $A \in M_{3\times 3}(\R)$ with three distinct, real, non-negative eigenvalues.
+
+  Prove that there exists $B \in M_{3\times 3}(\R)$ such that $B^2 = A$.
+\end{prob}
+\begin{prf}
+  As the eigenvalues are distinct, we may diagonalize $A$.
+  Let $\B$ be the eigenbasis for $A$ such that
+  $[A]_\B = \operatorname{diag}(\lambda_1,\lambda_2,\lambda_3)$.
+  Now, since all eigenvalues are non-negative, let
+  $[B]_\B = \operatorname{diag}(\sqrt{\lambda_1},\sqrt{\lambda_2},\sqrt{\lambda_3})$.
+
+  Therefore, $B = \cbm{S}{\B}
+    \operatorname{diag}(\sqrt{\lambda_1},\sqrt{\lambda_2},\sqrt{\lambda_3})
+    \cbm{\B}{S} \in M_{3\times3}(\R)$ such that $B^2 = A$.
+\end{prf}
+
+\begin{prob}
+  Let $\{\sub{\vb v_#1}{n}\}$ be a basis of $\F^n$.
+
+  Prove that for any basis $B$ for $\F^n$, $\{\sub{[\vb v_#1]_B}{n}\}$ is a basis for $\F^n$.
+\end{prob}
+\begin{prf}
+  This is a specific case of Question 1.05 above.
+\end{prf}
+
+\begin{prob}
+  Let $A,B\in \Mnn$, with $AB = BA$.
+  Suppose that every eigenvalue of $A$ has algebraic multiplicity 1.
+  Prove that every eigenvector of $A$ is an eigenvector of $B$.
+\end{prob}
+\begin{prf}
+  Let $A\vb v_i = \lambda_i \vb v_i$.
+  Now, because $AB = BA$, we can write
+  $AB\vb v_i = BA\vb v_i = \lambda_i(B\vb v_i)$.
+  But this means $B\vb v_i$ is an eigenvector for $A$ with eigenvalue $\lambda_i$,
+  that is, $B\vb v_i \in E_{\lambda_i}$.
+
+  By Lemma 19B.5, if $a_{\lambda_i} = 1$, then $g_{\lambda_i} = 1$.
+  Then, $\dim(E_{\lambda_i}) = 1$, so $E_{\lambda_i} = \Span(\{\vb v_i\})$.
+  Therefore, $B\vb v_i = k\vb v_i$ by definition of the span.
+  But this is exactly what it means for $\vb v_i$ to be an eigenvector of $B$.
+\end{prf}
+
+\begin{prob}
+  Let $A,B \in M_{4\times 4}$ with $A = (\vb a_1,\vb a_2,\vb a_3,\vb a_4)$
+  and $B = (\vb a_4,\vb a_3,\vb a_2,\vb a_1)$.
+
+  Prove that $A-B$ is not invertible.
+\end{prob}
+\begin{prf}
+  Notice that we have
+  $A-B = (\vb a_1 - \vb a_4, \vb a_2 - \vb a_3, \vb a_3 - \vb a_2, \vb a_4 - \vb a_1)$.
+  But if we perform $C_4 + C_1$ and $C_3 + C_2$ we have
+  $A-B = (\vb a_1 - \vb a_4, \vb a_2 - \vb a_3, 0, 0)$.
+  Therefore, $\rank(A-B) \leq 2$ since $\dim(\Col(A-B)) = \dim(\operatorname{Row}(A-B))$.
+  It follows $A-B$ is not invertible.
+\end{prf}
+
+\begin{prob}
+  Let $\vb n = (i, 1, 0, 1+i)^T$.
+  Compute a basis of a subspace $S = \{\vb x \in C^4 : \ev{\vb x,\vb n} = 0\}$.
+  What is $\dim(S)$?
+\end{prob}
+\begin{sol}
+  Let $\vb x = (a,b,c,d)^T \in S$.
+  Then, $\ev{\vb x,\vb n} = a(-i) + b + d(1-i) = 0$.
+  Equivalently, $b = ia - (1-i)d$ for arbitrary $a$ and $d$.
+
+  Let $a = s$, $c = t$, and $d = u$.
+  Then, $S = \{ (s,is+(-1+i)u,t,u)^T : s,t,u\in\C \}$.
+
+  But this is equivalently $S = \Span\qty(\qty{\mqty(1\\i\\0\\0), \mqty(0\\0\\1\\0), \mqty(0\\-1+i\\0\\1)})$.
+
+  The set is linearly independent, so it forms a basis for $S$.
+  Therefore, $\dim(S) = 3$.
+\end{sol}
+
+\begin{prob}
+  Let $A \in \Mnn$ be non-invertible.
+  Prove that the eigenspace of $A$ corresponding to the eigenvalue $\lambda = 0$
+  is equal to the nullspace of $A$.
+\end{prob}
+\begin{prf}
+  By the Invertible Matrix Theorem, since $A$ is singular, $E_0$ exists.
+  Now, notice that $E_0$ is defined by $N(A - 0I) = N(A)$.
+\end{prf}
+
+\begin{prob}
+  Find the projection of $\vb v = \mqty(-2\\0\\3)$
+  onto the plane $S = \Span\qty(\qty{\mqty(2\\1\\1),\mqty(1\\1\\-1)})$.
+\end{prob}
+\begin{sol}
+  Who needs fancy matrices?
+  We must take $\vb v - \Proj_{\vb n}(\vb v)$ for a normal vector $\vb n$.
+  Note that we have a trivial $\vb n = (2,1,1)^T \cp (1,1,-1)^T = (-2,3,1)^T$.
+  Then, we can calculate that $\Proj_{\vb n}(\vb v) = \frac12(-2,3,1)^T$.
+
+  Therefore, the projection is $\frac12(-2,-3,5)^T$.
+\end{sol}
 
 \end{document}

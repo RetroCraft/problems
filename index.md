@@ -124,7 +124,8 @@ Might also be helpful: Will put toegether a compilation of sample
 
 ### MATH 136 (W2021) <small>Linear Algebra I for Honours Mathematics</small>
 
-A collection of theorems can be found [here](./MATH136/ref.html).
+A collection of theorems can be found [here](./MATH136/ref.html)
+and practice problems [here](./MATH136/practice.pdf).
 
 ### MATH 137 (F2020) <small>Calculus I for Honours Mathematics</small>
 
