@@ -344,6 +344,12 @@
         6. $$(c+d)\odot \vb v = (c\odot \vb v) + (d\odot \vb v)$$ (scalar distributivity)
         7. $$(c\times d)\odot \vb v = c \odot (d\odot \vb v)$$ (multiplicative compatibility)
         8. $$1 \odot \vb v = \vb v$$ (multiplicative identity)
+    - name: Rowspace (22.1)
+      from: $$A \in M_{m\times n}$$
+      to: $$\operatorname{Row}(A) = \Span(\{\vb A^1,\vb A^2,\dotsc,\vb A^m\}) \subset M_{1\times n}$$
+    - name: Matrix Representation of Linear Transformation (23.2)
+      from: '$$T : U \to V$$, basis $$B_1 = \{\vb u_i\}$$ of $$U$$ and $$B_2$$ of $$V$$'
+      to: $${}_{B_2}[T]_{B_1} = ([T(\vb u_i)]_{B_2}))$$
 
 - title: "## Theorems"
   class: thms
@@ -784,4 +790,18 @@
       from: $$\vb v \in V$$, $$a \in \F$$, $$a\odot\vb v = \vb 0$$
       arrow: \implies
       to: $$\vb v = \vb 0$$ or $$a = 0$$
-
+    - name: Lemma 22.1
+      from: $$A \in M_{m\times n}$$, $$B$$ is $$A$$ after EROs
+      arrow: \implies
+      to: $$\operatorname{Row}(A) = \operatorname{Row}(B)$$
+    - name: Corollary 22.1
+      from: $$A \in M_{m\times n}$$
+      arrow: \implies
+      to: $$\dim(\operatorname{Row}(A)) = \rank(A)$$
+    - name: Lemma 22.2
+      from: $$A \in M_{m\times n}$$
+      arrow: \implies
+      to: $$\rank(A) = \rank(A^T)$$
+    - name: Lemma 23.1
+      from: '$$T : U \to V$$, basis $$B_1$$ of $$U$$ and $$B_2$$ of $$V$$'
+      to: $$T(\vb x) = {}_{B_2}[T]_{B_1}\,[\vb x]_{B_1}$$

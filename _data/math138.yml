@@ -350,6 +350,9 @@
     - name: Binomial Series
       from: $$\isum \binom{r}{n}x^n = 1 + \isum \frac{r(r-1)\cdots(r-n+1)}{n!}x^n = (1+x)^r$$
       to: $$R = 1$$
+    - name: Arctangent (based on Geometric)
+      from: $$\isum[n=0] \frac{(-1)^n}{(2n+1)}x^{2n+1} = \arctan(x)$$
+      to: $$R = 1$$
 
 - title: |
     # MATH 137 Reference
