@@ -2,14 +2,22 @@
 \ProvidesClass{agony}
 
 %
+% Options
+%
+
+\RequirePackage{kvoptions}
+\DeclareStringOption{class}
+\DeclareBoolOption{tikz}
+\DeclareDefaultOption{\PassOptionsToClass{\CurrentOption}{article}}
+\ProcessKeyvalOptions*
+\LoadClass[11pt]{article}
+
+\newenvironment{ifclass}[1]{\ifx\agony@class#1}{\fi}
+
+%
 % Load packages
 %
 
-\newif\if@loadtikz
-\DeclareOption{tikz}{\@loadtikztrue}
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
-\ProcessOptions\relax
-\LoadClass[11pt]{article}
 \usepackage{xparse}
 
 % Formatting
@@ -35,7 +43,7 @@
 \usepackage{mathtools} % for \DeclarePairedDelimiter macro
 
 % Figures
-\if@loadtikz
+\ifagony@tikz
   \RequirePackage{tikz,pgfplots}
   \pgfplotsset{compat=1.15}
   \usepgfplotslibrary{fillbetween}
@@ -190,3 +198,12 @@
     {\left\langle{#2}\ipsep{#2}\right\rangle}
     {\left\langle{#2}\ipsep{#3}\right\rangle}
   }}
+
+% Statistics
+\def\@stat{stat230}
+\ifx\agony@class\@stat
+  \RequirePackage{minted}
+  \definecolor{bg}{rgb}{0.95,0.95,0.95}
+  \usemintedstyle{tango}
+  \newminted{r}{autogobble,mathescape,bgcolor=bg}
+\fi
