@@ -21,7 +21,7 @@ Silent {
   \question
 }
 
-VerbEnvir { rcode }
+VerbEnvir { rcode outcode }
 
 HyphDash { 1 2 3 } # hyphenated-word, Double--Name, em dash---break
 NumDash  { 2 }     # 123--456

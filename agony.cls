@@ -206,4 +206,5 @@
   \definecolor{bg}{rgb}{0.95,0.95,0.95}
   \usemintedstyle{tango}
   \newminted{r}{autogobble,mathescape,bgcolor=bg}
+  \newminted[outcode]{text}{autogobble,mathescape,escapeinside=||}
 \fi
