@@ -207,4 +207,16 @@
   \usemintedstyle{tango}
   \newminted{r}{autogobble,mathescape,bgcolor=bg}
   \newminted[outcode]{text}{autogobble,mathescape,escapeinside=||}
+  \DeclareMathOperator{\Bi}{Binomial}
+  \DeclareMathOperator{\Hyp}{Hypergeometric}
+  \DeclareMathOperator{\NB}{Negative Binomial}
+  \DeclareMathOperator{\Geo}{Geometric}
+  \DeclareMathOperator{\Pois}{Poisson}
+  \DeclareMathOperator{\Exp}{Exponential}
+  \DeclareMathOperator{\Unif}{Uniform}
+  \DeclareMathOperator{\Var}{Var}
+  \DeclareMathOperator{\Cov}{Cov}
+  \DeclareMathOperator{\SD}{SD}
+  \setlist[enumerate,1]{label={(\alph*)}}
+  \setlist[enumerate,2]{label={(\roman*)}}
 \fi
