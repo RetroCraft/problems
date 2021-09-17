@@ -13,7 +13,7 @@ CmdLine {
 
 Silent {
   \land \lor \lnot
-  \implies \Rarr \Larr \iff
+  \implies \to \Rarr \Larr \iff \Harr \harr
   \cap \cup \nearrow \searrow
 
   \evensidemargin

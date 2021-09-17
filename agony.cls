@@ -220,3 +220,17 @@
   \setlist[enumerate,1]{label={(\alph*)}}
   \setlist[enumerate,2]{label={(\roman*)}}
 \fi
+\def\@logic{cs245}
+\ifx\agony@class\@logic
+  % Overrides hyperref's Form environment
+  \let\Form\@undefined
+  \DeclareMathOperator{\Form}{Form}
+  \DeclareMathOperator{\Atom}{Atom}
+  % Overrides \L -> Ł
+  \renewcommand{\L}{\ensuremath{\mathcal{L}}}
+  \newcommand{\Lp}{\ensuremath{\mathcal{L}^p}}
+  \setlist[enumerate,1]{label={(\alph*)}}
+  \setlist[enumerate,2]{label={(\roman*)}}
+
+  \usepackage{forest}
+\fi
