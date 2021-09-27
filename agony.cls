@@ -237,4 +237,5 @@
   \usepackage{forest}
   \newcommand{\tequiv}{\mathrel{\models\!\mid}}
   \newcommand{\nharr}{\nleftrightarrow}
+  \usepackage{turnstile}
 \fi
