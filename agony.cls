@@ -145,8 +145,10 @@
 \newcommand{\R}{\ensuremath{\mathbb{R}}}
 \newcommand{\C}{\ensuremath{\mathbb{C}}}
 \newcommand{\F}{\ensuremath{\mathbb{F}}}
-\renewcommand{\U}{\ensuremath{\mathcal{U}}}
-\renewcommand{\O}{\ensuremath{\mathcal{O}}}
+\let\U\@undefined
+\newcommand{\U}{\ensuremath{\mathcal{U}}}
+\let\O\@undefined
+\newcommand{\O}{\ensuremath{\mathcal{O}}}
 \newcommand{\Mnn}{\ensuremath{M_{n \times n}}}
 \newcommand{\sym}{\mathbin{\triangle}}
 
@@ -233,4 +235,6 @@
   \setlist[enumerate,2]{label={(\roman*)}}
 
   \usepackage{forest}
+  \newcommand{\tequiv}{\mathrel{\models\!\mid}}
+  \newcommand{\nharr}{\nleftrightarrow}
 \fi
