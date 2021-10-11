@@ -62,21 +62,40 @@ No justification is needed.
         variable: $x$;
         domain: $\R$;
         open sentence: $x^2+2x-3=0$.
+        Negation:
+        \[ \forall x\in\R, x^2+2x-3 \neq 0 \]
+        The statement is \emph{true}.
   \item For all real numbers $x$ and $y$, $x \neq y$ implies that $x^2+y^2 > 0$.
-        \[ \forall (x,y)\in\R^2, x \neq y \implies x^2+y^2>0 \]
+        \[ \forall x\in\R, \forall y\in\R, x \neq y \implies x^2+y^2>0 \]
         Quantifier: universal;
         variable: $x$;
-        domain: $\R^2$;
+        domain: $\R$;
         open sentence: $x \neq y \Rarr x^2+y^2>0$.
+        Negation:
+        \[ \exists x\in\R, \exists y\in\R, x \neq y \land x^2+y^2\leq0 \]
+        The statement is \emph{true}.
   \item For every even integer $a$ and odd integer $b$, a rational number $c$ can always be found such that $a<c<b$ or $b<c<a$.
-        \[ \forall (a,b)\in\Z^2, \exists c\in\Q, \left(\frac{a}{2}\in\Z \land \frac{b-1}{2}\in\Z\right) \implies (a<c<b \lor b<c<a) \]
+        \[
+          \forall a\in\Z, \forall b\in\Z, \exists c\in\Q,
+          \left(\frac{a}{2}\in\Z \land \frac{b-1}{2}\in\Z\right) \implies (a<c<b \lor b<c<a)
+        \]
         Quantifier: universal/existential;
         variables: $a$, $b$, $c$;
-        domain: $\Z^2\times\Q$,
-        open sentence: $\left(\frac{a}{2}\in\Z \land \frac{b-1}{2}\in\Z\right) \Rarr (a<c<b \lor b<c<a)$.
+        domain: $\Z$, $\Q$;
+        open sentence: $(\frac{a}{2}\in\Z \land \frac{b-1}{2}\in\Z) \Rarr (a<c<b \lor b<c<a)$.
+        Negation:
+        \[
+          \exists a\in\Z, \exists b\in\Z, \forall c\in\Q,
+          \qty(\frac{a}{2}\in\Z \land \frac{b-1}{2}\in\Z) \land
+          \qty((c \leq a \lor c \geq b) \land (c \leq b \lor c \geq a))
+        \]
+        The statement is \emph{true}.
   \item There is a perfect square which is also a perfect cube.
-        \[ \exists (n,x,y)\in\Z^3, n=x^2=y^3 \]
-        Quantifier: existential; variables: $n$, $x$, $y$; domain: $\Z^3$; open sentence: $n=x^2=y^3$.
+        \[ \exists n\in\Z, \exists x\in\Z, \exists y\in\Z, n=x^2=y^3 \]
+        Quantifier: existential; variables: $n$, $x$, $y$; domain: $\Z$; open sentence: $n=x^2=y^3$.
+        Negation:
+        \[ \forall n\in\Z, \forall x\in\Z, \forall y\in\Z, n \neq x^2 \land n \neq y^2 \]
+        The statement is \emph{true}.
 \end{enumerate}
 
 

@@ -181,6 +181,7 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 10. **ECON120/Final** (v1.1) Wrong colour on tarriff supply and demand curves
 11. **ECON140/Test 1** (v1.1) NX curve description under AE curve section, simple multiplier given as A/Y not Y/A (Trisha)
 12. **MATH137/PA01/Q01(2)** -4 - 2 = -2 (hyk)
+13. **MATH135/EP01/RP02** Replace tuple notation with standard quantifiers
 
 ## Contact
 
