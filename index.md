@@ -42,16 +42,20 @@ Learning is painful and agonizing enough as it is.
 
 Quizlet flashcards are not mine: thank Imaad for them.
 
-### BUS 111 (F2020) <small>Introduction to the Business Environment</small>
+### BU 111 (F2020) <small>Introduction to the Business Environment</small>
 
 Flashcards available for [PEST factors](https://quizlet.com/ca/553312795/bu111-final-review-f2020-all-pest-factors-flash-cards/)
 and [strategic expansion](https://quizlet.com/ca/553644800/bu111-final-review-f2020-intl-business-strategic-expansion-flash-cards/).
 
-### BUS 121 (W2021) <small>Functional Areas of the Organization</small>
+### BU 121 (W2021) <small>Functional Areas of the Organization</small>
 
 [Flashcard set (WIP)](https://quizlet.com/mian8680/folders/bu121-winter-2021/sets) for the whole course so far.
 
 Study materials by [Ace](https://ko-fi.com/augustace) are also published before each assessment.
+
+### BU 288 (F2021) <small>Organizational Behaviour</small>
+
+More flashcards for the [first midterm](https://quizlet.com/ca/620706160/bu288-organizational-behaviour-i-midterm-1-flash-cards/).
 
 ## Computer Science
 
