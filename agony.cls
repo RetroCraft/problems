@@ -8,6 +8,7 @@
 \RequirePackage{kvoptions}
 \DeclareStringOption{class}
 \DeclareBoolOption{tikz}
+\DeclareBoolOption{nogeometry}
 \DeclareDefaultOption{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessKeyvalOptions*
 \LoadClass[11pt]{article}
@@ -24,7 +25,6 @@
 \usepackage[titles]{tocloft}
 \renewcommand*\contentsname{\@title}
 \usepackage{titlesec}
-\usepackage{fancyhdr}
 \usepackage{multicol}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{array} % for \newcolumntype macro
@@ -54,29 +54,32 @@
 % Styles
 %
 
-\headheight 13.6pt
-\setlength{\headsep}{10pt}
-\textwidth 15cm
-\textheight 24.3cm
-\evensidemargin 6mm
-\oddsidemargin 6mm
-\topmargin -1.1cm
+\ifagony@nogeometry\else
+  \headheight 13.6pt
+  \setlength{\headsep}{10pt}
+  \textwidth 15cm
+  \textheight 24.3cm
+  \evensidemargin 6mm
+  \oddsidemargin 6mm
+  \topmargin -1.1cm
+  
+  \RequirePackage{fancyhdr}
+  \pagestyle{fancy}
+  \fancyhf{}
+  \fancyfoot[c]{\thepage}
+  \lhead{\@title}
+  \rhead{\@author}
+
+  \fancypagestyle{firstpage}{
+    \fancyhf{}
+    \rhead{\@author}
+    \fancyfoot[c]{\thepage}
+  }
+\fi
 \setlength{\parskip}{1.5ex}
 \parindent=0pt
 
 \author{James Ah Yong}
-
-\pagestyle{fancy}
-\fancyhf{}
-\fancyfoot[c]{\thepage}
-\lhead{\@title}
-\rhead{\@author}
-
-\fancypagestyle{firstpage}{
-  \fancyhf{}
-  \rhead{\@author}
-  \fancyfoot[c]{\thepage}
-}
 
 % Links
 \usepackage{hyperref,cleveref}
@@ -234,8 +237,10 @@
   \setlist[enumerate,1]{label={(\alph*)}}
   \setlist[enumerate,2]{label={(\roman*)}}
 
-  \usepackage{forest}
+  % Operators
   \newcommand{\tequiv}{\mathrel{\models\!\mid}}
   \newcommand{\nharr}{\nleftrightarrow}
+
+  \usepackage{forest}
   \usepackage{turnstile}
 \fi

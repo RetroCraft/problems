@@ -1,0 +1,112 @@
+\documentclass[class=cs245,nogeometry]{agony}
+\usepackage[fontsize=10pt]{scrextend}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{geometry}
+\geometry{margin=1cm,landscape}
+\pagenumbering{gobble}
+
+\newcommand{\law}[2]{\text{#1}&\left\{\begin{aligned}#2\end{aligned}\right.\\}
+% Fancy vector shorthand
+\makeatletter
+\newcommand\ls[2][\\]{\ensuremath{%
+  \global\def\rc@delim{#1}%
+    \negthinspace \begin{aligned}
+      \rc@vector #2;\relax\noexpand\@eolst%
+    \end{aligned}}}
+\def\rc@vector #1;#2\@eolst{%
+  \ifx\relax#2\relax
+    #1
+  \else
+    #1\rc@delim[-2\jot]
+    \rc@vector #2\@eolst%
+  \fi}
+\makeatother
+
+\title{Cheat Sheet}
+\begin{document}
+
+\begin{multicols}{2}
+  \textbf{Essential Laws of Propositional Logic}
+  \begin{align*}
+    \law{Double Negation}{\lnot(\lnot p) \tequiv p}
+    \law{Excluded Middle}{p \lor \lnot p \tequiv 1}
+    \law{Contradiction}{p \land \lnot p \tequiv 0}
+    \law{Idempotence}{
+    p \land p                          & \tequiv p                            \\
+    p \lor p                           & \tequiv p                            \\
+    }
+    \law{Identity}{
+    p \land 1                          & \tequiv p                            \\
+    p \lor 0                           & \tequiv p                            \\
+    }
+    \law{Domination}{
+    p \land 0                          & \tequiv 0                            \\
+    p \lor 1                           & \tequiv 1                            \\
+    }
+    \law{Commutativity}{
+    p \land q                          & \tequiv q \land p                    \\
+    p \lor q                           & \tequiv q \lor p                     \\
+    p \harr q                          & \tequiv q \harr p                    \\
+    }
+    \law{Associativity}{
+    p \land (q \land r)                & \tequiv (p \land q) \land r          \\
+    p \lor (q \lor r)                  & \tequiv (p \lor q) \lor r            \\
+    }
+    \law{Distributivity}{
+    p \land (q \lor r)                 & \tequiv (p \land q) \lor (q \land r) \\
+    p \lor (q \land r)                 & \tequiv (p \lor q) \land (q \lor r)  \\
+    }
+    \law{Implication}{p \to q \tequiv \lnot p \lor q}
+    \law{Contrapositive}{p \to q \tequiv \lnot q \to \lnot p}
+    \law{Equivalence}{p \harr q \tequiv (p \to q) \land (q \to p)}
+    \law{De Morgan}{
+    \lnot(p \land q)                   & \tequiv \lnot p \lor \lnot q         \\
+    \lnot(p \lor q)                    & \tequiv \lnot p \land \lnot q        \\
+    }
+    \law{Absorption I}{
+    p \land (p \lor q)                 & \tequiv p                            \\
+    p \lor (p \land q)                 & \tequiv p                            \\
+    }
+    \law{Absorption II}{
+    (p \lor q) \land (\lnot p \lor q)  & \tequiv q                            \\
+    (p \land q) \lor (\lnot p \land q) & \tequiv q                            \\
+    }
+  \end{align*}
+  \textbf{Rules of Formal Deduction}
+  \begin{center}
+    \renewcommand{\t}{\vdash}
+    \newcommand{\T}{&\vdash}
+    \renewcommand{\S}{\Sigma}
+    \begin{tabular}{r|C|C|l}
+      (Abbr.)                         & \text{From}                                 &
+      \text{Conclude}                 & Rule                                          \\ \hline
+      (Ref)                           & \emptyset                                   &
+      A \vdash A                      & Reflexivity                                   \\
+      (+)                             & \S \t A                                     &
+      \S,\S' \t A                     & Addition of premises                          \\
+      ($\lnot$ $-$)                   & \ls{\S,\lnot A \T B; \S,\lnot A \T \lnot B} &
+      \S \t A                         & $\lnot$ elimination                           \\
+      ($\to$ $-$)                     & \ls{\S \T A \to B; \S \T A}                 &
+      \S \t B                         & $\to$ elimination (modus ponens)              \\
+      ($\to$ $+$)                     & \S, A \t B                                  &
+      \S \t A \to B                   & $\to$ introduction                            \\
+      ($\land$ $-$)                   & \S \t A \land B                             &
+      \ls{\S \T A;\S \T B}            & $\land$ elimination                           \\
+      ($\land$ $+$)                   & \ls{\S \T A;\S \T B}                        &
+      \S \t A \land B                 & $\land$ introduction                          \\
+      ($\lor$ $-$)                    & \ls{\S,A \T C; \S,B \T C}                   &
+      \S,A \lor B \t C                & $\lor$ elimination                            \\
+      ($\lor$ $+$)                    & \S \t A                                     &
+      \ls{\S\T A\lor B; \S\T B\lor A} & $\lor$ introduction                           \\
+      \multirow{2}{*}{($\harr$ $-$)}  & \ls{\S\T A\harr B; \S\T A}                  &
+      \S\t B                          & \multirow{2}{*}{$\harr$ elimination}          \\
+                                      & \ls{\S\T A\harr B; \S\T B}                  &
+      \S\t A                          &                                               \\
+      ($\harr$ $+$)                    & \ls{\S,A \T B; \S,B \T A}                                     &
+      \S\t A \harr B & $\harr$ introduction                           
+    \end{tabular}
+  \end{center}
+\end{multicols}
+
+\end{document}
