@@ -1,10 +1,8 @@
 \documentclass[class=cs245,nogeometry]{agony}
-\usepackage{multicol}
 \usepackage{multirow}
 \usepackage{geometry}
 \geometry{margin=1cm,landscape}
 \pagenumbering{gobble}
-\usepackage{graphicx}
 
 \newcommand{\law}[2]{\text{#1}&\left\{\begin{aligned}#2\end{aligned}\right.\\}
 \newcommand{\dfn}[3]{\textit{#1} (\textsection #2, #3).}
@@ -26,12 +24,9 @@
     \rc@vector #2\@eolst%
   \fi}
 \makeatother
-\renewcommand{\t}{\vdash}
-\renewcommand{\tt}{\mathrel{\vdash\hspace{-0.8em}\reflectbox{$\vdash$}}}
 \newcommand{\br}{&}
-\newcommand{\T}{&\t}
-\newcommand{\TT}{&\tt}
-\renewcommand{\S}{\Sigma}
+\newcommand{\D}{&\d}
+\newcommand{\DD}{&\dd}
 
 \title{Cheat Sheet}
 \begin{document}
@@ -39,96 +34,96 @@
 \begin{multicols}{2}
   \section*{Essential Laws of Propositional Logic}
   \begin{align*}
-    \law{Double Negation}{\lnot(\lnot p) \tequiv p}
-    \law{Excluded Middle}{p \lor \lnot p \tequiv 1}
-    \law{Contradiction}{p \land \lnot p \tequiv 0}
+    \law{Double Negation}{\n(\n p) \tt p}
+    \law{Excluded Middle}{p \o \n p \tt 1}
+    \law{Contradiction}{p \a \n p \tt 0}
     \law{Idempotence}{
-    p \land p                          & \tequiv p                            \\
-    p \lor p                           & \tequiv p                            \\
+    p \a p                  & \tt p                    \\
+    p \o p                  & \tt p                    \\
     }
     \law{Identity}{
-    p \land 1                          & \tequiv p                            \\
-    p \lor 0                           & \tequiv p                            \\
+    p \a 1                  & \tt p                    \\
+    p \o 0                  & \tt p                    \\
     }
     \law{Domination}{
-    p \land 0                          & \tequiv 0                            \\
-    p \lor 1                           & \tequiv 1                            \\
+    p \a 0                  & \tt 0                    \\
+    p \o 1                  & \tt 1                    \\
     }
     \law{Commutativity}{
-    p \land q                          & \tequiv q \land p                    \\
-    p \lor q                           & \tequiv q \lor p                     \\
-    p \harr q                          & \tequiv q \harr p                    \\
+    p \a q                  & \tt q \a p               \\
+    p \o q                  & \tt q \o p               \\
+    p \e q                  & \tt q \e p               \\
     }
     \law{Associativity}{
-    p \land (q \land r)                & \tequiv (p \land q) \land r          \\
-    p \lor (q \lor r)                  & \tequiv (p \lor q) \lor r            \\
+    p \a (q \a r)           & \tt (p \a q) \a r        \\
+    p \o (q \o r)           & \tt (p \o q) \o r        \\
     }
     \law{Distributivity}{
-    p \land (q \lor r)                 & \tequiv (p \land q) \lor (q \land r) \\
-    p \lor (q \land r)                 & \tequiv (p \lor q) \land (q \lor r)  \\
+    p \a (q \o r)           & \tt (p \a q) \o (q \a r) \\
+    p \o (q \a r)           & \tt (p \o q) \a (q \o r) \\
     }
-    \law{Implication}{p \to q \tequiv \lnot p \lor q}
-    \law{Contrapositive}{p \to q \tequiv \lnot q \to \lnot p}
-    \law{Equivalence}{p \harr q \tequiv (p \to q) \land (q \to p)}
+    \law{Implication}{p \i q \tt \n p \o q}
+    \law{Contrapositive}{p \i q \tt \n q \i \n p}
+    \law{Equivalence}{p \e q \tt (p \i q) \a (q \i p)}
     \law{De Morgan}{
-    \lnot(p \land q)                   & \tequiv \lnot p \lor \lnot q         \\
-    \lnot(p \lor q)                    & \tequiv \lnot p \land \lnot q        \\
+    \n(p \a q)              & \tt \n p \o \n q         \\
+    \n(p \o q)              & \tt \n p \a \n q         \\
     }
     \law{Absorption I}{
-    p \land (p \lor q)                 & \tequiv p                            \\
-    p \lor (p \land q)                 & \tequiv p                            \\
+    p \a (p \o q)           & \tt p                    \\
+    p \o (p \a q)           & \tt p                    \\
     }
     \law{Absorption II}{
-    (p \lor q) \land (\lnot p \lor q)  & \tequiv q                            \\
-    (p \land q) \lor (\lnot p \land q) & \tequiv q                            \\
+    (p \o q) \a (\n p \o q) & \tt q                    \\
+    (p \a q) \o (\n p \a q) & \tt q                    \\
     }
   \end{align*}
   \section*{Eleven Rules of Formal Deduction}
   \begin{center}
     \begin{tabular}{r|C|C|l}
-      (Abbr.)                         & \text{From}                                 &
-      \text{Conclude}                 & Rule                                          \\ \hline
-      (Ref)                           & \emptyset                                   &
-      A \vdash A                      & Reflexivity                                   \\
-      (+)                             & \S \t A                                     &
-      \S,\S' \t A                     & Addition of premises                          \\
-      ($\lnot$ $-$)                   & \ls{\S,\lnot A \T B; \S,\lnot A \T \lnot B} &
-      \S \t A                         & $\lnot$ elimination                           \\
-      ($\to$ $-$)                     & \ls{\S \T A \to B; \S \T A}                 &
-      \S \t B                         & $\to$ elimination (modus ponens)              \\
-      ($\to$ $+$)                     & \S, A \t B                                  &
-      \S \t A \to B                   & $\to$ introduction                            \\
-      ($\land$ $-$)                   & \S \t A \land B                             &
-      \ls{\S \T A;\S \T B}            & $\land$ elimination                           \\
-      ($\land$ $+$)                   & \ls{\S \T A;\S \T B}                        &
-      \S \t A \land B                 & $\land$ introduction                          \\
-      ($\lor$ $-$)                    & \ls{\S,A \T C; \S,B \T C}                   &
-      \S,A \lor B \t C                & $\lor$ elimination                            \\
-      ($\lor$ $+$)                    & \S \t A                                     &
-      \ls{\S\T A\lor B; \S\T B\lor A} & $\lor$ introduction                           \\
-      \multirow{2}{*}{($\harr$ $-$)}  & \ls{\S\T A\harr B; \S\T A}                  &
-      \S\t B                          & \multirow{2}{*}{$\harr$ elimination}          \\
-                                      & \ls{\S\T A\harr B; \S\T B}                  &
-      \S\t A                          &                                               \\
-      ($\harr$ $+$)                   & \ls{\S,A \T B; \S,B \T A}                   &
-      \S\t A \harr B                  & $\harr$ introduction
+      (Abbr.)                     & \text{From}                        &
+      \text{Conclude}             & Rule                                 \\ \hline
+      (Ref)                       & \emptyset                          &
+      A \vdash A                  & Reflexivity                          \\
+      (+)                         & \S \d A                            &
+      \S,\S' \d A                 & Addition of premises                 \\
+      (\n \m)                     & \ls{\S,\n A \D B; \S,\n A \D \n B} &
+      \S \d A                     & \n elimination                       \\
+      (\i \m)                     & \ls{\S \D A \i B; \S \D A}         &
+      \S \d B                     & \i elimination (modus ponens)        \\
+      (\i +)                      & \S, A \d B                         &
+      \S \d A \i B                & \i introduction                      \\
+      (\a \m)                     & \S \d A \a B                       &
+      \ls{\S \D A;\S \D B}        & \a elimination                       \\
+      (\a +)                      & \ls{\S \D A;\S \D B}               &
+      \S \d A \a B                & \a introduction                      \\
+      (\o \m)                     & \ls{\S,A \D C; \S,B \D C}          &
+      \S,A \o B \d C              & \o elimination                       \\
+      (\o +)                      & \S \d A                            &
+      \ls{\S\D A\o B; \S\D B\o A} & \o introduction                      \\
+      \multirow{2}{*}{(\e \m)}     & \ls{\S\D A\e B; \S\D A}            &
+      \S\d B                      & \multirow{2}{*}{\e elimination}      \\
+                                  & \ls{\S\D A\e B; \S\D B}            &
+      \S\d A                      &                                      \\
+      (\e +)                      & \ls{\S,A \D B; \S,B \D A}          &
+      \S\d A \e B                 & \e introduction
     \end{tabular}
   \end{center}
   \section*{Proved Theorems}
   \begin{center}
     \begin{tabular}{r|C|C|l}
-      (Abbr.)            & \text{From}                                      &
-      \text{Conclude}    & Theorem                                            \\ \hline
-      ($\in$)            & A \in \S                                         &
-      \S \t A            & Membership                                         \\
-      (Tr.)              & \ls{\Sigma \T \Sigma'; \Sigma' \T A}             &
-      \S \t A            & Transitivity                                       \\
-      ($\lnot$ $+$)      & \ls{\Sigma,A \T B; \Sigma,A \T \lnot B}          &
-      \S \t \lnot A      & Reductio ad absurdum                               \\
-      (Repl.)            & \ls{A \TT A'; C\br=\text{$B$ with $A'$ for $A$}} &
-      B \tt C            & Replaceability                                     \\
-                         & A \t B                                           &
-      \lnot B \t \lnot A & Flip-Flop                                          \\
+      (Abbr.)         & \text{From}                                      &
+      \text{Conclude} & Theorem                                            \\ \hline
+      ($\in$)         & A \in \S                                         &
+      \S \d A         & Membership                                         \\
+      (Tr.)           & \ls{\Sigma \D \Sigma'; \Sigma' \D A}             &
+      \S \d A         & Transitivity                                       \\
+      (\n +)          & \ls{\Sigma,A \D B; \Sigma,A \D \n B}             &
+      \S \d \n A      & Reductio ad absurdum                               \\
+      (Repl.)         & \ls{A \DD A'; C\br=\text{$B$ with $A'$ for $A$}} &
+      B \tt C         & Replaceability                                     \\
+                      & A \d B                                           &
+      \n B \d \n A    & Flip-Flop                                          \\
     \end{tabular}
   \end{center}
 \end{multicols}
@@ -136,22 +131,22 @@
 \begin{multicols}{2}
   \subsection*{Proved Theorems (cont.)}
   \begin{align*}
-    \lnot\lnot A                        & \tt A                                               & \tag{Double Negation}        \\
-    \emptyset                           & \t A \lor \lnot A                                   & \tag{Excluded Middle}        \\
-    \emptyset                           & \t \lnot(A \land \lnot A)                           & \tag{Non-Contradiction}      \\
-    A,\lnot A                           & \t B                                                & \tag{Inconsistency Rule}     \\
-    A \to B, B \to C                    & \t A \to C                                          & \tag{Hypothetical Syllogism} \\
-    A \lor B, \lnot B                   & \t A                                                & \tag{Disjunctive Syllogism}  \\
-    A \to B                             & \tt \lnot A \lor B                                  & \tag{Implication}            \\
-    A \to B                             & \tt \lnot B \to \lnot A                             & \tag{Contrapositive}         \\
-    \ls{\lnot(A\land B);\lnot(A\lor B)} & \;\ls{\tt\lnot A\lor\lnot B;\tt\lnot A\land\lnot B} & \tag{De Morgan}
+    \n\n A                   & \tt A                              & \tag{Double Negation}        \\
+    \emptyset                & \d A \o \n A                       & \tag{Excluded Middle}        \\
+    \emptyset                & \d \n(A \a \n A)                   & \tag{Non-Contradiction}      \\
+    A,\n A                   & \d B                               & \tag{Inconsistency Rule}     \\
+    A \i B, B \i C           & \d A \i C                          & \tag{Hypothetical Syllogism} \\
+    A \o B, \n B             & \d A                               & \tag{Disjunctive Syllogism}  \\
+    A \i B                   & \tt \n A \o B                      & \tag{Implication}            \\
+    A \i B                   & \tt \n B \i \n A                   & \tag{Contrapositive}         \\
+    \ls{\n(A\a B);\n(A\o B)} & \;\ls{\tt\n A\o\n B;\tt\n A\a\n B} & \tag{De Morgan}
   \end{align*}
 
   \section*{Definitions}
 
   \dfn{Propositional language}{02}{3}
   A set of all strings of proposition, connective, and punctuation symbols.
-  $\Lp$ has $p,q,r,\ldots,\lnot,\land,\lor,\to,\harr,(,)$.
+  $\Lp$ has $p,q,r,\ldots,\n,\a,\o,\i,\e,(,)$.
 
   \dfn{Expression}{02}{4} An element of $\Lp$.
   The empty expression is $\epsilon$.
@@ -165,14 +160,14 @@
 
   \dfn{Formula}{02}{6}
   $\Form(\Lp)$ defined by: $\Atom(\Lp) \subset \Form(\Lp)$. \\
-  $A,B\in\Form(\Lp) \Rarr (\lnot A), (A \land B), (A \lor B), (A \to B), (A \harr B) \in \Form(\Lp)$. \\
+  $A,B\in\Form(\Lp) \Rarr (\n A), (A \a B), (A \o B), (A \i B), (A \e B) \in \Form(\Lp)$. \\
   No other expressions are in $\Form(\Lp)$.
 
   \dfn{Scope}{02}{45}
-  In $(\lnot A)$, $A$ is the scope of $\lnot$.
+  In $(\n A)$, $A$ is the scope of $\n$.
   In $(A \star B)$, $A$ is the left scope and $B$ is the right scope of $\star$.
 
-  \dfn{Truth valuation}{03}{6} A function $t : \Atom(\Lp)\to\{0,1\}$.
+  \dfn{Truth valuation}{03}{6} A function $t : \Atom(\Lp)\i\{0,1\}$.
 
   \dfn{Satisfiablity}{03}{9}
   The truth valuation $t$ satisfies $A$ if $A^t = 1$.
@@ -183,12 +178,12 @@
   \dfn{Contingent}{03}{14} $A$ is neither a tautology nor contradiction.
 
   \dfn{Tautological consequence}{03}{21}
-  $\S \timplies A$ if for all $t$, $\S^t = 1$ gives $A^t = 1$. \\
+  $\S \t A$ if for all $t$, $\S^t = 1$ gives $A^t = 1$. \\
   \dfn{Tautological equivalence}{03}{25}
-  $A \tequiv B$ if $A \timplies B$ and $B \timplies A$.
+  $A \tt B$ if $A \t B$ and $B \t A$.
 
   \dfn{Literal}{04}{10}
-  A formula of the form $p$ or $\lnot p$.
+  A formula of the form $p$ or $\n p$.
 
   \dfn{Disjunctive clause}{04}{12}
   Disjunction with literal disjuncts. \\
@@ -199,19 +194,19 @@
   \dfn{CNF}{04}{13} Conjunction with disjunctive clause conjuncts.
 
   \dfn{Definability/Reducibility}{05}{2}
-  Connective $\star$ reducibile to set $\mathcal S$ if $A \star B \tequiv C$
+  Connective $\star$ reducible to set $\mathcal S$ if $A \star B \tt C$
   where $C$ uses only $A$, $B$, and connectives in $\mathcal S$.
 
   \dfn{Adequate}{05}{7}
   Connectives which express any truth table/connective.
 
   \dfn{Formal deducibility}{06}{15}
-  $\S \t A$ generated by finite deduction rules. \\
+  $\S \d A$ generated by finite deduction rules. \\
   \dfn{Syntactic equivalence}{06}{15}
-  $A \tt B$ if $A \t B$ and $B \t A$.
+  $A \tt B$ if $A \d B$ and $B \d A$.
 
   \dfn{Consistency}{06}{67}
-  There is no $F$ such that $\S\t F$ and $\S\t\lnot F$.
+  There is no $F$ such that $\S\d F$ and $\S\t\n F$.
 
   \section*{Theorems (...the general kind)}
 
@@ -219,33 +214,33 @@
 
   \thm[Unique Readability Theorem]{02}{32}
   Every formula is exactly one form of exactly one of
-  $(\lnot A)$, $(A \land B)$, $(A \lor B)$, $(A \to B)$, $(A \harr B)$.
+  $(\n A)$, $(A \a B)$, $(A \o B)$, $(A \i B)$, $(A \e B)$.
 
-  \lem{03}{23} Equivalent statements of $\{A_i\} \timplies C$: \\
+  \lem{03}{23} Equivalent statements of $\{A_i\} \t C$: \\
   Argument with premises $A_i$ and conclusion $C$ is valid.\\
-  $(\bigwedge A_i) \to C$ is a tautology;
-  $(\lnot C \land \bigwedge A_i)$ is a contradiction. \\
-  Formula $(\lnot C \land \bigwedge A_i)$ or set $\{\lnot C, A_i\}$ is not satisfiable.
+  $(\bigwedge A_i) \i C$ is a tautology;
+  $(\n C \a \bigwedge A_i)$ is a contradiction. \\
+  Formula $(\n C \a \bigwedge A_i)$ or set $\{\n C, A_i\}$ is not satisfiable.
 
   \thm[Replaceability of tautologically equivalent formulas]{03}{44}
-  If $A \tequiv A'$ and $A$ is a subformula of $B$,
-  then $B \tequiv B'$ where $B'$ is $B$ with some of the $A$s replaced by $A'$.
+  If $A \tt A'$ and $A$ is a subformula of $B$,
+  then $B \tt B'$ where $B'$ is $B$ with some of the $A$s replaced by $A'$.
 
   \thm[Duality Theorem]{03}{44}
-  If $A$ has only $\lnot$, $\land$, $\lor$ and
-  $\Delta(A)$ replaces atoms with negations and swaps $\land$ with $\lor$,
-  then $\lnot A \tequiv \Delta(A)$.
+  If $A$ has only $\n$, $\a$, $\o$ and
+  $\Delta(A)$ replaces atoms with negations and swaps $\a$ with $\o$,
+  then $\n A \tt \Delta(A)$.
 
-  \thm{04}{22} All formulas have $F \tequiv \operatorname{DNF}(F)$ based on truth table. \\
-  \thm{04}{24} All formulas have $F \tequiv \operatorname{CNF}(F) = \Delta(\operatorname{DNF}(\lnot F))$.
+  \thm{04}{22} All formulas have $F \tt \operatorname{DNF}(F)$ based on truth table. \\
+  \thm{04}{24} All formulas have $F \tt \operatorname{CNF}(F) = \Delta(\operatorname{DNF}(\n F))$.
 
-  \thm{05}{8} The set $S_0 = \{\lnot, \land, \lor\}$ is adequate.
+  \thm{05}{8} The set $S_0 = \{\n, \a, \o\}$ is adequate.
 
   \thm[Finiteness of Premise Set]{06}{31}
-  If $\S \t A$, $\S^0 \t A$ with finite $\S^0 \subseteq \S$.
+  If $\S \d A$, $\S^0 \d A$ with finite $\S^0 \subseteq \S$.
 
-  \thm[Soundness Theorem]{06}{45} If $\S \t A$ then $\S \timplies A$. \\
-  \thm[Completeness Theorem]{06}{49} If $\S \timplies A$ then $\S \t A$.
+  \thm[Soundness Theorem]{06}{45} If $\S \d A$ then $\S \t A$. \\
+  \thm[Completeness Theorem]{06}{49} If $\S \t A$ then $\S \d A$.
 
   \lem{06}{67} $\S$ is satisfiable if and only if $\S$ is consistent.
 \end{multicols}

@@ -13,13 +13,12 @@
 \ProcessKeyvalOptions*
 \LoadClass[11pt]{article}
 
-\newenvironment{ifclass}[1]{\ifx\agony@class#1}{\fi}
-
 %
 % Load packages
 %
 
 \usepackage{xparse}
+\usepackage{xspace}
 
 % Formatting
 \usepackage[titles]{tocloft}
@@ -227,21 +226,36 @@
 \fi
 \def\@logic{cs245}
 \ifx\agony@class\@logic
-  % Overrides hyperref's Form environment
-  \let\Form\@undefined
-  \DeclareMathOperator{\Form}{Form}
-  \DeclareMathOperator{\Atom}{Atom}
-  % Overrides \L -> Ł
-  \renewcommand{\L}{\ensuremath{\mathcal{L}}}
-  \newcommand{\Lp}{\ensuremath{\mathcal{L}^p}}
   \setlist[enumerate,1]{label={(\alph*)}}
   \setlist[enumerate,2]{label={(\roman*)}}
+
+  \RequirePackage{forest}
+  \RequirePackage{turnstile}
+
+  \let\Form\@undefined % Overrides hyperref's Form environment
+  \DeclareMathOperator{\Form}{Form}
+  \DeclareMathOperator{\Atom}{Atom}
+  \renewcommand{\L}{\ensuremath{\mathcal{L}}} % Overrides \L -> Ł
+  \newcommand{\Lp}{\ensuremath{\mathcal{L}^p}}
+
+  \renewcommand{\S}{\Sigma} % Overrides \S -> §
 
   % Operators
   \newcommand{\timplies}{\models}
   \newcommand{\tequiv}{\mathrel{\models\!\mid}}
+  \newcommand{\deduces}{\vdash}
+  \newcommand{\dequiv}{\mathrel{\vdash\hspace{-0.8em}\reflectbox{$\vdash$}}}
   \newcommand{\nharr}{\nleftrightarrow}
 
-  \usepackage{forest}
-  \usepackage{turnstile}
+  % Shorthands
+  \newcommand{\n}{\ensuremath{\lnot}\xspace}
+  \renewcommand{\o}{\ensuremath{\lor}\xspace} % overrides ø
+  \renewcommand{\a}{\ensuremath{\land}\xspace} % overrides something that looks important
+  \renewcommand{\i}{\ensuremath{\to}\xspace} % overrides dotless i
+  \newcommand{\e}{\ensuremath{\harr}\xspace}
+  \newcommand{\m}{\ensuremath{-}\xspace}
+  \renewcommand{\t}{\ensuremath{\timplies}\xspace} % overrides tie
+  \renewcommand{\tt}{\ensuremath{\tequiv}\xspace} % overrides monospace font
+  \renewcommand{\d}{\ensuremath{\deduces}\xspace} % overrides dot under
+  \renewcommand{\dd}{\ensuremath{\dequiv}\xspace} % overrides physics derivative
 \fi
