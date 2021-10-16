@@ -187,7 +187,7 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 12. **MATH137/PA01/Q01(2)** -4 - 2 = -2 (hyk)
 13. **MATH135/EP01/RP02** Replace tuple notation with standard quantifiers
 14. **MATH135/EP02/WE01** Duplicated truth table
-15. **MATH135/EP02/RP01** It's the same question as EPO1/RP02?? Weird.
+15. **MATH135/EP01/RP02** Questions changed
 
 ## Contact
 
