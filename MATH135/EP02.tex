@@ -16,14 +16,6 @@
     T & T & F & T         & T       & T                            \\
     T & F & T & F         & F       & T                            \\
     T & F & F & F         & T       & T                            \\
-    T & T & T & T         & F       & F                            \\
-    T & T & F & T         & T       & T                            \\
-    T & F & T & F         & F       & T                            \\
-    T & F & F & F         & T       & T                            \\
-    F & T & T & F         & F       & T                            \\
-    F & T & F & F         & T       & T                            \\
-    F & F & T & F         & F       & T                            \\
-    F & F & F & F         & T       & T                            \\
     F & T & T & F         & F       & T                            \\
     F & T & F & F         & T       & T                            \\
     F & F & T & F         & F       & T                            \\
@@ -45,26 +37,32 @@ Next, express the statement in symbolic form using as few words as possible and 
 (when possible, without using any negative words such as “not” or the $\lnot$ symbol, but negative math symbols like $\neq$ are okay).
 Finally determine if the original statement is true or false. No justification is needed.
 
+\underline{Note:} This is the same question as EP01/RP02(b) and (c).
 \begin{enumerate}[(a)]
-  \item For all real numbers $x$ and $y$, $x \neq y$ implies that $x^2 + y^2 > 0$.
-
-        \emph{Quantifier}: $\forall$, \emph{Domain}: $\R$, \emph{Variables}: $x$, $y$, \emph{Sentence}: $x \neq y \implies x^2 + y^2 > 0$.
-
-        \emph{Symbolically}, $\forall x,y\in\R, x\neq y\implies x^2+y^2>0$.
-
-        \emph{Negation}: $\exists x,y\in\R, x\neq y \land (x^2+y^2\leq 0)$.
-
-        The statement is false.
-
-  \item For every even integer $a$ and odd integer $b$, a rational number $c$ can always be found such that $a < c < b$ or $b < c < a$.
-
-        \emph{Quantifier}: $\forall\exists$, \emph{Domain}: $\Z$, $\Q$, \emph{Variables}: $a$, $b$, $c$, \emph{Sentence}: $2a < c < 2b+1 \lor 2b+1 < c < 2a$.
-
-        \emph{Symbolically}, $\forall a,b\in\Z, \exists c\in\Q, 2a < c < 2b+1 \lor 2b+1 < c < 2a$.
-
-        \emph{Negation}: $\exists a,b\in\Z, \forall c\in\Q, (c \geq 2a \land c \geq 2b+1) \lor (c \leq 2a \land c \leq 2b+1)$.
-
-        The statement is true.
+  \item For all real numbers $x$ and $y$, $x \neq y$ implies that $x^2+y^2 > 0$.
+        \[ \forall x\in\R, \forall y\in\R, x \neq y \implies x^2+y^2>0 \]
+        Quantifier: universal;
+        variable: $x$;
+        domain: $\R$;
+        open sentence: $x \neq y \Rarr x^2+y^2>0$.
+        Negation: $\exists x\in\R, \exists y\in\R, x \neq y \land x^2+y^2\leq0$.
+        The statement is \emph{true}.
+  \item For every even integer $a$ and odd integer $b$, a rational number $c$ can always be found such that $a<c<b$ or $b<c<a$.
+        \[
+          \forall a\in\Z, \forall b\in\Z, \exists c\in\Q,
+          \left(\frac{a}{2}\in\Z \land \frac{b-1}{2}\in\Z\right) \implies (a<c<b \lor b<c<a)
+        \]
+        Quantifier: universal/existential;
+        variables: $a$, $b$, $c$;
+        domain: $\Z$, $\Q$;
+        open sentence: $(\frac{a}{2}\in\Z \land \frac{b-1}{2}\in\Z) \Rarr (a<c<b \lor b<c<a)$.
+        Negation:
+        \[
+          \exists a\in\Z, \exists b\in\Z, \forall c\in\Q,
+          \qty(\frac{a}{2}\in\Z \land \frac{b-1}{2}\in\Z) \land
+          \qty((c \leq a \lor c \geq b) \land (c \leq b \lor c \geq a))
+        \]
+        The statement is \emph{true}.
 \end{enumerate}
 
 
