@@ -1,13 +1,17 @@
 \documentclass[class=cs245,nogeometry]{agony}
-\usepackage[fontsize=10pt]{scrextend}
 \usepackage{multicol}
 \usepackage{multirow}
 \usepackage{geometry}
 \geometry{margin=1cm,landscape}
 \pagenumbering{gobble}
+\usepackage{graphicx}
 
 \newcommand{\law}[2]{\text{#1}&\left\{\begin{aligned}#2\end{aligned}\right.\\}
-% Fancy vector shorthand
+\newcommand{\dfn}[3]{\textit{#1} (\textsection #2, #3).}
+\newcommand{\thm}[3][Theorem]{\textbf{#1} (\textsection #2, #3).}
+\newcommand{\lem}[2]{\textit{Lemma} (\textsection #1, #2).}
+
+% Fancy list shorthand for using inside tabular
 \makeatletter
 \newcommand\ls[2][\\]{\ensuremath{%
   \global\def\rc@delim{#1}%
@@ -18,16 +22,22 @@
   \ifx\relax#2\relax
     #1
   \else
-    #1\rc@delim[-2\jot]
+    #1\rc@delim[-1.7\jot]
     \rc@vector #2\@eolst%
   \fi}
 \makeatother
+\renewcommand{\t}{\vdash}
+\renewcommand{\tt}{\mathrel{\vdash\hspace{-0.8em}\reflectbox{$\vdash$}}}
+\newcommand{\br}{&}
+\newcommand{\T}{&\t}
+\newcommand{\TT}{&\tt}
+\renewcommand{\S}{\Sigma}
 
 \title{Cheat Sheet}
 \begin{document}
 
 \begin{multicols}{2}
-  \textbf{Essential Laws of Propositional Logic}
+  \section*{Essential Laws of Propositional Logic}
   \begin{align*}
     \law{Double Negation}{\lnot(\lnot p) \tequiv p}
     \law{Excluded Middle}{p \lor \lnot p \tequiv 1}
@@ -73,11 +83,8 @@
     (p \land q) \lor (\lnot p \land q) & \tequiv q                            \\
     }
   \end{align*}
-  \textbf{Rules of Formal Deduction}
+  \section*{Eleven Rules of Formal Deduction}
   \begin{center}
-    \renewcommand{\t}{\vdash}
-    \newcommand{\T}{&\vdash}
-    \renewcommand{\S}{\Sigma}
     \begin{tabular}{r|C|C|l}
       (Abbr.)                         & \text{From}                                 &
       \text{Conclude}                 & Rule                                          \\ \hline
@@ -103,10 +110,144 @@
       \S\t B                          & \multirow{2}{*}{$\harr$ elimination}          \\
                                       & \ls{\S\T A\harr B; \S\T B}                  &
       \S\t A                          &                                               \\
-      ($\harr$ $+$)                    & \ls{\S,A \T B; \S,B \T A}                                     &
-      \S\t A \harr B & $\harr$ introduction                           
+      ($\harr$ $+$)                   & \ls{\S,A \T B; \S,B \T A}                   &
+      \S\t A \harr B                  & $\harr$ introduction
     \end{tabular}
   \end{center}
+  \section*{Proved Theorems}
+  \begin{center}
+    \begin{tabular}{r|C|C|l}
+      (Abbr.)            & \text{From}                                      &
+      \text{Conclude}    & Theorem                                            \\ \hline
+      ($\in$)            & A \in \S                                         &
+      \S \t A            & Membership                                         \\
+      (Tr.)              & \ls{\Sigma \T \Sigma'; \Sigma' \T A}             &
+      \S \t A            & Transitivity                                       \\
+      ($\lnot$ $+$)      & \ls{\Sigma,A \T B; \Sigma,A \T \lnot B}          &
+      \S \t \lnot A      & Reductio ad absurdum                               \\
+      (Repl.)            & \ls{A \TT A'; C\br=\text{$B$ with $A'$ for $A$}} &
+      B \tt C            & Replaceability                                     \\
+                         & A \t B                                           &
+      \lnot B \t \lnot A & Flip-Flop                                          \\
+    \end{tabular}
+  \end{center}
+\end{multicols}
+\pagebreak
+\begin{multicols}{2}
+  \subsection*{Proved Theorems (cont.)}
+  \begin{align*}
+    \lnot\lnot A                        & \tt A                                               & \tag{Double Negation}        \\
+    \emptyset                           & \t A \lor \lnot A                                   & \tag{Excluded Middle}        \\
+    \emptyset                           & \t \lnot(A \land \lnot A)                           & \tag{Non-Contradiction}      \\
+    A,\lnot A                           & \t B                                                & \tag{Inconsistency Rule}     \\
+    A \to B, B \to C                    & \t A \to C                                          & \tag{Hypothetical Syllogism} \\
+    A \lor B, \lnot B                   & \t A                                                & \tag{Disjunctive Syllogism}  \\
+    A \to B                             & \tt \lnot A \lor B                                  & \tag{Implication}            \\
+    A \to B                             & \tt \lnot B \to \lnot A                             & \tag{Contrapositive}         \\
+    \ls{\lnot(A\land B);\lnot(A\lor B)} & \;\ls{\tt\lnot A\lor\lnot B;\tt\lnot A\land\lnot B} & \tag{De Morgan}
+  \end{align*}
+
+  \section*{Definitions}
+
+  \dfn{Propositional language}{02}{3}
+  A set of all strings of proposition, connective, and punctuation symbols.
+  $\Lp$ has $p,q,r,\ldots,\lnot,\land,\lor,\to,\harr,(,)$.
+
+  \dfn{Expression}{02}{4} An element of $\Lp$.
+  The empty expression is $\epsilon$.
+
+  \dfn{Segment}{02}{5} $V$ segment of $U$ if $U = W_1VW_2$.
+  Initial if $W_1 = \epsilon$, final if $W_2 = \epsilon$.
+  Proper if $V \neq U$.
+
+  \dfn{Atom}{02}{6}
+  $\Atom(\Lp)$ has expressions that are one proposition symbol.
+
+  \dfn{Formula}{02}{6}
+  $\Form(\Lp)$ defined by: $\Atom(\Lp) \subset \Form(\Lp)$. \\
+  $A,B\in\Form(\Lp) \Rarr (\lnot A), (A \land B), (A \lor B), (A \to B), (A \harr B) \in \Form(\Lp)$. \\
+  No other expressions are in $\Form(\Lp)$.
+
+  \dfn{Scope}{02}{45}
+  In $(\lnot A)$, $A$ is the scope of $\lnot$.
+  In $(A \star B)$, $A$ is the left scope and $B$ is the right scope of $\star$.
+
+  \dfn{Truth valuation}{03}{6} A function $t : \Atom(\Lp)\to\{0,1\}$.
+
+  \dfn{Satisfiablity}{03}{9}
+  The truth valuation $t$ satisfies $A$ if $A^t = 1$.
+  $\S$ is satisfiable if there exists $t$ such that $\S^t = 1$.
+
+  \dfn{Tautology}{03}{14} For all $t$, $A^t = 1$. \\
+  \dfn{Contradiction}{03}{14} For all $t$, $A^t = 0$. \\
+  \dfn{Contingent}{03}{14} $A$ is neither a tautology nor contradiction.
+
+  \dfn{Tautological consequence}{03}{21}
+  $\S \timplies A$ if for all $t$, $\S^t = 1$ gives $A^t = 1$. \\
+  \dfn{Tautological equivalence}{03}{25}
+  $A \tequiv B$ if $A \timplies B$ and $B \timplies A$.
+
+  \dfn{Literal}{04}{10}
+  A formula of the form $p$ or $\lnot p$.
+
+  \dfn{Disjunctive clause}{04}{12}
+  Disjunction with literal disjuncts. \\
+  \dfn{Conjunctive clause}{04}{12}
+  Conjunction with literal conjuncts.
+
+  \dfn{DNF}{04}{13} Disjunction with conjunctive clause disjuncts. \\
+  \dfn{CNF}{04}{13} Conjunction with disjunctive clause conjuncts.
+
+  \dfn{Definability/Reducibility}{05}{2}
+  Connective $\star$ reducibile to set $\mathcal S$ if $A \star B \tequiv C$
+  where $C$ uses only $A$, $B$, and connectives in $\mathcal S$.
+
+  \dfn{Adequate}{05}{7}
+  Connectives which express any truth table/connective.
+
+  \dfn{Formal deducibility}{06}{15}
+  $\S \t A$ generated by finite deduction rules. \\
+  \dfn{Syntactic equivalence}{06}{15}
+  $A \tt B$ if $A \t B$ and $B \t A$.
+
+  \dfn{Consistency}{06}{67}
+  There is no $F$ such that $\S\t F$ and $\S\t\lnot F$.
+
+  \section*{Theorems (...the general kind)}
+
+  \lem{02}{29} Every formula has equal number of left/right parentheses.
+
+  \thm[Unique Readability Theorem]{02}{32}
+  Every formula is exactly one form of exactly one of
+  $(\lnot A)$, $(A \land B)$, $(A \lor B)$, $(A \to B)$, $(A \harr B)$.
+
+  \lem{03}{23} Equivalent statements of $\{A_i\} \timplies C$: \\
+  Argument with premises $A_i$ and conclusion $C$ is valid.\\
+  $(\bigwedge A_i) \to C$ is a tautology;
+  $(\lnot C \land \bigwedge A_i)$ is a contradiction. \\
+  Formula $(\lnot C \land \bigwedge A_i)$ or set $\{\lnot C, A_i\}$ is not satisfiable.
+
+  \thm[Replaceability of tautologically equivalent formulas]{03}{44}
+  If $A \tequiv A'$ and $A$ is a subformula of $B$,
+  then $B \tequiv B'$ where $B'$ is $B$ with some of the $A$s replaced by $A'$.
+
+  \thm[Duality Theorem]{03}{44}
+  If $A$ has only $\lnot$, $\land$, $\lor$ and
+  $\Delta(A)$ replaces atoms with negations and swaps $\land$ with $\lor$,
+  then $\lnot A \tequiv \Delta(A)$.
+
+  \thm{04}{22} All formulas have $F \tequiv \operatorname{DNF}(F)$ based on truth table. \\
+  \thm{04}{24} All formulas have $F \tequiv \operatorname{CNF}(F) = \Delta(\operatorname{DNF}(\lnot F))$.
+
+  \thm{05}{8} The set $S_0 = \{\lnot, \land, \lor\}$ is adequate.
+
+  \thm[Finiteness of Premise Set]{06}{31}
+  If $\S \t A$, $\S^0 \t A$ with finite $\S^0 \subseteq \S$.
+
+  \thm[Soundness Theorem]{06}{45} If $\S \t A$ then $\S \timplies A$. \\
+  \thm[Completeness Theorem]{06}{49} If $\S \timplies A$ then $\S \t A$.
+
+  \lem{06}{67} $\S$ is satisfiable if and only if $\S$ is consistent.
 \end{multicols}
 
 \end{document}

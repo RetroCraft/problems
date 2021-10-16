@@ -238,6 +238,7 @@
   \setlist[enumerate,2]{label={(\roman*)}}
 
   % Operators
+  \newcommand{\timplies}{\models}
   \newcommand{\tequiv}{\mathrel{\models\!\mid}}
   \newcommand{\nharr}{\nleftrightarrow}
 
