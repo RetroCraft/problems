@@ -27,36 +27,35 @@
 
 \question Let $x$ and $y$ be real numbers. Consider the following implication $S$:
 \begin{center}
-  If $x$ is rational, then $y$ is rational or $xy$ is irrational
+  If $x$ is irrational, then $y$ is rational or $xy$ is irrational
 \end{center}
 \begin{enumerate}[(a)]
   \item State the hypothesis of $S$. \begin{center}
-          $x$ is rational
+          $x$ is irrational
         \end{center}
   \item State the conclusion of $S$. \begin{center}
           $y$ is rational or $xy$ is irrational
         \end{center}
   \item State the converse of $S$. \begin{center}
-          If $y$ is rational or $xy$ is irrational, then $x$ is rational
+          If $y$ is rational or $xy$ is irrational, then $x$ is irrational
         \end{center}
   \item State the contrapositive of $S$. \begin{center}
-          If $y$ is irrational and $xy$ is rational, then $x$ is irrational
+          If $y$ is irrational and $xy$ is rational, then $x$ is rational
         \end{center}
   \item State the negation of $S$ in a form that does not contain an implication. \begin{center}
-          $x$ and $xy$ are irrational but $y$ is rational
+          $x$ and $y$ are irrational but $xy$ is rational
         \end{center}
   \item Indicate whether the statement $\forall x, y \in R$,
         $S$ is true or false by circling one of the options below.
         Then either prove or disprove the statement.
 
-        Circle the correct answer: \quad \fbox{True} \quad False
+        Circle the correct answer: \quad True \quad \fbox{False}
         \begin{proof}
-          We will prove by the contrapositive.
-          Consider the hypothesis.
-          Because multiplying any real number by an irrational number produces an irrational number,
-          we can never have $y$ be irrational but $xy$ be rational.
+          We prove the negation, $\exists x,y\in\R$ with $x$ and $y$ irrational but $xy$ rational.
+          Consider $x = y = \sqrt2$. Then, $x$ and $y$ are irrational.
+          However, $xy = 2$ which is rational.
 
-          Therefore, the contrapositive is vacuously true.
+          Therefore, since the negation is true, the original statement is false.
         \end{proof}
 \end{enumerate}
 
