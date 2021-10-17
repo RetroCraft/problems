@@ -114,7 +114,7 @@ Might also be helpful: Will put toegether a compilation of sample
 | [Extra Practice 1](./MATH135/EP01.pdf)       |  :white_check_mark:  |                                    |
 | [Extra Practice 2](./MATH135/EP02.pdf)       |  :white_check_mark:  |                                    |
 | [Extra Practice 3](./MATH135/EP03.pdf)       |  :white_check_mark:  |                                    |
-| [Extra Practice 4](./MATH135/EP04.pdf)       | :black_large_square: | Missing C01 and C02                |
+| [Extra Practice 4](./MATH135/EP04.pdf)       | :black_large_square: | Missing C02.                       |
 | [Extra Practice 5](./MATH135/EP05.pdf)       |  :white_check_mark:  |                                    |
 | [Extra Practice 6](./MATH135/EP06.pdf)       | :black_large_square: | Missing C03/05/06. RP09 by sooshi. |
 | [Extra Practice 7](./MATH135/EP07.pdf)       | :black_large_square: | Missing C01                        |
