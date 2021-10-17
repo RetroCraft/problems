@@ -385,7 +385,60 @@ Prove that any integer amount of currency greater than 17 cents can always be fo
 
 \qsection{Challenges}{C}
 
-\question Prove that for every positive integer, there exists a unique way to write the integer as the sum of distinct non-consecutive Fibonacci numbers.
+\question Prove that for every positive integer,
+there exists a unique way to write the integer as
+the sum of distinct non-consecutive Fibonacci numbers.
+
+\begin{proof}
+  Let $f_i$ denote the $i$th Fibonacci number, i.e.,
+  $f_1 = 0$, $f_2 = 1$, $f_{n+1} = f_n + f_{n-1}$.
+
+  We begin by proving a lemma, that $f_n$ is greater than all possible
+  sums of distinct, non-consecutive $f_i$ with $i < n$.
+  Notice the largest such sum is $f_{n-1} + f_{n-3} + \dotsb + f_1$.
+  By RP07(a), $f_{n-1} + f_{n-2} + \dotsb + f_1 = f_n - 1 < f_n$,
+  so we must have $f_{n-1} + f_{n-3} + \dotsb + f_1 < f_n$
+  and generally any distinct, non-consecutive sum is less than that.
+
+  Let $P(n)$ be the statement that all positive integers $x < f_n$,
+  $x = \sum_{i=1}^m f_{k_i}$ for unique, distinct, increasing, non-consecutive $k_i$.
+
+  For the base cases $P(1)$, $P(2)$, and $P(3)$ there are no positive integers $x < 0$ or $x < 1$.
+  For the base case $P(4)$, the only positive integer less than $f_4 = 2$ is $x = 1$.
+  Trivially, we can uniquely write $f_1 + f_3 = 0 + 1 = 1$.
+
+  For the inductive step, suppose that $P(n)$ holds for some $n \geq 4$.
+  Let $f_n \leq x < f_{n+1}$.
+
+  If $x$ is $f_n$, then we may write $x = f_1 + f_n$.
+  That is, $x = \sum_{i=1}^2 f_{k_i}$
+  with distinct, increasing, non-consecutive $k_1 = 1$ and $k_2 = n$.
+
+  Otherwise, write $x = d + f_n$ where $0 < d < f_{n+1} - f_n$.
+  Note that by definition, $d < f_{n-1} < f_n$ and $d$ is a positive integer.
+  By the inductive hypothesis, $d = \sum_{i=1}^m f_{k_i}$
+  for unique, distinct, increasing, non-consecutive $k_i$.
+  Then, since $d < f_{n-1} < f_n$, none of the $k_i$s can be $n$ or $n-1$.
+  Therefore, we let $k_{m+1} = n$ so that $x = \sum_{i=1}^{m+1} f_{k_i}$
+  has distinct, increasing, non-consecutive $f_{k_i}$.
+
+  Now, we show that the integers $k_i$ are unique.
+  Suppose $x = \sum_{i=1}^{m+1} f_{k_i} = \sum_{i=1}^{m+1} f_{\ell_i}$.
+  We show the terms are identical.
+
+  Since both sums are increasing, the largest term $f_{k_{m+1}}$ is $f_n$.
+  If $f_{\ell_{m+1}} > f_n$, then the sum is greater than $f_{n+1}$.
+  But $x < f_{n+1}$, so this is a contradiction.
+  If $f_{\ell_{m+1}} < f_n$, then by the above lemma, the sum is less than $f_n$.
+  But $x \geq f_n$, so this is again a contradiction.
+  Thus, $f_{\ell_{m+1}} = f_n = f_{k_{m+1}}$.
+
+  Then, $\sum_{i=1}^m f_{\ell_i} = x - f_n = d$.
+  But by the inductive hypothesis, $\sum_{i=1}^m k_i$ is a unique representation of $d$.
+  It follows that the remaining $\ell_i = k_i$ for all $i \leq m$.
+
+  Therefore, since we have proven $P(n+1)$, by induction, $P(n)$ holds for all $n$.
+\end{proof}
 
 
 \question Find a formula for the minimum steps required to solve the Tower of Hanoi puzzle with three pegs with $n$ rings.
