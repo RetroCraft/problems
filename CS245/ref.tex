@@ -101,7 +101,7 @@
       \S,A \o B \d C              & \o elimination                       \\
       (\o +)                      & \S \d A                            &
       \ls{\S\D A\o B; \S\D B\o A} & \o introduction                      \\
-      \multirow{2}{*}{(\e \m)}     & \ls{\S\D A\e B; \S\D A}            &
+      \multirow{2}{*}{(\e \m)}    & \ls{\S\D A\e B; \S\D A}            &
       \S\d B                      & \multirow{2}{*}{\e elimination}      \\
                                   & \ls{\S\D A\e B; \S\D B}            &
       \S\d A                      &                                      \\
@@ -121,7 +121,7 @@
       (\n +)          & \ls{\Sigma,A \D B; \Sigma,A \D \n B}             &
       \S \d \n A      & Reductio ad absurdum                               \\
       (Repl.)         & \ls{A \DD A'; C\br=\text{$B$ with $A'$ for $A$}} &
-      B \tt C         & Replaceability                                     \\
+      B \dd C         & Replaceability                                     \\
                       & A \d B                                           &
       \n B \d \n A    & Flip-Flop                                          \\
     \end{tabular}
@@ -130,17 +130,17 @@
 \pagebreak
 \begin{multicols}{2}
   \subsection*{Proved Theorems (cont.)}
-  \begin{align*}
-    \n\n A                   & \tt A                              & \tag{Double Negation}        \\
-    \emptyset                & \d A \o \n A                       & \tag{Excluded Middle}        \\
-    \emptyset                & \d \n(A \a \n A)                   & \tag{Non-Contradiction}      \\
-    A,\n A                   & \d B                               & \tag{Inconsistency Rule}     \\
-    A \i B, B \i C           & \d A \i C                          & \tag{Hypothetical Syllogism} \\
-    A \o B, \n B             & \d A                               & \tag{Disjunctive Syllogism}  \\
-    A \i B                   & \tt \n A \o B                      & \tag{Implication}            \\
-    A \i B                   & \tt \n B \i \n A                   & \tag{Contrapositive}         \\
-    \ls{\n(A\a B);\n(A\o B)} & \;\ls{\tt\n A\o\n B;\tt\n A\a\n B} & \tag{De Morgan}
-  \end{align*}
+  \begin{deduce}
+    !!A                       |=| A                                         & \tag{Double Negation}        \\
+    \0                        |-  A or !A                                   & \tag{Excluded Middle}        \\
+    \0                        |-  !(A and !A)                               & \tag{Non-Contradiction}      \\
+    A, !A                     |-  B                                         & \tag{Inconsistency Rule}     \\
+    A -> B, B -> C            |-  A -> C                                    & \tag{Hypothetical Syllogism} \\
+    A or B, \n B              |-  A                                         & \tag{Disjunctive Syllogism}  \\
+    A -> B                    |=| !A or B                                   & \tag{Implication}            \\
+    A -> B                    |=| !B -> !A                                  & \tag{Contrapositive}         \\
+    \ls{!(A and B);!(A or B)} &   \;\ls{\dequiv !A or !B;\dequiv !A and !B} & \tag{De Morgan}
+  \end{deduce}
 
   \section*{Definitions}
 

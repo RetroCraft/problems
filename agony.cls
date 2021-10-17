@@ -24,7 +24,7 @@
 \usepackage[titles]{tocloft}
 \renewcommand*\contentsname{\@title}
 \usepackage{titlesec}
-\usepackage{multicol}
+\usepackage{multicol,collcell}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{array} % for \newcolumntype macro
 
@@ -248,14 +248,53 @@
   \newcommand{\nharr}{\nleftrightarrow}
 
   % Shorthands
+  \newcommand{\0}{\ensuremath{\emptyset}\xspace}
   \newcommand{\n}{\ensuremath{\lnot}\xspace}
   \renewcommand{\o}{\ensuremath{\lor}\xspace} % overrides ø
   \renewcommand{\a}{\ensuremath{\land}\xspace} % overrides something that looks important
   \renewcommand{\i}{\ensuremath{\to}\xspace} % overrides dotless i
   \newcommand{\e}{\ensuremath{\harr}\xspace}
   \newcommand{\m}{\ensuremath{-}\xspace}
+  \newcommand{\aligntab}{\ifinalign@&\else\fi}
   \renewcommand{\t}{\ensuremath{\timplies}\xspace} % overrides tie
   \renewcommand{\tt}{\ensuremath{\tequiv}\xspace} % overrides monospace font
   \renewcommand{\d}{\ensuremath{\deduces}\xspace} % overrides dot under
   \renewcommand{\dd}{\ensuremath{\dequiv}\xspace} % overrides physics derivative
+  \newcommand{\E}{\ensuremath{\in}\xspace}
+
+  % Shamelessly stolen from Arthur
+  \newcounter{deduction}
+  \NewDocumentEnvironment{deduction}{s}
+    {\refstepcounter{deduction}\IfBooleanTF{#1}{}{\proof}\setcounter{equation}{0}\align}
+    {\endalign\IfBooleanTF{#1}{}{\endproof}}
+  \newcommand{\linternal}[2]{\label{proof:#1:eqn:#2}}
+  \newcommand{\rinternal}[2]{\ref{proof:#1:eqn:#2}}
+  \newcommand{\nrinternal}[2]{\nameref{proof:#1:eqn:#2}}
+  \renewcommand{\l}[1]{\linternal{\thededuction}{#1}}
+  \renewcommand{\r}[1]{\rinternal{\thededuction}{#1}}
+  \renewcommand{\nr}[1]{\nrinternal{\thededuction}{#1}}
+  \renewcommand{\j}[1]{&\text{(#1)}} % for justification
+
+  \ExplSyntaxOn
+  \tl_new:N \l__agony_deduce_tl
+  \NewDocumentEnvironment{deduceinternal}{+b}
+   {
+    \tl_set:Nn \l__agony_deduce_tl { #1 }
+    \regex_replace_all:nnN { <-> } { \c{e} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { -> } { \c{i} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { and } { \c{a} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { \|-\| } { \c{aligntab}\c{dd} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { \|- } { \c{aligntab}\c{d} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { \|=\| } { \c{aligntab}\c{tt} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { \|= } { \c{aligntab}\c{t} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { ! } { \c{n} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { or } { \c{o} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { - } { \c{ensuremath}\cB\{-\cE\} } \l__agony_deduce_tl
+    \tl_use:N \l__agony_deduce_tl
+   }
+   {}
+  \newenvironment{deduce}{\refstepcounter{deduction}\setcounter{equation}{0}\deduceinternal\align}{\endalign\enddeduceinternal}
+  \ExplSyntaxOff
+  \newcommand{\logic}[1]{\ensuremath{\begin{deduceinternal}#1\end{deduceinternal}}}
+  \newcolumntype{L}{>{\collectcell\logic}c<{\endcollectcell}}
 \fi
