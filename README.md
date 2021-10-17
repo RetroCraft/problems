@@ -1,6 +1,6 @@
 # Pain and Agony: A Collection of CS/BBA Problems and Exercises
 
-This is an [open archive](https://retrocraft.github.io/problems) of practice problems
+This is an [open archive](https://agony.retrocraft.ca) of practice problems
 from my classes in the Waterloo/Laurier CS/BBA program. Some of them cause quite the pain and agony.
 These are published with the belief that they are permitted by relevant faculty,
 please [contact me](mailto:jahyong@uwaterloo.ca) if they are not and I will take them down.

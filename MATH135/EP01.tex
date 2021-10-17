@@ -65,30 +65,23 @@ No justification is needed.
         Negation:
         \[ \forall x\in\R, x^2+2x-3 \neq 0 \]
         The statement is \emph{true}.
-  \item For all real numbers $x$ and $y$, $x \neq y$ implies that $x^2+y^2 > 0$.
-        \[ \forall x\in\R, \forall y\in\R, x \neq y \implies x^2+y^2>0 \]
+  \item No matter which real value x we choose, $-1 + \cos x$ will always be positive
+        \[ \forall x\in\R, -1 + \cos x > 0 \]
         Quantifier: universal;
         variable: $x$;
         domain: $\R$;
-        open sentence: $x \neq y \Rarr x^2+y^2>0$.
+        open sentence: $-1 + \cos x > 0$.
         Negation:
-        \[ \exists x\in\R, \exists y\in\R, x \neq y \land x^2+y^2\leq0 \]
-        The statement is \emph{true}.
-  \item For every even integer $a$ and odd integer $b$, a rational number $c$ can always be found such that $a<c<b$ or $b<c<a$.
-        \[
-          \forall a\in\Z, \forall b\in\Z, \exists c\in\Q,
-          \left(\frac{a}{2}\in\Z \land \frac{b-1}{2}\in\Z\right) \implies (a<c<b \lor b<c<a)
-        \]
+        \[ \exists x\in\R, -1 + \cos x \leq 0 \]
+        The statement is \emph{false}.
+  \item Every natural number can be expressed as the product of two integers.
+        \[ \forall n\in\N, \exists a,b\in\Z, n = ab \]
         Quantifier: universal/existential;
-        variables: $a$, $b$, $c$;
-        domain: $\Z$, $\Q$;
-        open sentence: $(\frac{a}{2}\in\Z \land \frac{b-1}{2}\in\Z) \Rarr (a<c<b \lor b<c<a)$.
+        variables: $n$, $a$, $b$;
+        domain: $\N$, $\Z$;
+        open sentence: $n = ab$.
         Negation:
-        \[
-          \exists a\in\Z, \exists b\in\Z, \forall c\in\Q,
-          \qty(\frac{a}{2}\in\Z \land \frac{b-1}{2}\in\Z) \land
-          \qty((c \leq a \lor c \geq b) \land (c \leq b \lor c \geq a))
-        \]
+        \[ \exists n\in\N, \forall a,b\in\Z, n \neq ab \]
         The statement is \emph{true}.
   \item There is a perfect square which is also a perfect cube.
         \[ \exists n\in\Z, \exists x\in\Z, \exists y\in\Z, n=x^2=y^3 \]

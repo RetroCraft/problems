@@ -186,6 +186,9 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 11. **ECON140/Test 1** (v1.1) NX curve description under AE curve section, simple multiplier given as A/Y not Y/A (Trisha)
 12. **MATH137/PA01/Q01(2)** -4 - 2 = -2 (hyk)
 13. **MATH135/EP01/RP02** Replace tuple notation with standard quantifiers
+14. **MATH135/EP02/WE01** Duplicated truth table
+15. **MATH135/EP01/RP02** Questions changed
+16. **MATH136/MT2020W/Q02** Question copied wrong
 
 ## Contact
 
