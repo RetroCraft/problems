@@ -188,7 +188,8 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 13. **MATH135/EP01/RP02** Replace tuple notation with standard quantifiers
 14. **MATH135/EP02/WE01** Duplicated truth table
 15. **MATH135/EP01/RP02** Questions changed
-16. **MATH136/MT2020W/Q02** Question copied wrong
+16. **MATH135/MT2020W/Q02** Question copied wrong
+17. **MATH135/MT2018F/Q05** Negated implication wrong ([#7](https://github.com/RetroCraft/problems/issues/7))
 
 ## Contact
 
