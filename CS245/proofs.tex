@@ -1,0 +1,149 @@
+\documentclass[class=cs245,leqno]{agony}
+\title{Useful Proofs/Exercises}
+
+\declaretheorem{theorem}[unnumbered]
+\begin{document}
+\section{Exercises}
+\subsection{Logic06}
+\begin{theorem}[Double Negation]
+  \logic{A |-| !!A}
+\end{theorem}
+\begin{prf}
+  In the forwards direction:
+  \begin{deduce}
+    \l1 !!A     |- !!A \j {Ref}           \\
+    \l2 !!A, !A |- !!A \j {+, \r1}        \\
+    \l3 !A      |- !A  \j {+}             \\
+    \l4 !!A, !A |- !A  \j {+, \r3}        \\
+    \l5 !!A     |- !A  \j {! -, \r1, \r3}
+  \end{deduce}
+  In the backwards direction:
+  \begin{deduce}
+    \l1 A, !A |- A   \j {\E}            \\
+    \l2 A, !A |- !A  \j {\E}            \\
+    \l3 A     |- !!A \j {! +, \r1, \r2}
+  \end{deduce}
+\end{prf}
+
+\begin{theorem}[Inconsistency Rule]
+  \logic{!A, A |- B}
+\end{theorem}
+\begin{prf}
+  \begin{deduce}
+    \l1 A, !A, !B |- A  \j {\E}            \\
+    \l2 A, !A, !B |- !A \j {\E}            \\
+    \l3 A, !A,    |- B  \j {! -, \r1, \r2}
+  \end{deduce}
+\end{prf}
+
+\begin{theorem}[Disjunctive Syllogism]
+  \logic{A or B, !A |- B}
+\end{theorem}
+\begin{prf}
+  \begin{deduce}
+    \l1 !A, B      |- B \j {\E}                 \\
+    \l2 !A, A      |- B \j {Inconsistency Rule} \\
+    \l3 !A, A or B |- B \j {or -, \r1, \r2}
+  \end{deduce}
+\end{prf}
+
+\begin{theorem}[Modus Tollens]
+  \logic{!B, A -> B |- !A}
+\end{theorem}
+\begin{prf}
+  \begin{deduce}
+    \l1 !B, !A or B |- !A     \j {Disjunctive Syllogism} \\
+    \l2 !A or B     |- A -> B \j {Implication}           \\
+    \l3 !B, A -> B  |- !A     \j {Repl., \r1, \r2}
+  \end{deduce}
+\end{prf}
+
+\begin{theorem}[Contrapositive]
+  \logic{A -> B |- !A -> !B}
+\end{theorem}
+\begin{prf}
+  In the forwards direction:
+  \begin{deduce}
+    \l1 A -> B, !B |- !A       \j {Modus Tollens} \\
+    \l2 A -> B     |- !B -> !A \j {-> +, \r1}
+  \end{deduce}
+  In the backwards direction:
+  \begin{deduce}
+    \l1 B or !A, !!A |- B      \j {Disjunctive Syllogism}       \\
+    \l2 B or !A, A   |- B      \j {Repl., Double Negation, \r1} \\
+    \l3 !!B or !A, A |- B      \j {Repl., Double Negation, \r2} \\
+    \l4 !B -> !A, A  |- B      \j {Repl., Implication, \r3}     \\
+    \l5 !B -> !A     |- A -> B \j {-> +, \r4}
+  \end{deduce}
+\end{prf}
+
+\begin{theorem}[Affirmation]
+  $A \d B$ if and only if $\0 \d A \i B$
+\end{theorem}
+\begin{prf}
+  In the forwards direction:
+  \begin{deduce}
+    \l1 \0 |- A -> B \j {Premise}        \\
+    \l3 A  |- A -> B \j {+, \r1}         \\
+    \l2 A  |- A      \j {Ref}            \\
+    \l4 A  |- B      \j {-> -, \r2, \r3}
+  \end{deduce}
+  The backwards direction is just (\i +) on the premise.
+\end{prf}
+
+\begin{theorem}[Flip-Flop]
+  If \logic{A |- B}, then \logic{!B |- !A}.
+\end{theorem}
+\begin{prf}
+  Suppose $A \d B$. Then,
+  \begin{deduce}
+    \l1 A  |- B        &  \j {Premise}                    \\
+    \l2 \0 |- A -> B   &  \j {-> +, \r1}                  \\
+    \l3 \0 |- !B -> !A &  \j {Repl., Contrapositive, \r2} \\
+    \l4 !B |- !A       &  \j {Affirmation, \r3}
+  \end{deduce}
+  as desired.
+\end{prf}
+
+\begin{theorem}[De Morgan 1]
+  \logic{!(A or B) |-| !A and !B}
+\end{theorem}
+\begin{prf}
+  In the forwards direction:
+  \begin{deduce}
+    \l1 !(A or B), A |- A         \j {\E}              \\
+    \l2 !(A or B), A |- A or B    \j {or +, \r1}       \\
+    \l3 !(A or B), A |- !(A or B) \j {\E}              \\
+    \l4 !(A or B)    |- !A        \j {! +, \r2, \r3}   \\
+    \l5 !(A or B), B |- B         \j {\E}              \\
+    \l6 !(A or B), B |- A or B    \j {or +, \r5}       \\
+    \l7 !(A or B), B |- !(A or B) \j {\E}              \\
+    \l8 !(A or B)    |- !B        \j {! +, \r6, \r7}   \\
+    \l9 !(A or B)    |- !A and !B \j {and +, \r5, \r8}
+  \end{deduce}
+  Backwards:
+  \begin{deduce}
+    \l1 !A and !B, A or B |- A or B    \j {\E}                              \\
+    \l2 !A and !B, A or B |- !A and !B \j {\E}                              \\
+    \l3 !A and !B, A or B |- !A        \j {and -, \r2}                      \\
+    \l4 !A and !B, A or B |- !B        \j {and -, \r2}                      \\
+    \l5 !A and !B, A or B |- A         \j {Disjunctive Syllogism, \r1, \r4} \\
+    \l6 !A and !B         |- !(A or B) \j {! +, \r3, \r5}
+  \end{deduce}
+\end{prf}
+
+\begin{theorem}[Implication]
+  \logic{A -> B |-| !A or B}
+\end{theorem}
+\begin{prf}
+  Backwards:
+  \begin{deduce}
+    \l1 !A or B, A |- A       \j {\E} \\
+    \l2 !A or B, A |- !!A     \j {Double Negation, \r1}\\
+    \l3 !A or B, A |- !A or B \j {\E}\\
+    \l4 !A or B, A |- B       \j {Disjunctive Syllogism, \r3, \r2}\\
+    \l5 !A or B    |- A -> B  \j {-> +, \r4}
+  \end{deduce}
+\end{prf}
+
+\end{document}

@@ -165,6 +165,10 @@ I have no idea if anyone at all would find these useful, but here are
 [my solutions so far](./MATH146/HK.pdf).
 Note that I use the notation from the book, which might hurt when MATH 136 starts.
 
+### CS 245 (F2021) <small>Logic and Computation</small>
+
+My own version of the [reference sheet](./CS245/ref.pdf) is a bit more compact.
+
 ## Mistakes
 
 Because it's motivating or something, here's a list of all of my mistakes.

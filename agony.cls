@@ -8,24 +8,23 @@
 \RequirePackage{kvoptions}
 \DeclareStringOption{class}
 \DeclareBoolOption{tikz}
+\DeclareBoolOption{nogeometry}
 \DeclareDefaultOption{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessKeyvalOptions*
 \LoadClass[11pt]{article}
-
-\newenvironment{ifclass}[1]{\ifx\agony@class#1}{\fi}
 
 %
 % Load packages
 %
 
 \usepackage{xparse}
+\usepackage{xspace}
 
 % Formatting
 \usepackage[titles]{tocloft}
 \renewcommand*\contentsname{\@title}
 \usepackage{titlesec}
-\usepackage{fancyhdr}
-\usepackage{multicol}
+\usepackage{multicol,collcell}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{array} % for \newcolumntype macro
 
@@ -54,29 +53,32 @@
 % Styles
 %
 
-\headheight 13.6pt
-\setlength{\headsep}{10pt}
-\textwidth 15cm
-\textheight 24.3cm
-\evensidemargin 6mm
-\oddsidemargin 6mm
-\topmargin -1.1cm
+\ifagony@nogeometry\else
+  \headheight 13.6pt
+  \setlength{\headsep}{10pt}
+  \textwidth 15cm
+  \textheight 24.3cm
+  \evensidemargin 6mm
+  \oddsidemargin 6mm
+  \topmargin -1.1cm
+  
+  \RequirePackage{fancyhdr}
+  \pagestyle{fancy}
+  \fancyhf{}
+  \fancyfoot[c]{\thepage}
+  \lhead{\@title}
+  \rhead{\@author}
+
+  \fancypagestyle{firstpage}{
+    \fancyhf{}
+    \rhead{\@author}
+    \fancyfoot[c]{\thepage}
+  }
+\fi
 \setlength{\parskip}{1.5ex}
 \parindent=0pt
 
 \author{James Ah Yong}
-
-\pagestyle{fancy}
-\fancyhf{}
-\fancyfoot[c]{\thepage}
-\lhead{\@title}
-\rhead{\@author}
-
-\fancypagestyle{firstpage}{
-  \fancyhf{}
-  \rhead{\@author}
-  \fancyfoot[c]{\thepage}
-}
 
 % Links
 \usepackage{hyperref,cleveref}
@@ -224,18 +226,75 @@
 \fi
 \def\@logic{cs245}
 \ifx\agony@class\@logic
-  % Overrides hyperref's Form environment
-  \let\Form\@undefined
-  \DeclareMathOperator{\Form}{Form}
-  \DeclareMathOperator{\Atom}{Atom}
-  % Overrides \L -> Ł
-  \renewcommand{\L}{\ensuremath{\mathcal{L}}}
-  \newcommand{\Lp}{\ensuremath{\mathcal{L}^p}}
   \setlist[enumerate,1]{label={(\alph*)}}
   \setlist[enumerate,2]{label={(\roman*)}}
 
-  \usepackage{forest}
+  \RequirePackage{forest}
+  \RequirePackage{turnstile}
+
+  \let\Form\@undefined % Overrides hyperref's Form environment
+  \DeclareMathOperator{\Form}{Form}
+  \DeclareMathOperator{\Atom}{Atom}
+  \renewcommand{\L}{\ensuremath{\mathcal{L}}} % Overrides \L -> Ł
+  \newcommand{\Lp}{\ensuremath{\mathcal{L}^p}}
+
+  \renewcommand{\S}{\Sigma} % Overrides \S -> §
+
+  % Operators
+  \newcommand{\timplies}{\models}
   \newcommand{\tequiv}{\mathrel{\models\!\mid}}
+  \newcommand{\deduces}{\vdash}
+  \newcommand{\dequiv}{\mathrel{\vdash\hspace{-0.8em}\reflectbox{$\vdash$}}}
   \newcommand{\nharr}{\nleftrightarrow}
-  \usepackage{turnstile}
+
+  % Shorthands
+  \newcommand{\0}{\ensuremath{\emptyset}\xspace}
+  \newcommand{\n}{\ensuremath{\lnot}\xspace}
+  \renewcommand{\o}{\ensuremath{\lor}\xspace} % overrides ø
+  \renewcommand{\a}{\ensuremath{\land}\xspace} % overrides something that looks important
+  \renewcommand{\i}{\ensuremath{\to}\xspace} % overrides dotless i
+  \newcommand{\e}{\ensuremath{\harr}\xspace}
+  \newcommand{\m}{\ensuremath{-}\xspace}
+  \newcommand{\aligntab}{\ifinalign@&\else\fi}
+  \renewcommand{\t}{\ensuremath{\timplies}\xspace} % overrides tie
+  \renewcommand{\tt}{\ensuremath{\tequiv}\xspace} % overrides monospace font
+  \renewcommand{\d}{\ensuremath{\deduces}\xspace} % overrides dot under
+  \renewcommand{\dd}{\ensuremath{\dequiv}\xspace} % overrides physics derivative
+  \newcommand{\E}{\ensuremath{\in}\xspace}
+
+  % Shamelessly stolen from Arthur
+  \newcounter{deduction}
+  \NewDocumentEnvironment{deduction}{s}
+    {\refstepcounter{deduction}\IfBooleanTF{#1}{}{\proof}\setcounter{equation}{0}\align}
+    {\endalign\IfBooleanTF{#1}{}{\endproof}}
+  \newcommand{\linternal}[2]{\label{proof:#1:eqn:#2}}
+  \newcommand{\rinternal}[2]{\ref{proof:#1:eqn:#2}}
+  \newcommand{\nrinternal}[2]{\nameref{proof:#1:eqn:#2}}
+  \renewcommand{\l}[1]{\linternal{\thededuction}{#1}}
+  \renewcommand{\r}[1]{\rinternal{\thededuction}{#1}}
+  \renewcommand{\nr}[1]{\nrinternal{\thededuction}{#1}}
+  \renewcommand{\j}[1]{&\text{(#1)}} % for justification
+
+  \ExplSyntaxOn
+  \tl_new:N \l__agony_deduce_tl
+  \NewDocumentEnvironment{deduceinternal}{+b}
+   {
+    \tl_set:Nn \l__agony_deduce_tl { #1 }
+    \regex_replace_all:nnN { <-> } { \c{e} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { -> } { \c{i} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { and } { \c{a} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { \|-\| } { \c{aligntab}\c{dd} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { \|- } { \c{aligntab}\c{d} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { \|=\| } { \c{aligntab}\c{tt} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { \|= } { \c{aligntab}\c{t} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { ! } { \c{n} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { or } { \c{o} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { - } { \c{ensuremath}\cB\{-\cE\} } \l__agony_deduce_tl
+    \tl_use:N \l__agony_deduce_tl
+   }
+   {}
+  \newenvironment{deduce}{\refstepcounter{deduction}\setcounter{equation}{0}\deduceinternal\align}{\endalign\enddeduceinternal}
+  \ExplSyntaxOff
+  \newcommand{\logic}[1]{\ensuremath{\begin{deduceinternal}#1\end{deduceinternal}}}
+  \newcolumntype{L}{>{\collectcell\logic}c<{\endcollectcell}}
 \fi

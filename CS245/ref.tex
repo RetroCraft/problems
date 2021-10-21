@@ -1,0 +1,248 @@
+\documentclass[class=cs245,nogeometry]{agony}
+\usepackage{multirow}
+\usepackage{geometry}
+\geometry{margin=1cm,landscape}
+\pagenumbering{gobble}
+
+\newcommand{\law}[2]{\text{#1}&\left\{\begin{aligned}#2\end{aligned}\right.\\}
+\newcommand{\dfn}[3]{\textit{#1} (\textsection #2, #3).}
+\newcommand{\thm}[3][Theorem]{\textbf{#1} (\textsection #2, #3).}
+\newcommand{\lem}[2]{\textit{Lemma} (\textsection #1, #2).}
+
+% Fancy list shorthand for using inside tabular
+\makeatletter
+\newcommand\ls[2][\\]{\ensuremath{%
+  \global\def\rc@delim{#1}%
+    \negthinspace \begin{aligned}
+      \rc@vector #2;\relax\noexpand\@eolst%
+    \end{aligned}}}
+\def\rc@vector #1;#2\@eolst{%
+  \ifx\relax#2\relax
+    #1
+  \else
+    #1\rc@delim[-1.7\jot]
+    \rc@vector #2\@eolst%
+  \fi}
+\makeatother
+\newcommand{\br}{&}
+\newcommand{\D}{&\d}
+\newcommand{\DD}{&\dd}
+
+\title{Cheat Sheet}
+\begin{document}
+
+\begin{multicols}{2}
+  \section*{Essential Laws of Propositional Logic}
+  \begin{align*}
+    \law{Double Negation}{\n(\n p) \tt p}
+    \law{Excluded Middle}{p \o \n p \tt 1}
+    \law{Contradiction}{p \a \n p \tt 0}
+    \law{Idempotence}{
+    p \a p                  & \tt p                    \\
+    p \o p                  & \tt p                    \\
+    }
+    \law{Identity}{
+    p \a 1                  & \tt p                    \\
+    p \o 0                  & \tt p                    \\
+    }
+    \law{Domination}{
+    p \a 0                  & \tt 0                    \\
+    p \o 1                  & \tt 1                    \\
+    }
+    \law{Commutativity}{
+    p \a q                  & \tt q \a p               \\
+    p \o q                  & \tt q \o p               \\
+    p \e q                  & \tt q \e p               \\
+    }
+    \law{Associativity}{
+    p \a (q \a r)           & \tt (p \a q) \a r        \\
+    p \o (q \o r)           & \tt (p \o q) \o r        \\
+    }
+    \law{Distributivity}{
+    p \a (q \o r)           & \tt (p \a q) \o (q \a r) \\
+    p \o (q \a r)           & \tt (p \o q) \a (q \o r) \\
+    }
+    \law{Implication}{p \i q \tt \n p \o q}
+    \law{Contrapositive}{p \i q \tt \n q \i \n p}
+    \law{Equivalence}{p \e q \tt (p \i q) \a (q \i p)}
+    \law{De Morgan}{
+    \n(p \a q)              & \tt \n p \o \n q         \\
+    \n(p \o q)              & \tt \n p \a \n q         \\
+    }
+    \law{Absorption I}{
+    p \a (p \o q)           & \tt p                    \\
+    p \o (p \a q)           & \tt p                    \\
+    }
+    \law{Absorption II}{
+    (p \o q) \a (\n p \o q) & \tt q                    \\
+    (p \a q) \o (\n p \a q) & \tt q                    \\
+    }
+  \end{align*}
+  \section*{Eleven Rules of Formal Deduction}
+  \begin{center}
+    \begin{tabular}{r|C|C|l}
+      (Abbr.)                     & \text{From}                        &
+      \text{Conclude}             & Rule                                 \\ \hline
+      (Ref)                       & \emptyset                          &
+      A \vdash A                  & Reflexivity                          \\
+      (+)                         & \S \d A                            &
+      \S,\S' \d A                 & Addition of premises                 \\
+      (\n \m)                     & \ls{\S,\n A \D B; \S,\n A \D \n B} &
+      \S \d A                     & \n elimination                       \\
+      (\i \m)                     & \ls{\S \D A \i B; \S \D A}         &
+      \S \d B                     & \i elimination (modus ponens)        \\
+      (\i +)                      & \S, A \d B                         &
+      \S \d A \i B                & \i introduction                      \\
+      (\a \m)                     & \S \d A \a B                       &
+      \ls{\S \D A;\S \D B}        & \a elimination                       \\
+      (\a +)                      & \ls{\S \D A;\S \D B}               &
+      \S \d A \a B                & \a introduction                      \\
+      (\o \m)                     & \ls{\S,A \D C; \S,B \D C}          &
+      \S,A \o B \d C              & \o elimination                       \\
+      (\o +)                      & \S \d A                            &
+      \ls{\S\D A\o B; \S\D B\o A} & \o introduction                      \\
+      \multirow{2}{*}{(\e \m)}    & \ls{\S\D A\e B; \S\D A}            &
+      \S\d B                      & \multirow{2}{*}{\e elimination}      \\
+                                  & \ls{\S\D A\e B; \S\D B}            &
+      \S\d A                      &                                      \\
+      (\e +)                      & \ls{\S,A \D B; \S,B \D A}          &
+      \S\d A \e B                 & \e introduction
+    \end{tabular}
+  \end{center}
+  \section*{Proved Theorems}
+  \begin{center}
+    \begin{tabular}{r|C|C|l}
+      (Abbr.)         & \text{From}                                      &
+      \text{Conclude} & Theorem                                            \\ \hline
+      ($\in$)         & A \in \S                                         &
+      \S \d A         & Membership                                         \\
+      (Tr.)           & \ls{\Sigma \D \Sigma'; \Sigma' \D A}             &
+      \S \d A         & Transitivity                                       \\
+      (\n +)          & \ls{\Sigma,A \D B; \Sigma,A \D \n B}             &
+      \S \d \n A      & Reductio ad absurdum                               \\
+      (Repl.)         & \ls{A \DD A'; C\br=\text{$B$ with $A'$ for $A$}} &
+      B \dd C         & Replaceability                                     \\
+                      & A \d B                                           &
+      \n B \d \n A    & Flip-Flop                                          \\
+    \end{tabular}
+  \end{center}
+\end{multicols}
+\pagebreak
+\begin{multicols}{2}
+  \subsection*{Proved Theorems (cont.)}
+  \begin{deduce}
+    !!A                       |=| A                                         & \tag{Double Negation}        \\
+    \0                        |-  A or !A                                   & \tag{Excluded Middle}        \\
+    \0                        |-  !(A and !A)                               & \tag{Non-Contradiction}      \\
+    A, !A                     |-  B                                         & \tag{Inconsistency Rule}     \\
+    A -> B, B -> C            |-  A -> C                                    & \tag{Hypothetical Syllogism} \\
+    A or B, \n B              |-  A                                         & \tag{Disjunctive Syllogism}  \\
+    A -> B                    |=| !A or B                                   & \tag{Implication}            \\
+    A -> B                    |=| !B -> !A                                  & \tag{Contrapositive}         \\
+    \ls{!(A and B);!(A or B)} &   \;\ls{\dequiv !A or !B;\dequiv !A and !B} & \tag{De Morgan}
+  \end{deduce}
+
+  \section*{Definitions}
+
+  \dfn{Propositional language}{02}{3}
+  A set of all strings of proposition, connective, and punctuation symbols.
+  $\Lp$ has $p,q,r,\ldots,\n,\a,\o,\i,\e,(,)$.
+
+  \dfn{Expression}{02}{4} An element of $\Lp$.
+  The empty expression is $\epsilon$.
+
+  \dfn{Segment}{02}{5} $V$ segment of $U$ if $U = W_1VW_2$.
+  Initial if $W_1 = \epsilon$, final if $W_2 = \epsilon$.
+  Proper if $V \neq U$.
+
+  \dfn{Atom}{02}{6}
+  $\Atom(\Lp)$ has expressions that are one proposition symbol.
+
+  \dfn{Formula}{02}{6}
+  $\Form(\Lp)$ defined by: $\Atom(\Lp) \subset \Form(\Lp)$. \\
+  $A,B\in\Form(\Lp) \Rarr (\n A), (A \a B), (A \o B), (A \i B), (A \e B) \in \Form(\Lp)$. \\
+  No other expressions are in $\Form(\Lp)$.
+
+  \dfn{Scope}{02}{45}
+  In $(\n A)$, $A$ is the scope of $\n$.
+  In $(A \star B)$, $A$ is the left scope and $B$ is the right scope of $\star$.
+
+  \dfn{Truth valuation}{03}{6} A function $t : \Atom(\Lp)\i\{0,1\}$.
+
+  \dfn{Satisfiablity}{03}{9}
+  The truth valuation $t$ satisfies $A$ if $A^t = 1$.
+  $\S$ is satisfiable if there exists $t$ such that $\S^t = 1$.
+
+  \dfn{Tautology}{03}{14} For all $t$, $A^t = 1$. \\
+  \dfn{Contradiction}{03}{14} For all $t$, $A^t = 0$. \\
+  \dfn{Contingent}{03}{14} $A$ is neither a tautology nor contradiction.
+
+  \dfn{Tautological consequence}{03}{21}
+  $\S \t A$ if for all $t$, $\S^t = 1$ gives $A^t = 1$. \\
+  \dfn{Tautological equivalence}{03}{25}
+  $A \tt B$ if $A \t B$ and $B \t A$.
+
+  \dfn{Literal}{04}{10}
+  A formula of the form $p$ or $\n p$.
+
+  \dfn{Disjunctive clause}{04}{12}
+  Disjunction with literal disjuncts. \\
+  \dfn{Conjunctive clause}{04}{12}
+  Conjunction with literal conjuncts.
+
+  \dfn{DNF}{04}{13} Disjunction with conjunctive clause disjuncts. \\
+  \dfn{CNF}{04}{13} Conjunction with disjunctive clause conjuncts.
+
+  \dfn{Definability/Reducibility}{05}{2}
+  Connective $\star$ reducible to set $\mathcal S$ if $A \star B \tt C$
+  where $C$ uses only $A$, $B$, and connectives in $\mathcal S$.
+
+  \dfn{Adequate}{05}{7}
+  Connectives which express any truth table/connective.
+
+  \dfn{Formal deducibility}{06}{15}
+  $\S \d A$ generated by finite deduction rules. \\
+  \dfn{Syntactic equivalence}{06}{15}
+  $A \tt B$ if $A \d B$ and $B \d A$.
+
+  \dfn{Consistency}{06}{67}
+  There is no $F$ such that $\S\d F$ and $\S\t\n F$.
+
+  \section*{Theorems (...the general kind)}
+
+  \lem{02}{29} Every formula has equal number of left/right parentheses.
+
+  \thm[Unique Readability Theorem]{02}{32}
+  Every formula is exactly one form of exactly one of
+  $(\n A)$, $(A \a B)$, $(A \o B)$, $(A \i B)$, $(A \e B)$.
+
+  \lem{03}{23} Equivalent statements of $\{A_i\} \t C$: \\
+  Argument with premises $A_i$ and conclusion $C$ is valid.\\
+  $(\bigwedge A_i) \i C$ is a tautology;
+  $(\n C \a \bigwedge A_i)$ is a contradiction. \\
+  Formula $(\n C \a \bigwedge A_i)$ or set $\{\n C, A_i\}$ is not satisfiable.
+
+  \thm[Replaceability of tautologically equivalent formulas]{03}{44}
+  If $A \tt A'$ and $A$ is a subformula of $B$,
+  then $B \tt B'$ where $B'$ is $B$ with some of the $A$s replaced by $A'$.
+
+  \thm[Duality Theorem]{03}{44}
+  If $A$ has only $\n$, $\a$, $\o$ and
+  $\Delta(A)$ replaces atoms with negations and swaps $\a$ with $\o$,
+  then $\n A \tt \Delta(A)$.
+
+  \thm{04}{22} All formulas have $F \tt \operatorname{DNF}(F)$ based on truth table. \\
+  \thm{04}{24} All formulas have $F \tt \operatorname{CNF}(F) = \Delta(\operatorname{DNF}(\n F))$.
+
+  \thm{05}{8} The set $S_0 = \{\n, \a, \o\}$ is adequate.
+
+  \thm[Finiteness of Premise Set]{06}{31}
+  If $\S \d A$, $\S^0 \d A$ with finite $\S^0 \subseteq \S$.
+
+  \thm[Soundness Theorem]{06}{45} If $\S \d A$ then $\S \t A$. \\
+  \thm[Completeness Theorem]{06}{49} If $\S \t A$ then $\S \d A$.
+
+  \lem{06}{67} $\S$ is satisfiable if and only if $\S$ is consistent.
+\end{multicols}
+
+\end{document}

@@ -1,0 +1,4 @@
+lookForAlignDelims:
+    deduce:
+        delims: 1
+        delimiterRegEx: (?<!\\)(&|\|[-=]\|?|\\j)
