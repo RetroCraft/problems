@@ -280,16 +280,16 @@
   \NewDocumentEnvironment{deduceinternal}{+b}
    {
     \tl_set:Nn \l__agony_deduce_tl { #1 }
-    \regex_replace_all:nnN { <-> } { \c{e} } \l__agony_deduce_tl
-    \regex_replace_all:nnN { -> } { \c{i} } \l__agony_deduce_tl
-    \regex_replace_all:nnN { and } { \c{a} } \l__agony_deduce_tl
-    \regex_replace_all:nnN { \|-\| } { \c{aligntab}\c{dd} } \l__agony_deduce_tl
-    \regex_replace_all:nnN { \|- } { \c{aligntab}\c{d} } \l__agony_deduce_tl
-    \regex_replace_all:nnN { \|=\| } { \c{aligntab}\c{tt} } \l__agony_deduce_tl
-    \regex_replace_all:nnN { \|= } { \c{aligntab}\c{t} } \l__agony_deduce_tl
-    \regex_replace_all:nnN { ! } { \c{n} } \l__agony_deduce_tl
-    \regex_replace_all:nnN { or } { \c{o} } \l__agony_deduce_tl
-    \regex_replace_all:nnN { - } { \c{ensuremath}\cB\{-\cE\} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { \<\-\> } { \c{e} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { \-\> } { \c{i} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { \|\-\| } { \c{aligntab}\c{dd} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { \|\- } { \c{aligntab}\c{d} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { \|\=\| } { \c{aligntab}\c{tt} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { \|\= } { \c{aligntab}\c{t} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { \! } { \c{n} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { (\W)\-(\W) } { \1\c{ensuremath}\cB\{-\cE\}\2 } \l__agony_deduce_tl
+    \regex_replace_all:nnN { \band\b } { \c{a} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { \bor\b } { \c{o} } \l__agony_deduce_tl
     \tl_use:N \l__agony_deduce_tl
    }
    {}

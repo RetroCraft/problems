@@ -3,8 +3,11 @@
 
 \declaretheorem{theorem}[unnumbered]
 \begin{document}
-\section{Exercises}
-\subsection{Logic06}
+\thispagestyle{firstpage}
+\tableofcontents
+
+\section{Logic06}
+\subsection{Theorems}
 \begin{theorem}[Double Negation]
   \logic{A |-| !!A}
 \end{theorem}
@@ -15,7 +18,7 @@
     \l2 !!A, !A |- !!A \j {+, \r1}        \\
     \l3 !A      |- !A  \j {+}             \\
     \l4 !!A, !A |- !A  \j {+, \r3}        \\
-    \l5 !!A     |- !A  \j {! -, \r1, \r3}
+    \l5 A       |- !!A \j {! -, \r2, \r4}
   \end{deduce}
   In the backwards direction:
   \begin{deduce}
@@ -132,17 +135,182 @@
   \end{deduce}
 \end{prf}
 
+\begin{theorem}[De Morgan 2]
+  \logic{!(A and B) |-| !A or !B}
+\end{theorem}
+\begin{prf}
+  Forwards:
+  \begin{deduce}
+    \l1 !(A and B), !(!A or !B) |- !(!A or !B) \j {\E}                          \\
+    \l2 !(A and B), !(!A or !B) |- !!A and !!B \j {Tr., De Morgan 1, \r1}       \\
+    \l3 !(A and B), !(!A or !B) |- A and B     \j {Repl., Double Negation, \r2} \\
+    \l4 !(A and B), !(!A or !B) |- !(A and B)  \j {\E}                          \\
+    \l5 !(A and B)              |- !A or !B    \j {! -, \r3, \r4}
+  \end{deduce}
+  Backwards:
+  \begin{deduce}
+    \l1 !A or !B, A and B |- A and B    \j {\E}                              \\
+    \l2 !A or !B, A and B |- A          \j {and -, \r1}                      \\
+    \l3 !A or !B, A and B |- B          \j {and -, \r1}                      \\
+    \l4 !A or !B, A and B |- !!B        \j {Double Negation, \r3}            \\
+    \l5 !A or !B, A and B |- !A or !B   \j {\E}                              \\
+    \l6 !A or !B, A and B |- !A         \j {Disjunctive Syllogism, \r5, \r4} \\
+    \l7 !A or !B          |- !(A and B) \j {! +, \r2, \r6}
+  \end{deduce}
+\end{prf}
+
 \begin{theorem}[Implication]
   \logic{A -> B |-| !A or B}
 \end{theorem}
 \begin{prf}
+  Forwards:
+  \begin{deduce}
+    \l1 A -> B, !(!A or B) |- !(!A or B) \j {\E}                          \\
+    \l8 A -> B, !(!A or B) |- !!A and !B \j {Tr., De Morgan 1, \r1}       \\
+    \l2 A -> B, !(!A or B) |- A and !B   \j {Repl., Double Negation, \r8} \\
+    \l3 A -> B, !(!A or B) |- A          \j {and -, \r2}                  \\
+    \l4 A -> B, !(!A or B) |- A -> B     \j {\E}                          \\
+    \l5 A -> B, !(!A or B) |- B          \j {-> -, \r4, \r3}              \\
+    \l6 A -> B, !(!A or B) |- !B         \j {and -, \r2}                  \\
+    \l7 A -> B             |- !A or B    \j {! -, \r5, \r6}
+  \end{deduce}
   Backwards:
   \begin{deduce}
-    \l1 !A or B, A |- A       \j {\E} \\
-    \l2 !A or B, A |- !!A     \j {Double Negation, \r1}\\
-    \l3 !A or B, A |- !A or B \j {\E}\\
-    \l4 !A or B, A |- B       \j {Disjunctive Syllogism, \r3, \r2}\\
+    \l1 !A or B, A |- A       \j {\E}                              \\
+    \l2 !A or B, A |- !!A     \j {Double Negation, \r1}            \\
+    \l3 !A or B, A |- !A or B \j {\E}                              \\
+    \l4 !A or B, A |- B       \j {Disjunctive Syllogism, \r3, \r2} \\
     \l5 !A or B    |- A -> B  \j {-> +, \r4}
+  \end{deduce}
+\end{prf}
+
+\begin{theorem}[Non-Contradiction]
+  \logic{\0 |- !(A and !A)}
+\end{theorem}
+\begin{prf}
+  \begin{deduce}
+    \l0 A and !A |- A and !A    \j {Ref}             \\
+    \l1 A and !A |- A           \j {Tr., and -, \r0} \\
+    \l2 A and !A |- !A          \j {Tr., and -, \r0} \\
+    \l3 \0       |- !(A and !A) \j {! +, \r1, \r2}
+  \end{deduce}
+\end{prf}
+
+\begin{theorem}[Excluded Middle]
+  \logic{\0 |- A or !A}
+\end{theorem}
+\begin{prf}
+  Apply Transitivity, De Morgan 2 to Non-Contradiction.
+\end{prf}
+
+\begin{theorem}[Rule of Cases]
+  \logic{A -> B, !A -> B |- B}
+\end{theorem}
+\begin{prf}
+  \begin{deduce}
+    \l1 A -> B, !A -> B, !B |- A -> B  \j {\E}                      \\
+    \l2 A -> B, !A -> B, !B |- !A -> B \j {\E}                      \\
+    \l3 A -> B, !A -> B, !B |- !B      \j {\E}                      \\
+    \l4 A -> B, !A -> B, !B |- !A      \j {Modus Tollens, \r1, \r3} \\
+    \l5 A -> B, !A -> B, !B |- !!A     \j {Modus Tollens, \r2, \r3} \\
+    \l6 A -> B, !A -> B     |- B       \j {! -, \r4, \r5}
+  \end{deduce}
+\end{prf}
+
+\subsection{Exercises}
+\begin{xca}
+  \logic{A -> (B or C), A -> !B, C -> !D |- A -> !D}
+\end{xca}
+\begin{prf}
+  Let $\S = \logic{\{A -> (B or C), A -> !B, C -> !D\}}$.
+  \begin{deduce}
+    \l1 \S, A |- A             \j {\E}                              \\
+    \l2 \S, A |- A -> (B or C) \j {\E}                              \\
+    \l3 \S, A |- B or C        \j {-> -, \r2, \r1}                  \\
+    \l4 \S, A |- A -> !B       \j {\E}                              \\
+    \l5 \S, A |- !B            \j {-> -, \r4, \r1}                  \\
+    \l6 \S, A |- C             \j {Disjunctive Syllogism, \r3, \r5} \\
+    \l7 \S, A |- C -> !D       \j {\E}                              \\
+    \l8 \S, A |- !D            \j {-> -, \r7, \r6}                  \\
+    \l9 \S    |- A -> !D       \j {-> +, \r8}
+  \end{deduce}
+\end{prf}
+
+\begin{xca}
+  \logic{A -> (B -> C), C -> !D, !E -> D, A and B |- E}
+\end{xca}
+\begin{prf}
+  Let $\S = \logic{\{A -> (B -> C), C -> !D, !E -> D, A and B\}}$.
+  \begin{deduce}
+    \l0 \S |- A and B       \j {\E}                      \\
+    \l1 \S |- A             \j {and -, \r0}              \\
+    \l2 \S |- A -> (B -> C) \j {\E}                      \\
+    \l3 \S |- B -> C        \j {-> -, \r2, \r1}          \\
+    \l4 \S |- B             \j {and -, \r0}              \\
+    \l5 \S |- C             \j {-> -, \r3, \r4}          \\
+    \l6 \S |- C -> !D       \j {\E}                      \\
+    \l7 \S |- !D            \j {-> -, \r6, \r5}          \\
+    \l8 \S |- !E -> D       \j {\E}                      \\
+    \l9 \S |- E             \j {Modus Tollens, \r7, \r8}
+  \end{deduce}
+\end{prf}
+
+\begin{xca}
+  \logic{!A -> C or D, B -> E and F, E -> D, !D |- (A -> B) -> C}
+\end{xca}
+\begin{prf}
+  Let $\S = \logic{!A -> C or D, B -> E and F, E -> D, !D}$
+  \begin{deduce}
+    \l 0 \S, A -> B |- E -> D        \j {\E}                               \\
+    \l 1 \S, A -> B |- !D            \j {\E}                               \\
+    \l 2 \S, A -> B |- !E            \j {Modus Tollens, \r1, \r0}          \\
+    \l 3 \S, A -> B |- !E or !F      \j {or +, \r2}                        \\
+    \l 4 \S, A -> B |- !(E and F)    \j {Tr., De Morgan, \r3}              \\
+    \l 5 \S, A -> B |- B -> E and F  \j {\E}                               \\
+    \l 6 \S, A -> B |- !B            \j {Modus Tollens, \r4, \r5}          \\
+    \l 7 \S, A -> B |- A -> B        \j {\E}                               \\
+    \l 8 \S, A -> B |- !A            \j {Modus Tollens, \r6, \r7}          \\
+    \l 9 \S, A -> B |- !A -> C or D  \j {\E}                               \\
+    \l a \S, A -> B |- C or D        \j {-> -, \r9}                        \\
+    \l b \S, A -> B |- C             \j {Disjunctive Syllogism, \r a, \r1} \\
+    \S              |- (A -> B) -> C \j {-> +, \r b}
+  \end{deduce}
+\end{prf}
+
+\begin{xca}
+  \logic{!(A or B) -> (C -> D), !A and !D |- !B -> !C}
+\end{xca}
+\begin{prf}
+  Let $\S = \logic{!(A or B) -> (C -> D), !A and !D}$.
+  \begin{deduce}
+    \l 1 \S, !B |- !(A or B) -> (C -> D)   \j {\E}                      \\
+    \l 2 \S, !B |- (!A and !B) -> (C -> D) \j {Repl., De Morgan, \r1}   \\
+    \l 3 \S, !B |- !A and !D               \j {\E}                      \\
+    \l 4 \S, !B |- !A                      \j {and -, \r3}              \\
+    \l 5 \S, !B |- !B                      \j {\E}                      \\
+    \l 6 \S, !B |- !A and !B               \j {and +, \r4, \r5}         \\
+    \l 7 \S, !B |- C -> D                  \j {-> -, \r2, \r6}          \\
+    \l 8 \S, !B |- !D                      \j {and -, \r3}              \\
+    \l 9 \S, !B |- !C                      \j {Modus Tollens, \r8, \r7} \\
+    \l a \S     |- !B -> !C                \j {-> +, \r9}
+  \end{deduce}
+\end{prf}
+
+\begin{xca}
+  \logic{B or A, B -> A |- !(A -> !A)}
+\end{xca}
+\begin{prf}
+  Let $\S = \{\logic{B or A, B -> A}\}$
+  \begin{deduce}
+    \l 1 \S, A -> !A, !B |- !B         \j {\E}                              \\
+    \l 2 \S, A -> !A, !B |- B or A     \j {\E}                              \\
+    \l 3 \S, A -> !A, !B |- A          \j {Disjunctive Syllogism, \r1, \r2} \\
+    \l 4 \S, A -> !A     |- !B -> A    \j {-> +, \r3}                       \\
+    \l 5 \S, A -> !A     |- B -> A     \j {\E}                              \\
+    \l 6 \S, A -> !A     |- A          \j {Tr., Rule of Cases, \r4, \r5}    \\
+    \l 7 \S, A -> !A     |- A -> !A    \j {\E}                              \\
+    \l 8 \S, A -> !A     |- !A         \j {-> -, \r7}                       \\
+    \l 9 \S              |- !(A -> !A) \j {! +, \r6, \r8}
   \end{deduce}
 \end{prf}
 
