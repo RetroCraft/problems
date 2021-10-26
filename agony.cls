@@ -294,6 +294,7 @@
    }
    {}
   \newenvironment{deduce}{\refstepcounter{deduction}\setcounter{equation}{0}\deduceinternal\align}{\endalign\enddeduceinternal}
+  \newenvironment{deduce*}{\refstepcounter{deduction}\setcounter{equation}{0}\deduceinternal\start@align\@ne\st@rredtrue\m@ne}{\endalign\enddeduceinternal}
   \ExplSyntaxOff
   \newcommand{\logic}[1]{\ensuremath{\begin{deduceinternal}#1\end{deduceinternal}}}
   \newcolumntype{L}{>{\collectcell\logic}c<{\endcollectcell}}

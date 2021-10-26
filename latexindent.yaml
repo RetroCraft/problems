@@ -2,3 +2,6 @@ lookForAlignDelims:
     deduce:
         delims: 1
         delimiterRegEx: (?<!\\)(&|\|[-=]\|?|\\j)
+    deduce*:
+        delims: 1
+        delimiterRegEx: (?<!\\)(&|\|[-=]\|?|\\j)
