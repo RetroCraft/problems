@@ -11,11 +11,11 @@
 
 % Fancy list shorthand for using inside tabular
 \makeatletter
-\newcommand\ls[2][\\]{\ensuremath{%
-  \global\def\rc@delim{#1}%
-    \negthinspace \begin{aligned}
-      \rc@vector #2;\relax\noexpand\@eolst%
-    \end{aligned}}}
+\NewDocumentCommand\ls{sO{\\}m}{\ensuremath{%
+  \global\def\rc@delim{#2}%
+    \!\IfBooleanTF#1{}{\inalign@true}\begin{aligned}
+      \rc@vector #3;\relax\noexpand\@eolst%
+    \end{aligned}\IfBooleanTF#1{}{\inalign@true}}}
 \def\rc@vector #1;#2\@eolst{%
   \ifx\relax#2\relax
     #1
@@ -78,37 +78,56 @@
     (p \a q) \o (\n p \a q) & \tt q                    \\
     }
   \end{align*}
-  \section*{Eleven Rules of Formal Deduction}
+  \section*{Eleven Rules of Formal Deduction (\texttt{+} Six of First Order Logic)}
   \begin{center}
-    \begin{tabular}{r|C|C|l}
-      (Abbr.)                     & \text{From}                        &
-      \text{Conclude}             & Rule                                 \\ \hline
-      (Ref)                       & \emptyset                          &
-      A \vdash A                  & Reflexivity                          \\
-      (+)                         & \S \d A                            &
-      \S,\S' \d A                 & Addition of premises                 \\
-      (\n \m)                     & \ls{\S,\n A \D B; \S,\n A \D \n B} &
-      \S \d A                     & \n elimination                       \\
-      (\i \m)                     & \ls{\S \D A \i B; \S \D A}         &
-      \S \d B                     & \i elimination (modus ponens)        \\
-      (\i +)                      & \S, A \d B                         &
-      \S \d A \i B                & \i introduction                      \\
-      (\a \m)                     & \S \d A \a B                       &
-      \ls{\S \D A;\S \D B}        & \a elimination                       \\
-      (\a +)                      & \ls{\S \D A;\S \D B}               &
-      \S \d A \a B                & \a introduction                      \\
-      (\o \m)                     & \ls{\S,A \D C; \S,B \D C}          &
-      \S,A \o B \d C              & \o elimination                       \\
-      (\o +)                      & \S \d A                            &
-      \ls{\S\D A\o B; \S\D B\o A} & \o introduction                      \\
-      \multirow{2}{*}{(\e \m)}    & \ls{\S\D A\e B; \S\D A}            &
-      \S\d B                      & \multirow{2}{*}{\e elimination}      \\
-                                  & \ls{\S\D A\e B; \S\D B}            &
-      \S\d A                      &                                      \\
-      (\e +)                      & \ls{\S,A \D B; \S,B \D A}          &
-      \S\d A \e B                 & \e introduction
-    \end{tabular}
+    \begin{deduceinternal}
+      \begin{tabular}{r|C|C|l}
+        (Abbr.)                     & \text{From}                                              &
+        \text{Conclude}             & Rule                                                       \\ \hline
+        (Ref)                       & \0                                                       &
+        A |- A                      & Reflexivity                                                \\
+        (+)                         & \S |- A                                                  &
+        \S,\S' |- A                 & Addition of premises                                       \\
+        (! -)                       & \ls{\S,!A |- B; \S,!A |- !B}                             &
+        \S |- A                     & ! elimination                                              \\
+        (-> -)                      & \ls{\S |- A -> B; \S |- A}                               &
+        \S |- B                     & \ls*{\br\text{-> elimination}; \br\text{(modus ponens)}}   \\
+        (-> +)                      & \S, A |- B                                               &
+        \S |- A \i B                & -> introduction                                            \\
+        (and -)                     & \S |- A and B                                            &
+        \ls{\S |- A;\S |- B}        & and elimination                                            \\
+        (and +)                     & \ls{\S |- A; \S |- B}                                    &
+        \S |- A and B               & and introduction                                           \\
+        (or \m)                     & \ls{\S,A |- C; \S,B |- C}                                &
+        \S, A or B |- C             & or elimination                                             \\
+        (or +)                      & \S |- A                                                  &
+        \ls{\S|- A\o B; \S|- B\o A} & or introduction                                            \\
+        \multirow{2}{*}{(<-> -)}    & \ls{\S |- A <-> B; \S |- A}                              &
+        \S |- B                     & \multirow{2}{*}{<-> elimination}                           \\
+                                    & \ls{\S |- A <-> B; \S |- B}                              &
+        \S |- A                     &                                                            \\
+        (<-> +)                     & \ls{\S,A |- B; \S,B |- A}                                &
+        \S |- A <-> B               & <-> introduction                                           \\ \hline
+        (\A -)                      & \S |- \A[x] A(x)                                         &
+        \S |- A(t)                  & \A elimination                                             \\
+        (\A +)                      & \ls*{\S |- A(u); \text{$u$ not in \S}}                   &
+        \S |- \A[x] A(x)            & \A introduction                                            \\
+        (\X -)                      & \ls*{\S, A(u) |- B; \text{$u$ not in $\S,B$}}            &
+        \S, \X[x] A(x) |- B         & \X elimination                                             \\
+        (\X +)                      & \S |- A(u)                                               &
+        \S |- \X[x] A(x)            & \X introduction                                            \\
+        (~ -)                       & \ls{\S |- A(t_1); \S |- t_1 ~ t_2}                      &
+        \S |- A(t_2)                & ~ elimination                                              \\
+        (~ +)                       & \0                                                       &
+        \0 |- u ~ u                & ~ introduction
+      \end{tabular}
+    \end{deduceinternal}
   \end{center}
+  \underline{N.B.:} In (\A +) and (\X +), $A(x)$ is $A(u)$ with some but not
+  necessarily all occurences of $u$ replaced by $x$.
+\end{multicols}
+\pagebreak
+\begin{multicols}{2}
   \section*{Proved Theorems}
   \begin{center}
     \begin{tabular}{r|C|C|l}
@@ -126,10 +145,6 @@
       \n B \d \n A    & Flip-Flop                                          \\
     \end{tabular}
   \end{center}
-\end{multicols}
-\pagebreak
-\begin{multicols}{2}
-  \subsection*{Proved Theorems (cont.)}
   \begin{deduce}
     !!A                       |-| A                                         & \tag{Double Negation}        \\
     \0                        |-  A or !A                                   & \tag{Excluded Middle}        \\
@@ -146,35 +161,52 @@
 
   \dfn{Propositional language}{02}{3}
   A set of all strings of proposition, connective, and punctuation symbols.
-  $\Lp$ has $p,q,r,\ldots,\n,\a,\o,\i,\e,(,)$.
+  $\Lp$ has $p,q,r,\ldots,\n,\a,\o,\i,\e,(,)$. \\
+  \dfn{First-order language}{11}{4}
+  A set $\L$ of all strings of connective,
+  quantifier ($\A,\X$), free ($u,v,w$) and bound variable ($x,y,z$),
+  punctuation ((, ), ``, ''), individual ($a,b,c,\dotsc$),
+  relation ($F,G,H$), and function $(f,g,h)$ symbols.
 
-  \dfn{Expression}{02}{4} An element of $\Lp$.
+  \dfn{Expression}{02}{4} An element of a language.
   The empty expression is $\epsilon$.
 
   \dfn{Segment}{02}{5} $V$ segment of $U$ if $U = W_1VW_2$.
   Initial if $W_1 = \epsilon$, final if $W_2 = \epsilon$.
   Proper if $V \neq U$.
 
-  \dfn{Atom}{02}{6}
-  $\Atom(\Lp)$ has expressions that are one proposition symbol.
+  \dfn{Term}{11}{6} $\Term(\L)$ is smallest set that contains
+  all individual symbols, free variable symbols, and functions of terms.
+
+  \dfn{Atom}{02}{6} $\Atom(\Lp)$ has expressions that are one proposition symbol. \\
+  \dfn{Atom}{11}{8} $\Atom(\L)$ has $F(t_1,t_2,\dotsc,t_n)$ and $t_1 \eq t_2$ for $t_i \in \Term(\L)$.
 
   \dfn{Formula}{02}{6}
   $\Form(\Lp)$ defined by: $\Atom(\Lp) \subset \Form(\Lp)$. \\
   $A,B\in\Form(\Lp) \Rarr (\n A), (A \a B), (A \o B), (A \i B), (A \e B) \in \Form(\Lp)$. \\
-  No other expressions are in $\Form(\Lp)$.
+  No other expressions are in $\Form(\Lp)$. \\
+  \dfn{Formula}{11}{9} $\Form(\L)$ has same formation rules but also includes
+  $A(u)\in\Form(\L), x\not\in A(u) \Rarr \A[x]A(x), \X[x]A(x) \in \Form(\L)$
+
+  \dfn{Sentence}{11}{17} $\Sent(\L) \subset \Form(\L)$ with no free variables.
 
   \dfn{Scope}{02}{45}
   In $(\n A)$, $A$ is the scope of $\n$.
   In $(A \star B)$, $A$ is the left scope and $B$ is the right scope of $\star$.
 
-  \dfn{Truth valuation}{03}{6} A function $t : \Atom(\Lp)\i\{0,1\}$.
+  \dfn{Truth valuation}{03}{6} A function $t : \Atom(\Lp)\i\{0,1\}$. \\
+  \dfn{Valuation}{12}{7} A domain $D$ and function $v$ such that \\
+  $a^v, u^v \in D$ for all individual symbols $a$ and free variables $u$ \\
+  $w^{v(u/d)} = d$ if $w = u$ and $w^v$ otherwise for free variables $u$, $w$, $d$ \\
+  $F^v \subseteq D^n$ for all $n$-ary relations $F$ with $\eq^v = \{(x,x),x\in D\}$ \\
+  $f^v : D^n \i D$ for all $n$-ary functions $f$
 
   \dfn{Satisfiablity}{03}{9}
-  The truth valuation $t$ satisfies $A$ if $A^t = 1$.
-  $\S$ is satisfiable if there exists $t$ such that $\S^t = 1$.
+  $t$ satisfies $A$ if $A^t = 1$.
+  Set satisfied if members satisfied.
 
-  \dfn{Tautology}{03}{14} For all $t$, $A^t = 1$. \\
-  \dfn{Contradiction}{03}{14} For all $t$, $A^t = 0$. \\
+  \dfn{Tautology/Universally valid}{03, 14}{\textsection12, 23} For all $t$, $A^t = 1$. \\
+  \dfn{Contradiction/Unsatisfiability}{03}{14} For all $t$, $A^t = 0$. \\
   \dfn{Contingent}{03}{14} $A$ is neither a tautology nor contradiction.
 
   \dfn{Tautological consequence}{03}{21}
@@ -208,13 +240,29 @@
   \dfn{Consistency}{06}{67}
   There is no $F$ such that $\S\d F$ and $\S\d\n F$.
 
+  \dfn{Resolution}{07}{8}
+  $\logic{C or p, D or !p |-_r C or D}$ if $C$ and $D$ disjunctive clauses.
+  Resolve parent clauses over $p$ to resolvent $C \o D$.
+  Commutativity and idempotence allowed.
+  Note $\logic{p, !p |-_r \{\}}$ (empty clause, representing contradiction).
+
+  \dfn{Set-of-Support Strategy}{07}{19}
+  Let $\S' = \n C$. Resolve all premises against $\S'$ and add resolvents to $\S'$.
+  Repeat until \{\}. \\
+  \dfn{Davis-Putnam Procedure}{07}{29}
+  For each $p$: discard tautolgies from \S,
+  resolve all pairs over $p$, discard clauses with $p$.
+  Always outputs \0 or \{\}.
+
   \section*{Theorems (...the general kind)}
 
   \lem{02}{29} Every formula has equal number of left/right parentheses.
 
   \thm[Unique Readability Theorem]{02}{32}
-  Every formula is exactly one form of exactly one of
-  $(\n A)$, $(A \a B)$, $(A \o B)$, $(A \i B)$, $(A \e B)$.
+  Every formula in $\Form(\Lp)$ is exactly one form of exactly one of
+  $(\n A)$, $(A \a B)$, $(A \o B)$, $(A \i B)$, $(A \e B)$. \\
+  \thm{11}{15} The same applies to $\Form(\L)$ plus $(\A[x] A(x))$, $(\X[x] A(x))$.
+  \thm{11}{15} Also to $\Term(\L)$ with free/individual/function symbols.
 
   \lem{03}{23} Equivalent statements of $\{A_i\} \t C$: \\
   Argument with premises $A_i$ and conclusion $C$ is valid.\\
@@ -222,13 +270,17 @@
   $(\n C \a \bigwedge A_i)$ is a contradiction. \\
   Formula $(\n C \a \bigwedge A_i)$ or set $\{\n C, A_i\}$ is not satisfiable.
 
-  \thm[Replaceability of tautologically equivalent formulas]{03}{44}
+  \thm[Replaceability of tautologically equivalent formulas]{03, 44}{\textsection13, 16}
   If $A \tt A'$ and $A$ is a subformula of $B$,
   then $B \tt B'$ where $B'$ is $B$ with some of the $A$s replaced by $A'$.
 
   \thm[Duality Theorem]{03}{44}
   If $A$ has only $\n$, $\a$, $\o$ and
   $\Delta(A)$ replaces atoms with negations and swaps $\a$ with $\o$,
+  then $\n A \tt \Delta(A)$. \\
+  \thm[Duality in FoL]{13}{16}
+  If $A$ is as above plus \A, \X, and
+  $\Delta(A)$ replaces atoms with negations, swaps \a with \o, and swaps \A with \X,
   then $\n A \tt \Delta(A)$.
 
   \thm{04}{22} All formulas have $F \tt \operatorname{DNF}(F)$ based on truth table. \\
@@ -243,6 +295,17 @@
   \thm[Completeness Theorem]{06}{49} If $\S \t A$ then $\S \d A$.
 
   \lem{06}{67} $\S$ is satisfiable if and only if $\S$ is consistent.
+
+  \thm{07}{20} $\d_r$ is complete with the set of support strategy.
+
+  \thm{07}{35} $\d_r$ is sound and complete with DPP.
+
+  \thm{12}{17} All terms in $\Term(\L)$ have $t^v \in D$. \\
+  \thm{12}{20} All formulas in $\Form(\L)$ have $A^v \in \{0,1\}$.
+
+  \thm{12}{28} There is no algorithm to decide validity or satisfiability in first-order logic.
+
+  \thm{14}{33} First order formal deduction is sound and complete.
 \end{multicols}
 
 \end{document}
