@@ -5,3 +5,5 @@ lookForAlignDelims:
     deduce*:
         delims: 1
         delimiterRegEx: (?<!\\)(&|\|[-=]\|?|\\j)
+    setofsupport:
+        delims: 1
