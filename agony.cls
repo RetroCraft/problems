@@ -40,6 +40,7 @@
 \sysdelim.. % no curly braces
 \usepackage{polynom}
 \usepackage{mathtools} % for \DeclarePairedDelimiter macro
+\usepackage{breqn}
 
 % Figures
 \ifagony@tikz
@@ -303,6 +304,8 @@
   \newenvironment{deduce}{\refstepcounter{deduction}\setcounter{equation}{0}\deduceinternal\align}{\endalign\enddeduceinternal}
   \newenvironment{deduce*}{\refstepcounter{deduction}\setcounter{equation}{0}\deduceinternal\start@align\@ne\st@rredtrue\m@ne}{\endalign\enddeduceinternal}
   \newcommand{\@resolvent}[1]{\ifthenelse{\equal{#1}{Prem}}{Premise}{\ifthenelse{\equal{#1}{NegCon}}{Negation\ of\ conclusion}{Resolvent\ of\ #1}}}
+  \newcommand{\@resolve}[1]{\expandafter\ifx\expandafter\##1\else\@resolvent{#1}\fi}
+  \newenvironment{resolution}{\refstepcounter{deduction}\setcounter{equation}{0}\center\deduceinternal\tabular{>{\refstepcounter{equation}\theequation.}r>{\collectcell\logic}l<{\endcollectcell}>{\collectcell\@resolve}l<{\endcollectcell}}}{\endtabular\enddeduceinternal\endcenter}
   \newenvironment{setofsupport}{\refstepcounter{deduction}\setcounter{equation}{0}\center\deduceinternal\tabular{>{\refstepcounter{equation}\theequation.}r>{\collectcell\logic}l<{\endcollectcell}>{\collectcell\@resolvent}l<{\endcollectcell}>{$\S=\{}r<{\}$}}}{\endtabular\enddeduceinternal\endcenter}
   \ExplSyntaxOff
   \newcommand{\logic}[1]{\ensuremath{\begin{deduceinternal}#1\end{deduceinternal}}}
