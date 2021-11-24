@@ -159,17 +159,18 @@
 
   \section*{Definitions}
 
+  \dfn{Alphabet}{16a}{13} Finite set of symbols $\S$.
+  $\S^*$ contains all possible strings, including empty string $\lambda$.
+  Subset of $\S^*$ is language.
+
   \dfn{Propositional language}{02}{3}
-  A set of all strings of proposition, connective, and punctuation symbols.
-  $\Lp$ has $p,q,r,\ldots,\n,\a,\o,\i,\e,(,)$. \\
+  $\Lp$ has $\S = \{p,q,r,\ldots,\n,\a,\o,\i,\e,(,)\}$. \\
   \dfn{First-order language}{11}{4}
-  A set $\L$ of all strings of connective,
-  quantifier ($\A,\X$), free ($u,v,w$) and bound variable ($x,y,z$),
-  punctuation ((, ), ``, ''), individual ($a,b,c,\dotsc$),
+  $\L$ extends above with quantifier ($\A,\X$),
+  free ($u,v,w$) and bound variable ($x,y,z$), individual ($a,b,c,\dotsc$),
   relation ($F,G,H$), and function $(f,g,h)$ symbols.
 
-  \dfn{Expression}{02}{4} An element of a language.
-  The empty expression is $\epsilon$.
+  \dfn{Expression}{02}{4} Element of language, including empty expression $\epsilon$.
 
   \dfn{Segment}{02}{5} $V$ segment of $U$ if $U = W_1VW_2$.
   Initial if $W_1 = \epsilon$, final if $W_2 = \epsilon$.
@@ -254,7 +255,39 @@
   resolve all pairs over $p$, discard clauses with $p$.
   Always outputs \0 or \{\}.
 
-  \section*{Theorems (...the general kind)}
+  \dfn{Prenex Normal Form}{15}{4}
+  All quantifiers at start.
+  Prefix (quantifiers) + matrix (rest).
+  If no \X{}, it is \X{}-free PNF.
+
+  \dfn{Skolem function}{15}{14}
+  Given $\A[x_i]\X[y]$, a function $f(x_i) = y$.
+  Note that Skolemized sentence is not equivalent to original.
+
+  \dfn{Unification}{15}{26}
+  $A$ unifies with $B$ if exists unifiers $x_i \coloneqq t_i$
+  (replacing variable $x_i$ with term $t_i$) that make $A$ equal $B$.
+
+  \dfn{Turing machine}{16a}{13}
+  Finite set of states $S$, alphabet $I$ containing blank $B$,
+  start state $s_0 \in S$,
+  transition function $f : S \times I \to S \times I \times \{L,R\}$ or
+  transition rules $(s,x,s',x',d)$.
+  State $s$ final if no rules for $s$.
+  Halts if no rule for $(s,x)$, accepts if $s$ final (reject otherwise).
+  TM total if always halts.
+
+  \dfn{Decidability}{16a}{22}
+  Decision problem can be solved by TM that accepts ``yes'' answers.
+  Function that can be computed by TM is computable.
+
+  \dfn{$P$ and $NP$}{16b}{42}
+  Problem in $P$ if DTM can solve in polynomial time.
+  In $NP$ if NDTM can solve (or DTM can verify) in polynomial time.
+  Problem $NP$-complete if any $NP$ can be reduced to it in polynomial time.
+
+
+  \section*{Theorems (\ldots{}the general kind)}
 
   \lem{02}{29} Every formula has equal number of left/right parentheses.
 
@@ -296,9 +329,9 @@
 
   \lem{06}{67} $\S$ is satisfiable if and only if $\S$ is consistent.
 
-  \thm{07}{20} $\d_r$ is complete with the set of support strategy.
-
-  \thm{07}{35} $\d_r$ is sound and complete with DPP.
+  \thm{07}{20} $\d_r$ is complete with the set of support strategy. \\
+  \thm{07}{35} $\d_r$ is sound and complete with DPP. \\
+  \thm{15}{31} $\d_r$ in FoL is sound and complete with unification.
 
   \thm{12}{17} All terms in $\Term(\L)$ have $t^v \in D$. \\
   \thm{12}{20} All formulas in $\Form(\L)$ have $A^v \in \{0,1\}$.
@@ -306,6 +339,19 @@
   \thm{12}{28} There is no algorithm to decide validity or satisfiability in first-order logic.
 
   \thm{14}{33} First order formal deduction is sound and complete.
+
+  \thm{15}{19} All sentences $F$ in $\Sent(\L)$ have a corresponding \X{}-free PNF $F'$
+  such that $F$ satisfiable iff $F'$ satisfiable.
+
+  \thm{15}{20} All \X{}-free PNFs $F$ can construct a finite set of disjunctive clauses
+  $C_F$ such that $F$ satisfiable iff $C_F$ satisfiable.
+
+  \thm{15}{21} Argument $\S \t A$ valid iff $C_{\n A} \cup \bigcup_{F\in \S}C_F$ unsatisfiable.
+
+  \thm{16a}{7} The halting problem is undecidable. \\
+  \lem{16a}{28} Satisfiablity and validity problems for FoL undecidable.
+
+  \lem{16b}{50} Satisfiablity for propositional logic $NP$-complete. \\
 \end{multicols}
 
 \end{document}
