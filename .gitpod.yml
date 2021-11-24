@@ -1,0 +1,4 @@
+image: texlive/texlive:latest
+vscode:
+  extensions:
+    - james-yu.latex-workshop

@@ -1,0 +1,64 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/*.crswap": true,
+        "**/*.aux": true,
+        "**/*.fls": true,
+        "**/*.synctex.gz": true,
+        "**/*.fdb_latexmk": true,
+        "**/_minted*": true,
+        "**/pythontex-files-ref": true,
+        "**/*.out": { "when": "$(basename).pdf" },
+        "**/*.log": { "when": "$(basename).pdf" },
+        "**/*.pytxcode": { "when": "$(basename).pdf" },
+    },
+    "workbench.editor.pinnedTabSizing": "compact",
+    "editor.wordWrap": "off",
+    "editor.fontSize": 14,
+    "editor.rulers": [
+        100
+    ],
+    "latex-workshop.view.pdf.trim": 2,
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmk",
+            "command": "latexmk",
+            "args": [
+                "-shell-escape",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-pdf",
+                "-outdir=%OUTDIR%",
+                "-synctex=1",
+                "-r",
+                "%WORKSPACE_FOLDER%/latex/.latexmkrc",
+                "%DOC%"
+            ],
+            "env": {
+                "TEXINPUTS": ".:%WORKSPACE_FOLDER%/latex:"
+            }
+        }
+    ],
+    "latex-workshop.latexindent.args": [
+        "-l=%WORKSPACE_FOLDER%/latex/latexindent.yaml",
+        "-c",
+        "%DIR%/",
+        "%TMPFILE%",
+        "-y=defaultIndent: '%INDENT%'"
+    ],
+    "latex-workshop.chktex.args.active": [
+        "--localrc %WORKSPACE_FOLDER%/latex/.chktexrc",
+        "-wall",
+        "-n22",
+        "-n30",
+        "-e16",
+        "-q"
+    ],
+    "latex-workshop.latex.autoBuild.run": "onSave",
+    "files.autoSave": "off"
+}

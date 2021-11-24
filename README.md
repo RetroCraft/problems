@@ -14,6 +14,14 @@ I make a lot of mistakes, after all.
 
 ## Contributing
 
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/retrocraft/problems)
+
+The easiest way to contribute is to use GitPod,
+which will automatically create a development environment
+with LaTeX installed and all the setup necessary.
+
+Otherwise, keep in mind that:
+
 - You _should_ be a student in the relevant class to contribute,
   since you should not otherwise have access to these problems.
 - LaTeX macros used in multiple files are placed in `agony.cls`. Make sure it's on the path.
