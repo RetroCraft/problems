@@ -1,4 +1,7 @@
-image: texlive/texlive:latest
+image:
+  file: .gitpod.Dockerfile
 vscode:
   extensions:
     - james-yu.latex-workshop
+    - ms-vscode.cpptools-extension-pack
+    - karyfoundation.racket

@@ -13,9 +13,15 @@
         "**/*.fdb_latexmk": true,
         "**/_minted*": true,
         "**/pythontex-files-ref": true,
-        "**/*.out": { "when": "$(basename).pdf" },
-        "**/*.log": { "when": "$(basename).pdf" },
-        "**/*.pytxcode": { "when": "$(basename).pdf" },
+        "**/*.out": {
+            "when": "$(basename).pdf"
+        },
+        "**/*.log": {
+            "when": "$(basename).pdf"
+        },
+        "**/*.pytxcode": {
+            "when": "$(basename).pdf"
+        },
     },
     "workbench.editor.pinnedTabSizing": "compact",
     "editor.wordWrap": "off",

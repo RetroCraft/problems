@@ -1,3 +1,7 @@
 {
-    "recommendations": ["james-yu.latex-workshop"]
-}
+    "recommendations": [
+      "james-yu.latex-workshop",
+      "ms-vscode.cpptools-extension-pack",
+      "karyfoundation.racket"
+    ]
+  }
