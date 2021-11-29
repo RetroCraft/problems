@@ -41,13 +41,43 @@
                 "-pdf",
                 "-outdir=%OUTDIR%",
                 "-synctex=1",
-                "-r",
-                "%WORKSPACE_FOLDER%/latex/.latexmkrc",
                 "%DOC%"
             ],
             "env": {
-                "TEXINPUTS": ".:%WORKSPACE_FOLDER%/latex:"
+                "TEXINPUTS": ".;%WORKSPACE_FOLDER%/latex;"
             }
+        },
+        {
+            "name": "latexmk_pythontex",
+            "command": "latexmk",
+            "args": [
+                "-shell-escape",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-pdf",
+                "-outdir=%OUTDIR%",
+                "-synctex=1",
+                "-r",
+                "%WORKSPACE_FOLDER%/latex/pythontex.latexmkrc",
+                "%DOC%"
+            ],
+            "env": {
+                "TEXINPUTS": ".;%WORKSPACE_FOLDER%/latex;"
+            }
+        }
+    ],
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "latexmk 🔃",
+            "tools": [
+                "latexmk"
+            ]
+        },
+        {
+            "name": "latexmk (pythontex)",
+            "tools": [
+                "latexmk_pythontex"
+            ]
         }
     ],
     "latex-workshop.latexindent.args": [

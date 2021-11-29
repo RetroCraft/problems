@@ -118,46 +118,66 @@
         \S, \X[x] A(x) |- B         & \X elimination                                             \\
         (\X +)                      & \S |- A(u)                                               &
         \S |- \X[x] A(x)            & \X introduction                                            \\
-        (~ -)                       & \ls{\S |- A(t_1); \S |- t_1 ~ t_2}                      &
+        (~ -)                       & \ls{\S |- A(t_1); \S |- t_1 = t_2}                       &
         \S |- A(t_2)                & ~ elimination                                              \\
         (~ +)                       & \0                                                       &
-        \0 |- u ~ u                & ~ introduction
+        \0 |- u = u                 & ~ introduction
       \end{tabular}
     \end{deduceinternal}
   \end{center}
   \underline{N.B.:} In (\A +) and (\X +), $A(x)$ is $A(u)$ with some but not
-  necessarily all occurences of $u$ replaced by $x$.
+  necessarily all occurrences of $u$ replaced by $x$.
 \end{multicols}
 \pagebreak
 \begin{multicols}{2}
   \section*{Proved Theorems}
   \begin{center}
-    \begin{tabular}{r|C|C|l}
-      (Abbr.)         & \text{From}                                      &
-      \text{Conclude} & Theorem                                            \\ \hline
-      ($\in$)         & A \in \S                                         &
-      \S \d A         & Membership                                         \\
-      (Tr.)           & \ls{\Sigma \D \Sigma'; \Sigma' \D A}             &
-      \S \d A         & Transitivity                                       \\
-      (\n +)          & \ls{\Sigma,A \D B; \Sigma,A \D \n B}             &
-      \S \d \n A      & Reductio ad absurdum                               \\
-      (Repl.)         & \ls{A \DD A'; C\br=\text{$B$ with $A'$ for $A$}} &
-      B \dd C         & Replaceability                                     \\
-                      & A \d B                                           &
-      \n B \d \n A    & Flip-Flop                                          \\
-    \end{tabular}
+    \begin{deduceinternal}
+      \begin{tabular}{r|C|C|l}
+        (Abbr.)         & \text{From}                                      &
+        \text{Conclude} & Theorem                                            \\ \hline
+        (\E)            & A \in \S                                         &
+        \S |- A         & Membership                                         \\
+        (Tr.)           & \ls{\S |- \S'; \S' |- A}                         &
+        \S |- A         & Transitivity                                       \\
+        (! +)           & \ls{\S,A |- B; \S,A |- !B}                       &
+        \S |- !A        & Reductio ad absurdum                               \\
+        (Repl.)         & \ls{A \DD A'; C\br=\text{$B$ with $A'$ for $A$}} &
+        B |-| C         & Replaceability                                     \\
+                        & A |- B                                           &
+        !B |- !A        & Flip-Flop                                          \\
+        $(~ -)'$        & \ls{\S |- A(t_1); \S |- t_2 = t_1}               &
+        \S |- A'(t_2)   & Partial substitution
+      \end{tabular}
+    \end{deduceinternal}
   \end{center}
-  \begin{deduce}
-    !!A                       |-| A                                         & \tag{Double Negation}        \\
-    \0                        |-  A or !A                                   & \tag{Excluded Middle}        \\
-    \0                        |-  !(A and !A)                               & \tag{Non-Contradiction}      \\
-    A, !A                     |-  B                                         & \tag{Inconsistency Rule}     \\
-    A -> B, B -> C            |-  A -> C                                    & \tag{Hypothetical Syllogism} \\
-    A or B, \n B              |-  A                                         & \tag{Disjunctive Syllogism}  \\
-    A -> B                    |-| !A or B                                   & \tag{Implication}            \\
-    A -> B                    |-| !B -> !A                                  & \tag{Contrapositive}         \\
-    \ls{!(A and B);!(A or B)} &   \;\ls{\dequiv !A or !B;\dequiv !A and !B} & \tag{De Morgan}
-  \end{deduce}
+  \begin{deduce*}
+    !!A                       |-| A                                           & \tag{Double Negation}        \\
+    \0                        |-  A or !A                                     & \tag{Excluded Middle}        \\
+    \0                        |-  !(A and !A)                                 & \tag{Non-Contradiction}      \\
+    A, !A                     |-  B                                           & \tag{Inconsistency Rule}     \\
+    A -> B, B -> C            |-  A -> C                                      & \tag{Hypothetical Syllogism} \\
+    A or B, !B                |-  A                                           & \tag{Disjunctive Syllogism}  \\
+    A -> B                    |-| !A or B                                     & \tag{Implication}            \\
+    A -> B                    |-| !B -> !A                                    & \tag{Contrapositive}         \\
+    \ls{!(A and B);!(A or B)} &   \;\ls{\dequiv !A or !B;\dequiv !A and !B}   & \tag{De Morgan}              \\
+    \0                        |-  \A[x](x=x)                                  & \tag{Reflexivity}            \\
+    \0                        |-  \A[x]\A[y]((x=y) -> (y=x))                  & \tag{Symmetry}               \\
+    \0                        |-  \A[x]\A[y]\A[z](((x=y) and (y=z)) -> (x=z)) & \tag{Transitivity}
+  \end{deduce*}
+
+  \section*{Axioms of Peano Arithmetic}
+  \begin{deduceinternal}
+    \begin{enumerate}[{PA}1.,nosep]
+      \item $\A[x] !(s(x) = 0)$
+      \item $\A[x]\A[y] ((s(x) = s(y)) -> (x = y))$
+      \item $\A[x] (x+0 = x)$
+      \item $\A[x]\A[y] (x+s(y) = s(x+y))$
+      \item $\A[x] (x \cdot 0 = 0)$
+      \item $\A[x]\A[y] (x \cdot s(y) = x \cdot y + x)$
+      \item $(A(0) and \A[x](A(x) -> A(s(x)))) -> \A[x] A(x)$ (induction)
+    \end{enumerate}
+  \end{deduceinternal}
 
   \section*{Definitions}
 
@@ -351,9 +371,14 @@
   \thm{15}{21} Argument $\S \t A$ valid iff $C_{\n A} \cup \bigcup_{F\in \S}C_F$ unsatisfiable.
 
   \thm{16a}{7} The halting problem is undecidable. \\
-  \lem{16a}{28} Satisfiablity and validity problems for FoL undecidable.
-
+  \lem{16a}{28} Satisfiablity and validity problems for FoL undecidable. \\
   \lem{16b}{50} Satisfiablity for propositional logic $NP$-complete.
+
+  \thm{16a}{31} If $P_1$ reduces to $P_2$ and $P_1$ undecidable, $P_2$ undecidable.
+  
+  \thm[G\"odel's Incompleteness Theorem]{17}{32} Given axiomatic theory $T$
+  with decidable axioms and capacity to express Peano Arithmetic,
+  there exists statement $G_T$ which cannot be proved or disproved by $T$
 \end{multicols}
 
 \end{document}
