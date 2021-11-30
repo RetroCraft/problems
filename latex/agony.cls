@@ -21,6 +21,9 @@
 \usepackage{xspace}
 
 % Formatting
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
 \usepackage[titles]{tocloft}
 \renewcommand*\contentsname{\@title}
 \usepackage{titlesec}
@@ -257,7 +260,6 @@
   \renewcommand{\a}{\ensuremath{\land}\xspace} % overrides something that looks important
   \renewcommand{\i}{\ensuremath{\to}\xspace} % overrides dotless i
   \newcommand{\e}{\ensuremath{\harr}\xspace}
-  \newcommand{\m}{\ensuremath{-}\xspace}
   \def\Tab{&}
   \def\tab{\ifinalign@\Tab\fi}
   \renewcommand{\t}{\ensuremath{\timplies}\xspace} % overrides tie
@@ -310,4 +312,17 @@
   \ExplSyntaxOff
   \newcommand{\logic}[1]{\ensuremath{\begin{deduceinternal}#1\end{deduceinternal}}}
   \newcolumntype{L}{>{\collectcell\logic}c<{\endcollectcell}}
+
+  % Hoare triples
+  \usepackage{stmaryrd}
+  \DeclarePairedDelimiter\hoare{{\,\llparenthesis\,}}{{\,\rrparenthesis\,}}
+  \newcommand{\Hoare}[1]{\logic{\hoare{#1}}}
+  \RequirePackage{minted}
+  \usemintedstyle{tango}
+  \newminted{c}{autogobble,mathescape,escapeinside=@@}
+  % bugged math symbols
+  \newcommand\m{\mathrel{\text{\textminus}}}
+  \newcommand\lt{\mathrel{\text{\textless}}}
+  \newcommand\gt{\mathrel{\text{\textgreater}}}
+  \newcommand\hj[1]{\hspace{5em}\textrm{#1}} % Hoare justification
 \fi
