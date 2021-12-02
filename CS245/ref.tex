@@ -3,8 +3,6 @@
 \usepackage{geometry}
 \geometry{margin=1cm,landscape}
 \pagenumbering{gobble}
-\def\do{}
-\usepackage{pythontex}
 
 \newcommand{\law}[2]{\text{#1}&\left\{\begin{aligned}#2\end{aligned}\right.\\}
 \newcommand{\dfn}[3]{\textit{#1} (\textsection #2, #3).}
@@ -100,7 +98,7 @@
         \ls{\S |- A;\S |- B}        & and elimination                                            \\
         (and +)                     & \ls{\S |- A; \S |- B}                                    &
         \S |- A and B               & and introduction                                           \\
-        (or -)                     & \ls{\S,A |- C; \S,B |- C}                                &
+        (or -)                      & \ls{\S,A |- C; \S,B |- C}                                &
         \S, A or B |- C             & or elimination                                             \\
         (or +)                      & \S |- A                                                  &
         \ls{\S|- A\o B; \S|- B\o A} & or introduction                                            \\
@@ -134,20 +132,24 @@
   \begin{center}
     \begin{deduceinternal}
       \begin{tabular}{r|C|C|l}
-        (Abbr.)         & \text{From}                                      &
-        \text{Conclude} & Theorem                                            \\ \hline
-        (\E)            & A \in \S                                         &
-        \S |- A         & Membership                                         \\
-        (Tr.)           & \ls{\S |- \S'; \S' |- A}                         &
-        \S |- A         & Transitivity                                       \\
-        (! +)           & \ls{\S,A |- B; \S,A |- !B}                       &
-        \S |- !A        & Reductio ad absurdum                               \\
-        (Repl.)         & \ls{A \DD A'; C\br=\text{$B$ with $A'$ for $A$}} &
-        B |-| C         & Replaceability                                     \\
-                        & A |- B                                           &
-        !B |- !A        & Flip-Flop                                          \\
-        $(~ -)'$        & \ls{\S |- A(t_1); \S |- t_2 = t_1}               &
-        \S |- A'(t_2)   & Partial substitution
+        (Abbr.)               & \text{From}                                   &
+        \text{Conclude}       & Theorem                                         \\ \hline
+        (\E)                  & A \in \S                                      &
+        \S |- A               & Membership                                      \\
+        (Tr.)                 & \ls{\S |- \S'; \S' |- A}                      &
+        \S |- A               & Transitivity                                    \\
+        (! +)                 & \ls{\S,A |- B; \S,A |- !B}                    &
+        \S |- !A              & Reductio ad absurdum                            \\
+        (Repl.)               & \ls{A \DD A'; C\br=B[A'/A]}                   &
+        B |-| C               & Replaceability                                  \\
+                              & A |- B                                        &
+        !B |- !A              & Flip-Flop                                       \\
+        $(~ -)'$              & \ls{\S |- A(t_1); \S |- t_2 = t_1}            &
+        \S |- A'(t_2)         & Partial substitution                            \\
+        EQSubs                & \S |- t_1 = t_2                               &
+        \S |- r(t_1) = r(t_2) &                                                 \\
+        EQTrans               & \ls{\S |- t_i = t_{i+1}; i \br= 1, \dotsc, k} &
+        \S |- t_1 = t_k       &
       \end{tabular}
     \end{deduceinternal}
   \end{center}
@@ -166,6 +168,7 @@
     \0                        |-  \A[x]\A[y]\A[z](((x=y) and (y=z)) -> (x=z)) & \tag{Transitivity}
   \end{deduce*}
 
+  \columnbreak
   \section*{Axioms of Peano Arithmetic}
   \begin{deduceinternal}
     \begin{enumerate}[{PA}1.,nosep]
@@ -179,6 +182,51 @@
     \end{enumerate}
   \end{deduceinternal}
 
+  \section*{Inference Rules for Program Verification}
+  \begin{center}
+    \AXC{}
+    \RL{(assignment)}
+    \UIC{\Hoare{Q[E/x]}\texttt{x = E;}\Hoare{Q}}
+    \DP
+
+    \AXC{\Hoare{P}$C_1$\Hoare{Q}}
+    \AXC{\Hoare{Q}$C_2$\Hoare{R}}
+    \RL{(composition)}
+    \BIC{\Hoare{P}$C_1$; $C_2$\Hoare{R}}
+    \DP
+
+    \AXC{\logic{P -> P'}}
+    \AXC{\Hoare{P'}$C$\Hoare{Q}}
+    \RL{(implied)}
+    \BIC{\Hoare{P}$C$\Hoare{Q}}
+    \DP
+
+    \AXC{\Hoare{P}$C$\Hoare{Q'}}
+    \AXC{\logic{Q' -> Q}}
+    \RL{(implied)}
+    \BIC{\Hoare{P}$C$\Hoare{Q}}
+    \DP
+
+    \AXC{\Hoare{P and B}$C_1$\Hoare{Q}}
+    \AXC{\Hoare{P and !B}$C_2$\Hoare{Q}}
+    \RL{(if-then-else)}
+    \BIC{\Hoare{P}\texttt{if (B) $C_1$ else $C_2$}\Hoare{Q}}
+    \DP
+
+    \AXC{\Hoare{P and B}$C$\Hoare{Q}}
+    \AXC{\logic{P and !B -> Q}}
+    \RL{(if-then)}
+    \BIC{\Hoare{P}\texttt{if (B) $C$}\Hoare{Q}}
+    \DP
+
+    \AXC{\Hoare{I and B}$C$\Hoare{I}}
+    \RL{(partial-while)}
+    \UIC{\Hoare{I}\texttt{while (B) $C$}\Hoare{I and !B}}
+    \DP
+  \end{center}
+\end{multicols}
+\pagebreak
+\begin{multicols}{2}
   \section*{Definitions}
 
   \dfn{Alphabet}{16a}{13} Finite set of symbols $\S$.
@@ -308,6 +356,26 @@
   In $NP$ if NDTM can solve (or DTM can verify) in polynomial time.
   Problem $NP$-complete if any $NP$ can be reduced to it in polynomial time.
 
+  \dfn{Theory}{17}{7}
+  A set of premises (axioms) $A_T$ and a formal deduction system $\d$.
+  Axioms are decidable, consistent, syntactically complete
+  ($F$ xor $\n F$ provable).
+  Denote $\S \d_T F$ to mean $\S \cup A_T \d F$.
+
+  \dfn{Hoare triple}{18}{17}
+  Program $C$ in state satisfying $P$ ends in state satisfying $Q$.
+  A specification is the triple \Hoare{P}$C$\Hoare{Q}.
+
+  \dfn{Partial correctness}{18}{22}
+  $\t_{par} \Hoare{P}C\Hoare{Q}$
+  means if start state satisfies $P$ and $C$ halts,
+  then end state satisfies $Q$.
+  This problem is undecidable. \\
+  \dfn{Total correctness}{18}{24}
+  $\t_{tot} \Hoare{P}C\Hoare{Q}$
+  means if start state satisfies $P$,
+  then $C$ halts and end state satisfies $Q$.
+  This is also undecidable.
 
   \section*{Theorems (\ldots{}the general kind)}
 
@@ -375,7 +443,7 @@
   \lem{16b}{50} Satisfiablity for propositional logic $NP$-complete.
 
   \thm{16a}{31} If $P_1$ reduces to $P_2$ and $P_1$ undecidable, $P_2$ undecidable.
-  
+
   \thm[G\"odel's Incompleteness Theorem]{17}{32} Given axiomatic theory $T$
   with decidable axioms and capacity to express Peano Arithmetic,
   there exists statement $G_T$ which cannot be proved or disproved by $T$

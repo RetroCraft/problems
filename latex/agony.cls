@@ -235,6 +235,8 @@
 
   \RequirePackage{forest}
   \RequirePackage{turnstile}
+  \RequirePackage{bussproofs}
+  \EnableBpAbbreviations
 
   \let\Form\@undefined % Overrides hyperref's Form environment
   \DeclareMathOperator{\Form}{Form}
