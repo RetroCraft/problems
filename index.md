@@ -194,6 +194,7 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 15. **MATH135/EP01/RP02** Questions changed
 16. **MATH135/MT2020W/Q02** Question copied wrong
 17. **MATH135/MT2018F/Q05** Negated implication wrong ([#7](https://github.com/RetroCraft/problems/issues/7))
+18. **MATH135/EP08/RP09** Applied CRT without checking pairwise coprimeness
 
 ## Contact
 

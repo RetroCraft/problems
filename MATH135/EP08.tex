@@ -320,35 +320,25 @@ We now investigate what happens if the moduli are not coprime.
 
 \question Solve $x^2 + 25x \equiv 54 \pmod{63}$.
 \begin{proof}[Solution]
-  Again, split the modulus as $63 = 3 \times 3 \times 7$.
-  By SMT, we can solve three simultaneous congruences, simplified by redundancy to two.
-  It suffices then to solve
+  First, notice that $x^2+25x-54$ factors as $(x-2)(x+27)$.
+  Split the modulus as $63 = 7 \times 9$,
+  so by SMT, we can solve two simultaneous congruences:
   \begin{align*}
-    x^2 + 25x & \equiv 54 \pmod{3} & x^2 + 25x & \equiv 54 \pmod{7} \\
-    x^2 + x   & \equiv 0 \pmod{3}  & x^2 + 4x  & \equiv 5 \pmod{7}
+    (x-2)(x+27) & \equiv 0 \pmod{7} & (x-2)(x+27) & \equiv 0 \pmod{9}
   \end{align*}
-  For the first congruence, we make a table:
-  \begin{center}
-    \begin{tabular}{C|C|C|C}
-      x \pmod3     & 0 & 1 & 2 \\ \hline
-      x^2 \pmod3   & 0 & 1 & 1 \\
-      x^2+x \pmod3 & 0 & 2 & 0
-    \end{tabular}
-  \end{center}
-  and determine the solution is $x \equiv 0,2 \pmod{3}$.
-  Making another table for the second,
-  \begin{center}
-    \begin{tabular}{C|C|C|C|C|C|C|C}
-      x \pmod3     & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\ \hline
-      x^2 \pmod3   & 0 & 1 & 4 & 2 & 2 & 4 & 1 \\
-      x^2+x \pmod3 & 0 & 2 & 6 & 5 & 6 & 2 & 0
-    \end{tabular}
-  \end{center}
-  we find the solution is $x \equiv 3 \pmod{7}$.
-  By the CRT, there are two unique solutions modulo 21.
-  We find that $3 \equiv 0 \pmod{3} \equiv 3 \pmod{7}$ and $17 \equiv 2 \pmod{3} \equiv 3 \pmod{7}$.
-  Therefore, the solution set is all $x$ such that $x \equiv 3,17 \pmod{21}$, or, equivalently,
-  \[ x \equiv 3,17,24,38,45,59 \pmod{63} \qedhere \]
+  Since $-27 \equiv 1 \pmod7$ and $-27 \equiv 0 \pmod9$,
+  we can equivalently write $x \equiv 1,2 \pmod7$ and $x \equiv 0,2 \pmod9$.
+
+  Now, since 7 and 9 are coprime,
+  we take all combinations of the above and apply CRT to each pair,
+  obtaining the set of solutions:
+  \begin{itemize}
+    \item If $x \equiv 1 \pmod7$ and $x \equiv 0 \pmod9$, then $x \equiv 36 \pmod{63}$
+    \item If $x \equiv 1 \pmod7$ and $x \equiv 2 \pmod9$, then $x \equiv 29 \pmod{63}$
+    \item If $x \equiv 2 \pmod7$ and $x \equiv 0 \pmod9$, then $x \equiv 9 \pmod{63}$
+    \item If $x \equiv 2 \pmod7$ and $x \equiv 2 \pmod9$, then $x \equiv 2 \pmod{63}$
+  \end{itemize}
+  Therefore, by CRT, $x \equiv 2,9,29,36 \pmod{63}$ are the only solutions.
 \end{proof}
 
 
