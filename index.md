@@ -196,6 +196,7 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 17. **MATH135/MT2018F/Q05** Negated implication wrong ([#7](https://github.com/RetroCraft/problems/issues/7))
 18. **MATH135/EP08/RP09** Applied CRT without checking pairwise coprimeness
 19. **MATH135/EP06/RP01(b)** Mistyped number (joseph)
+20. **MATH135/EP06/RP03** Flipped the divisor d and the dividends x and y (joseph)
 
 ## Contact
 
