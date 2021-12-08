@@ -102,7 +102,7 @@ aesthetic changes bump the minor version.
 | [Test 2 Cheat Sheet](https://ko-fi.com/s/8c50c38761) | Mar 19, 5:09pm (v2.0)      |
 | [Exam Cheat Sheet](https://ko-fi.com/s/f1a8bd1ab7)   | Apr 20, 6:49pm (v0.1)      |
 
-Might also be helpful: Will put toegether a compilation of sample
+Might also be helpful: Will put together a compilation of sample
 [algebraic solution processes](https://cdn.discordapp.com/attachments/755580436398473226/809696310043213835/NuMbEr_1_iN_StUdEnt_SaTisFactiOn.pdf).
 
 ## Math
