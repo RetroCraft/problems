@@ -212,13 +212,13 @@ Prove that $n \mid \gcd(a, n) \cdot \gcd(b, n)$ if and only if $n \mid ab$.
   Then, let $d=\gcd(a,n)$ and $c=\gcd(b,n)$.
   We prove both implications.
 
-  ($\Larr$) Suppose that $n \mid dc$.
+  ($\Rarr$) Suppose that $n \mid dc$.
   Recall that by definition, $d \mid a$ and $c \mid b$.
   Then, we may write $dn=a$ and $cm=b$ for some integers $n$ and $m$.
   Multiplying together, $dc(mn)=ab$, that is, since $mn$ is an integer, $dc \mid ab$.
   By the transitivity of divisibility, $n \mid dc$ and $dc \mid ab$ imply $n \mid ab$, as desired.
 
-  ($\Rarr$) Suppose that $n \mid ab$.
+  ($\Larr$) Suppose that $n \mid ab$.
   We apply Bézout's Lemma to rewrite $d=as+nt$ and $c=bx+ny$ with integers $s$, $t$, $x$, and $y$.
   Multiplying together gives $dc = absx+asny+bxnt+n^2ty$.
   This factors to $dc = (ab)(sx)+n(asy+bxt+nty)$.
