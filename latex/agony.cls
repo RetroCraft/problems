@@ -21,6 +21,9 @@
 \usepackage{xspace}
 
 % Formatting
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
 \usepackage[titles]{tocloft}
 \renewcommand*\contentsname{\@title}
 \usepackage{titlesec}
@@ -40,6 +43,7 @@
 \sysdelim.. % no curly braces
 \usepackage{polynom}
 \usepackage{mathtools} % for \DeclarePairedDelimiter macro
+\usepackage{breqn}
 
 % Figures
 \ifagony@tikz
@@ -231,14 +235,18 @@
 
   \RequirePackage{forest}
   \RequirePackage{turnstile}
+  \RequirePackage{bussproofs}
+  \EnableBpAbbreviations
 
   \let\Form\@undefined % Overrides hyperref's Form environment
   \DeclareMathOperator{\Form}{Form}
   \DeclareMathOperator{\Atom}{Atom}
+  \DeclareMathOperator{\Term}{Term}
+  \DeclareMathOperator{\Sent}{Sent}
   \renewcommand{\L}{\ensuremath{\mathcal{L}}} % Overrides \L -> Ł
   \newcommand{\Lp}{\ensuremath{\mathcal{L}^p}}
 
-  \renewcommand{\S}{\Sigma} % Overrides \S -> §
+  \renewcommand{\S}{\ensuremath{\Sigma}\xspace} % Overrides \S -> §
 
   % Operators
   \newcommand{\timplies}{\models}
@@ -254,13 +262,16 @@
   \renewcommand{\a}{\ensuremath{\land}\xspace} % overrides something that looks important
   \renewcommand{\i}{\ensuremath{\to}\xspace} % overrides dotless i
   \newcommand{\e}{\ensuremath{\harr}\xspace}
-  \newcommand{\m}{\ensuremath{-}\xspace}
-  \newcommand{\aligntab}{\ifinalign@&\else\fi}
+  \def\Tab{&}
+  \def\tab{\ifinalign@\Tab\fi}
   \renewcommand{\t}{\ensuremath{\timplies}\xspace} % overrides tie
   \renewcommand{\tt}{\ensuremath{\tequiv}\xspace} % overrides monospace font
   \renewcommand{\d}{\ensuremath{\deduces}\xspace} % overrides dot under
   \renewcommand{\dd}{\ensuremath{\dequiv}\xspace} % overrides physics derivative
   \newcommand{\E}{\ensuremath{\in}\xspace}
+  \newcommand{\A}[1][\!]{\ensuremath{\forall}#1\,\xspace}
+  \newcommand{\X}[1][\!]{\ensuremath{\exists}#1\,\xspace}
+  \newcommand{\eq}{\ensuremath{\approx}\xspace}
 
   % Shamelessly stolen from Arthur
   \newcounter{deduction}
@@ -282,20 +293,38 @@
     \tl_set:Nn \l__agony_deduce_tl { #1 }
     \regex_replace_all:nnN { \<\-\> } { \c{e} } \l__agony_deduce_tl
     \regex_replace_all:nnN { \-\> } { \c{i} } \l__agony_deduce_tl
-    \regex_replace_all:nnN { \|\-\| } { \c{aligntab}\c{dd} } \l__agony_deduce_tl
-    \regex_replace_all:nnN { \|\- } { \c{aligntab}\c{d} } \l__agony_deduce_tl
-    \regex_replace_all:nnN { \|\=\| } { \c{aligntab}\c{tt} } \l__agony_deduce_tl
-    \regex_replace_all:nnN { \|\= } { \c{aligntab}\c{t} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { \|\-\| } { \c{tab}\c{dd} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { \|\- } { \c{tab}\c{d} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { \|\=\| } { \c{tab}\c{tt} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { \|\= } { \c{tab}\c{t} } \l__agony_deduce_tl
     \regex_replace_all:nnN { \! } { \c{n} } \l__agony_deduce_tl
     \regex_replace_all:nnN { (\W)\-(\W) } { \1\c{ensuremath}\cB\{-\cE\}\2 } \l__agony_deduce_tl
     \regex_replace_all:nnN { \band\b } { \c{a} } \l__agony_deduce_tl
     \regex_replace_all:nnN { \bor\b } { \c{o} } \l__agony_deduce_tl
+    \regex_replace_all:nnN { \~ } { \c{eq} } \l__agony_deduce_tl
     \tl_use:N \l__agony_deduce_tl
    }
    {}
   \newenvironment{deduce}{\refstepcounter{deduction}\setcounter{equation}{0}\deduceinternal\align}{\endalign\enddeduceinternal}
   \newenvironment{deduce*}{\refstepcounter{deduction}\setcounter{equation}{0}\deduceinternal\start@align\@ne\st@rredtrue\m@ne}{\endalign\enddeduceinternal}
+  \newcommand{\@resolvent}[1]{\ifthenelse{\equal{#1}{Prem}}{Premise}{\ifthenelse{\equal{#1}{NegCon}}{Negation\ of\ conclusion}{Resolvent\ of\ #1}}}
+  \newcommand{\@resolve}[1]{\expandafter\ifx\expandafter\##1\else\@resolvent{#1}\fi}
+  \newenvironment{resolution}{\refstepcounter{deduction}\setcounter{equation}{0}\center\deduceinternal\tabular{>{\refstepcounter{equation}\theequation.}r>{\collectcell\logic}l<{\endcollectcell}>{\collectcell\@resolve}l<{\endcollectcell}}}{\endtabular\enddeduceinternal\endcenter}
+  \newenvironment{setofsupport}{\refstepcounter{deduction}\setcounter{equation}{0}\center\deduceinternal\tabular{>{\refstepcounter{equation}\theequation.}r>{\collectcell\logic}l<{\endcollectcell}>{\collectcell\@resolvent}l<{\endcollectcell}>{$\S=\{}r<{\}$}}}{\endtabular\enddeduceinternal\endcenter}
   \ExplSyntaxOff
   \newcommand{\logic}[1]{\ensuremath{\begin{deduceinternal}#1\end{deduceinternal}}}
   \newcolumntype{L}{>{\collectcell\logic}c<{\endcollectcell}}
+
+  % Hoare triples
+  \usepackage{stmaryrd}
+  \DeclarePairedDelimiter\hoare{{\,\llparenthesis\,}}{{\,\rrparenthesis\,}}
+  \newcommand{\Hoare}[1]{\logic{\hoare{#1}}}
+  \RequirePackage{minted}
+  \usemintedstyle{tango}
+  \newminted{c}{autogobble,mathescape,escapeinside=@@}
+  % bugged math symbols
+  \newcommand\m{\mathrel{\text{\textminus}}}
+  \newcommand\lt{\mathrel{\text{\textless}}}
+  \newcommand\gt{\mathrel{\text{\textgreater}}}
+  \newcommand\hj[1]{\hspace{5em}\textrm{#1}} % Hoare justification
 \fi

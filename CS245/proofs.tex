@@ -314,4 +314,83 @@
   \end{deduce}
 \end{prf}
 
+
+\section{Logic14}
+
+\subsection{Exercises}
+
+\begin{xca}
+  \logic{\A[x]\A[y] P(x,y) |- \A[y]\A[x] P(x,y)}
+\end{xca}
+\begin{prf}
+  \begin{deduce}
+    \l1 \A[x]\A[y] P(x,y) |- \A[x]\A[y] P(x,y) \j {Ref}                          \\
+    \l2 \A[x]\A[y] P(x,y) |- \A[y] P(a,y)      \j {\A -, \r1}                    \\
+    \l3 \A[x]\A[y] P(x,y) |- P(a,b)            \j {\A -, \r2}                    \\
+    \l4 \A[x]\A[y] P(x,y) |- \A[x] P(x,b)      \j {\A +, \r3, $a$ not elsewhere} \\
+    \l5 \A[x]\A[y] P(x,y) |- \A[y] P(x,y)      \j {\A +, \r4, $b$ not elsewhere}
+  \end{deduce}
+\end{prf}
+
+\begin{xca}
+  \logic{\A[x] P(x) |- \A[y] P(y)}
+\end{xca}
+\begin{prf}
+  \begin{deduce}
+    \l1 \A[x] P(x) |- \A[x] P(x) \j {Ref}                          \\
+    \l2 \A[x] P(x) |- P(a)       \j {\A -, \r1}                    \\
+    \l3 \A[x] P(x) |- \A[y] P(y) \j {\A +, \r2, $a$ not elsewhere}
+  \end{deduce}
+\end{prf}
+
+\begin{xca}
+  \logic{!\X[x]P(x) |- \A[x]!P(x)}
+\end{xca}
+\begin{prf}
+  \begin{deduce}
+    \l1 \S, P(t) |- P(t)       \j {\E}                      \\
+    \l2 \S, P(t) |- \X[x]P(x)  \j {\X +, \r1}               \\
+    \l3 \S, P(t) |- !\X[x]P(x) \j {\E}                      \\
+    \l4 \S       |- !P(t)      \j {! +, \r2, \r3}           \\
+    \l5 \S       |- \A[x]!P(x) \j {\A +, $t$ not elsewhere}
+  \end{deduce}
+\end{prf}
+
+\begin{xca}
+  \logic{\A[x]!P(x) |- !\X[x]P(x)}
+\end{xca}
+\begin{prf}
+  \begin{deduce}
+    \l1 \S, \X[x]P(x), P(u) |- P(u)       \j {\E}                      \\
+    \l2 \S, \X[x]P(x), P(u) |- \A[x]!P(x) \j {\E}                      \\
+    \l3 \S, \X[x]P(x), P(u) |- !P(u)      \j {Tr., \A -, \r2}          \\
+    \l4 \S, P(u)            |- !\X[x]P(x) \j {! +, \r1, \r3}           \\
+    \l5 \S, \X[x]P(x)       |- !\X[x]P(x) \j {\X -, $u$ not elsewhere} \\
+    \l6 \S, \X[x]P(x)       |- \X[x]P(x)  \j {\E}                      \\
+    \l7 \S                  |- !\X[x]P(x) \j {! +, \r5, \r6}
+  \end{deduce}
+\end{prf}
+
+\begin{xca}
+  \logic{\A[x](P(x) -> Q(x)), \X[x](R(x) and !Q(x)), \A[x](R(x) -> P(x) or S(x)) |- \X[x](R(x) or S(x))}
+\end{xca}
+\begin{prf}
+  Let $\logic{\S = \{\A[x](P(x) -> Q(x)), \A[x](R(x) -> P(x) or S(x))\}}$
+  \begin{deduce}
+    \l 0 \S, R(u) and !Q(u)        |- R(u) and !Q(u)              \j {\E}                              \\
+    \l 1 \S, R(u) and !Q(u)        |- !Q(u)                       \j {and -, \r0}                      \\
+    \l 2 \S, R(u) and !Q(u)        |- \A[x](P(x) -> Q(x))         \j {\E}                              \\
+    \l 3 \S, R(u) and !Q(u)        |- P(u) -> Q(u)                \j {\A -, \r2}                       \\
+    \l 4 \S, R(u) and !Q(u)        |- !P(u)                       \j {modus tollens, \r1, \r3}         \\
+    \l 5 \S, R(u) and !Q(u)        |- \A[x](R(x) -> P(x) or S(x)) \j {\E}                              \\
+    \l 6 \S, R(u) and !Q(u)        |- R(u) -> P(u) or S(u)        \j {\A -, \r5}                       \\
+    \l 7 \S, R(u) and !Q(u)        |- R(u)                        \j {and -, \r0}                      \\
+    \l 8 \S, R(u) and !Q(u)        |- P(u) or S(u)                \j {-> -, \r7, \r6}                  \\
+    \l 9 \S, R(u) and !Q(u)        |- S(u)                        \j {Disjunctive Syllogism, \r8, \r4} \\
+    \l a \S, R(u) and !Q(u)        |- R(u) or S(u)                \j {or +, \r7, \r9}                  \\
+    \l b \S, R(u) and !Q(u)        |- \X[x](R(x) or S(x))         \j {\X +, \r a}                      \\
+    \l c \S, \X[x](R(x) and !Q(x)) |- \X[x](R(x) or S(x))         \j {\X -, \r b, $u$ not elsewhere}
+  \end{deduce}
+\end{prf}
+
 \end{document}

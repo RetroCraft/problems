@@ -18,7 +18,7 @@ Please [let me know](#contact) if you find a [mistake](#mistakes) though!
 Or, in the spirit of open source, make a [pull request](https://github.com/RetroCraft/problems/pulls) fixing it.
 
 If you want to use my `agony` document class for $$\LaTeX$$,
-feel free to [download it](./agony.cls) and look through the macros.
+feel free to [download it](./latex/agony.cls) and look through the macros.
 The reference sheets on this site use an [adapted config]({{ page.gh }}/assets/js/mathjax.js) for MathJax.
 
 Everything here is published under information and belief that it is permitted by relevant faculty;
