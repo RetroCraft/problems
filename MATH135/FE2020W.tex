@@ -28,10 +28,9 @@
 \prob{Determine the units digit (i.e., the ones digit) of $7^{202}$.}
 \begin{sol}
   We must evaluate $7^{202} \pmod{10}$.
-  Now, by \FLT, since $7 \nmid 10$, $7^9 \equiv 1 \pmod {10}$.
-  Then, $7^{202} \equiv 7^{9(22) + 4} \equiv 1^{22} \cdot 7^4 \equiv 49^2 \equiv 9^2 \equiv 81 \equiv 1 \pmod{10}$.
+  Since $7^2 \equiv 49 \ equiv -1 \pmod 10$, it follows that $7^{202} \equiv (7^2)^{101} \equiv (-1)^{101} \equiv -1 \equiv 9 \pmod 10$.
 
-  Therefore, the last digit is 1.
+  Therefore, the last digit is 9.
 \end{sol}
 
 \prob{Write $(2-2i)^6$ in standard form.}
@@ -105,21 +104,21 @@
   Determine the original message $M$.
 \end{prob}
 \begin{sol}
-  Let $p = 7$ and $q = 13$, so our secret modulus is $8 \cdot 12 = 96$.
-  We determine the privkey $d$ knowing that $ed \equiv 29d \equiv 1 \pmod{96}$.
-  Solving by SMT, $29d \equiv d \equiv 1 \pmod{7}$ and $29d \equiv 3d \equiv 1 \pmod{13}$.
+  Let $p = 7$ and $q = 13$, so our secret modulus is $6 \cdot 12 = 72$.
+  We determine the privkey $d$ knowing that $ed \equiv 29d \equiv 1 \pmod{72}$.
+  Solving by SMT, $29d \equiv 5d \equiv 1 \pmod{8}$ and $29d \equiv 2d \equiv 1 \pmod{9}$.
 
-  From the first congruence, $d = 7k + 1$ for some integer $k$.
-  Substituting, $3(7k+1) \equiv 21k + 3 \equiv 8k + 3 \equiv 1 \pmod{13}$.
-  Then, $8k \equiv 11 \pmod{13}$ and by inspection $k \equiv 3 \pmod{13}$.
-  Finally, $d = 7(13n + 3) + 1 = 91n + 22$ with integer $n$, or, $d \equiv 22 \pmod{91}$.
-  Therefore, $d = 22$.
+  From the first congruence, by inspection $d=5$ works, so LCT gives $d\equiv 5 \pmod 8$ as the full solution set. So, $d = 8k + 5$ for some integer $k$.
+  Substituting, $2(8k + 5) \equiv 16k + 10 \equiv 7k + 10 \equiv 1 \pmod{9}$.
+  Then, $7k \equiv 0 \pmod{9}$ and by inspection $k \equiv 0 \pmod{9}$.
+  Finally, $d = 8(9n) + 5 = 72n + 5$ with integer $n$, or, $d \equiv 5 \pmod{72}$. Indeed, $0<d<72$.
+  
+  Therefore, $d = 5$.
 
-  We decode the messsage knowing $M \equiv C^d \equiv 9^{22} \pmod{91}$.
-  Repeatedly squaring, we have $9^2 \equiv 81 \equiv -10 \pmod{91}$,
-  $9^4 \equiv 100 \equiv 9 \pmod{91}$, $9^8 \equiv -10 \pmod{91}$, and $9^{16} \equiv 9 \pmod{91}$.
+  We decode the message knowing $M \equiv C^d \equiv 9^{5} \pmod{91}$.
+  Repeatedly squaring, we have $9^2 \equiv 81 \equiv -10 \pmod{91}$, and $9^4 \equiv 100 \equiv 9 \pmod{91}$.
 
-  Therefore, $M \equiv 9^{16+4+2} \equiv (9)(9)(-10) \equiv 9(-90) \equiv 9(1) \equiv 9 \pmod{91}$, so $M = 9$.
+  Therefore, $M \equiv 9^{4+1} \equiv (9)(9) \equiv 9^2 \equiv -10 \equiv 81 \pmod{91}$, so $M = 81$.
 \end{sol}
 
 \begin{prob}
@@ -159,10 +158,10 @@
   \begin{enumerate}[(a)]
     \item For all $f(x) \in \R[x]$, if $f(x)$ has no real roots, then $f(x)$ is irreducible in $\R[x]$.
 
-          \fbox{True} \quad False
+          True \quad \fbox{False} \qquad \emph{Counterexample: take $f(x)=x^4+2x^2+1=(x^2+1)(x^2+1)$}
     \item $\{x \in \Z : \gcd(x,20) = 1\} = \{y \in \Z : \gcd(2y,40) = 2\}$.
 
-          True \quad \fbox{False} \qquad \emph{RHS = \Z{} and LHS does not}
+          \fbox{True} \quad False \qquad \emph{Use BL to simplify RHS into LHS}
     \item There are infinitely many integers $x$ satisfying the simultaneous congruence
           \begin{align*}
             2x & \equiv 4 \pmod 8 \\ x+1 & \equiv 5 \pmod 7

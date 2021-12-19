@@ -41,9 +41,13 @@
 \usepackage{cancel}
 \usepackage{systeme}
 \sysdelim.. % no curly braces
-\usepackage{polynom}
 \usepackage{mathtools} % for \DeclarePairedDelimiter macro
 \usepackage{breqn}
+
+% See https://tex.stackexchange.com/questions/510506/conflict-between-flexisym-and-polynom-packages
+\catcode`^=12 \catcode`_=12
+\usepackage{polynom}
+\catcode`^=7 \catcode`_=8
 
 % Figures
 \ifagony@tikz
