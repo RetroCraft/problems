@@ -111,7 +111,8 @@
   From the first congruence, by inspection $d=5$ works, so LCT gives $d\equiv 5 \pmod 8$ as the full solution set. So, $d = 8k + 5$ for some integer $k$.
   Substituting, $2(8k + 5) \equiv 16k + 10 \equiv 7k + 10 \equiv 1 \pmod{9}$.
   Then, $7k \equiv 0 \pmod{9}$ and by inspection $k \equiv 0 \pmod{9}$.
-  Finally, $d = 8(9n) + 5 = 72n + 5$ with integer $n$, or, $d \equiv 22 \pmod{91}$.
+  Finally, $d = 8(9n) + 5 = 72n + 5$ with integer $n$, or, $d \equiv 5 \pmod{72}$. Indeed, $0<d<72$.
+  
   Therefore, $d = 5$.
 
   We decode the message knowing $M \equiv C^d \equiv 9^{5} \pmod{91}$.
@@ -160,7 +161,7 @@
           True \quad \fbox{False} \qquad \emph{Counterexample: take $f(x)=x^4+2x^2+1=(x^2+1)(x^2+1)$}
     \item $\{x \in \Z : \gcd(x,20) = 1\} = \{y \in \Z : \gcd(2y,40) = 2\}$.
 
-          \fbox{True} \quad False \qquad \emph{Use BL to show $\{y \in \Z : \gcd(2y,40) = 2\}=\{y \in \Z : \gcd(y,20) = 1\}$}
+          \fbox{True} \quad False \qquad \emph{Use BL to simplify RHS into LHS}
     \item There are infinitely many integers $x$ satisfying the simultaneous congruence
           \begin{align*}
             2x & \equiv 4 \pmod 8 \\ x+1 & \equiv 5 \pmod 7
