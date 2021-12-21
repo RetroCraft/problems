@@ -154,18 +154,23 @@
     \end{deduceinternal}
   \end{center}
   \begin{deduce*}
-    !!A                       |-| A                                           & \tag{Double Negation}        \\
-    \0                        |-  A or !A                                     & \tag{Excluded Middle}        \\
-    \0                        |-  !(A and !A)                                 & \tag{Non-Contradiction}      \\
-    A, !A                     |-  B                                           & \tag{Inconsistency Rule}     \\
-    A -> B, B -> C            |-  A -> C                                      & \tag{Hypothetical Syllogism} \\
-    A or B, !B                |-  A                                           & \tag{Disjunctive Syllogism}  \\
-    A -> B                    |-| !A or B                                     & \tag{Implication}            \\
-    A -> B                    |-| !B -> !A                                    & \tag{Contrapositive}         \\
-    \ls{!(A and B);!(A or B)} &   \;\ls{\dequiv !A or !B;\dequiv !A and !B}   & \tag{De Morgan}              \\
-    \0                        |-  \A[x](x=x)                                  & \tag{Reflexivity}            \\
-    \0                        |-  \A[x]\A[y]((x=y) -> (y=x))                  & \tag{Symmetry}               \\
-    \0                        |-  \A[x]\A[y]\A[z](((x=y) and (y=z)) -> (x=z)) & \tag{Transitivity}
+    !!A                       |-| A                                                  & \tag{Double Negation}        \\
+    \0                        |-  A or !A                                            & \tag{Excluded Middle}        \\
+    \0                        |-  !(A and !A)                                        & \tag{Non-Contradiction}      \\
+    A, !A                     |-  B                                                  & \tag{Inconsistency Rule}     \\
+    A -> B, B -> C            |-  A -> C                                             & \tag{Hypothetical Syllogism} \\
+    A or B, !B                |-  A                                                  & \tag{Disjunctive Syllogism}  \\
+    A -> B                    |-| !A or B                                            & \tag{Implication}            \\
+    A -> B                    |-| !B -> !A                                           & \tag{Contrapositive}         \\
+    \ls{!(A and B);!(A or B)} &   \;\ls{\dequiv !A or !B;\dequiv !A and !B}          & \tag{De Morgan}              \\
+    \0                        |-  \A[x](x=x)                                         & \tag{Reflexivity}            \\
+    \0                        |-  \A[x]\A[y]((x=y) -> (y=x))                         & \tag{Symmetry}               \\
+    \0                        |-  \A[x]\A[y]\A[z](((x=y) and (y=z)) -> (x=z))        & \tag{Transitivity}           \\
+    \0                        |-  \A[x](s(x) \neq x)                                 & \tag{Not own succ.}          \\
+    \0                        |-  \A[x](x = 0 or \X[y](s(y) = x))                    & \tag{Exist. of pred.}        \\
+    \0                        |-  \A[x]\A[y]\A[z](x \leq y and y \leq z -> x \leq z) & \tag{Trans. of $\leq$}       \\
+    \0                        |-  \A[x](s(0) \cdot x = x)                            & \tag{Left Mult. Identity}    \\
+    \0                        |-  \A[x]\A[y]\A[z]((x+y)+z = x+(y+z))                 & \tag{Assoc. Add.}
   \end{deduce*}
 
   \columnbreak
