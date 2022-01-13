@@ -218,6 +218,7 @@
   \definecolor{bg}{rgb}{0.95,0.95,0.95}
   \usemintedstyle{tango}
   \newminted{r}{autogobble,mathescape,bgcolor=bg}
+  \newcommand{\rr}{\mintinline{r}}
   \newminted[outcode]{text}{autogobble,mathescape,escapeinside=||}
   \DeclareMathOperator{\Bi}{Binomial}
   \DeclareMathOperator{\Hyp}{Hypergeometric}
