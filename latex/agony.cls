@@ -333,3 +333,9 @@
   \newcommand\gt{\mathrel{\text{\textgreater}}}
   \newcommand\hj[1]{\hspace{5em}\textrm{#1}} % Hoare justification
 \fi
+
+\def\@optimization{co250}
+\ifx\agony@class\@optimization
+  \setlist[enumerate,1]{label={(\alph*)}}
+  \setlist[enumerate,2]{label={(\roman*)}}
+\fi
