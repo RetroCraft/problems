@@ -149,6 +149,7 @@
 \newcommand\at[2]{\left.#1\right|_{#2}}
 
 % Sets
+\newcommand{\bb}{\mathbb}
 \newcommand{\N}{\ensuremath{\mathbb{N}}}
 \newcommand{\Z}{\ensuremath{\mathbb{Z}}}
 \newcommand{\Q}{\ensuremath{\mathbb{Q}}}
@@ -337,5 +338,21 @@
 \def\@optimization{co250}
 \ifx\agony@class\@optimization
   \setlist[enumerate,1]{label={(\alph*)}}
+  \setlist[enumerate,2]{label={\roman*.}}
+\fi
+
+\def\@macroecon{ec260}
+\ifx\agony@class\@macroecon
+  \setlist[enumerate,1]{label={(\alph*)}}
   \setlist[enumerate,2]{label={(\roman*)}}
+\fi
+
+\def\@datastructures{cs240}
+\ifx\agony@class\@datastructures
+  \setlist[enumerate,1]{label={\textbf{(\alph*)}}}
+  \setlist[enumerate,2]{label={\textbf{(\roman*)}}}
+
+  \RequirePackage{minted}
+  \usemintedstyle{tango}
+  \newminted{pseudo}{autogobble,mathescape,escapeinside=@@}
 \fi

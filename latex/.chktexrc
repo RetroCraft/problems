@@ -21,7 +21,7 @@ Silent {
   \question
 }
 
-VerbEnvir { rcode outcode }
+VerbEnvir { rcode outcode pseudocode }
 MathEnvir { deduce }
 MathCmd { logic }
 TextCmd { j }

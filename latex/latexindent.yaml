@@ -13,3 +13,4 @@ verbatimEnvironments:
     rcode: 1
     outcode: 1
     ccode: 1
+    pseudocode: 1
