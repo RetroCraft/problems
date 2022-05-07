@@ -339,6 +339,7 @@
 \ifx\agony@class\@optimization
   \setlist[enumerate,1]{label={(\alph*)}}
   \setlist[enumerate,2]{label={\roman*.}}
+  \newcommand{\trans}{^\intercal} % Transpose
 \fi
 
 \def\@macroecon{ec260}
