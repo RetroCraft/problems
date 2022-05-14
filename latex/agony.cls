@@ -360,5 +360,9 @@
 
   \RequirePackage{minted}
   \usemintedstyle{tango}
-  \newminted{pseudo}{autogobble,mathescape,escapeinside=@@}
+  \newminted{pseudo}{autogobble,mathescape,escapeinside=@@,linenos}
+
+  % Automatically create dummy bookmarks for splitting file
+  \let\@prob\prob
+  \renewcommand{\prob}{\pdfbookmark{\thequestion}{\thequestion}\@prob}
 \fi
