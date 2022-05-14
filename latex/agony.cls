@@ -340,6 +340,11 @@
   \setlist[enumerate,1]{label={(\alph*)}}
   \setlist[enumerate,2]{label={\roman*.}}
   \newcommand{\trans}{^\intercal} % Transpose
+  \RequirePackage{unicode-math} % For \mathbb{1} (requires xelatex)
+  
+  \newenvironment{lp}[2]%
+    {\begin{equation*}\aligned #1 && \multicolumn{4}{l}{$#2$} \\ \text{s.t.}}%
+    {\endaligned\end{equation*}}
 \fi
 
 \def\@macroecon{ec260}
