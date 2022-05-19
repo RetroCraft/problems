@@ -54,7 +54,7 @@
   \RequirePackage{tikz,pgfplots}
   \pgfplotsset{compat=1.15}
   \usepgfplotslibrary{fillbetween}
-  \usetikzlibrary{patterns}
+  \usetikzlibrary{patterns,positioning}
 \fi
 
 %
@@ -341,6 +341,9 @@
   \setlist[enumerate,2]{label={\roman*.}}
   \newcommand{\trans}{^\intercal} % Transpose
   \RequirePackage{unicode-math} % For \mathbb{1} (requires xelatex)
+  \RequirePackage{nicematrix} % For labelled matrices
+  \newcommand{\zero}{\mathbb{0}}
+  \newcommand{\one}{\mathbb{1}}
   
   \newenvironment{lp}[2]%
     {\begin{equation*}\aligned #1 && \multicolumn{4}{l}{$#2$} \\ \text{s.t.}}%
