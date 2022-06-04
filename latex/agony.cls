@@ -20,10 +20,19 @@
 \usepackage{xparse}
 \usepackage{xspace}
 
-% Formatting
-\usepackage[T1]{fontenc}
+% Typography
 \usepackage[english]{babel}
-\usepackage{lmodern}
+\usepackage{iftex}
+\ifluatex
+  \usepackage{unicode-math}
+  \setmathfont{latinmodern-math.otf}[AutoFakeBold=3]
+\else
+  \usepackage[T1]{fontenc}
+  \usepackage{lmodern}
+  \usepackage{amsfonts,amssymb}
+\fi
+
+% Formatting
 \usepackage[titles]{tocloft}
 \renewcommand*\contentsname{\@title}
 \usepackage{titlesec}
@@ -36,13 +45,12 @@
 \setlist[enumerate]{topsep=0pt}
 
 % Math
-\usepackage{amsfonts,amsmath,amssymb}
+\usepackage{amsmath}
 \usepackage{physics}
 \usepackage{cancel}
 \usepackage{systeme}
 \sysdelim.. % no curly braces
 \usepackage{mathtools} % for \DeclarePairedDelimiter macro
-\usepackage{breqn}
 
 % See https://tex.stackexchange.com/questions/510506/conflict-between-flexisym-and-polynom-packages
 \catcode`^=12 \catcode`_=12
@@ -179,8 +187,7 @@
 \newcommand{\dyx}{\dv{y}{x}}
 
 % Linear Algebra
-\newcommand{\vui}{\mathbf{\hat{\textnormal{\bfseries\i}}}}
-\newcommand{\vuj}{\mathbf{\hat{\textnormal{\bfseries\j}}}}
+\newcommand{\trans}{^{\intercal}} % Transpose
 \newcommand{\xto}{\xrightarrow} % \xto{R_1 \harr R_2}
 \newcommand{\cbm}[2]{\ensuremath{{}_{#1}[I]{}_{#2}}} % change of basis matrix
 \DeclareMathOperator{\Proj}{Proj}
@@ -190,8 +197,8 @@
 \DeclareMathOperator{\adj}{adj}
 % add optional argument for augmented matrices to ams *matrix environments and physics bmqty (tex.se 2233)
 \renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
-  \hskip -\arraycolsep
-  \let\@ifnextchar\new@ifnextchar
+  \hskip -\arraycolsep%
+  \let\@ifnextchar\new@ifnextchar%
   \array{#1}}
 \RenewDocumentCommand{\bmqty}{om}{\IfValueTF{#1}{\begin{bmatrix}[#1]#2\end{bmatrix}}{\begin{bmatrix}#2\end{bmatrix}}}
 \RenewDocumentCommand{\pmqty}{om}{\IfValueTF{#1}{\begin{pmatrix}[#1]#2\end{pmatrix}}{\begin{pmatrix}#2\end{pmatrix}}}
@@ -236,6 +243,9 @@
 \fi
 \def\@logic{cs245}
 \ifx\agony@class\@logic
+  \RequirePDFTeX
+  \RequirePackage{breqn} % breaks with unicode-math, isolating issue to here
+
   \setlist[enumerate,1]{label={(\alph*)}}
   \setlist[enumerate,2]{label={(\roman*)}}
 
@@ -339,14 +349,12 @@
 \ifx\agony@class\@optimization
   \setlist[enumerate,1]{label={(\alph*)}}
   \setlist[enumerate,2]{label={\roman*.}}
-  \newcommand{\trans}{^\intercal} % Transpose
-  \RequirePackage{unicode-math} % For \mathbb{1} (requires xelatex)
   \RequirePackage{nicematrix} % For labelled matrices
   \newcommand{\zero}{\mathbb{0}}
   \newcommand{\one}{\mathbb{1}}
   
   \newenvironment{lp}[2]%
-    {\begin{equation*}\aligned #1 && \multicolumn{4}{l}{$#2$} \\ \text{s.t.}}%
+    {\begin{equation*}\aligned #1 && \multicolumn{4}{l}{$#2$} \\ \mathrm{s.t.}}%
     {\endaligned\end{equation*}}
 \fi
 

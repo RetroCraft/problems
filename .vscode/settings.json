@@ -39,6 +39,7 @@
                 "-interaction=nonstopmode",
                 "-file-line-error",
                 "-pdf",
+                "-lualatex",
                 "-outdir=%OUTDIR%",
                 "-synctex=1",
                 "%DOC%"
