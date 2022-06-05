@@ -62,7 +62,7 @@
   \RequirePackage{tikz,pgfplots}
   \pgfplotsset{compat=1.15}
   \usepgfplotslibrary{fillbetween}
-  \usetikzlibrary{patterns,positioning}
+  \usetikzlibrary{patterns,positioning,shapes,calc,chains}
 \fi
 
 %
