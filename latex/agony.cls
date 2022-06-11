@@ -25,6 +25,7 @@
 \usepackage{iftex}
 \ifluatex
   \usepackage{unicode-math}
+  \AtBeginDocument{\renewcommand\setminus{\smallsetminus}}
   \setmathfont{latinmodern-math.otf}[AutoFakeBold=3]
 \else
   \usepackage[T1]{fontenc}
