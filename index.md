@@ -49,13 +49,19 @@ and [strategic expansion](https://quizlet.com/ca/553644800/bu111-final-review-f2
 
 ### BU 121 (W2021) <small>Functional Areas of the Organization</small>
 
-[Flashcard set (WIP)](https://quizlet.com/mian8680/folders/bu121-winter-2021/sets) for the whole course so far.
+[Flashcard sets](https://quizlet.com/mian8680/folders/bu121-winter-2021/sets) for the whole course so far.
 
 Study materials by [Ace](https://ko-fi.com/augustace) are also published before each assessment.
 
 ### BU 288 (F2021) <small>Organizational Behaviour</small>
 
-More flashcards for the [first midterm](https://quizlet.com/ca/620706160/bu288-organizational-behaviour-i-midterm-1-flash-cards/).
+Another [flashcard set](https://quizlet.com/mian8680/folders/bu288-f2021/sets) for the two midterms and final exam.
+
+### BU 231 (S2022) <small>Business Law</small>
+
+Yet more [Quizlet cards](https://quizlet.com/ca/703888580/bu231-midterm-flash-cards/) by Imaad.
+
+A review casebook using real life fact patterns for the midterm is available [here](https://retrocraft.notion.site/retrocraft/BU-231-Review-Casebook-232bb411c0b34176a0340812d7f84a24).
 
 ## Computer Science
 
