@@ -376,37 +376,8 @@
 
   % Pseudocode
   \RequirePackage{algorithm}
-  \RequirePackage{algpseudocode}
+  \RequirePackage{algpseudocodex}
   \algrenewcommand\textproc{\textit}
-  % Vertical rule patch https://tex.stackexchange.com/questions/301462/why-are-vertical-rules-dashed-sometimes-with-algorithmic-package
-  \newcommand*{\algrule}[1][\algorithmicindent]{%
-    \makebox[#1][l]{%
-        \hspace*{.2em}% <------------- This is where the rule starts from
-        \vrule height .75\baselineskip depth .3\baselineskip
-    }
-  }
-
-  \newcount\ALG@printindent@tempcnta
-  \def\ALG@printindent{%
-    \ifnum \theALG@nested>0% is there anything to print
-      \ifx\ALG@text\ALG@x@notext% is this an end group without any text?
-        % do nothing
-      \else
-        \unskip
-        % draw a rule for each indent level
-        \ALG@printindent@tempcnta=1
-        \loop
-        \algrule[\csname ALG@ind@\the\ALG@printindent@tempcnta\endcsname]%
-        \advance \ALG@printindent@tempcnta 1
-        \ifnum \ALG@printindent@tempcnta<\numexpr\theALG@nested+1\relax
-        \repeat
-      \fi
-    \fi
-  }
-  % the following line injects our new indent handling code in place of the default spacing
-  \patchcmd{\ALG@doentity}{\noindent\hskip\ALG@tlm}{\ALG@printindent}{}{\errmessage{failed to patch}}
-  \patchcmd{\ALG@doentity}{\item[]\nointerlineskip}{}{}{} % no spurious vertical space
-  % end vertical rule patch for algorithmicx
 
   % Automatically create dummy bookmarks for splitting file
   \let\@prob\prob
