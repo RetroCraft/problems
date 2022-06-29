@@ -52,6 +52,10 @@
 \usepackage{systeme}
 \sysdelim.. % no curly braces
 \usepackage{mathtools} % for \DeclarePairedDelimiter macro
+\@ifpackageloaded{unicode-math}{
+  \let\underbrace\LaTeXunderbrace
+  \let\overbrace\LaTeXoverbrace
+}{}
 
 % See https://tex.stackexchange.com/questions/510506/conflict-between-flexisym-and-polynom-packages
 \catcode`^=12 \catcode`_=12
