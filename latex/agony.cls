@@ -38,7 +38,7 @@
 \renewcommand*\contentsname{\@title}
 \usepackage{titlesec}
 \usepackage{multicol,collcell}
-\usepackage[dvipsnames]{xcolor}
+\usepackage[dvipsnames,table]{xcolor}
 \usepackage{array} % for \newcolumntype macro
 
 \usepackage{enumerate}
