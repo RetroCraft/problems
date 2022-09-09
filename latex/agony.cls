@@ -387,3 +387,14 @@
   \let\@prob\prob
   \renewcommand{\prob}{\pdfbookmark{\thequestion}{\thequestion}\@prob}
 \fi
+
+\def\@combinatorics{math239}
+\ifx\agony@class\@combinatorics
+  \newcommand{\id}{\operatorname{id}}
+\fi
+
+\def\@hardware{cs251}
+\ifx\agony@class\@hardware
+  \setlist[enumerate,1]{label={(\alph*)}}
+  \setlist[enumerate,2]{label={(\roman*)}}
+\fi
