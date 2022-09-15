@@ -391,10 +391,34 @@
 \def\@combinatorics{math239}
 \ifx\agony@class\@combinatorics
   \newcommand{\id}{\operatorname{id}}
+  \newcommand{\bijects}{\rightleftharpoons}
+  \newcommand{\powerset}{\mathcal{P}}
 \fi
 
 \def\@hardware{cs251}
 \ifx\agony@class\@hardware
   \setlist[enumerate,1]{label={(\alph*)}}
   \setlist[enumerate,2]{label={(\roman*)}}
+  \newcommand{\integ}[2]{
+    Statement of Academic Integrity for \thetitle
+
+    I declare the following statements to be true:
+    \begin{itemize}[nosep]
+      \item I have not used any unauthorized aids.
+      \item I recognize that while I can discuss the questions in this assignment on Piazza and
+      other forums with the instructors and with other students in the class, the write up
+      that I am submitting is my own.
+      \item I am aware that misconduct related to course work can result in significant penalties,
+      including failing the course and suspension (this is covered in Policy 71)
+    \end{itemize}
+
+    \textbf{Student Name:} \@author
+    
+    \textbf{UW ID\#:} #1
+
+    \textbf{Signature:} \includegraphics[height=15px]{#2}
+
+    \textbf{Date:} \today
+    \pagebreak
+  }
 \fi
