@@ -393,6 +393,8 @@
   \newcommand{\id}{\operatorname{id}}
   \newcommand{\bijects}{\rightleftharpoons}
   \newcommand{\powerset}{\mathcal{P}}
+  \setlist[enumerate,1]{label={(\alph*)}}
+  \setlist[enumerate,2]{label={(\roman*)}}
 \fi
 
 \def\@hardware{cs251}

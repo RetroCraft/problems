@@ -65,6 +65,15 @@ A review casebook using real life fact patterns is available [here](https://retr
 
 For post-midterm content, Imaad made a summary in [flowchart format](./BU231/flowchart.html).
 
+### BU 352 (F2022) <small>Introduction to Marketing</small>
+
+Work in progress [flashcard set](https://quizlet.com/ca/723976718/bu352-f22-flash-cards/)
+by Imaad which will be updated throughout the term.
+
+### BU 354 (F2022) <small>Human Resources Management</small>
+
+Likewise, a continuously-updated [flashcard set](https://quizlet.com/ca/726181837/bu354-f22-flash-cards/) by Imaad.
+
 ## Computer Science
 
 ### CS 135 (F2020) <small>Designing Functional Programs</small>
