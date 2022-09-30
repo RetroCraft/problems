@@ -24,7 +24,8 @@ Otherwise, keep in mind that:
 
 - You _should_ be a student in the relevant class to contribute,
   since you should not otherwise have access to these problems.
-- LaTeX macros used in multiple files are placed in `agony.cls`. Make sure it's on the path.
+- LaTeX macros used in multiple files are placed in the `latex` folder. Make sure it's on the path.
+  - You can do this by setting `TEXINPUTS`. If using VS Code, this is automatically done for you in `./.vscode/settings.json`.
 - Some packages used (notably for code highlighting) require `-shell-escape`.
 - Formatting is done with `latexindent`. I'm not a huge stickler for indentation.
 - PDF files are added to the repository so they may be served by GitHub Pages.
