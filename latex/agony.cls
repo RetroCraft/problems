@@ -161,6 +161,12 @@
 % multiple choice (remove spacing between items)
 \newenvironment{choices}{\begin{enumerate}[(a),nosep]}{\end{enumerate}}
 
+% Cute initialisms (with versions for start of sentences)
+\newcommand{\Wlog}{\textsc{wlog}}
+\newcommand{\WLOG}{\textsc{Wlog}}
+\newcommand{\Tfae}{\textsc{tfae}}
+\newcommand{\TFAE}{\textsc{Tfae}}
+
 % Typesetting
 \newcolumntype{C}{>{$}c<{$}} % math version of "C" column type
 \newcommand{\dint}{\displaystyle\int}
