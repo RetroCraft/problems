@@ -1,5 +1,8 @@
 \RequirePackage{chngcntr}
 \counterwithout{section}{chapter}
+\titleformat{\section}{\normalfont\large\bfseries}{Lecture~\thesection}{1em}{}
+\settowidth{\cftsecnumwidth}{Lecture~0000~}
+\renewcommand\cftsecpresnum{Lecture~}
 
 \setlength\topsep{6pt}
 \declaretheorem[style=definition,name=Definition,
@@ -18,3 +21,5 @@
 \declaretheorem[style=remark,unnumbered]{corollary}
 \declaretheorem[style=definition,name=Example,numberwithin=section,
   refname={example,examples},Refname={Example,Examples}]{example}
+
+\RequirePackage[hybrid,underscores=false]{markdown}

@@ -48,6 +48,7 @@
 \usepackage{array} % for \newcolumntype macro
 
 \usepackage{enumerate}
+\usepackage{paralist}
 \usepackage[shortlabels]{enumitem} % remove space before enums
 \setlist[enumerate]{topsep=0pt}
 \setlist[enumerate,1]{label={(\alph*)}}

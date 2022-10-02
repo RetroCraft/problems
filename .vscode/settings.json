@@ -32,7 +32,7 @@
     "explorer.fileNesting.enabled": true,
     "explorer.fileNesting.expand": false,
     "explorer.fileNesting.patterns": {
-        "*.pdf": "${capture}.log, ${capture}.out, ${capture}.log, ${capture}.aux, ${capture}.fls, ${capture}.fdb_latexmk, ${capture}.synctex.gz, ${capture}.synctex(busy), ${capture}.xdv, _minted-${capture}, ${capture}.toc",
+        "*.pdf": "${capture}.log, ${capture}.out, ${capture}.log, ${capture}.aux, ${capture}.fls, ${capture}.fdb_latexmk, ${capture}.synctex.gz, ${capture}.synctex(busy), ${capture}.xdv, _minted-${capture}, ${capture}.toc, _markdown_${capture}, ${capture}.markdown.in",
         "*.cpp": "${capture}.o"
     },
     "latex-workshop.view.pdf.trim": 2,
