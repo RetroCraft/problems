@@ -12,7 +12,7 @@
 \DeclareBoolOption{notes}
 \DeclareDefaultOption{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessKeyvalOptions*
-\LoadClass[11pt]{article}
+\ifagony@notes\LoadClass[11pt]{report}\else\LoadClass[11pt]{article}\fi
 
 %
 % Load packages

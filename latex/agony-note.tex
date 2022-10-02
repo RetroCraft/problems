@@ -1,12 +1,5 @@
-\newcounter{chapter}
-\newcommand{\chapter}[1]{
-  \pagebreak
-  \addtocounter{chapter}{1}
-  {\begin{center}\Large\underline{\textbf{Part \Roman{chapter}:~#1}}\end{center}}
-  \addcontentsline{toc}{section}{\hspace*{-1em}Part~\Roman{chapter}:~#1}
-}
-\titleformat*{\section}{\normalfont\bfseries\large}
-\setlength\cftsecindent{1em}
+\RequirePackage{chngcntr}
+\counterwithout{section}{chapter}
 
 \setlength\topsep{6pt}
 \declaretheorem[style=definition,name=Definition,
