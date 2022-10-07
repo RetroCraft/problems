@@ -541,9 +541,9 @@ Note: The proof must go in this direction. For weight functions $w_i : A_i \to \
   $(01)^*$ produces $\{\varepsilon, 01, 0101, 010101, \dotsc\}$.
 \end{sol}
 
-\begin{example}
+\begin{example}\label{exa:9-impos}
   Not every set is a rational language.
-  The set $\{e,01,0011,000111,0^i1^i\}$ is not a rational language
+  The set $\{\varepsilon,01,0011,000111,0^i1^i\}$ is not a rational language
   because it cannot be produced by a regular expression.
 \end{example}
 
@@ -735,5 +735,181 @@ Be careful to distinguish between:
 \begin{sol}
   $(0^5(000)^*)((1^2 \smile 1^3 \smile \dotsb \smile 1^8)(0^5(000)^*))^*$.
 \end{sol}
+
+\section{(10/03)}
+
+Instead of decomposing after every block of 1s,
+we could instead decompose after every 1.
+This leads to prefix decompositions:
+the regular expression $\rx M^* \rx T$
+where $\rx M = 0^* 1$ and $\rx T = 0^*$
+unambiguously produces the set of all binary strings.
+
+As a sanity check, notice that $(M^*T)(x) = \frac{1}{1-\frac{1}{1-x}x}\frac{1}{1-x} = \frac{1}{1-2x}$
+which we expect as the generating series for all binary strings.
+
+\begin{example}\label{exa:12-1}
+  Write an unambiguous regular expression for binary strings without $k$
+  consecutive zeroes.
+\end{example}
+\begin{sol}
+  $((\varepsilon\smile 0^1 \smile \dotsb \smile 0^{k-1})1)^*(\varepsilon\smile 0^1\smile\dotsb\smile0^{k-1})$.
+
+  This leads to $\frac{1}{1-(1+\dotsb+x^{k-1})x}\cdot(1+\dotsb+x^{k-1})
+    = \frac{1+\dotsb+x^{k-1}}{1-x-\dotsb-x^k}
+    = \frac{1-x^k}{1-2x+x^{k+1}}$
+\end{sol}
+
+Similarly, decompose before every 1.
+This leads to postfix decompositions:
+the regular expression $\rx I \rx M^*$
+where $\rx I = 0^*$ and $\rx M = 1 0^*$
+unambiguously produces the set of all binary strings.
+
+\begin{defn}[recursive expression]
+  A regular expression $\rx R$ which may contain itself.
+  The rational function $R(x)$ that $\rx R$ leads to is identical
+  to if it were a regular expression except $\rx R$ leads to $R(x)$.
+\end{defn}
+
+\begin{example}
+  Interpet $\rx S = \varepsilon \smile (0\smile 1)\rx S$.
+\end{example}
+\begin{sol}
+  Clearly, $\varepsilon$ is in $\rl S$.
+  Also, $0\varepsilon = 0$ and $1\varepsilon = 1$ are in $\rl S$.
+  Onward, by induction, $\rl S$ contains all binary strings.
+
+  The rational function $S(x) = 1 + (x + x)S(x) = 1 + 2x S(x)
+    \implies S(x) = \frac{1}{1-2x}$
+  which matches the generating series for binary strings.
+\end{sol}
+
+\begin{example}
+  Interpret $\rx S = \varepsilon \smile 1\rx S$.
+\end{example}
+\begin{sol}
+  This produces the set of all binary strings with no 0s.
+
+  It leads to $S(x) = 1 + x S(x) \implies S(x) = \frac{1}{1-x}$.
+\end{sol}
+
+\begin{example}
+  Write the prefix decomposition as a recursive expression.
+\end{example}
+\begin{sol}
+  $\rx S = 0^* \smile (0^*1)\rx S$
+\end{sol}
+
+\begin{example}\label{exa:12-5}
+  Write \cref{exa:12-1} as a recursive expression.
+\end{example}
+\begin{sol}
+  $\rx S = (\varepsilon \smile 0 \smile \dotsb \smile 0^{k-1})
+    \smile ((\varepsilon \smile 0 \smile \dotsb \smile 0^{k-1})1)\rx S$.
+
+  This leads to $S(x) = (1+\dotsb+x^{k-1}) + (1+\dotsb+x^{k-1})S(x)
+    \implies S(x) = \frac{1+\dotsb+x^{k-1}}{1-(1+x+\dotsb+x^{k-1})x}$
+  as in \cref{exa:12-1}.
+\end{sol}
+
+\begin{example}
+  Write \cref{exa:9-impos} as a recursive expression.
+\end{example}
+\begin{sol}
+  $\rx S = \varepsilon \smile 0\rx S 1$.
+  Recall that this is not possible with ordinary regular expressions.
+
+  Then, the generating series $S(x) = 1 + x S(x) x = 1 + x^2 S(x)
+    \implies S(x) = \frac{1}{1-x^2}$.
+\end{sol}
+
+Recursion allows us to solve a wider range of problems.
+
+\begin{defn}[containment]
+  A binary string $\sigma$ contains $\kappa$ if there exist binary strings
+  $\alpha$ and $\beta$ such that $\sigma = \alpha\kappa\beta$.
+\end{defn}
+
+We want to solve the general problem:
+given $\kappa$ a fixed binary string and
+$\rl S_\kappa$ the set of all binary strings that do not contain $\kappa$,
+determine $\Phi_{\rl S_\kappa}(x)$.
+
+We just did this for $\kappa = 0^k$ in \cref{exa:12-1,exa:12-5},
+but what about arbitrary $\kappa$?
+
+\section{(10/05)}
+
+\begin{defn}[avoidance]
+  A binary string $\alpha$ excludes a binary string $\kappa$
+  if $\alpha$ does not contain $\kappa$.
+\end{defn}
+
+We are solving the general problem: given a binary string $\kappa$,
+let $A_{\kappa}$ be the set of binary strings avoiding $\kappa$.
+Determine $\Phi_{A_{\kappa}}(x)$.
+
+\begin{theorem}[3.26]
+  Let $\kappa$ be a fixed binary string,
+  $\rl A = \rl A_{\kappa}$ be the set of binary strings avoiding $\kappa$,
+  and $A(x) = \Phi_{\rl A_\kappa}(x)$. Then,
+  \[ A(x) = \frac{1+C(x)}{(1-2x)(1+C(x)) + x^{\ell(\kappa)}} \]
+  where $C(x) = \Phi_{\rl C}(x)$ where
+  $\rl C$ is the set of non-empty proper suffixes $\gamma$ of $\kappa$
+  such that there exists a non-empty proper prefix $\eta$
+  such that $\kappa\gamma = \eta\kappa$.
+\end{theorem}
+
+\begin{example}
+  $\kappa = 0^k$. Then, $\rl C = \{0,0^2,\dotsc,0^{k-1}\}$
+  because $0^k 0^i = 0^i 0^k$.
+\end{example}
+
+\begin{example}
+  $\kappa = 11011$. Then, $\rl C = \{011, 1011\}$
+  because we can write $(11011)(011) = (110)(11011)$
+  and $(11011)(1011) = (1101)(11011)$ but not with 1 or 11.
+\end{example}
+
+\begin{prf}
+  Let $\rl B$ be the set of all binary strings
+  with exactly one occurence of $\kappa$ and that occurence is at the end.
+  Let $B(x) = \Phi_{\rl B}(x)$.
+
+  \emph{Claim}.
+  The following are unambiguous recursive expressions relating $\rl A$ and $\rl B$:
+  \begin{align*}
+    \rx A \smile \rx B & = \varepsilon \smile \rx A(0 \smile 1)                   &
+    \rx A \kappa       & = \rx B \smile \smilesum_{\gamma \in \rl C} \rx B \gamma
+  \end{align*}
+  For (1): We know $\varepsilon \in \rl A$ and $\rx A(0 \smile 1)$
+  generates the strings of length at least 1 that are either in $\rl A$
+  (by adding a bit that does not complete $\kappa$)
+  or in $\rl B$ (by adding a bit that does).
+  In the other direction, notice that deleting a bit from $\rl A$ or $\rl B$ is in $\rl A$.
+
+  For (2): If $\sigma \in \rl A\kappa$, then $\sigma$ has an occurence of $\kappa$
+  at the end.
+
+  Let $\sigma'$ be the substring of $\sigma$ with the same start and ending at the
+  first occurence of $\kappa$. This exists since there exists at least one occurence of $\kappa$.
+
+  Thus, $\sigma' \in \rl B$ and $\sigma = \sigma'\gamma = \sigma'' \kappa$
+  and hence $\kappa\gamma = \eta\kappa$ and $\gamma \in \rl C$
+  where $\gamma$ is the suffix of $\kappa$ of length $w(\sigma) = w(\sigma')$.
+
+  Converting the expressions to equations gives
+  \begin{align*}
+    A(x) + B(x)        & = 1 + A(x) 2x                                   &
+    A(x) x^{w(\kappa)} & = B(x)\qty(1+\sum_{\gamma\in\rl C} x^w(\gamma))   \\
+                       &                                                 &
+                       & = B(x)(1+C(x))
+  \end{align*}
+  and solving gives us $A(x) = \frac{1+C(x)}{(1+2x)(1+C(x)) + x^{w(\kappa)}}$
+  by eliminating $B(x)$.
+\end{prf}
+
+\chapter{Recurrence Relations}
 
 \end{document}
