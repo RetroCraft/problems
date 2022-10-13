@@ -213,14 +213,15 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 17. **MATH135/MT2018F/Q05** Negated implication wrong ([#7](https://github.com/RetroCraft/problems/issues/7))
 18. **MATH135/EP08/RP09** Applied CRT without checking pairwise coprimeness
 19. **MATH135/EP06/RP01(b)** Mistyped number (joseph)
-20. **MATH135/EP06/RP03** Flipped the divisor d and the dividends x and y (joseph)
+20. **MATH135/EP06/RP03** Flipped the divisor $$d$$ and the dividends $$x$$ and $$y$$ (joseph)
 21. **MATH135/EP08/RP01** Fixed a substitution typo; the remainder should be 8, not 3 (Yuqiao)
 22. **MATH135/EP06/RP09** Flipped the directional arrows of the proof (Vivek)
-23. **MATH135/EP08/RPWE2** Should be 4(-4) ≡ 5 (mod 21) (Dan)
-24. **MATH135/EP08/RP04**  Can reduce x^26 to x^2 with CFlT -- makes the table less fat (Dan)
+23. **MATH135/EP08/RPWE2** Should be $$4(-4) \equiv 5 \pmod{21}$$ (Dan)
+24. **MATH135/EP08/RP04**  Can reduce $$x^{26}$$ to $$x^2$$ with CFlT -- makes the table less fat (Dan)
 25. **MATH135/FE2021W/Q03** Can't apply FlT, since 10 is not prime (Dan)
-26. **MATH135/FE2021W/Q08** 7-1=8 (Dan)
+26. **MATH135/FE2021W/Q08** 7 - 1 = 8 (Dan)
 27. **MATH135/FE2021W/Q010** Found counterexample (part a) and RHS is not the set of integers (part b) (Dan)
+28. **MATH135/EP04/RP01(b)** Another 0 = 1 typo (Evelina)
 
 ## Contact
 
