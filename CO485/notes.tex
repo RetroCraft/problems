@@ -725,4 +725,307 @@ Since there are $\frac{n}{\log n} + O(\sqrt n)$ primes less than $n$,
 we can pick random numbers of size $e^\ell$ to get an approximate $\frac{1}{\ell}$
 probability of a prime.
 
+\section{Malleability (10/07)}
+Recall the Goldwasser--Micali cryptosystem.
+It satisfies IND-CPA provided that the quadratic reciprocity problem is hard.
+That is, determining whether an $x = pq$ with $\leg{x}{n} = 1$
+is actually a square or not (i.e. $\leg{x}{p} = 1$).
+
+However, an adversary can still alter the message without needing to decrypt.
+This also applies, for example, to XOR one-time pads (since if $c = k \oplus m$
+and we intercept $c \mapsto c \oplus n$, recepient will get $m' = m \oplus n$).
+Using MACs can get around this problem (e.g. AES with GCM or Chacha20 with Poly1305).
+
+\begin{defn}[non-malleability]
+  Given the game NM-CPA:
+  \begin{enumerate}[1.,nosep]
+    \item $\mathcal C$ generates $(pk,sk)$
+    \item $(m_0, m_1, m_0', m_1') \xgets{\$} \mathcal A(\lambda, pk)$ where $m_0' \neq m_1'$
+    \item $\mathcal C$ chooses $b \xgets{\$} \{0,1\}$
+    \item $\mathcal C$ computes $c = E(m_b)$
+    \item $c' \gets \mathcal A(\lambda, pk, c)$
+  \end{enumerate}
+  with win condition $D(c') = m_b'$ with non-negligible probability above 50\%.
+\end{defn}
+
+Instead of CPA games, consider CCA2 (chosen-ciphertext attack 2) games.
+Here, the adversary has a decryption oracle that takes anything except $c$.
+In CCA1, the oracle can only be accessed prior to receiving $c$.
+
+\begin{theorem}
+  IND-CCA2 is equivalent to NM-CCA2
+\end{theorem}
+
+Note that IND-CPA is not equivalent to NM-CPA,
+which is instead equal to IND-PCA (parallel ciphertext attack,
+where all oracle queries must occur at once).
+
+\section{Factorization Algorithms (10/17)}
+
+Naive approach: trial division by $1,\dotsc,\sqrt{n}$ which is $O(\sqrt{n}) = O(\exp(\frac12\log n))$.
+Note that we call this ``exponential'' because we measure with respect
+to the size of the input, i.e., $\lg n \approx \log n$.
+
+\begin{prop}
+  If $x,y\in \mgrp{n}$ satisfy $x^2 \equiv y^2 \pmod n$ and $x \not\equiv \pm y \pmod n$,
+  then $\gcd(n, x-y)$ is a non-trivial factor of $n$.
+\end{prop}
+\begin{prf}
+  Since $x^2 - y^2 \equiv 0$, we have $(x-y)(x+y) \equiv 0$.
+  But we know that $x-y \not\equiv 0$ and $x+y \not\equiv 0$
+  so there must be some weird hidden factor.
+
+  If $\gcd(n,x-y) = n$, then $n \mid (x-y) \implies x \equiv y \pmod n$
+  and if $\gcd(n,x-y) = 1$, then $n \mid (x-y)(x+y)$ which implies $n \mid (x+y)$
+  by Gauss' Lemma which gives the same contradiction.
+  Therefore, since the GCD must divide $n$, it is non-trivial.
+\end{prf}
+
+Using this, we can find non-trivial factors of $n$ by finding $x$ and $y$
+and then applying the EEA.
+How to find $x$ and $y$?
+
+\subsubsection{Random squares (Dixon)}
+
+\begin{defn}[$B$-smoothness]
+  $n \in \N$ where the largest prime factor is less than $B$
+\end{defn}
+
+Chose $x_i \xgets{\$} \mgrp{n}$.
+For each $x_i$, compute $x_i^2 \pmod n$ and keep the $B$-smooth squares.
+We can tell if a number is $B$-smooth by trial division (since $B$ is small).
+
+We need at least $t+1$ squares that are $B$-smooth.\footnote{Where $t=\pi(B)$ is the prime-counting function.}
+
+This gives us squares $x_1^2 \bmod n = p_1^{e_{1,1}}\dotsb p_t^{e_{t,1}}$
+up to $x_{t+1}^2 \bmod n = p_1^{e_{1,t+1}}\dotsb p_t^{e_{t,t+1}}$.
+
+Take the subset product $\prod x_i^2 \bmod n = p_1^{\sum e_{1,i}}\dotsb p_t^{\sum e_{t,i}}$.
+
+We can define $b_i = \begin{cases}0 & i \in S \\ 1 & i \not\in S\end{cases}$
+so that $\sum_{i\in S}e_{j,i} = \sum_{i=1}^{t+1}e_{j,i}b_i = 0 \bmod 2$
+to find squares.
+
+Solve this homogeneous linear system over $\Z/2\Z$ (where the $b_i$ are variables).
+We know there exists a non-trivial solution because there are more variables (at least $t+1$) than equations (exactly $t$).
+
+That gives a square subset product $x^2 = \prod\limits_{i=1}^{t+1} (x_i^2)^{b_i} \bmod n
+  = \prod\limits_{j=1}^t p_j^{\sum_{i=1}^{t+1} e_{j,i} b_i} \bmod n = y^2$.
+
+The LHS and RHS are unrelated except for the fact that they are equal mod $n$.
+In fact, with about 50\% probability, $x \not\equiv \pm y \bmod n$.
+The probability can be improved by increasing $t+1$ to like $t+10$.
+Since $t \approx B$ is large, this is negligible.
+
+Picking $B$: large $B$ makes it more likely to find $B$-smooth squares, however,
+the amount of work $t+1$ is proportional to $B$.
+
+We want to pick $B$ such that the probability of squares being $B$-smooth is $\frac1B$.
+This depends on $n$.
+
+From analytic number theory, the probability that a random $y \xgets{\$} \Z/n\Z$
+is $L(\alpha,c)$-smooth is $L(1-\alpha,\frac{1-\alpha}{c})$.\footnote{Where $L_n(\alpha,c) = O(\exp(c(\log n)^\alpha(\log\log n)^{1-\alpha}))$.
+  Notably, $L_n(1,1) = n$ and $L_n(1,c) = n^c$. Then, $\sqrt{n} = L_n(1,\frac12)$.
+  Also, $L_n(0,c) = (\log n)^c$.
+  That is, we interpolate between $L_n(0,c)$ polynomial time and $L_n(1,c)$ exponential time}
+So we set a bound on $B$ of $L_n(\frac12,\frac{\sqrt2}{2})$.
+Since $(\log n)^k \ll B \ll \sqrt{n}$, we call this subexponential.
+
+\section{Better Sieves (10/19)}
+
+What is the probability that a particular $x^2 \bmod n$ is $B$-smooth?
+Vanishingly small for large $n$ (in the hundreds of digits)
+and small-ish $B$ (around $10^9$).
+However, we can prove that the runtime for random squares is $L_n(\frac12,2\sqrt2)$
+using results from analytic number theory, i.e., probabilistic subexponential time.
+
+How can we improve?
+Pick $x$ such that $x^2 \bmod n$ is small (and more likely to be $B$-smooth).
+Naively: small numbers stay small (but are useless).
+Instead, pick $x \approx \sqrt{n}$ so that $x^2 \bmod n = x^2 - n$.
+
+Then, if $x = \sqrt{n} + k$, $x^2 = (\sqrt n + k)^2 - n = 2k\sqrt n + k^2
+  = O(k\sqrt{n})$, i.e., around half the size of $n$ and much smaller than $n$.
+
+This is the quadratic sieve.
+We can bound $B < L_n(\frac12, 1)$ and prove runtime $L_n(\frac12,\sqrt2)$.
+
+Suppose we write $\sqrt{n} = a_0 + \frac{1}{a_1 + \frac{1}{a_2 + \frac{1}{\ddots}}} = [a_0,a_1,\dotsc]$
+as a continued fraction.
+
+Define $\frac{P_i}{Q_i} = [a_0,\dotsc,a_i]$.
+These fractions rapidly approach $\sqrt{n}$ (and are in fact the best rational approximations).
+That is, $P_i^2 - nQ_i^2$ rapidly approaches 0.
+We can prove that $0 < P_i - nQ_i^2 < 2\sqrt n + 1$.
+Then, we can take $P_i^2 \bmod n$ and sieve guaranteed that the squares are $O(2\sqrt n)$.
+
+Comparing the continued fraction sieve and quadratic sieve,
+$O(2\sqrt n)$ appears better than $O(k\sqrt n)$.
+However, if the quadratic sieve considers consecutive numbers to square,
+we can do a sieve of Eratosthenes-like search to find good $B$-smooth candidates.
+This is faster.
+
+One more improvement step: number field sieve.
+
+Choose $d \approx 6 \in \Z$ and $m \approx n^{1/d}$.
+Write $n$ in base $m$: $n = a_0 + a_1m + \dotsb + a_5m^5$
+and consider the polynomials $f(x) = a_0 + a_1x + \dotsb + a_5 x^5$
+and $g(x) = x-m$.
+
+We know that $f(m) = n \equiv 0 \pmod n$ and $g(m) = 0$.
+That is, $m$ is a root of both $f$ and $g$ mod $n$.
+The coefficients are also all around $m = O(n^{1/d})$ in size.
+
+Consider $\alpha$ a complex root of $f$
+(but consider it as part of a number field $\alpha \in \Z[\alpha]$).
+We pick $a_i,b_i \in \Z$ such that $a_i+b_i\alpha = \prod\beta_i$ is smooth in $\Z[\alpha]$
+and $a_i+b_im = \prod q_i$ is smooth in $\Z$.
+
+Pick a subset $S$ such that $\prod_{i\in S}(a_i + b_i\alpha) = \square$ in $\Z[\alpha]$
+and $\prod_{i\in S}(a_i + b_i m) = \square \bmod n$ in $\Z$.
+We can expand the first sum, then replace $\alpha$ with $m \bmod n$
+to get congruent squares for a sieve.
+In fact, $\alpha \mapsto m \bmod n$ is a ring homomorphism from $\Z[\alpha] \to \Z/n\Z$.
+
+Since the numbers are smaller, we have complexity $L_n(\frac13, \sqrt[3]{\frac{64}{9}})$.
+
+\section{(10/21)}
+
+\section{Index Calculus (10/26)}
+
+There is a connection between runtimes of
+factoring algorithms and DLOG algorithms:
+\begin{center}
+  \begin{tabular}{c|c}
+    Factoring $n$                                       & DLOG in $\Z_p^*$ or $\F_q^*$ where $q = p^k$                  \\ \hline
+    Trial ($O(n)$)                                      & Trial ($O(p)$)                                                \\
+    $O(\sqrt{n})$                                       & Pollard's rho ($O(\sqrt{p})$)                                 \\
+    Random squares ($L_p(\frac12,\sqrt2)$)              & Index calculus ($L_p(\frac12,\sqrt2)$)                        \\
+    NFS ($L_n(\frac13,\sqrt[3]{\frac{64}{9}})$)         & NFS for DLOG ($L_p(\frac13,\sqrt[3]{\frac{64}{9}})$)          \\
+    Special NFS ($L_n(\frac13,\sqrt[3]{\frac{32}{9}})$) & Tower NFS ($L_q(\frac13,\sqrt[3]{\frac{32}{9}})$ if $k < 50$) \\
+    ???                                                 & $L_q(\varepsilon, c)$ for $p < 10$
+  \end{tabular}
+\end{center}
+
+\begin{theorem}[Shoup]
+  For a generic group, classical probabilistic DLOG algorithms
+  require $\Omega(\sqrt{p})$ group operations.
+\end{theorem}
+
+What we mean by generic here is that the group ``interface''
+is exposed (multiplication, inversion, equality) but we don't
+know anything about the elements/structure.
+
+\subsubsection*{Index calculus}
+
+Consider $\Z_p^* = \{1,2,\dotsc,p-1\}$, $g$, $h = g^\alpha$.
+We want to find $\alpha$, the ``index''.
+We construct ``random index calculus'' from the random squares algorithm.
+Pick random $x_i$ and calculate:
+\begin{align*}
+  g^{x_1} \bmod p     & = p_1^{e_{1,1}}\dots p_t^{e_{t,1}}     \\
+                      & \vdots                                 \\
+  g^{x_{t+1}} \bmod p & = p_1^{e_{1,t+1}}\dots p_t^{e_{t,t+1}}
+\end{align*}
+where we keep $B$-smooth $g^{x_i} \bmod p \approx O(p)$
+until we get more equations than primes $p_i$.
+
+If we take log base $g$ on both sides: $x_1 \equiv \sum e_{i,1}\log_g p_i \pmod{p-1}$.\footnote{
+  $\log_g p_i$ always exists. If $g$ is not a generator
+  since \emph{some} generator $h$ exists and we have
+  $\frac{\log_h p_i \bmod p-1}{\log_h g \bmod p-1}$.}
+Since we know the $x_i$ and $e_{i,j}$, we can solve the system of linear equations
+for the discrete logs $\log_g p_i$ (since there are at least $t+1$ equations and $t$ variables).
+
+Now, take random $y$ find an $h^y = p_1^{f_1}\dots p_t^{f_t}$ that is $B$-smooth.
+Taking logs as above, $y\alpha = \sum f_i \log_g p_i$ and we can solve for $\alpha$.
+
+Since this is basically the same process as random squares,
+it is no surprise it has similar time complexity $L_p(\frac12,\sqrt2)$.
+Practically, it's slightly harder than factoring.
+
+\section{Hash Functions (10/28)}
+
+To establish something that is NM-CCA2 secure, we need to somehow ``sign''
+the ciphertext to distinguish ``authenticated'' ciphertexts.
+We can do this with MACs (e.g., AES-GCM or ChaCha20-Poly1305)
+but we will do something different.
+
+Consider a hybrid encryption scheme:
+use public-key encryption to send a symmetric key that encrypts the message.
+This is CO 487 content.
+
+\subsubsection*{Hash functions}
+
+Most common hash functions are the SHA family:
+SHA0 (broken 2005), SHA1 (broken 2017), SHA2 (actually used),
+SHA3 (not really used, made in anticipation of SHA2 breaking).
+Again, CO 487 content beyond the scope of this course.
+
+\begin{defn}[hash function]
+  Function $H : S \to T$ (typically, $S = \{0,1\}^*$ and $T = \{0,1\}^\lambda$)
+\end{defn}
+
+Ideally, a hash function is a random oracle, i.e.,
+$H \xgets{\$} \{ f : (f : S \to T) \}$.
+This is useful, e.g., for making hashed RSA signatures
+existentially unforgeable under chosen message attack.
+
+There is no way to easily construct a random oracle
+because (1) we can't construct the set of all functions and
+(2) we run into measure theory issues with defining a probability distribution on that set.
+Instead we construct with desired properties:
+\begin{enumerate}[1.]
+  \item Preimage resistant: Given $t \in T$, it is infeasible to find $s \in H^{-1}(t)$.
+  \item Second preimage resistant: Given $s \in S$, it is infeasible to find
+        $s' \in S$ such that $s \neq s'$ and $H(s) = H(s')$.
+  \item Collision resistant: It is infeasible to find $s \neq s'$
+        such that $H(s) = H(s')$.
+\end{enumerate}
+
+\begin{example}
+  Are all preimage resistant functions second preimage resistant?
+\end{example}
+\begin{sol}
+  Consider $f(x) = x^2 \bmod n$.
+  To find a preimage, take $x = \sqrt{y}$ (hard).
+  To find a second preimage, take $x' = -x \neq x$ so $(-x)^2 = x^2$ (easy).
+\end{sol}
+
+To be formal, use games.
+For example, with collision resistance:
+Suppose we have a family of hash functions $HashGen : \one^\lambda \mapsto H_\lambda$.
+Play the game:
+\begin{enumerate}[1.]
+  \item Pick a hash function $H_\lambda \xgets{\$} HashGen(\one^\lambda)$
+  \item $(s, s') \gets \mathcal A(\one^\lambda, H_\lambda)$
+\end{enumerate}
+with win condition $H_\lambda(s) = H_\lambda(s')$ and $s \neq s'$.
+We define $\{H_\lambda : \lambda \in \N\}$
+to be collision-resistant if no probabilistic polynomial time adversary $\mathcal A$
+can win this game with non-negligible probability in $\lambda$.
+
+We can construct collision-resistant hash functions
+from claw-free permutations by Damg\aa{}rd.
+
+\begin{defn}[claw-free permutation]
+  Given a set $X$, the pair of permutations $(f,g)$ is claw-free if
+  it is infeasible to find $x_1,x_2 \in X$ such that $f(x_1) = g(x_2)$.
+\end{defn}
+
+The wrong way:
+Given claw-free permutations $f : X \to X$ and $g : X \to X$,
+we define $H : \{0,1\}^* \to X$ with $H(\varepsilon) = x_\varepsilon$.
+Inductively, $H(b_1b_2\cdots b_n) = h(H(b_1\cdots b_{n-1}))$
+where $h = f$ if $b_n = 0$ and $g$ if $b_n = 1$.
+Claim this is collision-resistant because if there is a collision
+$H(m) = H(m')$ and $m \neq m'$, we have a claw at some point,
+which is a contradiction.
+Unfortunately, we could run into a loop back to $x_\varepsilon$.
+
+Instead, pick $x_0 \in X$ and define $x_\varepsilon = g(f(x_0))$
+and define $H(b_0\cdots b_n) = h(h(H(b_0 \cdots b_{n-1})))$ as above.
+Then, we cannot arrive at $x_\varepsilon$
+because generating pairs of $f(f(\dots))$ and $h(h(\dots))$ cannot create $g(f(\dots))$.
+
 \end{document}
