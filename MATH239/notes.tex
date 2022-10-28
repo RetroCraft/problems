@@ -1,4 +1,8 @@
 \documentclass[class=math239,notes]{agony}
+\usepackage{tikz}
+\usetikzlibrary{graphs,graphs.standard,graphdrawing}
+\usegdlibrary{circular,force}
+\tikzset{graphs/math nodes}
 
 \title{MATH 239 Fall 2022: Lecture Notes}
 \begin{document}
@@ -911,5 +915,499 @@ Determine $\Phi_{A_{\kappa}}(x)$.
 \end{prf}
 
 \chapter{Recurrence Relations}
+
+\section{(10/07; from Bradley)}
+
+
+\section{(10/17)}
+
+\begin{theorem}[Case 1]\label{thm:main1}
+  \TFAE: (1) $A(x) = \frac{P(x)}{Q(x)}$ is a rational function (i.e.,
+  $P$ and $Q$ are polynomials and $\deg P < \deg Q$).
+
+  (2) The coefficients $a_n$ of $A(n) = \sum_{n \geq 0} a_n x^n$
+  satisfy initial conditions $a_0,\dotsc,a_k$ and recurrence relation
+  $a_n = \sum_{i=1}^{k-1} c_i a_{n-i}$ for all $n \geq k+1$ where $k = \deg Q - 1$.
+
+  (3) The coefficients $a_n$ have a closed form solution
+  $a_n = \sum_{\text{roots $r_i$}} p_i(n)-(r_i)^n$
+  where $p_i(n)$ is a polynomial of degree equal to the multiplicity of $r_i$ minus 1.
+\end{theorem}
+\begin{prf}
+  (1) implies (2) by extracting the infinitely many equations of coefficients.
+
+  (2) implies (1) by reversing the extraction process (multiply recurrence equation by $x^n$ and sum).
+
+  (1) implies (3) by method of partial fractions.
+
+  (3) implies (1) by reversing partial fractions (i.e., use the negative binomial series).
+\end{prf}
+
+\begin{theorem}[Case 2]\label{thm:main2}
+  \TFAE: (1) $A(x) = \frac{P(x)}{Q(x)}$ (with no conditions on $\deg P$, $\deg Q$)
+
+  (2) Any number of initial conditions $a_0,\dotsc,a_r$
+  and recurrence $\sum_{i=1}^{k+1}c_i a_{n-i}$ for all $n > r$ where $k = \deg Q -1$.
+
+  (3) $a_n = C_n + \sum_{\text{roots $r_i$}}p_i(n)(r_i)^n$
+  with extra constants $C_n$ (for $n > r$, $C_n = 0$).
+\end{theorem}
+
+\begin{defn}[auxiliary (characteristic) polynomial]
+  Given $a_n = \sum_{i=1}^{k+1}c_i a_{n-i}$ is a recurrence relation,
+  replace $a_n$ by $x^{k+1}$, $a_{n-1}$ by $x^k$, ..., down to $a_{n-(k+1)}$ by $1$.
+\end{defn}
+
+\begin{example}
+  Fibonacci: $a_0=1$, $a_1=1$, $a_n = a_{n-1} + a_{n-2}$ for all $n \geq 2$.
+
+  Find the coefficients directly (without using partial fractions).
+\end{example}
+\begin{sol}
+  We apply \nameref{thm:main1} and know that $a_n = \sum_{r_i} p_i(n) r_i^n$.
+
+  The characteristic polynomial is $x^2 = x + 1$, i.e, $0 = x^2 - x - 1$.
+  This is $Q(\frac{1}{x})\cdot x^{\deg Q}$, i.e.,
+  keep the coefficients but reverse the order.
+
+  The $r_i$ in \nameref{thm:main1} are \emph{not} the roots of $Q(x)$,
+  but the roots of the characteristic polynomial (the ``inverse roots'' of $Q$).
+  In fact, $r_i^{-1}$ is a root of $Q$.
+
+  The roots here are $r_1 = \frac{1 - \sqrt 5}{2}$ and $r_2 = \frac{1 + \sqrt 5}{2}$.
+
+  So $a_n = p_1(n) r_1^n + p_2(n) r_2^n$ where $p_1$ and $p_2$ have degree 0.
+  That is, $a_n = c_1 r_1^n + c_2 r_2^n$.
+
+  Use our initial conditions to solve:
+  \begin{align*}
+    a_0 = 1 & = c_1 r_1^0 + c_2 r_2^0 = c_1 + c_2 \\
+    a_1 = 1 & = c_1 r_1 + c_2 r_2
+  \end{align*}
+  Then, $c_1 = 1-c_2$, so $1 = (1-c_2)r_1 + c_2 r_2  = r_1 + c_2(r_2-r_1)
+    \implies r_2 = \sqrt{5}c_2 \implies c_2 = \frac{1+\sqrt{5}}{2\sqrt{5}}$
+  and $c_1 = \frac{\sqrt{5}-1}{2\sqrt{5}}$.
+  Finally, $a_n = \frac{\sqrt{5}-1}{2\sqrt{5}}\qty(\frac{1-\sqrt{5}}{2})^n
+    + \frac{1-\sqrt{5}}{2\sqrt{5}}\qty(\frac{1+\sqrt{5}}{2})^n$.
+
+  Notice also that $\abs{r_1}<1$ so $r_1^n \to 0$
+  and $a_n$ is the closest integer to $\frac{1+\sqrt{5}}{2\sqrt{5}}\qty(\frac{1+\sqrt{5}}{2})^n$.
+\end{sol}
+
+\begin{example}
+  $a_n = 3a_{n-1} - 3a_{n-2} + a_{n-3}$, $a_0 = 1$, $a_1 = 2$, $a_2 = 3$.
+\end{example}
+\begin{sol}
+  The characteristic polynomial is $x^3 - 3x^2 + 3x - 1$.
+  It factors as $(x-1)^3$ so it has one root $r_1 = 1$ with multiplicity 3.
+
+  So $a_n = p_1(n) r_1^n$ where $p_1$ has degree $3-1=2$,
+  so $a_n = (c_1 n^2 + c_2 n + c_3)(1)^n = c_1 n^2 + c_2 n + c_3$.
+
+  By the initial conditions, $c_3 = 1$.
+
+  Then, $2 = a_1 = c_1 + c_2 + c_3 = c_1 + c_2 + 1 \implies c_1 + c_2 = 1$.
+
+  Also, $3 = a_2 = 4c_1 + 2c_2 + c_3 = 4c_1 + 2c_2 + 1 = 2c_1 + 3 \implies c_1 = 0$
+  and $c_2 = 1$.
+
+  Finally, we have $a_n = n + 1$.
+\end{sol}
+
+\section{(10/19)}
+
+Recall: if $W(x) = \frac{P(x)}{Q(x)}$ is a rational function,
+then the coefficients $w_i$ satisfy a linear recurrence relation
+$w_n = \sum_{i=1}^{k+1}c_iw_{n-i}$.
+
+We can write rational functions as $Q(x)W(x) - P(x) = 0$
+as a linear equation over the field of polynomials.
+This is why linear recurrence relations relate to rational functions.
+
+\begin{defn}[quadratic recurrence]
+  $A(x)W(x)^2 + B(x)W(x) + C(x) = 0$
+  for polynomials $A$, $B$, and $C$.
+\end{defn}
+
+We can in fact apply the quadratic formula
+and say $W(x) = \frac{-B(x)\pm\sqrt{B(x)^2-4A(x)C(x)}}{2A(x)}$.
+
+To do this, we must calculate the square roots of polynomials.
+
+\begin{defn}[complex binomial coefficients]
+  For $\alpha \in \C$, define $\binom{\alpha}{k} = \frac{1}{k!}(\alpha)(\alpha-1)\dotsb(\alpha-k+1)$
+\end{defn}
+
+\begin{theorem}[General Binomial Theorem]\label{thm:genbin}
+  For all $\alpha \in \C$,
+  $(1+x)^\alpha = \sum\limits_{k=0}^\infty \binom{\alpha}{k}x^k$
+\end{theorem}
+
+\begin{corollary}
+  $\sqrt{1-4x} = 1-2\sum_{k\geq 1}\frac{1}{k}\binom{2k-2}{k-1}x^k
+    = 1-2\sum_{k\geq0}\frac{1}{k+1}\binom{2k}{k}x^{k+1}$
+\end{corollary}
+\begin{prf}
+  Use the \nameref{thm:genbin} with $\alpha = \frac12$
+  so $(1-4x)^{1/2} = \sum_{k \geq 0}\binom{1/2}{k}(-4)^k x^k$.
+  Algebra bashing gives the result we want.
+\end{prf}
+
+\begin{defn}[Catalan numbers]
+  $C_n = \frac{1}{n+1}\binom{2n}{n}$
+\end{defn}
+
+\begin{example}
+  Calculate the first 5 Catalan numbers.
+\end{example}
+\begin{sol}
+  $C_0 = \frac{1}{1}\binom{0}{0} = 1$,
+  $C_1 = \frac{1}{2}\binom{2}{1} = 1$,
+  $C_2 = \frac{1}{3}\binom{4}{2} = 2$,
+  $C_3 = \frac{1}{4}\binom{6}{3} = 5$,
+  $C_4 = 14$, $C_5 = 42$.
+\end{sol}
+
+The Catalan numbers are interesting because they count many different objects:
+the number of full binary trees with $n+1$ leaves,
+the number of triangulations of $(n+2)$-gons,
+the number of well-formed parenthesizations,
+etc.
+
+\begin{prop}
+  $\sum_{k \geq 0} C_k x^k = \frac{1-\sqrt{1-4x}}{2x}$
+\end{prop}
+\begin{prf}
+  Apply the corollary above and isolate the power series.
+\end{prf}
+
+Since this is not a rational function, the Catalan numbers do not form a rational language.
+
+\begin{defn}[Well-formed Parenthesization]
+  A sequence of $n$ opening and closing parentheses that ``match''.
+  That is, for any starting subsequence, the number of opens
+  is at least the number of closes.
+\end{defn}
+\begin{example}
+  List all WFPs when $n=3$.
+\end{example}
+\begin{sol}
+  ()()(), (())(), ()(()), ((())), (()()).
+  Notice there are 5, which is exactly $C_3$.
+\end{sol}
+
+\begin{theorem}
+  The number of WFPs with size $n$ is $C_n$.
+  Equivalently, the generating series
+  for WFPs with respect to size is
+  $W(x) = \sum w_n x^n = \frac{1-\sqrt{1-4x}}{2x}$.
+\end{theorem}
+\begin{prf}
+  We find a recursive unambiguous expression for the set of WFPs $\rl W$.
+  Let $\varepsilon$ be the ``empty'' WFP, then write
+  \[ \rx W = \varepsilon \smile (\rx W)\rx W \]
+  This is unambiguous because we are always decomposing using the first open parenthesis.
+  This expression leads to the equation
+  \begin{align*}
+    W(x) & = 1 + x W(x)^2                               \\
+    0    & = 1 - W(x) + x W(x)^2                        \\
+    W(x) & = \frac{1 \pm \sqrt{(-1)^2 - 4(x)(1)}}{2(x)} \\
+         & = \frac{1 \pm \sqrt{1-4x}}{2x}
+  \end{align*}
+  by the quadratic equation.
+  We must take the negative solution because in the positive solution,
+  \[
+     W(x) = \frac{1}{2x} + \frac{1}{2x}\qty(1+2\sum_{k\geq 0}C_kx^{k+1})
+    = \frac{1}{x} - \sum_{k\geq 0}C_k x^k
+  \]
+  which is not well-defined because $\frac1x$ has no power series.
+  But the negative solution is exactly the generating series for Catalan numbers.
+\end{prf}
+
+\begin{theorem}
+  bradley was bored in class out of his mind today and wanted to say hi to the readers :)
+\end{theorem}
+
+\part{Graph Theory}
+
+\setcounter{chapter}{3}
+\chapter{Introduction to Graph Theory}
+
+Note: In the notes, there are two chapter 4's
+(Recurrence Relations and Introduction to Graph Theory).
+This numbering is maintained.
+
+\section{(10/21; from Bradley)}
+
+\begin{defn}[graph]
+  A graph $G = (V, E)$ is a set of \term{vertices} $V$
+  and a set\tablefootnote{if we allow multisets, they are \term{multiple} or \term{parallel} edges}
+  of unordered\tablefootnote{if ordered, the graph is \term{directed}}
+  pairs\tablefootnote{if larger tuples, it is a \term{hypergraph}}
+  of distinct\tablefootnote{if not, the edge is a \term{loop}} vertices $E$ called \term{edges}.
+  Denote the set of vertices by $V(G)$ and edges by $E(G)$.
+\end{defn}
+\spewnotes
+
+Note: if the graph includes loops and/or parallel edges, it is a \term{multigraph}.
+
+\begin{defn}[complete graph on $n$ vertices]
+  The graph $K_n$ given by $V(K_n) = [n]$ and $E(K_n) = \{S \subseteq [n] : \abs{S} = 2\}$.
+\end{defn}
+\begin{example}
+  Draw $K_1$ through $K_6$.
+\end{example}
+\begin{sol}
+  Connect every node in a $n$-gon:
+  \begin{center}
+    \tikz\graph{ subgraph K_n [n=1, clockwise] };\quad
+    \tikz\graph{ subgraph K_n [n=2, clockwise] };\quad
+    \tikz\graph{ subgraph K_n [n=3, clockwise] };\quad
+    \tikz\graph{ subgraph K_n [n=4, clockwise] };\quad
+    \tikz\graph{ subgraph K_n [n=5, clockwise] };\quad
+    \tikz\graph{ subgraph K_n [n=6, clockwise] };
+  \end{center}
+  as desired.
+\end{sol}
+
+\begin{defn}[path on $n$ vertices]
+  The graph $P_n$ given by $V(P_n) = [n]$ and $E(P_n) = \{ \{i,i+1\} : i \in [n-1] \}$.
+\end{defn}
+
+\begin{defn}[cycle on $n$ vertices]
+  The graph $C_n$ for $n \geq 3$ given by $V(C_n) = [n]$ and $E(C_n) = E(P_n) \cup \{1,n\}$.
+\end{defn}
+
+\begin{defn}[bipartite]
+  Given a graph $G$, there exists a partition $(A,B)$ of $V(G)$
+  such that every edge has exactly one element in $A$ and one element in $B$.
+\end{defn}
+\begin{example}
+  Which of the above graphs are bipartite?
+\end{example}
+\begin{sol}
+  $K_1$ and $K_2$ are bipartite, but $K_n$ for $n \geq 3$ is note.
+
+  In general, $P_n$ is bipartite with bipartition $A = \{i \in [n] : \text{$i$ odd}\}$
+  and $B = \{i \in [n] : \text{$i$ even}\}$.
+
+  In general, $C_n$ is bipartite when $n$ is even
+  (under the same bipartition as $P_n$) and not when $n$ is odd.
+\end{sol}
+
+\begin{defn}[complete bipartite graph]
+  The graph $K_{m,n}$ described by
+  $V(K_{m,n}) = \{s_i : i \in [m]\} \cup \{t_j : j \in [n]\}$
+  and $E(K_{m,n}) = \{\{s_i, t_j\} : i \in [n], j \in [m]\}$.
+\end{defn}
+\begin{example}
+  Draw $K_{1,0}$, $K_{2,1}$, $K_{2,3}$, $K_{3,2}$, and $K_{3,3}$.
+\end{example}
+\begin{sol}
+  Connect $m$ nodes with $n$ nodes:
+  \begin{center}
+    \tikz\graph{ s_1 };\quad
+    \tikz\graph{ subgraph K_nm [V={s_1,s_2}, W={t_1}] };\quad
+    \tikz\graph{ subgraph K_nm [V={s_1,s_2}, W={t_1,t_2,t_3}] };\quad
+    \tikz\graph{ subgraph K_nm [V={s_1,s_2,s_3}, W={t_1,t_2}] };\quad
+    \tikz\graph{ subgraph K_nm [V={s_1,s_2,s_3}, W={t_1,t_2,t_3}] };
+  \end{center}
+  Notice that $K_{2,3}$ and $K_{3,2}$ have the same structure.
+\end{sol}
+
+\begin{defn}[planar]
+  A graph that can be drawn on the plane such that no two edges cross
+\end{defn}
+\begin{example}
+  Which of $K_n$, $P_n$, $C_n$, and $K_{m,n}$ are planar?
+\end{example}
+\begin{sol}
+  Obviously, $K_1$, $K_2$, and $K_3$ are planar.
+  
+  We can redraw $K_4$ like \tikz[baseline=0]pt\graph{ subgraph C_n [n=3, clockwise] -- 4 };
+  to make it planar.
+  
+  However, $K_5$ can't do that.
+
+  $P_n$ and $C_n$ are planar for all $n$.
+
+  For $K_{m,n}$, when $m=0$, we just have $n$ unconnected vertices, which is planar.
+  
+  When $m=1$, we have a star
+  (e.g. \tikz[baseline=0pt]\graph{ subgraph C_n [V={t_1,t_2,t_3,t_4,t_5,t_6}, clockwise, -!-] -- s_1};).
+
+  When $m=2$, we can put $s_1$ on the left and $s_2$ on the right and connect
+  (e.g. \tikz[baseline=-25pt]\graph{ s_1 -- {t_1, t_2, t_3} -- s_2 };)
+
+  When $m \geq 3$, this doesn't work. So $K_{m,n}$ is planar if $m \leq 2$ or $n \leq 2$.
+\end{sol}
+
+\section{(10/24)}
+
+\section{(10/26)}
+
+\begin{defn}[subgraph]
+  Graph $H$ of a graph $G$ where $V(H) \subseteq V(G)$
+  and $E(H) \subseteq \{ uv \in E(G), u,v \in V(H) \}$.
+\end{defn}
+Equivalently, a subgraph is obtained from $G$ by deleting a subset of $V(G)$
+and the edges incident with those vertices and then deleting a subset of remaining edges.
+
+\begin{example}{}
+  \tikz[baseline=-30pt]\graph[simple necklace layout]{ 1--2--3--4--5--1, 2--5 };
+  has a subgraph
+  \tikz[baseline=-30pt]\graph[simple necklace layout]{ "", 2--3, 4--5, 2--5 };
+\end{example}
+
+\begin{defn}[types of subgraphs]
+  A subgraph $H$ of $G$ is \term{spanning} if $V(H) = V(G)$ (only edge deletions),
+  \term{proper} if $H \neq G$,
+  and \term{induced} if $E(H) = \{uv \in E(G) : u,v \in V(H)\}$ (only vertex deletions).
+\end{defn}
+
+\begin{defn}[walk]
+  A sequence $W = (v_0,e_1,v_1,\dotsc,e_k,v_k)$ where $v_i \in V(G)$
+  and $e_i = v_{i-1}v_i \in E(G)$ is a \term{walk from $v_0$ to $v_k$}.
+  If $v_0 = v_k$, then $W$ is \term{closed}.
+  Call $k$ the \term{length} of the walk.
+\end{defn}
+
+\begin{example}\label{exa:bowtie}
+  In the graph $G$
+  \tikz[baseline=-16pt]\graph[spring layout]{
+    u_1--u_2--u_3--u_1,
+    u_4--u_5--u_6--u_4,
+    u_3--u_4
+  };,
+  the sequence\\
+  $(u_5,u_5u_6,u_6,u_6u_5,u_5,u_5u_4,u_4,u_4u_3,u_3,u_3u_1)$ is a walk.
+\end{example}
+
+\begin{defn}[path]
+  A walk $W = (v_0,\dotsc,v_k)$ where all the $v_i$ are distinct.
+  Then, the distinct $v_0$ and $v_k$ are the \term{ends} of the path.
+\end{defn}
+
+We call this a path because the subgraph $H$ formed by $V(H) = \{v_0,\dotsc,v_k\}$
+and $E(H) = \{e_1,\dotsc,e_k\}$ is isomorphic to $P_{k+1}$.
+
+\begin{example}
+  In the graph from \cref{exa:bowtie}, $(u_5,u_5u_4,u_4,u_4u_3,u_3,u_3u_1,u_1)$ is a path.
+\end{example}
+
+We can abbreviate paths (and walks) as $v_0v_1v_2\dots v_k$ since it is unambiguous.
+
+\begin{theorem}[4.6.2]\label{thm:pathwalk}
+  Given a graph $G$ and there exists a walk from $u$ to $v$,
+  then there exists a path from $u$ to $v$.
+\end{theorem}
+\begin{prf}[informal]
+  If $W$ has no repeat vertices, then $W$ is already a path.
+
+  Otherwise, there exists a vertex that repeats twice.
+  Remove the subsequence between these two instances (and repeat).
+\end{prf}
+\begin{prf}
+  Let $W = v_0,\dotsc,v_k$ be the shortest walk from $u$ to $v$.
+  If $W$ has no repeated vertices, then we are done.
+
+  Otherwise, there exists a subsequence starting and ending with a repeated
+  node $v_i = v_j$, so we delete $e_i$ through $v_j$.
+  This is a strictly shorter path $W'$, so $W$ is not the shortest. Contradiction.
+\end{prf}
+
+\section{(10/28)}
+
+\begin{corollary}[4.6.3]
+  Let $G$ be a graph. If there exists a path from $u$ to $v$ in $G$
+  and there exists a path from $v$ to $w$ in $G$,
+  then there exists a path from $u$ to $w$ in $G$.
+\end{corollary}
+\begin{prf}
+  Append the two paths together to get a walk from $u$ to $w$ in $G$.
+  Then, by \nameref{thm:pathwalk} there exists a path from $u$ to $w$ in $G$.
+\end{prf}
+
+\begin{defn}[cycle]
+  A subgraph isomorphic to $C_k$ for some $k \geq 3$.
+  The \term{length} of a cycle $k$ is the number of edges in it
+  and the \term{girth} of a graph is the length of its largest cycle.
+  A \term{Hamilton cycle} is a spanning cycle
+  and a \term{Hamiltonian graph} contains one.
+\end{defn}
+
+\begin{theorem}[4.6.4]\label{thm:deg2cycle}
+  If $G$ is a graph and every vertex of $G$ has degree at least 2,
+  then $G$ contains a cycle.
+\end{theorem}
+\begin{prf}[algorithmic sketch]
+  We give an algorithm that always finds such a cycle.
+
+  Let $P = v_0\cdots v_k$ be a path in $G$ with $k \geq 2$.
+
+  The node $v_k$ has at least two neighbours, so there is one other than $v_{k-1}$.
+  If the other neighbour $v_i \in V(P)$,
+  then $v_i \cdots v_k$ is a cycle.
+  Otherwise, the neighbour $v_{k+1} \not\in V(P)$.
+  Set $P \gets v_0\cdots v_k v_{k+1}$ and repeat.
+
+  We have to prove correctness (that it generates a path and finds cycles)
+  and that it terminates (since length increases and $V(G)$ finite).
+\end{prf}
+\begin{prf}
+  Let $P = v_0 \cdots v_k$ be a longest path in $G$.
+  Since a vertex has degree at least 2, $k \geq 2$.
+
+  Suppose $v_k$ has a neighbour $v_i \in V(P)$ where $0 \leq i \leq k-2$.
+  Then, $C = v_i \cdots v_k$ is a cycle, as desired.
+
+  Otherwise, $N(v_k) \cap V(P) = \{v_{k-1}\}$.
+  Since $v_k$ has degree at least two, $\abs{N(v_k)} \geq 2$.
+  Therefore, $N(v_k) \setminus V(P) \neq \varnothing$.
+  Select $v_{k+1} \in N(v_k) \setminus V(P) \neq \varnothing$.
+  But then $P' = v_0 \cdots v_k v_{k+1}$ is a path in $G$ with length longer than $P$.
+  Contradiction.
+\end{prf}
+\begin{corollary}
+  Let $G$ be a graph. \TFAE: 
+  (1) $G$ contains a cycle; and
+  (2) $G$ contains a subgraph where every vertex has degree at least 2.
+\end{corollary}
+\begin{prf}
+  If $G$ contains a cycle, then the cycle is indeed such a subgraph.
+  If $G$ contains such a subgraph, then by \nameref{thm:deg2cycle} it contains a cycle.
+\end{prf}
+\begin{corollary}
+  Let $G$ be a graph. Then, \Tfae:
+  (1) $G$ does not contain a cycle;
+  (2) all subgraphs of $G$ contain a vertex with degree at most 1; and
+  (3) there exists an ordering $v_1,\dotsc,v_n$ of $V(G)$ such that
+  $\abs{N(v_i) \cap \{v_1,\dotsc,v_{i-1}\}} \leq 1$ for all $i \in [n]$.
+\end{corollary}
+\begin{prf}
+  (1) and (2) are equivalent by the last corollary.
+
+  (2) implies (3) by induction on $V(G)$.
+  By assumption, $G$ has a vertex $\deg v_n \leq 1$.
+  Let $G' = G$ without $v_n$.
+  By assumption, every subgraph of $G'$ has a vertex with degree at most 1 since $G$ does.
+  By induction, there exists the desired ordering $v_1,\dotsc,v_{n-1}$ of $V(G')$
+  but then just let $v_1,\dotsc,v_n$ as desired.
+
+  (3) implies (2): let $H$ be a subgraph of $G$
+  and $i$ be the largest index such that $v_i \in V(H)$.
+  Then, $\abs{N_H(v_i)} \leq \abs{N_G(v_i) \cap \{v_1,\dotsc,v_{i-1}\}} \leq 1$
+  by assumption.
+\end{prf}
+
+Consider now the question: can we decide efficiently whether a graph $G$ contains a cycle?
+
+\begin{defn}[polynomial time]
+  A decision problem is in polynomial time if it can be solved in
+  $O(\abs{V(G)}^k)$ for some $k \in \N$.
+  Denote the set of such problems by $\symsf{P}$.
+\end{defn}
+
+Then, ask if the decision problem ``does $G$ contain a cycle?'' lies in $\symsf{P}$.
 
 \end{document}

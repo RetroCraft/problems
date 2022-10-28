@@ -23,3 +23,10 @@
   refname={example,examples},Refname={Example,Examples}]{example}
 
 \RequirePackage[hybrid,underscores=false]{markdown}
+
+% Use inside of definitions: "a \term{thing} is a whatever"
+\newcommand{\term}{\underline}
+
+% For thmbox (see tex.se/41100)
+\RequirePackage{tablefootnote}
+\newcommand{\spewnotes}{\tfn@tablefootnoteprintout\global\let\tfn@tablefootnoteprintout\relax\gdef\tfn@fnt{0}}
