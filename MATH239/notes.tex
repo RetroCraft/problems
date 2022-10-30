@@ -917,6 +917,163 @@ Determine $\Phi_{A_{\kappa}}(x)$.
 \chapter{Recurrence Relations}
 
 \section{(10/07; from Bradley)}
+\begin{theorem}[4.12]\label{thm:pf}
+  Let $P(x)$ and $Q(x)$ be polynomials such that $\deg P < \deg Q$.
+  Suppose we can write $Q(x) = \prod(1-\lambda x)^{d_i}$, i.e.,
+  $Q$ has inverse roots $\lambda_i$ with multiplicity $d_i$.
+  Then, there exist complex numbers $c_i^{(1)}, \dotsc, c_i^{(d_i)}$ for each root $\lambda_i$
+  such that $P(x) = \sum\limits_{i}\sum\limits_{j=1}^{d_i}\frac{c_i^{(j)}}{(1-\lambda_i x)^j}$.
+\end{theorem}
+\begin{prf}[sketch]
+  One can show that the polynomials $\frac{1}{(1-\lambda_i x)^j}$
+  form a basis of the subspace of rational functions $P(x)/Q(x)$ with $\deg P < \deg Q$.
+\end{prf}
+
+\begin{example}\label{exa:14-1}
+  Write $\frac{1}{(1-x)(1+x)}$ using partial fractions.
+\end{example}
+\begin{sol}
+  By \nameref{thm:pf}, there exist $a$ and $b$ such that
+  $\frac{1}{(1-x)(1+x)} = \frac{a}{1-x} + \frac{b}{1+x} = \frac{a(1+x) + b(1-x)}{(1-x)(1+x)}$.
+  Setting numerators equal, $a(1+x) + b(1-x) = 1 \implies (a+b) + (a-b)x = 1 + 0x$.
+  Setting coefficients equal, $a+b = 1$ and $a-b = 0$.
+  This gives $a = b = \frac12$.
+\end{sol}
+
+This allows us to write any rational function as the sum of negative binomials,
+which we know how to extract coefficients from.
+That is, we can extract coefficients from arbitrary series.
+
+\begin{example}
+  Find the coefficients in \cref{exa:14-1}.
+\end{example}
+\begin{sol}
+  Write:
+  \begin{align*}
+    [x^n]\frac{1}{1-x^2}
+     & = [x^n]\frac{1/2}{1-x} + [x^n]\frac{1/2}{1+x}
+    = \frac12[x^n]\frac{1}{1-x} + \frac12[x^n]\frac{1}{1+x}
+    = \frac12(1)^n + \frac12(-1)^n                   \\
+     & = \begin{cases}
+           \frac12+\frac12 = 1 & n \equiv 0 \pmod 2 \\
+           \frac12-\frac12 = 0 & n \equiv 1 \pmod 2
+         \end{cases}
+  \end{align*}
+  which agrees with the known power series $\frac{1}{1-x^2} = 1+x^2+x^4+\dotsb$
+\end{sol}
+
+\begin{example}
+  Find the coefficients of $\frac{1+x}{(1-2x)(1+3x)} = \frac{a}{1-2x} + \frac{b}{1+3x}$.
+\end{example}
+\begin{sol}
+  Since the degree of the numerator is strictly smaller than the degree of the denominator ($1 < 2$),
+  we can apply partial fractions.
+
+  Write $\frac{1+x}{(1-2x)(1+3x)} = \frac{a(1+3x) + b(1-2x)}{(1-2x)(1+3x)}
+    + \frac{(a+b) + (3a-2b)x}{(1-2x)(1+3x)}$.
+
+  Equate coefficients of the numerator:
+  \[ \systeme[ab]{a+b=1,3a-2b=1} \]
+  Solving gives $a = \frac35$, $b = \frac25$.
+  To find coefficients, use the negative binomial series:
+  \begin{align*}
+    [x^n]\frac{1+x}{(1-2x)(1+3x)}
+     & = [x^n]\frac{3/5}{1-2x} + [x^n]\frac{2/5}{1+3x}           \\
+     & = \frac35[x^n]\frac{1}{1-2x} + \frac25[x^n]\frac{1}{1-3x} \\
+     & = \frac352^n + \frac25(-3)^n
+  \end{align*}
+  which is a closed-form, non-recursive expression.
+\end{sol}
+
+\begin{example}
+  Find the coefficients of $\frac{1+x}{(1-2x)^2}$.
+\end{example}
+\begin{sol}
+  Since the root has multiplicity 2, we have to use all its powers:
+  \[
+    \frac{1+x}{(1-2x)^2} = \frac{a}{1-2x} + \frac{b}{(1-2x)^2}
+    = \frac{a(1-2x) + b}{(1-2x)^2} = \frac{(a+b) - 2ax}{(1-2x)^2}
+  \]
+  Equating coefficients,
+  \[ \systeme[ab]{a+b=1,-2a=1} \]
+  which gives $a=-\frac12$, $b=\frac34$. Then,
+  \begin{align*}
+    [x^n]\frac{1+x}{(1-2x)^2}
+     & = [x^n]\frac{-1/2}{1-2x} + [x^n]\frac{3/2}{(1-2x)^2}           \\
+     & = -\frac12[x^n]\frac{1}{1-2x} + \frac32[x^n]\frac{1}{(1-2x)^2} \\
+     & = -\frac12 2^n + \frac32\binom{n+1}{1}2^n                      \\
+     & = \qty(1+\frac32n)2^n
+  \end{align*}
+  applying the negative binomial series.
+\end{sol}
+
+In summary, we have that $[x^n]\frac{P(x)}{Q(x)} = \sum f_i(n)\lambda_i^n$
+for some polynomials $f_i(n)$ with $\deg f_i < d_i$.
+
+Note that all this works only when $\deg P < \deg Q$.
+If it is not, then we must divide.
+Recall the polynomial division algorithm lemma from MATH 135:
+
+\begin{lemma}[Division Algorithm]
+  For all polynomials $\deg P \geq \deg Q$,
+  there exists polynomials $P_1$ and $P_2$ such that
+  $\frac{P(x)}{Q(x)} = P_1(x) + \frac{P_2(x)}{Q(x)}$
+  where $\deg P_2 < \deg Q$.
+\end{lemma}
+
+\begin{example}
+  $\frac{1+x^2}{1-x^2} = \frac{x^2-1+1+1}{1-x^2} = \frac{x^2-1}{1-x^2} + \frac{2}{1-x^2} = -1 + \frac{2}{1-x^2}$
+\end{example}
+\begin{example}
+  $\frac{x^3+x^2+5x+1}{1-x-x^2} = \frac{-x(1-x-x^2)-x^2-x+x^2+5x+1}{1-x-x^2}
+    = -x + \frac{4x+1}{1-x-x^2}$
+\end{example}
+
+This means that when $\deg P \geq \deg Q$,
+we have $[x^n]\frac{P(x)}{Q(x)} = [x^n]P_1(x) + \sum f_i(n) + \lambda_i^n$.
+Notice $[x^n]P_1(x)$ will be some constant for
+$n \leq \deg P_1 \leq \deg P - \deg Q$ and 0 otherwise.
+
+\begin{defn}[recurrence relation]
+  A sequence $a_0,\dotsc,a_n,\dotsc$ where there exists $n_0$
+  and constants $c_1,\dotsc,c_{n_0-1}$
+  such that for all $n \geq n_0$, $a_n = \sum_{i=1}^{n_0} c_i a_{n-i}$.
+  The terms $a_0,\dotsc,a_{n_0-1}$ are the \term{initial conditions}.
+\end{defn}
+
+\begin{example}
+  $a_0 = 1$, $a_n = a_{n-1}$ for $n \geq 1$. This solves to $a_n = 1$.
+\end{example}
+\begin{example}
+  $a_0 = 1$, $a_n = 2a_{n-1}$ for $n \geq 1$. This gives $a_n = 2^n$.
+\end{example}
+\begin{example}
+  $a_0 = 1$, $a_1 = 3$, $a_n = 2a_{n-2}$ for $n \geq 2$.
+  Then, $a_n = \begin{cases*}
+      2^{n/2}                  & $n$ even \\
+      3\cdot 2^{\frac{n-1}{2}} & $n$ odd
+    \end{cases*}$
+\end{example}
+
+\begin{example}
+  Fibonacci: $a_0 = 1$, $a_1 = 1$, $a_n = a_{n-1} + a_{n-2}$ for $n \geq 2$.
+  What is the closed form solution for $a_n$?
+\end{example}
+\begin{sol}
+  Recall that rational functions yield recurrence relations
+  because we defined division of power series using recurrently-defined inverses.
+  This procedure is reversible to return recurrence relations to rational functions.
+
+  To find $A(x) = \sum a_i x^i$, write out $a_0x^0 = 1$, $a_1x^1 = x$,
+  $a_2x^2 = (a_1 + a_0)x^2$, etc. Then,
+  \begin{align*}
+    A(x) & = 1 + x + a_0x^2 + a_1x^3 + a_1x^2 + a_2x^3 + \dotsb \\
+         & = 1 + x + x^2 A(x) + (x A(x) - a_0x)                 \\
+         & = 1 + x + x^2 A(x) + x A(x) - x                      \\
+         & = 1 + (x+x^2)A(x)
+  \end{align*}
+  Solving, $A(x) = \frac{1}{1-x-x^2}$.
+\end{sol}
 
 
 \section{(10/17)}
@@ -1117,7 +1274,7 @@ Since this is not a rational function, the Catalan numbers do not form a rationa
   by the quadratic equation.
   We must take the negative solution because in the positive solution,
   \[
-     W(x) = \frac{1}{2x} + \frac{1}{2x}\qty(1+2\sum_{k\geq 0}C_kx^{k+1})
+    W(x) = \frac{1}{2x} + \frac{1}{2x}\qty(1+2\sum_{k\geq 0}C_kx^{k+1})
     = \frac{1}{x} - \sum_{k\geq 0}C_k x^k
   \]
   which is not well-defined because $\frac1x$ has no power series.
@@ -1140,12 +1297,12 @@ This numbering is maintained.
 \section{(10/21; from Bradley)}
 
 \begin{defn}[graph]
-  A graph $G = (V, E)$ is a set of \term{vertices} $V$
+  A graph $G = (V, E)$ is a finite set of \term{vertices} $V$
   and a set\tablefootnote{if we allow multisets, they are \term{multiple} or \term{parallel} edges}
   of unordered\tablefootnote{if ordered, the graph is \term{directed}}
   pairs\tablefootnote{if larger tuples, it is a \term{hypergraph}}
   of distinct\tablefootnote{if not, the edge is a \term{loop}} vertices $E$ called \term{edges}.
-  Denote the set of vertices by $V(G)$ and edges by $E(G)$.
+  Denote the set of vertices $V(G)$ and edges $E(G)$.
 \end{defn}
 \spewnotes
 
@@ -1223,21 +1380,21 @@ Note: if the graph includes loops and/or parallel edges, it is a \term{multigrap
 \end{example}
 \begin{sol}
   Obviously, $K_1$, $K_2$, and $K_3$ are planar.
-  
-  We can redraw $K_4$ like \tikz[baseline=0]pt\graph{ subgraph C_n [n=3, clockwise] -- 4 };
+
+  We can redraw $K_4$ like \tikz[baseline=-2pt]\graph{ subgraph C_n [n=3, clockwise] -- 4 };
   to make it planar.
-  
+
   However, $K_5$ can't do that.
 
   $P_n$ and $C_n$ are planar for all $n$.
 
   For $K_{m,n}$, when $m=0$, we just have $n$ unconnected vertices, which is planar.
-  
-  When $m=1$, we have a star
-  (e.g. \tikz[baseline=0pt]\graph{ subgraph C_n [V={t_1,t_2,t_3,t_4,t_5,t_6}, clockwise, -!-] -- s_1};).
 
-  When $m=2$, we can put $s_1$ on the left and $s_2$ on the right and connect
-  (e.g. \tikz[baseline=-25pt]\graph{ s_1 -- {t_1, t_2, t_3} -- s_2 };)
+  When $m=1$, we have a star
+  (e.g. \tikz[baseline=-1pt]\graph{ subgraph C_n [V={t_1,t_2,t_3,t_4,t_5,t_6}, clockwise, -!-] -- s_1};).
+
+  When $m=2$, put $s_1$ on the left and $s_2$ on the right and connect
+  (e.g. \tikz[baseline=-1pt]\graph{ s_1 -- {t_1[y=1], t_2[y=1], t_3[y=1]} -- s_2 };)
 
   When $m \geq 3$, this doesn't work. So $K_{m,n}$ is planar if $m \leq 2$ or $n \leq 2$.
 \end{sol}
@@ -1369,7 +1526,7 @@ We can abbreviate paths (and walks) as $v_0v_1v_2\dots v_k$ since it is unambigu
   Contradiction.
 \end{prf}
 \begin{corollary}
-  Let $G$ be a graph. \TFAE: 
+  Let $G$ be a graph. \TFAE:
   (1) $G$ contains a cycle; and
   (2) $G$ contains a subgraph where every vertex has degree at least 2.
 \end{corollary}
