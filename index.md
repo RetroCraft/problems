@@ -89,6 +89,10 @@ I don't implement the full design recipe in exercises, for obvious reasons (I'm 
 | [Module 15 Exercises]({{ page.gh }}/CS135/E15.rkt) | :white_check_mark: |       |
 | [Module 16 Exercises]({{ page.gh }}/CS135/E16.rkt) | :white_check_mark: |       |
 
+### CS 245 (F2021) <small>Logic and Computation</small>
+
+My own version of the [reference sheet](./CS245/ref.pdf) is a bit more compact.
+
 ## Economics
 
 ### ECON 120 (F2020) <small>Introduction to Microeconomics</small>
@@ -192,10 +196,6 @@ You might be interested in the [source](./MATH239/notes.tex) if you want to use 
 More [lecture notes](./CO485/notes.pdf) with the caveat that
 (1) I am not actually enrolled in the course and just sit in it for fun
 and (2) I am missing two levels of prerequisites and do not fully understand the content.
-
-### CS 245 (F2021) <small>Logic and Computation</small>
-
-My own version of the [reference sheet](./CS245/ref.pdf) is a bit more compact.
 
 ## Mistakes
 
