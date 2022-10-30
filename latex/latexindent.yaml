@@ -16,3 +16,4 @@ verbatimEnvironments:
     outcode: 1
     ccode: 1
     pseudocode: 1
+    markdown: 1

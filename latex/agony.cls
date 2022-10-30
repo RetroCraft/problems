@@ -9,9 +9,10 @@
 \DeclareStringOption{class}
 \DeclareBoolOption{tikz}
 \DeclareBoolOption{nogeometry}
+\DeclareBoolOption{notes}
 \DeclareDefaultOption{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessKeyvalOptions*
-\LoadClass[11pt]{article}
+\ifagony@notes\LoadClass[11pt]{report}\else\LoadClass[11pt]{article}\fi
 
 %
 % Load packages
@@ -23,27 +24,35 @@
 % Typography
 \usepackage[english]{babel}
 \usepackage{iftex}
+\usepackage{amsfonts,amssymb}
 \ifluatex
   \usepackage{unicode-math}
-  \AtBeginDocument{\renewcommand\setminus{\smallsetminus}}
-  \setmathfont{latinmodern-math.otf}[AutoFakeBold=3]
+  \setmathfont{latinmodern-math.otf}
+  % fixes because latinmodern-math is dumb
+  \setmathfont[range=\mathbb]{texgyrepagella-math.otf}[AutoFakeBold=3] % restore nice-looking ℝ 
+  \AtBeginDocument{
+    \renewcommand\setminus{\smallsetminus} % ∖ should be small to look like an operator
+    \renewcommand\varnothing{\diameter} % ∅ should obviously be
+  }
 \else
   \usepackage[T1]{fontenc}
   \usepackage{lmodern}
-  \usepackage{amsfonts,amssymb}
 \fi
 
 % Formatting
 \usepackage[titles]{tocloft}
-\renewcommand*\contentsname{\@title}
+\addto\captionsenglish{\renewcommand{\contentsname}{\@title}}
 \usepackage{titlesec}
 \usepackage{multicol,collcell}
 \usepackage[dvipsnames,table]{xcolor}
 \usepackage{array} % for \newcolumntype macro
 
 \usepackage{enumerate}
+\usepackage{paralist}
 \usepackage[shortlabels]{enumitem} % remove space before enums
 \setlist[enumerate]{topsep=0pt}
+\setlist[enumerate,1]{label={(\alph*)}}
+\setlist[enumerate,2]{label={(\roman*)}}
 
 % Math
 \usepackage{amsmath}
@@ -153,6 +162,12 @@
 % multiple choice (remove spacing between items)
 \newenvironment{choices}{\begin{enumerate}[(a),nosep]}{\end{enumerate}}
 
+% Cute initialisms (with versions for start of sentences)
+\newcommand{\Wlog}{\textsc{wlog}}
+\newcommand{\WLOG}{\textsc{Wlog}}
+\newcommand{\Tfae}{\textsc{tfae}}
+\newcommand{\TFAE}{\textsc{Tfae}}
+
 % Typesetting
 \newcolumntype{C}{>{$}c<{$}} % math version of "C" column type
 \newcommand{\dint}{\displaystyle\int}
@@ -224,203 +239,11 @@
     {\left\langle{#2}\ipsep{#3}\right\rangle}
   }}
 
-% Statistics
-\def\@stat{stat230}
-\ifx\agony@class\@stat
-  \RequirePackage{minted}
-  \definecolor{bg}{rgb}{0.95,0.95,0.95}
-  \usemintedstyle{tango}
-  \newminted{r}{autogobble,mathescape,bgcolor=bg}
-  \newcommand{\rr}{\mintinline{r}}
-  \newminted[outcode]{text}{autogobble,mathescape,escapeinside=||}
-  \DeclareMathOperator{\Bi}{Binomial}
-  \DeclareMathOperator{\Hyp}{Hypergeometric}
-  \DeclareMathOperator{\NB}{Negative Binomial}
-  \DeclareMathOperator{\Geo}{Geometric}
-  \DeclareMathOperator{\Pois}{Poisson}
-  \DeclareMathOperator{\Exp}{Exponential}
-  \DeclareMathOperator{\Unif}{Uniform}
-  \DeclareMathOperator{\Var}{Var}
-  \DeclareMathOperator{\Cov}{Cov}
-  \DeclareMathOperator{\SD}{SD}
-  \setlist[enumerate,1]{label={(\alph*)}}
-  \setlist[enumerate,2]{label={(\roman*)}}
-\fi
-\def\@logic{cs245}
-\ifx\agony@class\@logic
-  \RequirePDFTeX
-  \RequirePackage{breqn} % breaks with unicode-math, isolating issue to here
+% Notes-specific macros (e.g. layout)
+\ifagony@notes\input{agony-note.tex}\fi
 
-  \setlist[enumerate,1]{label={(\alph*)}}
-  \setlist[enumerate,2]{label={(\roman*)}}
-
-  \RequirePackage{forest}
-  \RequirePackage{turnstile}
-  \RequirePackage{bussproofs}
-  \EnableBpAbbreviations
-
-  \let\Form\@undefined % Overrides hyperref's Form environment
-  \DeclareMathOperator{\Form}{Form}
-  \DeclareMathOperator{\Atom}{Atom}
-  \DeclareMathOperator{\Term}{Term}
-  \DeclareMathOperator{\Sent}{Sent}
-  \renewcommand{\L}{\ensuremath{\mathcal{L}}} % Overrides \L -> Ł
-  \newcommand{\Lp}{\ensuremath{\mathcal{L}^p}}
-
-  \renewcommand{\S}{\ensuremath{\Sigma}\xspace} % Overrides \S -> §
-
-  % Operators
-  \newcommand{\timplies}{\models}
-  \newcommand{\tequiv}{\mathrel{\models\!\mid}}
-  \newcommand{\deduces}{\vdash}
-  \newcommand{\dequiv}{\mathrel{\vdash\hspace{-0.8em}\reflectbox{$\vdash$}}}
-  \newcommand{\nharr}{\nleftrightarrow}
-
-  % Shorthands
-  \newcommand{\0}{\ensuremath{\emptyset}\xspace}
-  \newcommand{\n}{\ensuremath{\lnot}\xspace}
-  \renewcommand{\o}{\ensuremath{\lor}\xspace} % overrides ø
-  \renewcommand{\a}{\ensuremath{\land}\xspace} % overrides something that looks important
-  \renewcommand{\i}{\ensuremath{\to}\xspace} % overrides dotless i
-  \newcommand{\e}{\ensuremath{\harr}\xspace}
-  \def\Tab{&}
-  \def\tab{\ifinalign@\Tab\fi}
-  \renewcommand{\t}{\ensuremath{\timplies}\xspace} % overrides tie
-  \renewcommand{\tt}{\ensuremath{\tequiv}\xspace} % overrides monospace font
-  \renewcommand{\d}{\ensuremath{\deduces}\xspace} % overrides dot under
-  \renewcommand{\dd}{\ensuremath{\dequiv}\xspace} % overrides physics derivative
-  \newcommand{\E}{\ensuremath{\in}\xspace}
-  \newcommand{\A}[1][\!]{\ensuremath{\forall}#1\,\xspace}
-  \newcommand{\X}[1][\!]{\ensuremath{\exists}#1\,\xspace}
-  \newcommand{\eq}{\ensuremath{\approx}\xspace}
-
-  % Shamelessly stolen from Arthur
-  \newcounter{deduction}
-  \NewDocumentEnvironment{deduction}{s}
-    {\refstepcounter{deduction}\IfBooleanTF{#1}{}{\proof}\setcounter{equation}{0}\align}
-    {\endalign\IfBooleanTF{#1}{}{\endproof}}
-  \newcommand{\linternal}[2]{\label{proof:#1:eqn:#2}}
-  \newcommand{\rinternal}[2]{\ref{proof:#1:eqn:#2}}
-  \newcommand{\nrinternal}[2]{\nameref{proof:#1:eqn:#2}}
-  \renewcommand{\l}[1]{\linternal{\thededuction}{#1}}
-  \renewcommand{\r}[1]{\rinternal{\thededuction}{#1}}
-  \renewcommand{\nr}[1]{\nrinternal{\thededuction}{#1}}
-  \renewcommand{\j}[1]{&\text{(#1)}} % for justification
-
-  \ExplSyntaxOn
-  \tl_new:N \l__agony_deduce_tl
-  \NewDocumentEnvironment{deduceinternal}{+b}
-   {
-    \tl_set:Nn \l__agony_deduce_tl { #1 }
-    \regex_replace_all:nnN { \<\-\> } { \c{e} } \l__agony_deduce_tl
-    \regex_replace_all:nnN { \-\> } { \c{i} } \l__agony_deduce_tl
-    \regex_replace_all:nnN { \|\-\| } { \c{tab}\c{dd} } \l__agony_deduce_tl
-    \regex_replace_all:nnN { \|\- } { \c{tab}\c{d} } \l__agony_deduce_tl
-    \regex_replace_all:nnN { \|\=\| } { \c{tab}\c{tt} } \l__agony_deduce_tl
-    \regex_replace_all:nnN { \|\= } { \c{tab}\c{t} } \l__agony_deduce_tl
-    \regex_replace_all:nnN { \! } { \c{n} } \l__agony_deduce_tl
-    \regex_replace_all:nnN { (\W)\-(\W) } { \1\c{ensuremath}\cB\{-\cE\}\2 } \l__agony_deduce_tl
-    \regex_replace_all:nnN { \band\b } { \c{a} } \l__agony_deduce_tl
-    \regex_replace_all:nnN { \bor\b } { \c{o} } \l__agony_deduce_tl
-    \regex_replace_all:nnN { \~ } { \c{eq} } \l__agony_deduce_tl
-    \tl_use:N \l__agony_deduce_tl
-   }
-   {}
-  \newenvironment{deduce}{\refstepcounter{deduction}\setcounter{equation}{0}\deduceinternal\align}{\endalign\enddeduceinternal}
-  \newenvironment{deduce*}{\refstepcounter{deduction}\setcounter{equation}{0}\deduceinternal\start@align\@ne\st@rredtrue\m@ne}{\endalign\enddeduceinternal}
-  \newcommand{\@resolvent}[1]{\ifthenelse{\equal{#1}{Prem}}{Premise}{\ifthenelse{\equal{#1}{NegCon}}{Negation\ of\ conclusion}{Resolvent\ of\ #1}}}
-  \newcommand{\@resolve}[1]{\expandafter\ifx\expandafter\##1\else\@resolvent{#1}\fi}
-  \newenvironment{resolution}{\refstepcounter{deduction}\setcounter{equation}{0}\center\deduceinternal\tabular{>{\refstepcounter{equation}\theequation.}r>{\collectcell\logic}l<{\endcollectcell}>{\collectcell\@resolve}l<{\endcollectcell}}}{\endtabular\enddeduceinternal\endcenter}
-  \newenvironment{setofsupport}{\refstepcounter{deduction}\setcounter{equation}{0}\center\deduceinternal\tabular{>{\refstepcounter{equation}\theequation.}r>{\collectcell\logic}l<{\endcollectcell}>{\collectcell\@resolvent}l<{\endcollectcell}>{$\S=\{}r<{\}$}}}{\endtabular\enddeduceinternal\endcenter}
-  \ExplSyntaxOff
-  \newcommand{\logic}[1]{\ensuremath{\begin{deduceinternal}#1\end{deduceinternal}}}
-  \newcolumntype{L}{>{\collectcell\logic}c<{\endcollectcell}}
-
-  % Hoare triples
-  \usepackage{stmaryrd}
-  \DeclarePairedDelimiter\hoare{{\,\llparenthesis\,}}{{\,\rrparenthesis\,}}
-  \newcommand{\Hoare}[1]{\logic{\hoare{#1}}}
-  \RequirePackage{minted}
-  \usemintedstyle{tango}
-  \newminted{c}{autogobble,mathescape,escapeinside=@@}
-  % bugged math symbols
-  \newcommand\m{\mathrel{\text{\textminus}}}
-  \newcommand\lt{\mathrel{\text{\textless}}}
-  \newcommand\gt{\mathrel{\text{\textgreater}}}
-  \newcommand\hj[1]{\hspace{5em}\textrm{#1}} % Hoare justification
-\fi
-
-\def\@optimization{co250}
-\ifx\agony@class\@optimization
-  \setlist[enumerate,1]{label={(\alph*)}}
-  \setlist[enumerate,2]{label={\roman*.}}
-  \RequirePackage{nicematrix} % For labelled matrices
-  \newcommand{\zero}{\mathbb{0}}
-  \newcommand{\one}{\mathbb{1}}
-  
-  \newenvironment{lp}[2]%
-    {\begin{equation*}\aligned #1 && \multicolumn{4}{l}{$#2$} \\ \mathrm{s.t.}}%
-    {\endaligned\end{equation*}}
-\fi
-
-\def\@macroecon{ec260}
-\ifx\agony@class\@macroecon
-  \setlist[enumerate,1]{label={(\alph*)}}
-  \setlist[enumerate,2]{label={(\roman*)}}
-\fi
-
-\def\@datastructures{cs240}
-\ifx\agony@class\@datastructures
-  \setlist[enumerate,1]{label={\textbf{(\alph*)}}}
-  \setlist[enumerate,2]{label={\textbf{(\roman*)}}}
-
-  \RequirePackage{minted}
-  \usemintedstyle{tango}
-  \newminted{pseudo}{autogobble,mathescape,escapeinside=@@,linenos}
-
-  % Pseudocode
-  \RequirePackage{algorithm}
-  \RequirePackage{algpseudocodex}
-  \algrenewcommand\textproc{\textit}
-
-  % Automatically create dummy bookmarks for splitting file
-  \let\@prob\prob
-  \renewcommand{\prob}{\pdfbookmark{\thequestion}{\thequestion}\@prob}
-\fi
-
-\def\@combinatorics{math239}
-\ifx\agony@class\@combinatorics
-  \newcommand{\id}{\operatorname{id}}
-  \newcommand{\bijects}{\rightleftharpoons}
-  \newcommand{\powerset}{\mathcal{P}}
-  \setlist[enumerate,1]{label={(\alph*)}}
-  \setlist[enumerate,2]{label={(\roman*)}}
-\fi
-
-\def\@hardware{cs251}
-\ifx\agony@class\@hardware
-  \setlist[enumerate,1]{label={(\alph*)}}
-  \setlist[enumerate,2]{label={(\roman*)}}
-  \newcommand{\integ}[2]{
-    Statement of Academic Integrity for \thetitle
-
-    I declare the following statements to be true:
-    \begin{itemize}[nosep]
-      \item I have not used any unauthorized aids.
-      \item I recognize that while I can discuss the questions in this assignment on Piazza and
-      other forums with the instructors and with other students in the class, the write up
-      that I am submitting is my own.
-      \item I am aware that misconduct related to course work can result in significant penalties,
-      including failing the course and suspension (this is covered in Policy 71)
-    \end{itemize}
-
-    \textbf{Student Name:} \@author
-    
-    \textbf{UW ID\#:} #1
-
-    \textbf{Signature:} \includegraphics[height=15px]{#2}
-
-    \textbf{Date:} \today
-    \pagebreak
-  }
+% Class-specific macros
+% Files are named agony-[class].sty and placed in this directory
+\ifx\agony@class\@empty\else
+  \IfFileExists{agony-\agony@class.tex}{\input{agony-\agony@class.tex}}{}
 \fi

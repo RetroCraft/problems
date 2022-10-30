@@ -1,0 +1,32 @@
+\RequirePackage{chngcntr}
+\counterwithout{section}{chapter}
+\titleformat{\section}{\normalfont\large\bfseries}{Lecture~\thesection}{1em}{}
+\settowidth{\cftsecnumwidth}{Lecture~0000~}
+\renewcommand\cftsecpresnum{Lecture~}
+
+\setlength\topsep{6pt}
+\declaretheorem[style=definition,name=Definition,
+  thmbox={M,leftmargin=1.5em,rightmargin=1.5em,nocut,headstyle=\textbf{Definition},bodystyle=\noindent},
+  refname={definition,definitions},Refname={Definition,Definitions}]{defn}
+\declaretheorem[name=Theorem,
+  thmbox={L,leftmargin=1.5em,rightmargin=1.5em,nocut,headstyle=\textbf{Theorem},bodystyle=\noindent},
+  refname={theorem,theorems},Refname={Theorem,Theorems}]{theorem}
+\declaretheorem[name=Lemma,
+  thmbox={M,leftmargin=1.5em,rightmargin=1.5em,nocut,headstyle=\textbf{Lemma},bodystyle=\noindent},
+  refname={lemma,lemmas},Refname={Lemma,Lemmas}]{lemma}
+\declaretheorem[name=Proposition,
+  thmbox={S,leftmargin=1.5em,rightmargin=1.5em,nocut,headstyle=\textbf{Proposition},bodystyle=\noindent},
+  refname={proposition,propositions},Refname={Proposition,Propositions}]{prop}
+\declaretheorem[style=remark,unnumbered]{remark}
+\declaretheorem[style=remark,unnumbered]{corollary}
+\declaretheorem[style=definition,name=Example,numberwithin=section,
+  refname={example,examples},Refname={Example,Examples}]{example}
+
+\RequirePackage[hybrid,underscores=false]{markdown}
+
+% Use inside of definitions: "a \term{thing} is a whatever"
+\newcommand{\term}{\underline}
+
+% For thmbox (see tex.se/41100)
+\RequirePackage{tablefootnote}
+\newcommand{\spewnotes}{\tfn@tablefootnoteprintout\global\let\tfn@tablefootnoteprintout\relax\gdef\tfn@fnt{0}}

@@ -1,0 +1,12 @@
+\RequirePackage{minted}
+\usemintedstyle{tango}
+\newminted{pseudo}{autogobble,mathescape,escapeinside=@@,linenos}
+
+% Pseudocode
+\RequirePackage{algorithm}
+\RequirePackage{algpseudocodex}
+\algrenewcommand\textproc{\textit}
+
+% Automatically create dummy bookmarks for splitting file
+\let\@prob\prob
+\renewcommand{\prob}{\pdfbookmark{\thequestion}{\thequestion}\@prob}

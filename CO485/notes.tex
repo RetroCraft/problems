@@ -1,0 +1,1031 @@
+\documentclass[notes]{agony}
+\newcommand{\xgets}{\xleftarrow}
+\newcommand{\one}{\symbb{1}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\leg}[2]{\qty(\frac{#1}{#2})}
+\newcommand{\mgrp}[1]{(\Z/#1\Z)^\times}
+
+\title{CO 485/685 Fall 2022: Lecture Notes}
+\begin{document}
+\renewcommand{\contentsname}{CO 485/685 Fall 2022:\\{\huge Lecture Notes}}
+\thispagestyle{firstpage}
+\tableofcontents
+
+Lecture notes taken, unless otherwise specified,
+by myself during the Fall 2022 offering of CO 485/685,
+taught by David Jao.
+
+Chapter/lecture titles are made-up nonsense and do not follow the textbook
+or any other published resource.
+Actually, scratch that, this entire document is nonsense because
+I am literally auditing this course two nested prerequisites behind.
+
+\chapter{Introduction to Cryptography}
+
+\section{(09/07; skipped)}
+
+\begin{markdown}
+## Almost-Public Key Cryptosystems (09/09)
+
+- For a symmetric key cryptosystem, require sets of key space $K$, message space $M$, and ciphertext space $C$
+    - Define encryption function $Enc : K \to M \to C$ and decryption $Dec : K \to C \to M$
+    - Correctness property: for all $k$, $Dec(k)$ is a left inverse of $Enc(k)$
+    - Symmetric means that both decryption and encryption use shared secret $k$, which we assume is drawn randomly from $K$
+- Public key encryption scheme (Diffie, Hellman, Merkle, c. 1976)
+    - Setup similar: message space $M$ and ciphertext space $C$ but with two key spaces $K_1$ of public keys and $K_2$ of private keys
+    - Define $Enc : K_1 \to M \to C$ and $Dec : K_2 \to C \to M$
+    - Define $KeyGen : \mathbb{1}^\ell \to R \subset K_1 \times K_2$
+        - For some reason, let $\mathbb{1}^n$ be the unary representation of $n$??
+    - Correctness: for all $(k_1,k_2) \in R$ related, $Dec(k_2)$ is a left inverse of $Enc(k_1)$
+- Merkle puzzle (1974) 
+    - Each party creates ``puzzle'' which is hard to solve but not too hard
+    - Alice generates 1,000,000 puzzles and sends them to Bob
+    - Bob solves one of the puzzles arbitrarily and sends half of the answer to Alice
+    - Alice knows the answer, so Alice knows the second half of the answer, which becomes the shared secret
+    - Eve cannot (realistically) solve 500,000 puzzles in time to intercept
+- Diffie--Hellman key exchange
+    - Consider the multiplicative group $G = (\Z / p\Z)^* = \{1,\dotsc,p-1\}$ and some arbitrary element $g \in G$ with sufficiently large order
+    - Alice privately picks some $x \in \Z$, computes $g^x$, and sends it to Bob
+    - Bob privately picks some $y \in \Z$, computes $g^y$, and sends it to Alice
+    - Both can now calculate a shared secret $k = g^{xy} = (g^x)^y = (g^y)^x$
+    - Eve would have to solve the Diffie--Hellman problem: given $p$, $g$, $g^x$, $g^y$, find $g^{xy}$ which is known to be hard
+- Clifford Cocks privately discovered RSA 1973, DH 1974 for GCHQ (if you believe the intelligence community)
+
+## A Public Key Cryptosystem -- RSA (09/12)
+
+- RSA (Rivest, Shamir, Adleman 1977): first cryptosystem and remains secure
+- Theoretically secure, but implementations are ass (cf. ``Fuck RSA'')
+- MATH 135 review of the algorithm:
+    - This ``textbook RSA'' has practical flaws and is insecure
+    - $KeyGen : \mathbb{1}^\ell \to (pk, sk) \in R$
+        1. Choose random primes $p,q \approx 2^\ell$ where $p$ and $q$ are odd and distinct
+        2. Compute $n = pq$
+        3. Choose $e \in (\Z / \phi(n)\Z)^\times$ where $\phi(n) = (p-1)(q-1)$
+        4. Compute $d = e^{-1} \bmod \phi(n)$
+        5. Disclose public key $(n,e)$ and keep secret key $(n,d)$
+    - $Enc : K_1 \to M \to C : (n,e) \mapsto m \mapsto m^e \bmod n$ where $M = (\Z/n\Z)^\times = \{ x : \Z / n\Z : \gcd(x,n) = 1\} = C$
+        - Weird that $M$ depends on $n$ (part of the key). In practice, it doesn't matter because the only messages that divide $n$ are the primes, which breaks RSA anyways
+    - $Dec : K_2 \to C \to M : (n,d) \mapsto c \mapsto c^d \bmod m$
+- Correctness: Must show that $(m^e \bmod n)^d \bmod n = m$
+    *Proof*. $(m^e \bmod n)^d \bmod n = m^{ed} \bmod n$ (exponentiation under mod). Then, since $d = e^{-1} \bmod \phi(n)$, there exists $k$ such that $de - 1 = k\phi(n)$, we have $m^{\phi(n)k + 1} \equiv (m^{\phi(n)})^km \equiv m \pmod{m}$. This holds by Euler's theorem ($\forall m \in (\Z/n\Z)^\times, m^{\phi(n)} \equiv 1 \pmod n$) or Fermat's Little Theorem + Chinese Remainder Theorem (MATH 135)
+- Security: Trivial that factoring $n=pq$ breaks RSA by computing $\phi(n)$
+    - Conversely, if you know $\phi(n) = (p-1)(q-1)$ you can take $q\phi(n) = (n-1)(q-1)$ and solve for $q$
+        - To avoid this, use the Carmichael exponent $\lambda(n) = \lcm(p-1,q-1)$ instead of $\phi(n)$ which works. Of course, this doesn't work in practice because it's not actually that much different
+    - For any non-trivial case, knowing one pair $(e,d)$ also allows factoring $n$
+    - Must make an assumption about hardness to prove security:
+        - Factoring assumption: factoring random integers is hard
+        - RSA factoring assumption: factoring $n=pq$ is hard (see, e.g., elliptical curve algorithm which depends on size of smallest prime in the factorization)
+            - Of course, quantum computing fucks all of this to hell (see troll PQRSA which uses many small primes to make terabyte-sized moduli)
+        - RSA assumption: given $n$, $e$, $m^e\bmod n$, it is hard to find $m$
+    - Can prove RSA assumption $\implies$ RSA works (cannot prove without assumption without better results from complexity theory)
+
+## Security Definitions (09/14)
+
+- Security definitions, e.g., OW-CPA, IND-CPA, IND-CCA (Boneh, Shoup)
+- How secure is a cryptosystem? Specify:
+    - Allowable interactions between adversaries and parties
+        - Second part of abbreviation
+    - Computational limits of adversary
+        - Not usually specified, usually probabilistic polynomial time
+    - Goal of the adversary to ``break'' the cryptosystem
+        - First part of abbreviation
+- OW-CPA: ``one-way chosen-plaintext attack''
+    - Adversary, given public key $pk$ and encryption $c$ of message $m$ under $pk$, wants to determine $m$
+    - Formally, given a random $pk$ and $c$ such that $c = Enc(pk, m)$ for some random $m$, it is infeasible for any probabilistic polynomial time algorithm $\mathcal A$ to determine $m$ with non-negligible probability. That is, $\Pr[\mathcal A(pk,c) = m] = O(\frac{1}{\lambda^c})$ for all $c > 0$.
+- Easier way to formalize (``Sequences of Games'', Shoup 2004)
+    - Two players: challenger $\mathcal C$ and adversary $\mathcal A$
+    - Then, OW-CPA is
+        1. $\mathcal C$ runs $KeyGen : \one^\lambda \xto{\$} (pk, sk)$
+        2. $\mathcal C$ chooses $m \xgets{\$} M$
+        3. $\mathcal C$ computes $c \gets Enc(pk, m)$
+        4. $m' \xgets{\$} \mathcal A(pk, c)$
+        - with the win condition that $m' = m$, and we say that a cryptosystem is OW-CPA if a probabilistic polynomial time adversary $\mathcal A$ cannot win this game with non-negligible probability
+    - IND-CPA (Goldmeier, Micoli 1984): indistinguishability
+        1. $\mathcal C$ runs $(pk, sk) \xgets{\$} KeyGen(\one^\lambda)$
+        2. $(m_0,m_1) \xgets{\$} \mathcal A(\one^\lambda, pk)$
+        3. $\mathcal C$ picks $b \xgets{\$} \{0,1\}$
+        4. $\mathcal C$ computes $c \xgets{\$} Enc(pk, m_b)$
+        5. $b' \xgets{\$} \mathcal A(\one^\lambda, pk, c)$
+        - with the win condition $b = b'$, and a cryptosystem is IND-CPA if for all prob.\ poly.\ time $\mathcal A$, $\abs{\frac12 - \Pr[\text{win}]} = O(\frac{1}{\lambda^\varepsilon})$ for all $\varepsilon > 0$
+        - Encryption function must be random, otherwise $\mathcal A$ can re-encrypt
+
+## Actual IND-CPA systems (09/16)
+
+- IND-CPA is the standard security definition for symmetric security
+    - Ciphertext contains no information about plaintext (except length)
+- Design a slightly different equivalent IND-CPA game:
+    1. $\mathcal C$ runs $(pk, sk) \xgets{\$} KeyGen(\one^\lambda)$
+    2. $(m_0,m_1) \xgets{\$} \mathcal A(\one^\lambda, pk)$
+    3. $\mathcal C$ picks $b \xgets{\$} \{0,1\}$
+    4. $\mathcal C$ computes $c_1 \xgets{\$} Enc(pk, m_b)$ and $c_2 \xgets{\$} Enc(pk, m_{b-1})$
+    5. $b' \xgets{\$} \mathcal A(\one^\lambda, pk, c_1, c_2)$
+- Consider textbook RSA: $\mathcal A$ can choose $m_0 \neq m_1$ and compute $Enc(pk, m_0)$ and $Enc(pk, m_1)$ which allows it to win
+    - In general, this applies to any scheme with deterministic encryption
+- Goldwasser-Micali (``Probabilistic Encryption'' 1982)
+    1. Pick $n = pq$ (useful to have $p \equiv q \equiv 3 \pmod 4$)
+    2. Pick $r \in (\Z/n\Z)^\times$ such that $r \not\equiv x^2 \pmod p$ and $r \not\equiv x^2 \pmod q$
+    3. Define $pk = (n, r)$ and $sk = (p, q)$
+    4. Select a message bit $b$ from $M = \{0,1\}$
+    5. Encrypt $Enc(b) = r^b y^2$ for some $y \xgets{\$}(\Z/n\Z)^\times$
+    - Then, decrypt by determining ciphertext's squareness mod $n$
+        - This is easy with the factorization $n=pq$ by Euler's criterion ($a$ is square mod prime $p$ if and only if $a^{(p-1)/2} \equiv 1 \pmod p$)
+        - Determining squareness without factorization of $n$ is hard, apparently
+    - Since plaintexts are one bit, OW $\iff$ IND and this is provable under the circular-y assumption that determining squareness is hard
+    - Also one bit messages are literally useless so who cares
+- Elgamal (1984) (sometimes IND-CPA)
+    - Publickeycryptosystemified Diffie-Hellman
+    1. Setup is the same as DH, take some element $g \in G$ of a group
+    2. Define $pk = g^x$ and $sk = x$
+    3. Encrypt $Enc(m) = (g^y, g^{xy}\cdot m)$ for $y \xgets{\$} \Z$
+    - Then, decrypt $Dec(c_1, c_2) = \frac{c^2}{c_1^x} = \frac{g^{xy}\cdot m}{(g^y)^x} = m$
+    - In general, key sharing schemes can be cryptosystemified like this
+    - In an IND-CPA game, given $(g^y, g^{xy}m_b)$
+        - Divide out $m_0$ to get either $g^{xy}$ (if $m_b = m_0$) or garbage
+        - Real challenge is distinguishing $g^{xy}$ from garbage
+    - Decisional Diffie-Hellman assumption: in the following game, $\abs{\Pr[\mathcal A\text{ wins}]-\frac12}$ is negligible in $\lambda$
+        1. $\mathcal C$ chooses $p \xgets{\$} \Z$ prime, $p \approx 2^\lambda$
+        2. $\mathcal C$ chooses $g \in (\Z/p\Z)^\times$
+        3. $\mathcal C$ chooses $x,y \xgets{\$} \Z$ and $h \xgets{\$} (\Z/p\Z)^\times$, computes $g_1 = g^x$, $g_2 = g^y$, $g_3 = g^{xy}$
+        4. $\mathcal C$ chooses $b \xgets{\$} \{0,1\}$ and $g_4 = g_3$ if $b=0$ and $h$ if $b=1$
+        5. $b' \gets \mathcal A(\one^\lambda,p,g,g_1,g_2,g_4)$
+    - Can prove: if DDH assumption holds, Elgamal is IND-CPA
+- Layers of assumptions here:
+    - DLOG: given $g$ and $g^x$, it is hard to find $x$
+    - CDH: given $g$, $g^x$, and $g^y$, it is hard to find $g^{xy}$ (equivalent to Elgamal being OW-CPA)
+    - DDH: given $g^{xy}$ and garbage, is hard to distinguish the garbage
+- How to piss off mathematicians: solving DLOG in $\Z/n\Z$ is easy but in $(\Z/p\Z)^\times$ is hard
+    - But $(\Z/p\Z)^\times$ is isomorphic to $\Z/(p-1)\Z$ so DLOG difficulty must not be preserved over isomorphism
+    - Specifically, DLOG is as exactly hard as computing the isomorphism (notice that we send $x \mapsto g^x$)
+- DDH is actually easy in $(\Z/p\Z)^\times$, need a subgroup $G \subset (\Z/p\Z)^\times$ with $\abs{G}$ prime
+\end{markdown}
+
+
+\chapter{Quadratic Residues}
+
+\begin{markdown}
+## Number Theory Background (09/19)
+- Recall: RSA primes are gigantic so it takes time to do operations
+    - e.g. picking $e \in (\Z/\phi(n)\Z)^\times$ or finding $d = e^{-1} \pmod{\phi(n)}$ using EEA which runs in a logarithmic number of steps
+    - e.g. running $Enc(m) = m^e \pmod n$ or $Dec(c) = c^d \pmod n$ using square-and-multiply which runs in a logarithmic number of steps
+- Hard: picking non-squares in integers modulo $p$
+    - Set of primes $\abs{((\Z/p\Z)^\times)^2} = \frac{p-1}{2}$ for odd $p > 2$
+    - This is because $f(x) = x^2$ is a 2-to-1 function on $(\Z/p\Z)^\times$
+        - To prove, show $f(a) = f(b) \iff a = \pm b$
+        - Apply Euclid's Lemma: $p \mid (x-y)(x+y)$ implies $p \mid x-y$ or $p \mid x+y$, equivalently, $x = y \pmod p$ or $x = -y \pmod p$
+        - Also another theorem: for $R$ integral domain, every polynomial of degree $n$ over $R$ has at most $n$ roots
+\end{markdown}
+
+\section{Squares Under a Modulus (09/21)}
+The big problem: Given $(\Z/n\Z)^\times$ and $x \in (\Z/n\Z)^\times$, when is $x \equiv \square \pmod n$?
+
+For example, for $\Z/15\Z$, 1 and 4 are squares;
+for 8: just 1; for 7: 1, 2, and 4; and for 13: 1, 3, 4, 9, 10, and 12.
+
+This breaks down into cases: $n$ composite, $n$ prime power, $n$ prime
+
+\begin{theorem}
+  Suppose $n = \prod p_i^{e_i}$.
+  Then, $x \equiv \square \pmod n$ if and only if for all $i$,
+  $x \equiv \square \pmod{p_i^{e_i}}$.
+\end{theorem}
+\begin{prf}
+  Suppose $x = y^2 \pmod n$ for a unit $y$.
+  Then, $n \mid (x - y^2)$ and $p_i^{e_i} \mid (x-y^2)$ by transitivity.
+  That is, $x \equiv y^2 \pmod {p_i^{e_i}}$.
+  In the reverse direction, if $p_i^{e_i} \mid (x - y^2)$ for all $i$,
+  then by UPF (with some omitted detail), $n \mid (x-y^2)$.
+\end{prf}
+
+The prime power case reduces to the prime case
+under condtions discovered in the homework problems lol.
+
+\begin{theorem}
+  The number of squares in $(\Z/p\Z)^\times$
+  is $\frac{p-1}{2}$ for primes $p \geq 3$.
+\end{theorem}
+\begin{prf}
+  This is because $x = y^2 = (-y)^2$ and the size of the set is $p-1$.
+
+  Build a table $(x,g^x)$ instead of $(x,x^2)$:
+
+  For $p=13$ and $g=2$, we get $(1,2,4,8,3,6,12=-1,-2,-4,-8,-3,-6,-12=1)$
+  and the squares are the even-indexed values $(1,4,3,12,9,10,1)$.
+
+  This works for tables starting with non-squares:
+  in fact, if $g \neq \square$, then $g^3 \neq \square$
+  (by the contrapositive, if $g^3 = \square$,
+  then $g = \frac{g^3}{g^2} = \frac{\square}{\square} = \square$).
+
+  This gives us the result that $g^x = g^y$ when $x \equiv y \pmod{p-1}$
+  (note that this is equivalent to Fermat's Little Theorem,
+  the reverse direction requires $g$ coprime to $p-1$).
+\end{prf}
+
+\begin{defn}[order]
+  $\ord(a)$ is the period of $x \mapsto a^x$ for $a \in (\Z/p\Z)^\times$.
+
+  Equivalently, $\ord(a) = \min\{t \in \Z : a^t = 1, t > 0\}$.
+\end{defn}
+
+\begin{lemma}
+  Given elements $a$ and $b$, numbers $x$ and $y$:
+  \begin{itemize}[nosep]
+    \item $a^x = 1$ if and only if $\ord(a) \mid x$
+    \item $a^x = a^y$ if and only if $x \equiv y \pmod{\ord(a)}$
+    \item $\ord(a^x) = \frac{\ord(a)}{\gcd(x,\ord(a))}$
+    \item If $\ord(a)$ and $\ord(b)$ are coprime,
+          then $\ord(ab) = \ord(a)\ord(b)$.
+  \end{itemize}
+\end{lemma}
+\begin{prf}
+  Only prove the last one:
+
+  Let $t=\ord(a)$, $u=\ord(b)$, $v=\ord(ab)$.
+  Then, $(ab)^{tu} = a^{tu}b^{tu} = 1^u 1^t = 1$ so we have $v \mid tu$.
+  Now, \Wlog, $(ab)^{vu} = 1^u = 1 \implies a^{vu}b^{vu} = a^{vu}1 = a^{vu} = 1$.
+  This gives $t \mid vu$ and $t \mid v$ since $\gcd(t,u)=1$.
+  Likewise, $u \mid v$ and we can conclude $tu \mid v$ because $\gcd(t,u)=1$.
+  That is, $tu = v$.
+\end{prf}
+
+
+\section{Squares cont'd (09/23)}
+
+\begin{defn}[primitive element]
+  $g \in G$ where $\{g^n : n \in \N\} = G$.
+  Also called a generator.
+\end{defn}
+
+Recall: if there exists primitive $g \in (\Z/p\Z)^\times$,
+then for all $h \in (\Z/p\Z)^\times$ where $h=g^k$,
+$h \equiv \square \iff \text{$k$ even}$.
+We can determine squareness using this fact,
+but finding $k$ such that $h = g^k$ is doing a discrete log, which is hard.
+
+Whether or not a primitive element exists is a non-trivial observation:
+
+\begin{theorem}[Gauss' primitive root]
+  For all primes $p$, $(\Z/p\Z)^\times$ has a primitive element.
+\end{theorem}
+\begin{prf}
+  Observe that for all polynomials $f(x) \neq 0$ over $\Z/p\Z$,
+  the number of roots of $f(x)$ is at most $\deg f$.
+  Note that factorization fails in $\Z/n\Z$ in general:
+  e.g. $x^2 - 1 = (x-1)(x+1) = (x-3)(x-5)$ mod 8
+  or something weird like $x = (3x+2)(2x+3)$ mod 6.
+  We have this observation because $\Z/p\Z$ is an integral domain (and indeed, a field).
+
+  Consider $a \in (\Z/p\Z)^\times$.
+
+  Claim $t=\ord(a) \mid p-1$.
+  Write $p-1=tq+r$. If $r=0$, done.
+  If $r > 0$, $\ord(a) = r < t$, contradiction and indeed $r=0$.
+
+  For each divisor $d$ of $p-1$, consider
+  $S_d = \{x \in (\Z/p\Z)^\times : \ord(x) = d\}$.
+  Then, $\bigcup_{d \mid p-1}S_d = (\Z/p\Z)^\times$
+  and this is a disjoint union.
+  To prove Gauss' theorem, we just need $\abs{S_{p-1}} > 0$.
+
+  Proceed in general for arbitrary $\abs{S_d} > 0$ for all $d \mid p-1$.
+
+  If $S_d = \varnothing$, then $\abs{S_d} = 0$.
+  Otherwise, claim that $\abs{S_d} = \phi(d) = \abs{(\Z/d\Z)^\times}$.
+
+  If $S_d$ is not empty, then $\exists a \in S_d$ where $\ord(a) = d$.
+  Consider $x^d - 1$.
+  The roots of this polynomial will include all elements of $S_d$ (and others).
+  We can write the set of roots as exactly $\{a^0,\dotsc,a^{d-1}\}$.
+  So for all $b \in S_d$, $b = a^k$ since $b$ is a root
+  and we need only count those powers with order $d$.
+  But that is exactly $\ord(a^i) = \frac{\ord(a)}{\gcd(i,d)} = \frac{d}{\gcd(i,d)}$.
+  So we are counting the $i$ such that $\gcd(i,d) = 1$,
+  which is exactly $\phi(d)$.
+
+  Now, $p-1 = \abs{(\Z/p\Z)^\times} = \abs{\bigcup_{d \mid p-1}S_d} = \sum\abs{S_d} \leq \sum \phi(d)$ which is equal to $p-1$ by M\"obius inversion.
+  That last inequality being an equality implies that
+  $\abs{S_d} \neq 0$ for any $d \mid p-1$, and in particular $p-1 \mid p-1$.
+
+  Quick combinatorical proof of this fact:
+  write out all the $p-1$ fractions over $p-1$,
+  then each of $\phi(d)$ is the number of fractions
+  where the denominator reduces to $d$. The sum must be $p-1$.
+\end{prf}
+
+\section{Applying to DDH (09/26)}
+
+Recall the Decisional Diffie-Hellman problem:
+Given $g$, $g^x$, $g^y$, $g^z$, determine if $z = xy$. Formally, as a game:
+\begin{itemize}[nosep]
+  \item $\mathcal C$ chooses a bit $b \in \{0,1\}$ and $x,y \xgets{\$}\Z$
+  \item $b' \gets \mathcal A(g, g^x, g^y, g^z)$ where $z \gets \begin{cases}xy & b = 0 \\ \xgets{\$}\Z & b = 1\end{cases}$
+  \item Win condition: $b = b'$ with non-negligible probability
+\end{itemize}
+Notice that if $g$ is a primitive root, then $\abs{\{g^x : x \in \Z\}}=p-1$.
+But bruteforce DLOG takes $\frac{p-1}{2}$ steps on average.
+Then, Elgamal is IND-CPA $\iff$ DDH holds.
+
+\begin{prop}
+  The Decisional Diffie-Hellman assumption in $(\Z/p\Z)^\times$
+  with a primitive base $g$ does not hold.
+\end{prop}
+\begin{prf}
+  We tell squares and non-squares apart.
+
+  Recall from last lecture's theorem we have that if $g$ is a primitive root,
+  $g^x \equiv \square \pmod p \iff x \equiv 0 \pmod 2$.
+  Then, by Euler's criterion, $a \equiv \square \pmod p \iff a^{(p-1)/2} \equiv 1 \pmod p$.
+  Therefore, it is possible to tell the parity of $x$, $y$, and $z$
+  in reasonable time using Euler's criterion (since raising to a power is easy).
+
+  If $xy$ is odd only when $x$ and $y$ are odd,
+  so if you know the parity of $z$ you can distinguish if $z=xy$
+  or random with non-negligible advantage.
+\end{prf}
+
+\begin{prop}[Euler's criterion]
+  $a \equiv \square \pmod p \iff a^{(p-1)/2} \equiv 1 \pmod p$
+\end{prop}
+\begin{prf}
+  Suppose $a \equiv \square$ iff $a \equiv g^k$ for even $k=2\ell$
+  iff $a^{(p-1)/2} = (g^k)^{(p-1)/2} = g^{k(p-1)/2}=(g^{p-1})^\ell=1^\ell=1$ by \FLT{}.
+
+  Otherwise, $a \not\equiv \square$ iff $a = g^k$ for $k=2\ell+1$
+  iff $a^{(p-1)/2} = (g^k)^{(p-1)/2} = g^{(p-1)/2 \cdot (2\ell+1)}=g^{(p-1)/2\cdot 2\ell}\cdot g^{(p-1)/2} = g^{(p-1)/2} \neq 1$.
+  But in fact $g^{(p-1)/2} = \sqrt{g^{p-1}} = \sqrt{1} = -1$ since it is not positive 1.
+\end{prf}
+
+\begin{corollary}
+  For $p > 2$, $-1$ is a square mod $p$ if and only if $p \equiv 1 \pmod 4$.
+\end{corollary}
+\begin{prf}
+  For $-1$ to be a square, we need $(-1)^{(p-1)/2} \equiv 1 \pmod p$.
+  That is, $\frac{p-1}{2}$ is even and we have $p \equiv 1 \pmod 4$.
+\end{prf}
+
+This quantity $g^{(p-1)/2}$ is useful and we give it a name:
+
+\begin{defn}[Legendre symbol]
+  For $p > 2$ and $a \in \Z/p\Z$, the quadratic character of $a$,
+  written $(\frac{a}{p}) = a^{(p-1)/2}$,
+  is 1 if $a \equiv \square$, 0 if $a \equiv 0$, and -1 if $a \not\equiv \square$.
+
+  Equivalently, define $\chi_p : (\Z/p\Z)^\times \to \{\pm 1\} : a \mapsto (\frac{a}{p})$
+  and notice that this is a multiplicative homomorphism that preserves $\chi_p(ab) = \chi_p(a)\chi_p(b)$.
+\end{defn}
+
+\begin{theorem}[multiplicativity]
+  $(\frac{ab}{p}) = (\frac{a}{p})(\frac{b}{p})$
+\end{theorem}
+\begin{prf}
+  $(\frac{ab}{p}) = (ab)^{(p-1)/2} = a^{(p-1)/2}b^{(p-1)/2} = (\frac{a}{p})(\frac{b}{p})$
+\end{prf}
+
+\section{Quadratic Characters in the Complex Plane (09/28)}
+Recall: we have that for odd primes, $(\frac{-1}{p})=1 \iff p \equiv 1 \pmod 4$
+which we proved by applying Euler's criteron.
+We have the similar lemma:
+
+\begin{lemma}
+  $(\frac{2}{p}) = 1 \iff p \equiv 1,7 \pmod 8$.
+\end{lemma}
+\begin{prf}
+  This is harder because $2^{(p-1)/2}$ is not easy to analyze, i.e.,
+  the order of 2 is not easy to derive.
+
+  What numbers, in general, have finite/known order?
+  Complex roots of unity $\zeta_n = e^{2\pi i/n}$.
+
+  We can write $\sqrt{2} = \zeta_8 + \zeta_8^7$,
+  so $2^{(p-1)/2} = (\zeta_8 + \zeta_8^7)^{p-1}
+    = \frac{(\zeta_8 + \zeta_8^7)^p}{\zeta_8 + \zeta_8^7}$.
+  The last transformation is helpful since $p$ powers behave well mod $p$.
+
+  Now, notice that $(x+y)^p \equiv x^p + y^p \pmod p$
+  because all the other terms will have a factor of $p \mid \binom{p}{i}$.
+
+  Therefore, $(\frac{2}{p}) \equiv 2^{(p-1)/2} \equiv \frac{\zeta_8^p + \zeta_8^{7p}}{\zeta_8+\zeta_8^7} \pmod p$.
+
+  There are four cases for $p \pmod 8$ because we assume $p > 2$:
+  \begin{enumerate}[nosep]
+    \item[1.] $\zeta_8^p = \zeta_8^1$ and $\zeta_8^{7p} = \zeta_8^7$
+    \item[3.] $\zeta_8^p = \zeta_8^3$ and $\zeta_8^{7p} = \zeta_8^5$
+    \item[5.] $\zeta_8^p = \zeta_8^5$ and $\zeta_8^{7p} = \zeta_8^3$
+    \item[7.] $\zeta_8^p = \zeta_8^7$ and $\zeta_8^{7p} = \zeta_8^1$
+  \end{enumerate}
+  Clearly, for $p \equiv 1,7 \pmod 8$, we have
+  $\frac{\zeta_8^p + \zeta_8^{7p}}{\zeta_8 + \zeta_8^7}
+    = \frac{\zeta_8 + \zeta_8^7}{\zeta_8 + \zeta_8^7} = 1$.
+  Slightly less intuitively, for $p \equiv 3,5 \pmod 8$,
+  notice that $\zeta_8^3 + \zeta_8^5 = -\sqrt{2}$,
+  so the fractions go to $-1$.
+\end{prf}
+
+Note: We can algebraically extend $\Z/p\Z$ with the necessary complex numbers
+to make the proof valid (or simply assert that the necessary roots of unity exist).
+
+The pattern sort of extends:
+\begin{itemize}[nosep]
+  \item $(\frac{3}{p}) = 1$ if $p = 1,11 \bmod 12$ and $-1$ if $p = 5,7 \bmod 12$.
+  \item $(\frac{5}{p}) = 1$ if $p = \pm 1,\pm 9 \bmod 20$ and $-1$ if $p = \pm 3,\pm 7 \bmod 20$.
+  \item $(\frac{7}{p}) = 1$ if $p = \pm 1,\pm 3, \pm 9 \bmod 28$ and $-1$ if $p = \pm 5,\pm 11, \pm 13 \bmod 28$.
+\end{itemize}
+In fact, we have $(\frac{7}{p}) = 1$ if $p = \pm 1, \pm 9, \pm 25$ mod 28.
+This flips the question from is 7 a square mod $p$ to asking if $p$ is a square mod 28.
+
+\begin{lemma}
+  $(\frac{-3}{p}) = \begin{cases}1 & p \equiv 1 \pmod 3 \\ -1 & p \equiv 2 \pmod 3\end{cases}$
+\end{lemma}
+\begin{prf}
+  Consider again $(-3)^{(p-1)/2} = (\sqrt{-3})^{p-1}$.
+  We can notice $\sqrt{-3} = \sqrt{3} i = \zeta_6 + \zeta_3$.
+
+  This gives us $(\sqrt{-3})^{p-1} = \frac{\zeta_3^p - \zeta_3^{2p}}{\zeta_3 - \zeta_3^2}$
+  because $\zeta_6 = -\zeta_3^2$.
+
+  If $p \equiv 1 \pmod 3$, then $\frac{\zeta_3^p - \zeta_3^{2p}}{\zeta_3 - \zeta_3^2}
+    = \frac{\zeta_3 - \zeta_3^{2}}{\zeta_3 - \zeta_3^2} = 1$
+  and if $p \equiv 2 \pmod 3$, $\frac{\zeta_3^p - \zeta_3^{2p}}{\zeta_3 - \zeta_3^2}
+    = \frac{\zeta_3^2 - \zeta_3^1}{\zeta_3 - \zeta_3^2} = -1$.
+\end{prf}
+
+Notice that to get to $\sqrt{3}$ on the complex plane, we need $\zeta_{12}$,
+which explains why we see mod 12 in the rule.
+To get $\sqrt{5}$, we can either use the fact that $\cos \frac{2\pi}{5} = \frac14(\sqrt{5}-1)$
+or notice that $(\zeta_5 - \zeta_5^2 - \zeta_5^3 + \zeta_5^4)^2
+  = (4 - \zeta_5 - \zeta_5^2 - \zeta_5^3 - \zeta_5^4)
+  = 5 - (1 + \zeta_5^1 + \zeta_5^2 + \zeta_5^3 + \zeta_5^4) = 5$.
+We can then execute the same fraction-by-cases technique, getting our result mod 5.
+
+Aside: This is the Gauss sum for $\sqrt{5} = \sum (\frac{i}{5})\zeta_5^i$.
+
+\section{Quadratic Reciprocity (09/30)}
+
+Recall the pattern from last lecture,
+where we noticed that asking if $q$ is a square mod $p$
+seems to be like asking if $p$ is a square mod $4q$.
+This is almost true, but in fact
+
+\begin{theorem}[Quadratic Reciprocity]
+  $(\frac{q}{p}) = (\frac{p}{q})$ for odd primes $p \neq \pm q$
+  where at least one is congruent to 1 mod 4 and at least one is positive.
+\end{theorem}
+
+Equivalently, for all distinct positive odd primes $p$ and $q$,
+$(\frac{p}{q})(\frac{q}{p}) = (-1)^{\frac{p-1}{2}\frac{q-1}{2}}$
+
+The proof follows by Gauss sums and the vague ideas from the last lecture.
+
+This means we can evaluate any Legendre symbol using a modulus as either one of
+\begin{align*}
+  \qty(\frac{-1}{p}) = (-1)^{\frac{p-1}{2}}
+   & = \begin{cases}1 & p \equiv 1 \pmod 4 \\ -1 & p \equiv 3 \pmod 4\end{cases}         \\
+  \qty(\frac{2}{p})  = (-1)^{\frac{p^2-1}{8}}
+   & = \begin{cases}1 & p \equiv \pm 1 \pmod 8 \\ -1 & p \equiv \pm 3 \pmod 8\end{cases} \\
+  \qty(\frac{q}{p})  = \qty(\frac{p}{q})(-1)^{\frac{p-1}{2}\frac{q-1}{2}}
+   & = \begin{cases*}
+         (\frac{p}{q})  & $p \equiv \pm 1 \pmod 4$ or $q \equiv \pm 1 \pmod 4$ \\
+         -(\frac{p}{q}) & $p \equiv q \equiv 3 \pmod 4$
+       \end{cases*}
+\end{align*}
+which is nicer than using Euler's criterion.
+
+\begin{example}
+  Is 71 a square mod 101?
+\end{example}
+\begin{sol}
+  Write $\leg{71}{101} = \leg{101}{71} = \leg{30}{71} = \leg{2}{71}\leg{3}{71}\leg{5}{71}$
+  by quadratic reciprocity and multiplicativity.
+
+  Then, $\leg{2}{71} = 1$ since $71 \equiv 7 \pmod 8$.
+
+  Also, $\leg{3}{71} = -\leg{71}{3} = -\leg{2}{3} = 1$ since $71 \equiv 3 \pmod 4$.
+
+  Finally, $\leg{5}{71} = \leg{71}{5} = \leg{1}{5} = 1$ since 1 is always a square.
+
+  This gives $\leg{71}{101} = 1\cdot 1 \cdot 1 = 1$ so 71 is a square mod 101.
+\end{sol}
+
+Asymptotically, this is not faster than Euler's criterion
+because we require factoring. However, it is prettier.
+
+To deal with a random large number, we must consider what to do
+after factoring out all the 2s (since we can deal with those quickly).
+
+\begin{defn}[Jacobi symbol]
+  For all $m,n \in \N_{>0}$ with $n$ odd, $\leg{m}{n} = \prod_{i=1}^k \leg{m}{p_i}$
+  where $\prod_{i=1}^k p_i = n$ is the prime factorization of $n$
+\end{defn}
+
+\begin{theorem}[Jacobi]
+  For all positive and odd $m$ and $n$,
+  \begin{align*}
+    \qty(\frac{-1}{n}) = (-1)^{\frac{n-1}{2}}
+     & = \begin{cases}1 & n \equiv 1 \pmod 4 \\ -1 & n \equiv 3 \pmod 4\end{cases}         \\
+    \qty(\frac{2}{n})  = (-1)^{\frac{n^2-1}{8}}
+     & = \begin{cases}1 & n \equiv \pm 1 \pmod 8 \\ -1 & n \equiv \pm 3 \pmod 8\end{cases} \\
+    \qty(\frac{m}{n})  = \qty(\frac{n}{m})(-1)^{\frac{n-1}{2}\frac{m-1}{2}}
+     & = \begin{cases}
+           (\frac{n}{m})  & n \equiv \pm 1 \pmod 4 \text{ or } m \equiv \pm 1 \pmod 4 \\
+           0              & \gcd(m,n) \neq 1                                          \\
+           -(\frac{n}{m}) & n \equiv m \equiv 3 \pmod 4
+         \end{cases}
+  \end{align*}
+\end{theorem}
+
+Note: For Legendre symbols, $\leg{a}{p} = 1 \iff a \equiv \square \pmod p$.
+However, for Jacobi symbols, we only have the one-way implication
+$\leg{m}{n} = -1 \implies m \not\equiv \square \pmod n$.
+
+Return now to the application to cryptography,
+specifically to Goldwasser--Micali.
+
+\subsubsection{Goldwasser--Micali cryptosystem}
+
+\textbf{Key Generation: } Choose random primes $p$, $q$. Set $n = pq$.
+
+Choose $x \in (\Z/n\Z)^\times$ such that
+$\leg{x}{p} = \leg{x}{q} = -1$ (then $\leg{x}{n} = 1$).
+Publish $x$.
+
+\textbf{Encrypt:} $m \in \{0,1\}$
+
+Choose some $r \xgets{\$} (\Z/n\Z)^\times$.
+Then, $Enc(m) = x^m r^2 = c$.
+
+\textbf{Decrypt:} Determine whether $c$ is a ``fake'' square using the factorization.
+
+The underlying assumption is that it is not easy to distinguish
+actual squares mod $n$ and ``fake'' squares mod $n$.
+
+\chapter{Primality}
+
+\section{Primality Testing (10/03)}
+
+Given $n \in \Z$, how can we tell if $n$ is prime?
+
+\begin{lemma}[Fermat test]
+  Recall \FLT{}: for a prime $p$, $a \in (\Z/p\Z)^\times \implies a^{p-1} = 1$.
+  Therefore, if $a \in (\Z/n\Z)^\times$ and $a^{n-1} \neq 1$,
+  then $n$ is not prime.
+\end{lemma}
+
+\begin{defn}[Fermat witness]
+  Let $n \in \N$, $\alpha \in (\Z/n\Z)^\times$ where $\alpha^{n-1} \neq 1$.
+\end{defn}
+
+When $n$ is prime, no Fermat witness can exist.
+When $n$ is not prime, only some elements are Fermat witnesses.
+The other elements are \emph{Fermat liars}.
+How many liars are in $(\Z/n\Z)^\times$?
+
+\begin{theorem}
+  For $n > 2$, if there exists one Fermat witness in $(\Z/n\Z)^\times$,
+  then there exist at least $\frac{\phi(n)}{2}$ Fermat witnesses.
+\end{theorem}
+\begin{prf}
+  Consider the set $H=\{ \alpha \in \mgrp{n} : \alpha^{n-1} = 1\}$.
+
+  $H$ is a subgroup: $1 \in H$, $ab \in H$, $a^{-1} \in H$ (trivial by exponentiation properties).
+
+  So by Lagrange's theorem, $\abs{H} \mid \abs{\mgrp{n}}$.
+
+  Either (1) $\abs{H} = \phi(n)$, so there are no witnesses,
+  or (2) $\abs{H} < \phi(n)$, so $\abs{H} \leq \frac{\phi(n)}{2}$.
+\end{prf}
+
+\begin{defn}[Carmichael number]
+  $n \in \N$, $n > 2$ such that $n$ is composite and $n$ has no Fermat witnesses.
+\end{defn}
+Examples: $n = 561 = 3 \times 11 \times 17$.
+By \FLT{}, we have $\alpha^{n-1} = \alpha^{560}$ is 1 mod 3, 1 mod 11, and 1 mod 17.
+
+Recall that for $n$ prime:
+$a^{\frac{n-1}{2}} \equiv \leg{a}{n} \pmod n$ when $n > 2$, odd, and $a \in \mgrp{n}$.
+This gives us the following test:
+
+\begin{lemma}[Solovay--Strassen test]
+  If $a^{\frac{n-1}{2}} \not\equiv \leg{a}{n} \pmod n$, then $n$ is not prime.
+\end{lemma}
+
+We can calculate $a^{\frac{n-1}{2}}$ by repeated squaring
+and $\leg{a}{n}$ by Jacobi reciprocity and factoring out 2's.
+We can now define witneses as in the Fermat test.
+
+\begin{defn}[Euler (Solovay--Strassen) witness]
+  An element $\alpha \in \mgrp{n}$ where
+  $\leg{\alpha}{n} \not\equiv \alpha^{\frac{n-1}{2}} \pmod n$.
+  If an element is not an Euler witness, it is an Euler liar.
+\end{defn}
+
+Notice that all Euler witnesses must also be Fermat witnesses,
+meaning that hopefully we have a more refined test here.
+
+\begin{theorem}
+  If $n > 2$ is composite and odd, then there exists at least one Euler witness.
+\end{theorem}
+\begin{prf}
+  Suppose $n$ is composite and $n = p \times k$.
+
+  If $p \nmid k$, then solve $\alpha \equiv \beta \pmod p$ and $\alpha \equiv 1 \pmod k$
+  where $\beta$ is a quadratic non-residue mod $p$.
+  Now, calculate
+  \[
+    \leg{\alpha}{n} = \leg{\alpha}{p}\leg{\alpha}{k} = \leg{\beta}{p}\leg{1}{k} = (-1)(1) = -1
+  \]
+  Suppose $\alpha^{\frac{n-1}{2}}$ is $-1$.
+  Then, $\alpha^{\frac{n-1}{2}} \equiv -1 \pmod n$
+  and that means $\alpha^{\frac{n-1}{2}} \equiv -1 \pmod k$.
+  But we know $\alpha \equiv 1 \pmod k$, so this is a contradiction.
+
+  Otherwise, $p \mid k$.
+  Let $\alpha = 1 + k$. Calculate
+  \[
+    \leg{\alpha}{n} = \leg{1+k}{n} = \leg{1+k}{p}\leg{1+k}{k} = \leg{1}{p}\leg{1}{k} = (1)(1) = 1
+  \]
+  Suppose $\alpha^{\frac{n-1}{2}} = 1$.
+  This implies that $\ord(\alpha) \mid \frac{n-1}{2}$.
+  Calculate $\alpha^p = (1+k)^p = 1^p + \underbrace{p k^1 + \dotsb + \binom{p}{p} k^p}_{0 \pmod n} = 1$
+  which implies $\ord(\alpha) = p$.
+  But $p \mid n \implies p \nmid n-1 \implies p \nmid \frac{n-1}{2}$.
+
+  Therefore, $\alpha$ is an Euler witness.
+\end{prf}
+
+This theorem combined with the at-least-$\frac{\phi(n)}{2}$ theorem
+means that we have for every odd, composite $n > 2$ there are $\frac{\phi(n)}{2}$ Euler witnesses.
+
+\section{Strong Primality Testing (10/05)}
+
+Recall: for the Fermat test, evaluate $a^{n-1}$ a bunch of times.
+If it is equal to 1, prime or liar; otherwise, composite.
+For the Solovay--Strassen test, evaluate $a^{\frac{n-1}{2}} = \leg{a}{n}$.
+If yes, prime or Euler liar; otherwise, composite.
+Also, there are an infinite number of Carmichael numbers that screw with this
+but otherwise you have around a 50\% chance of getting a witness.
+
+We can refine this further beyond considering $n-1$ and $\frac{n-1}{2}$.
+
+Write $n-1 = 2^t \cdot s$ so that $s$ is odd.
+Then, $a^{n-1}$ is $a^s$ squared $t$ times.
+So instead of asking if $a^{2^t s} = 1$, consider if $a^{2^{t-1} s}$
+is an ``expected'' square root of 1, i.e., $\pm 1$.
+If it is not, it is composite.
+If it is and it is $-1$, we have a prime or liar.
+If it is and it is 1, keep going back.
+If we reach $a^s=1$, we get no information.
+
+\begin{lemma}[Miller--Rabin test]
+  Let $x \gets a^s$. Do:
+  \begin{itemize}[nosep]
+    \item If $x = 1$, stop. Probably prime.
+    \item If $x = -1$, stop. Probably prime.
+    \item Otherwise, $x \gets x^2$
+  \end{itemize}
+  while $x \neq a^{2^t s}$. If we reach the end, it is composite.
+\end{lemma}
+
+\begin{defn}[Miller--Rabin (strong) liar]
+  $a \in \mgrp{n}$ if either $a^s = 1$ or $a^{2^k s} = -1$ for $0 \leq k < t$.
+\end{defn}
+
+We call this a ``strong liar'' because every strong liar is an Euler liar,
+and every Euler liar is a Fermat liar.
+
+\begin{theorem}
+  Suppose $n$ has at least two distinct prime factors.
+  Then, the number of Miller--Rabin liars is at most $\frac{\phi(n)}{4}$
+  and in general, if $n$ has $\ell$ distinct prime factors,
+  there are at most $\frac{\phi(n)}{2^\ell}$ Miller--Rabin liars.
+\end{theorem}
+
+We can make these primality tests deterministic by iterating $a = 1,\dotsc,n$.
+We do not need to go to $a=n$ and instead
+we can establish an upper bound on the smallest witness.
+The bound (by Bach) is $O(\log^2 n)$, specifically, $2\log^2n$.
+But this requires the Generalized Riemann Hypothesis
+which everyone believes anyways, so we just check $a = 1,\dotsc,2\log^2 n$.
+
+To analyze complexity, notice that we have $\log n$ multiplications at each step,
+i.e., $\log^{1+\epsilon} n$ bit operations using fast multiplication.
+So the complexity is $O(\log^{2 + (1 + \epsilon) + 1} n)$.
+
+Further reading:
+\begin{itemize}[nosep]
+  \item AKS (Agrawal--Kayal--Saxena; 2004) primality test in $O(\log^6 n)$
+        which does not rely on GRH and was an undegrad project(!!)
+  \item ECPP (elliptic curve prime proving) notable for not having liars,
+        also does not require GRH and runs non-deterministically (Monte Carlo)
+        in $O(\log^5 n)$
+  \item Cyclotomic primality test in $O((\log n)^{\log \log n})$,
+        best until AKS proved that primality is in P.
+\end{itemize}
+
+Since there are $\frac{n}{\log n} + O(\sqrt n)$ primes less than $n$,
+we can pick random numbers of size $e^\ell$ to get an approximate $\frac{1}{\ell}$
+probability of a prime.
+
+\section{Malleability (10/07)}
+Recall the Goldwasser--Micali cryptosystem.
+It satisfies IND-CPA provided that the quadratic reciprocity problem is hard.
+That is, determining whether an $x = pq$ with $\leg{x}{n} = 1$
+is actually a square or not (i.e. $\leg{x}{p} = 1$).
+
+However, an adversary can still alter the message without needing to decrypt.
+This also applies, for example, to XOR one-time pads (since if $c = k \oplus m$
+and we intercept $c \mapsto c \oplus n$, recepient will get $m' = m \oplus n$).
+Using MACs can get around this problem (e.g. AES with GCM or Chacha20 with Poly1305).
+
+\begin{defn}[non-malleability]
+  Given the game NM-CPA:
+  \begin{enumerate}[1.,nosep]
+    \item $\mathcal C$ generates $(pk,sk)$
+    \item $(m_0, m_1, m_0', m_1') \xgets{\$} \mathcal A(\lambda, pk)$ where $m_0' \neq m_1'$
+    \item $\mathcal C$ chooses $b \xgets{\$} \{0,1\}$
+    \item $\mathcal C$ computes $c = E(m_b)$
+    \item $c' \gets \mathcal A(\lambda, pk, c)$
+  \end{enumerate}
+  with win condition $D(c') = m_b'$ with non-negligible probability above 50\%.
+\end{defn}
+
+Instead of CPA games, consider CCA2 (chosen-ciphertext attack 2) games.
+Here, the adversary has a decryption oracle that takes anything except $c$.
+In CCA1, the oracle can only be accessed prior to receiving $c$.
+
+\begin{theorem}
+  IND-CCA2 is equivalent to NM-CCA2
+\end{theorem}
+
+Note that IND-CPA is not equivalent to NM-CPA,
+which is instead equal to IND-PCA (parallel ciphertext attack,
+where all oracle queries must occur at once).
+
+\section{Factorization Algorithms (10/17)}
+
+Naive approach: trial division by $1,\dotsc,\sqrt{n}$ which is $O(\sqrt{n}) = O(\exp(\frac12\log n))$.
+Note that we call this ``exponential'' because we measure with respect
+to the size of the input, i.e., $\lg n \approx \log n$.
+
+\begin{prop}
+  If $x,y\in \mgrp{n}$ satisfy $x^2 \equiv y^2 \pmod n$ and $x \not\equiv \pm y \pmod n$,
+  then $\gcd(n, x-y)$ is a non-trivial factor of $n$.
+\end{prop}
+\begin{prf}
+  Since $x^2 - y^2 \equiv 0$, we have $(x-y)(x+y) \equiv 0$.
+  But we know that $x-y \not\equiv 0$ and $x+y \not\equiv 0$
+  so there must be some weird hidden factor.
+
+  If $\gcd(n,x-y) = n$, then $n \mid (x-y) \implies x \equiv y \pmod n$
+  and if $\gcd(n,x-y) = 1$, then $n \mid (x-y)(x+y)$ which implies $n \mid (x+y)$
+  by Gauss' Lemma which gives the same contradiction.
+  Therefore, since the GCD must divide $n$, it is non-trivial.
+\end{prf}
+
+Using this, we can find non-trivial factors of $n$ by finding $x$ and $y$
+and then applying the EEA.
+How to find $x$ and $y$?
+
+\subsubsection{Random squares (Dixon)}
+
+\begin{defn}[$B$-smoothness]
+  $n \in \N$ where the largest prime factor is less than $B$
+\end{defn}
+
+Chose $x_i \xgets{\$} \mgrp{n}$.
+For each $x_i$, compute $x_i^2 \pmod n$ and keep the $B$-smooth squares.
+We can tell if a number is $B$-smooth by trial division (since $B$ is small).
+
+We need at least $t+1$ squares that are $B$-smooth.\footnote{Where $t=\pi(B)$ is the prime-counting function.}
+
+This gives us squares $x_1^2 \bmod n = p_1^{e_{1,1}}\dotsb p_t^{e_{t,1}}$
+up to $x_{t+1}^2 \bmod n = p_1^{e_{1,t+1}}\dotsb p_t^{e_{t,t+1}}$.
+
+Take the subset product $\prod x_i^2 \bmod n = p_1^{\sum e_{1,i}}\dotsb p_t^{\sum e_{t,i}}$.
+
+We can define $b_i = \begin{cases}0 & i \in S \\ 1 & i \not\in S\end{cases}$
+so that $\sum_{i\in S}e_{j,i} = \sum_{i=1}^{t+1}e_{j,i}b_i = 0 \bmod 2$
+to find squares.
+
+Solve this homogeneous linear system over $\Z/2\Z$ (where the $b_i$ are variables).
+We know there exists a non-trivial solution because there are more variables (at least $t+1$) than equations (exactly $t$).
+
+That gives a square subset product $x^2 = \prod\limits_{i=1}^{t+1} (x_i^2)^{b_i} \bmod n
+  = \prod\limits_{j=1}^t p_j^{\sum_{i=1}^{t+1} e_{j,i} b_i} \bmod n = y^2$.
+
+The LHS and RHS are unrelated except for the fact that they are equal mod $n$.
+In fact, with about 50\% probability, $x \not\equiv \pm y \bmod n$.
+The probability can be improved by increasing $t+1$ to like $t+10$.
+Since $t \approx B$ is large, this is negligible.
+
+Picking $B$: large $B$ makes it more likely to find $B$-smooth squares, however,
+the amount of work $t+1$ is proportional to $B$.
+
+We want to pick $B$ such that the probability of squares being $B$-smooth is $\frac1B$.
+This depends on $n$.
+
+From analytic number theory, the probability that a random $y \xgets{\$} \Z/n\Z$
+is $L(\alpha,c)$-smooth is $L(1-\alpha,\frac{1-\alpha}{c})$.\footnote{Where $L_n(\alpha,c) = O(\exp(c(\log n)^\alpha(\log\log n)^{1-\alpha}))$.
+  Notably, $L_n(1,1) = n$ and $L_n(1,c) = n^c$. Then, $\sqrt{n} = L_n(1,\frac12)$.
+  Also, $L_n(0,c) = (\log n)^c$.
+  That is, we interpolate between $L_n(0,c)$ polynomial time and $L_n(1,c)$ exponential time}
+So we set a bound on $B$ of $L_n(\frac12,\frac{\sqrt2}{2})$.
+Since $(\log n)^k \ll B \ll \sqrt{n}$, we call this subexponential.
+
+\section{Better Sieves (10/19)}
+
+What is the probability that a particular $x^2 \bmod n$ is $B$-smooth?
+Vanishingly small for large $n$ (in the hundreds of digits)
+and small-ish $B$ (around $10^9$).
+However, we can prove that the runtime for random squares is $L_n(\frac12,2\sqrt2)$
+using results from analytic number theory, i.e., probabilistic subexponential time.
+
+How can we improve?
+Pick $x$ such that $x^2 \bmod n$ is small (and more likely to be $B$-smooth).
+Naively: small numbers stay small (but are useless).
+Instead, pick $x \approx \sqrt{n}$ so that $x^2 \bmod n = x^2 - n$.
+
+Then, if $x = \sqrt{n} + k$, $x^2 = (\sqrt n + k)^2 - n = 2k\sqrt n + k^2
+  = O(k\sqrt{n})$, i.e., around half the size of $n$ and much smaller than $n$.
+
+This is the quadratic sieve.
+We can bound $B < L_n(\frac12, 1)$ and prove runtime $L_n(\frac12,\sqrt2)$.
+
+Suppose we write $\sqrt{n} = a_0 + \frac{1}{a_1 + \frac{1}{a_2 + \frac{1}{\ddots}}} = [a_0,a_1,\dotsc]$
+as a continued fraction.
+
+Define $\frac{P_i}{Q_i} = [a_0,\dotsc,a_i]$.
+These fractions rapidly approach $\sqrt{n}$ (and are in fact the best rational approximations).
+That is, $P_i^2 - nQ_i^2$ rapidly approaches 0.
+We can prove that $0 < P_i - nQ_i^2 < 2\sqrt n + 1$.
+Then, we can take $P_i^2 \bmod n$ and sieve guaranteed that the squares are $O(2\sqrt n)$.
+
+Comparing the continued fraction sieve and quadratic sieve,
+$O(2\sqrt n)$ appears better than $O(k\sqrt n)$.
+However, if the quadratic sieve considers consecutive numbers to square,
+we can do a sieve of Eratosthenes-like search to find good $B$-smooth candidates.
+This is faster.
+
+One more improvement step: number field sieve.
+
+Choose $d \approx 6 \in \Z$ and $m \approx n^{1/d}$.
+Write $n$ in base $m$: $n = a_0 + a_1m + \dotsb + a_5m^5$
+and consider the polynomials $f(x) = a_0 + a_1x + \dotsb + a_5 x^5$
+and $g(x) = x-m$.
+
+We know that $f(m) = n \equiv 0 \pmod n$ and $g(m) = 0$.
+That is, $m$ is a root of both $f$ and $g$ mod $n$.
+The coefficients are also all around $m = O(n^{1/d})$ in size.
+
+Consider $\alpha$ a complex root of $f$
+(but consider it as part of a number field $\alpha \in \Z[\alpha]$).
+We pick $a_i,b_i \in \Z$ such that $a_i+b_i\alpha = \prod\beta_i$ is smooth in $\Z[\alpha]$
+and $a_i+b_im = \prod q_i$ is smooth in $\Z$.
+
+Pick a subset $S$ such that $\prod_{i\in S}(a_i + b_i\alpha) = \square$ in $\Z[\alpha]$
+and $\prod_{i\in S}(a_i + b_i m) = \square \bmod n$ in $\Z$.
+We can expand the first sum, then replace $\alpha$ with $m \bmod n$
+to get congruent squares for a sieve.
+In fact, $\alpha \mapsto m \bmod n$ is a ring homomorphism from $\Z[\alpha] \to \Z/n\Z$.
+
+Since the numbers are smaller, we have complexity $L_n(\frac13, \sqrt[3]{\frac{64}{9}})$.
+
+\section{(10/21)}
+
+\section{Index Calculus (10/26)}
+
+There is a connection between runtimes of
+factoring algorithms and DLOG algorithms:
+\begin{center}
+  \begin{tabular}{c|c}
+    Factoring $n$                                       & DLOG in $\Z_p^*$ or $\F_q^*$ where $q = p^k$                  \\ \hline
+    Trial ($O(n)$)                                      & Trial ($O(p)$)                                                \\
+    $O(\sqrt{n})$                                       & Pollard's rho ($O(\sqrt{p})$)                                 \\
+    Random squares ($L_p(\frac12,\sqrt2)$)              & Index calculus ($L_p(\frac12,\sqrt2)$)                        \\
+    NFS ($L_n(\frac13,\sqrt[3]{\frac{64}{9}})$)         & NFS for DLOG ($L_p(\frac13,\sqrt[3]{\frac{64}{9}})$)          \\
+    Special NFS ($L_n(\frac13,\sqrt[3]{\frac{32}{9}})$) & Tower NFS ($L_q(\frac13,\sqrt[3]{\frac{32}{9}})$ if $k < 50$) \\
+    ???                                                 & $L_q(\varepsilon, c)$ for $p < 10$
+  \end{tabular}
+\end{center}
+
+\begin{theorem}[Shoup]
+  For a generic group, classical probabilistic DLOG algorithms
+  require $\Omega(\sqrt{p})$ group operations.
+\end{theorem}
+
+What we mean by generic here is that the group ``interface''
+is exposed (multiplication, inversion, equality) but we don't
+know anything about the elements/structure.
+
+\subsubsection*{Index calculus}
+
+Consider $\Z_p^* = \{1,2,\dotsc,p-1\}$, $g$, $h = g^\alpha$.
+We want to find $\alpha$, the ``index''.
+We construct ``random index calculus'' from the random squares algorithm.
+Pick random $x_i$ and calculate:
+\begin{align*}
+  g^{x_1} \bmod p     & = p_1^{e_{1,1}}\dots p_t^{e_{t,1}}     \\
+                      & \vdots                                 \\
+  g^{x_{t+1}} \bmod p & = p_1^{e_{1,t+1}}\dots p_t^{e_{t,t+1}}
+\end{align*}
+where we keep $B$-smooth $g^{x_i} \bmod p \approx O(p)$
+until we get more equations than primes $p_i$.
+
+If we take log base $g$ on both sides: $x_1 \equiv \sum e_{i,1}\log_g p_i \pmod{p-1}$.\footnote{
+  $\log_g p_i$ always exists. If $g$ is not a generator
+  since \emph{some} generator $h$ exists and we have
+  $\frac{\log_h p_i \bmod p-1}{\log_h g \bmod p-1}$.}
+Since we know the $x_i$ and $e_{i,j}$, we can solve the system of linear equations
+for the discrete logs $\log_g p_i$ (since there are at least $t+1$ equations and $t$ variables).
+
+Now, take random $y$ find an $h^y = p_1^{f_1}\dots p_t^{f_t}$ that is $B$-smooth.
+Taking logs as above, $y\alpha = \sum f_i \log_g p_i$ and we can solve for $\alpha$.
+
+Since this is basically the same process as random squares,
+it is no surprise it has similar time complexity $L_p(\frac12,\sqrt2)$.
+Practically, it's slightly harder than factoring.
+
+\section{Hash Functions (10/28)}
+
+To establish something that is NM-CCA2 secure, we need to somehow ``sign''
+the ciphertext to distinguish ``authenticated'' ciphertexts.
+We can do this with MACs (e.g., AES-GCM or ChaCha20-Poly1305)
+but we will do something different.
+
+Consider a hybrid encryption scheme:
+use public-key encryption to send a symmetric key that encrypts the message.
+This is CO 487 content.
+
+\subsubsection*{Hash functions}
+
+Most common hash functions are the SHA family:
+SHA0 (broken 2005), SHA1 (broken 2017), SHA2 (actually used),
+SHA3 (not really used, made in anticipation of SHA2 breaking).
+Again, CO 487 content beyond the scope of this course.
+
+\begin{defn}[hash function]
+  Function $H : S \to T$ (typically, $S = \{0,1\}^*$ and $T = \{0,1\}^\lambda$)
+\end{defn}
+
+Ideally, a hash function is a random oracle, i.e.,
+$H \xgets{\$} \{ f : (f : S \to T) \}$.
+This is useful, e.g., for making hashed RSA signatures
+existentially unforgeable under chosen message attack.
+
+There is no way to easily construct a random oracle
+because (1) we can't construct the set of all functions and
+(2) we run into measure theory issues with defining a probability distribution on that set.
+Instead we construct with desired properties:
+\begin{enumerate}[1.]
+  \item Preimage resistant: Given $t \in T$, it is infeasible to find $s \in H^{-1}(t)$.
+  \item Second preimage resistant: Given $s \in S$, it is infeasible to find
+        $s' \in S$ such that $s \neq s'$ and $H(s) = H(s')$.
+  \item Collision resistant: It is infeasible to find $s \neq s'$
+        such that $H(s) = H(s')$.
+\end{enumerate}
+
+\begin{example}
+  Are all preimage resistant functions second preimage resistant?
+\end{example}
+\begin{sol}
+  Consider $f(x) = x^2 \bmod n$.
+  To find a preimage, take $x = \sqrt{y}$ (hard).
+  To find a second preimage, take $x' = -x \neq x$ so $(-x)^2 = x^2$ (easy).
+\end{sol}
+
+To be formal, use games.
+For example, with collision resistance:
+Suppose we have a family of hash functions $HashGen : \one^\lambda \mapsto H_\lambda$.
+Play the game:
+\begin{enumerate}[1.]
+  \item Pick a hash function $H_\lambda \xgets{\$} HashGen(\one^\lambda)$
+  \item $(s, s') \gets \mathcal A(\one^\lambda, H_\lambda)$
+\end{enumerate}
+with win condition $H_\lambda(s) = H_\lambda(s')$ and $s \neq s'$.
+We define $\{H_\lambda : \lambda \in \N\}$
+to be collision-resistant if no probabilistic polynomial time adversary $\mathcal A$
+can win this game with non-negligible probability in $\lambda$.
+
+We can construct collision-resistant hash functions
+from claw-free permutations by Damg\aa{}rd.
+
+\begin{defn}[claw-free permutation]
+  Given a set $X$, the pair of permutations $(f,g)$ is claw-free if
+  it is infeasible to find $x_1,x_2 \in X$ such that $f(x_1) = g(x_2)$.
+\end{defn}
+
+The wrong way:
+Given claw-free permutations $f : X \to X$ and $g : X \to X$,
+we define $H : \{0,1\}^* \to X$ with $H(\varepsilon) = x_\varepsilon$.
+Inductively, $H(b_1b_2\cdots b_n) = h(H(b_1\cdots b_{n-1}))$
+where $h = f$ if $b_n = 0$ and $g$ if $b_n = 1$.
+Claim this is collision-resistant because if there is a collision
+$H(m) = H(m')$ and $m \neq m'$, we have a claw at some point,
+which is a contradiction.
+Unfortunately, we could run into a loop back to $x_\varepsilon$.
+
+Instead, pick $x_0 \in X$ and define $x_\varepsilon = g(f(x_0))$
+and define $H(b_0\cdots b_n) = h(h(H(b_0 \cdots b_{n-1})))$ as above.
+Then, we cannot arrive at $x_\varepsilon$
+because generating pairs of $f(f(\dots))$ and $h(h(\dots))$ cannot create $g(f(\dots))$.
+
+\end{document}

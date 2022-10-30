@@ -283,6 +283,9 @@ TSWLatexianTemp*
 # Uncomment the next line to have this generated file ignored.
 #*Notes.bib
 
+# markdown
+*.markdown.in
+_markdown_*
 
 # GitHub Pages / Ruby
 _site
