@@ -182,6 +182,17 @@ I have no idea if anyone at all would find these useful, but here are
 [my solutions so far](./MATH146/HK.pdf).
 Note that I use the notation from the book, which might hurt when MATH 136 starts.
 
+### MATH 239 (F2022) <small>Introduction to Combinatorics</small>
+
+My [lecture notes](./MATH239/notes.pdf) (incomplete and somewhat experimental) are available.
+You might be interested in the [source](./MATH239/notes.tex) if you want to use TIKZ for graph theory.
+
+### CO 485/685 (F2022) <small>Mathematics of Public-Key Cryptography</small>
+
+More [lecture notes](./CO485/notes.pdf) with the caveat that
+(1) I am not actually enrolled in the course and just sit in it for fun
+and (2) I am missing two levels of prerequisites and do not fully understand the content.
+
 ### CS 245 (F2021) <small>Logic and Computation</small>
 
 My own version of the [reference sheet](./CS245/ref.pdf) is a bit more compact.
