@@ -182,7 +182,7 @@
   Complete Example 1.13.
 \end{xca}
 
-\begin{xca}
+\begin{xca}\label{xca:1-7}
   Give bijective proofs of the following identities:
 \end{xca}
 \begin{enumerate}
@@ -507,6 +507,606 @@
           As above, we sum to calculate the expected value.
 
           This gives $\frac{1}{d^m}\sum_{i=1}^m i(d-1)^{m-i}$.
+        \end{sol}
+\end{enumerate}
+
+\pagebreak
+\section{Generating Series}
+
+\begin{xca}
+  Calculate the following coefficients
+\end{xca}
+\begin{enumerate}
+  \item $[x^8](1-x)^{-7}$
+        \begin{sol}
+          Apply the Negative Binomial Series to get $\binom{8+7-1}{7-1} = \binom{14}{6} = 3003$
+        \end{sol}
+  \item $[x^{10}]x^6(1-2x)^{-5}$
+        \begin{sol}
+          $[x^{10}]x^6(1-2x)^{-5} = [x^4](1-2x)^{-5}$
+          where $(1-2x)^{-5} = \sum \binom{n+5-1}{5-1}2^n x^n$ by NBS
+          so we have $\binom{4+5-1}{4} 2^4 = 16\binom{8}{4} = 1120$
+        \end{sol}
+  \item $[x^8](x^3 + 5x^4)(1+3x)^6$
+        \begin{sol}
+          Expand: $[x^8](x^3 + 5x^4)(1+3x)^6 = [x^8](x^3(1+3x)^6) + [x^8](5x^4(1+3x^6)) = [x^5](1+3x)^6 + 5[x^4](1+3x)^6$.
+
+          Apply the Binomial Theorem: $(1+3x)^6 = \sum \binom{6}{n} 3^n x^n$
+          giving $[x^n](1+3x)^6 = 3^n\binom{6}{n}$.
+
+          Finally, $[x^8](x^3 + 5x^4)(1+3x)^6 = 3^6\binom{6}{5} + 5(3^4\binom{6}{4}) = 10449$
+        \end{sol}
+  \item $[x^9]((1-4x)^5 + (1-3x)^{-2})$
+        \begin{sol}
+          Expand: $[x^9]((1-4x)^5 + (1-3x)^{-2}) = [x^9](1-4x)^5 + [x^9](1-3x)^{-2}$.
+
+          Apply BT: $(1+(-4x))^5 = \sum_{n=1}^5 \binom{5}{n} (-4)^n x^n$ so $[x^9](1-4x)^5 = 0$.
+
+          Apply NBS: $(1-3x)^{-2} = \sum \binom{n+2-1}{2-1} 3^n x^n$ so $[x^9](1-3x)^{-2} = 3^9\binom{10}{1} = 196830$
+        \end{sol}
+  \item $[x^n](1-2tx)^{-k}$
+        \begin{sol}
+          Apply NBS: $(1-2tx)^{-k} = \sum \binom{n+k-1}{k-1} (2t)^n x^n$,
+          so we have $\binom{n+k-1}{k-1}(2t)^n$.
+        \end{sol}
+  \item $[x^{n+1}]x^k(1-4x)^{-2k}$
+        \begin{sol}
+          Expand: $[x^{n+1}]x^k(1-4x)^{-2k} = [x^{n-k+1}](1-4x)^{-2k}$.
+
+          Apply NBS: $(1-4x)^{-2k} = \sum \binom{n+2k-1}{2k-1} 4^n x^n$.
+
+          This gives $4^{n-k+1}\binom{n-k+1+2k-1}{2k-1} = 4^{n-k+1}\binom{n+k}{2k-1}$.
+        \end{sol}
+  \item $[x^n]x^k(1-x^2)^{-m}$
+        \begin{sol}
+          Expand: $[x^n]x^k(1-x^2)^{-m} = [x^{n-k}](1-x^2)^{-m}$.
+
+          Apply NBS: $(1-x^2)^{-m} = \sum \binom{n+m-1}{m-1} x^{2n}$.
+
+          This gives $[x^n]x^k(1-x^2)^{-m} = \begin{cases*}
+              \binom{\frac{n}{2}+m-1}{m-1} & $n$ even \\
+              0                            & $n$ odd
+            \end{cases*}$
+        \end{sol}
+  \item $[x^n]((1-x^2)^{-k} + (1-7x^3)^{-k})$
+        \begin{sol}
+          Expand and apply NBS:
+          \begin{align*}
+             & [x^n]((1-x^2)^{-k} + (1-7x^3)^{-k})                                                                            \\
+             & = [x^n](1-x^2)^{-k} + [x^n](1-7x^3)^{-k}                                                                       \\
+             & = [x^n]\sum_{m=0}^\infty\binom{m+k-1}{k-1}x^{2m}
+            + [x^n]\sum_{m=0}^\infty\binom{m+k-1}{k-1}7^m x^{3m}                                                              \\
+             & = \begin{cases}
+                   \binom{\frac{n}{2}+k-1}{k-1} & 2 \mid n  \\
+                   0                            & 2 \nmid n
+                 \end{cases}
+            + \begin{cases}
+                7^n\binom{\frac{n}{3}+k-1}{k-1} & 3 \mid n  \\
+                0                               & 3 \nmid n
+              \end{cases}                                                         \\
+             & = \begin{cases}
+                   \binom{\frac{n}{2}+k-1}{k-1}                                   & 2 \mid n, 3 \nmid n \\
+                   7^n\binom{\frac{n}{3}+k-1}{k-1}                                & 2 \nmid n, 3 \mid n \\
+                   \binom{\frac{n}{2}+k-1}{k-1} + 7^n\binom{\frac{n}{3}+k-1}{k-1} & 6 \mid n            \\
+                   0                                                              & \text{otherwise}
+                 \end{cases}
+          \end{align*}
+          which is a mess.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  In each case, find an instance of a Binomial Series that begins as shown.
+\end{xca}
+\begin{enumerate}
+  \item $1-2x+3x^2-4x^3+5x^4-6x^5+\dotsb$
+        \begin{sol}
+          This has coefficients $(-1)^n(n+1) = (-1)^n\binom{n+2-1}{2-1}$
+          which comes from the series $(1+x)^{-2}$.
+        \end{sol}
+  \item $1+3x+6x^2+10x^3+15x^4+21x^5+\dotsb$
+        \begin{sol}
+          Coefficients are $\binom{2}{2},\binom{3}{2},\binom{4}{2},\dotsc$
+          which match $\binom{n+3-1}{3-1}$,
+          which comes from the series $(1-x)^{-3}$.
+        \end{sol}
+  \item $1-x^3+x^6-x^9+x^{12}-x^{15}+\dotsb$
+        \begin{sol}
+          Consider $x^{3n}$.
+          Coefficients $(-1)^n = (-1)^n\binom{n+1-1}{1-1}$ match $(1+x^3)^{-1}$.
+        \end{sol}
+  \item $1+2x^2+4x^4+8x^6+16x^8+32x^{10}+\dotsb$
+        \begin{sol}
+          Consider $x^{2n}$.
+          Coefficients $2^n$ match $(1-2x^2)^{-1}$.
+        \end{sol}
+  \item $1-4x^2+12x^4-32x^6+80x^8-192x^{10}+\dotsb$
+        \begin{sol}
+          Consider $x^{2n}$.
+          Divide through $2^n$ to get $(1, -2, 3, -4, 5, -6)$.
+          Coefficients $(-1)^n2^n(n+1) = (-2)^n\binom{n+2-1}{2-1}$
+          match $(1+2x^2)^{-2}$
+        \end{sol}
+  \item $1+6x+24x^2+80x^3+240x^4+672x^5+\dotsb$
+        \begin{sol}
+          Again, divide through by $2^n$ to get $(3,6,10,\dotsc)$
+          which we recognize from (b).
+          Coefficients $2^n\binom{n+3-1}{3-1}$
+          come from $(1-2x)^{-3}$.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  Give algebraic proofs of these identities from \Cref{xca:1-7}.
+\end{xca}
+\begin{enumerate}
+  \item For all $n \in \N$, $\sum_{k=0}^n\binom{n}{k}k = n2^{n-1}$
+        \begin{prf}
+          Recall that $\binom{n}{k} = \frac{n!}{k!(n-k)!}$. Then:
+          \begin{align*}
+            \sum_{k=0}^n\binom{n}{k}k
+             & = \sum_{k=0}^n\frac{n!}{k!(n-k)!}k                 \\
+             & = \sum_{k=0}^n\frac{n!}{(k-1)!(n-k)!}              \\
+             & = n\sum_{k=0}^n\frac{(n-1)!}{(k-1)!((n-1)-(k-1))!} \\
+             & = n\sum_{k=-1}^{n-1}\binom{n-1}{k}                 \\
+             & = n2^{n-1}
+          \end{align*}
+          as desired.
+        \end{prf}
+  \item For all $n \in \N$, $\sum_{k=0}^n\binom{n}{k}k(k-1) = n(n-1)2^{n-2}$
+        \begin{prf}
+          As in (a) above:
+          \begin{align*}
+            \sum_{k=0}^n\binom{n}{k}k(k-1)
+             & = \sum_{k=0}^n\frac{n!}{(k-2)!(n-k)!}                   \\
+             & = n(n-1)\sum_{k=0}^n\frac{(n-2)!}{(k-2)!((n-2)-(k-2))!} \\
+             & = n(n-1)\sum_{k=-2}^{n-2}\binom{n-2}{k}                 \\
+             & = n(n-1)2^{n-2}
+          \end{align*}
+          as desired.
+        \end{prf}
+\end{enumerate}
+
+\begin{xca}
+  Calculate $[x^n](1+x)^{-2}(1-2x)^{-2}$.
+  Give the simplest expression you can find.
+\end{xca}
+\begin{sol}
+  First, find $A(x) = (1+x)^{-2} = \sum a_n x^n$
+  and $B(x) = (1-2x)^{-2} = \sum b_n x^n$:
+  \begin{align*}
+    (1+x)^{-2}  & = \sum \binom{n+1}{1} (-1)^n x^n = \sum (-1)^n(n+1)x^n \\
+    (1-2x)^{-2} & = \sum \binom{n+1}{1} 2^n x^n = \sum 2^n(n+1)x^n
+  \end{align*}
+  Then, by definition of multiplication of power series,
+  \begin{align*}
+    [x^n](1+x)^{-2}(1-2x)^{-2} & = [x^n]A(x)B(x)                                       \\
+                               & = [x^n]\sum_{n=0}^\infty \sum_{k=0}^n a_k b_{n-k} x^n \\
+                               & = \sum_{k=0}^n (-1)^k(k+1) 2^{n-k}(n-k+1)             \\
+                               & = 2^n\sum_{k=0}^n \frac{(k+1)(n-k+1)}{(-2)^k}
+  \end{align*}
+  which does not look like it's getting simpler.
+\end{sol}
+
+\begin{xca}\end{xca}
+\begin{enumerate}
+  \item Let $a \geq 1$ be an integer. For each $n \in \N$,
+        extract the coefficient $x^n$ from both sides of this power series identity:
+        \[ \frac{(1+x)^a}{(1-x^2)^a} = \frac{1}{(1-x)^a} \]
+        to show that $\binom{n+a-1}{a-1} = \sum_{k=0}^{\floor{n/2}}\binom{a}{n-2k}\binom{k+a-1}{a-1}$
+        \begin{prf}
+          Apply the Binomial Series to get $[x^n]\frac{1}{(1-x)^a} = \binom{n+a-1}{a-1}$.
+
+          For the left-hand side, consider a product $A(x)\cdot B(x) = (1+x)^a \cdot (1-x^2)^{-a}$.
+
+          Then, the Binomial Theorem gives $A(x) = \sum_{n=0}^a \binom{a}{n} x^n$
+          and the Binomial Series gives $B(x) = \sum_{n=0}^\infty \binom{n+a-1}{a-1}x^{2n}$.
+
+          After multiplying, we can consider contributions from $B(x)$.
+          We can get $x^{2k}$ for $k = 0,\dotsc,\floor{\frac{n}{2}}$
+          leaving $x^{n-2k}$ from $A(x)$.
+
+          This gives a coefficient $\sum_{k=0}^{\floor{n/2}}\binom{a}{n-2k}\binom{k+a-1}{a-1}$.
+
+          Therefore, by definition of equality of power series,
+          $\binom{n+a-1}{a-1} = \sum_{k=0}^{\floor{n/2}}\binom{a}{n-2k}\binom{k+a-1}{a-1}$,
+          as desired.
+        \end{prf}
+  \item Can you think of a combinatorial proof?
+        \begin{prf}
+          We are considering the set of multisets of size $n$ and $a$ types.
+
+          In a multiset, every type $t$ can appear either
+          an even $m_t = 2k_t$ or odd $m_t = 2k_t+1$ number of times.
+          Let $k = \sum k_t$ and partition the set of multisets on $k$.
+          Notice that $\sum m_t = (\sum 2k_t) + \abs{\{t : \text{$m_t$ is odd}\}} = n$,
+          which means that there are $n-2k$ types appearing an odd number of times.
+
+          Now, we can instead pick a multiset of size $k$ with $a$ types in $\binom{k+a-1}{a-1}$ ways,
+          double every entry, and then add the remainders for the $\binom{a}{n-2k}$ odd entries.
+          Since $k$ runs from 0 to $\floor{n/2}$ (above gives $\binom{a}{n-2k}=0$),
+          $\binom{n+a-1}{a-1} = \sum_{k=0}^{\floor{n/2}}\binom{a}{n-2k}\binom{k+a-1}{a-1}$,
+          as desired.
+        \end{prf}
+\end{enumerate}
+
+\begin{xca}
+  Prove the Infinite Sum Lemma.
+\end{xca}
+\begin{prf}
+  Suppose $\rl A_0,\rl A_1,\rl A_2,\dotsc$ are pairwise disjoint sets
+  and let $\rl B = \bigcup_{j=0}^\infty \rl A_j$.
+  Also, let $\omega : \rl B \to \N$ be a weight function.
+  We want to show that $\Phi_{\rl B}^\omega(x) = \sum_{j=0}^\infty \Phi_{\rl A_j}^\omega(x)$.
+
+  Proceed by the definition of equality and addition for power series.
+
+  Let $\Phi_{\rl A_j}(x) = \sum a_{j,n} x^n$ and $\Phi_{\rl B}(x) = \sum b_n x^n$.
+
+  We must show that $b_n = \sum_{j=0}^\infty a_{j,n}$ for all $n \geq 0$.
+
+  Since $\omega$ is a weight function, $\omega^{-1}(n)$ is a finite set.\footnote{Let $\omega^{-1}(n)$ be the preimage of $n$ under $\omega$.}
+
+  Let $m = \max\{j \in \N : \exists k \in \omega^{-1}(n), k \in \rl A_j\}$,
+  the minimum $m$ where $\omega^{-1}(n) \subseteq \bigcup_{j=0}^m \rl A_j$.
+
+  Proceed by induction on $m$ to show that $b_n = \sum_{j=0}^m a_{j,n}$.
+
+  If $m = 0$, then $\omega^{-1}(n) \subseteq \rl A_0$ and we just let $b_n = a_{0,n}$.
+  If $m = 1$, then $\omega^{-1}(n) \subseteq \rl A_0 \cup \rl A_1$
+  and by the ordinary Sum Lemma, $b_n = [x^n]\Phi_{\rl A_0}(x) + [x^n]\Phi_{\rl A_1}(x) = a_{0,n} + a_{1,n}$.
+
+  Otherwise, $m \geq 1$ and we apply the Sum Lemma to $\rl A_m$ and $\bigcup_{j=0}^{m-1}\rl A_{j-1}$
+  to get that $b_n = a_{j,n} + \sum_{j=0}^{m-1} a_{j,n} = \sum_{j=0}^m a_{j,n}$, as desired.
+
+  Then, since $\omega^{-1}(n)$ contains no elements in $\rl A_{m+1},\dotsc$
+  we know that $a_{m+1,n} = a_{m+2,n} = \dotsb = 0$ and
+  we have that $b_n = \sum_{j=0}^m a_{j,n} = \sum_{j=0}^\infty a_{j,n}$.
+
+  Finally, $\Phi_{\rl B}(x) = \sum \Phi_{\rl A_j}(x)$, as desired.
+\end{prf}
+
+\begin{xca}\label{xca:genprodlem}
+  Extend the Product Lemma to the product of finitely many sets with weight functions.
+\end{xca}
+\begin{prf}
+  Consider finitely many sets $\rl A_1,\dotsc,\rl A_n$ for $n \geq 2$.
+  Let $\rl A = \bigcup_{i=1}^n \rl A$.
+  Define a weight function $\omega : \rl A \to \N$ a weight function
+  which we can restrict to each set $\rl A_i$.
+  On the partial unions $\rl B_j = \bigcup_{i=1}^j \rl A_i$,
+  define $\sigma_j : \rl B_j \to \N : (a_1,\dotsc,a_j) \mapsto \sum_{i=1}^j \omega(a_i)$.
+  Note that $\rl B_n = \rl A$ and write $\sigma = \sigma_n$.
+
+  Proceed to show that $\Phi_{\rl A}^\omega(x) = \prod \Phi_{\rl A_i}^{\omega}(x)$ by induction.
+
+  If $n = 2$, this is the standard Product Lemma and we get that $\sigma_2$ is a weight function
+  and $\Phi_{\rl B_2}^{\omega_2}(x) = \prod_{i=1}^2 \Phi_{\rl A_i}^{\omega}(x)$.
+
+  If $n \geq 3$, suppose that $\Phi_{\rl B_{n-1}}^\omega(x) = \prod_{i=1}^{n-1} \Phi_{\rl A_i}^{\omega}(x)$.
+
+  Then, by the Product Lemma, since $\sigma_n(a_1,\dotsc,a_n)
+    = \sigma_{n-1}(a_1,\dotsc,a_{n-1}) + \omega(a_n)$,
+  we can say that $\sigma_n$ is a weight function and
+  $\Phi_{\rl B_{n-1} \times \rl A_n}^{\sigma_n}(x)
+    = \Phi_{\rl A}^\sigma(x)
+    = \Phi_{\rl A_n}^{\omega}(x) \cdot \prod_{i=1}^{n-1} \Phi_{\rl A_i}^{\omega}(x)
+    = \prod_{i=1}^{n} \Phi_{\rl A_i}^{\omega}(x)$
+  as desired.
+
+  Therefore, by induction, the Generalized Product Lemma holds.
+\end{prf}
+
+\begin{xca}
+  Show that for $m,n,k \in \N$,
+  $\sum_{j=0}^k(-1)^j\binom{n+j-1}{j}\binom{m}{k-j} = \binom{m-n}{k}$.
+\end{xca}
+% TODO
+
+\begin{xca}\end{xca}
+\begin{enumerate}
+  \item Make a list of all the four-letter ``words''
+        that can be formed from the ``alphabet'' $\{a, b\}$.
+        Define the weight of a word to be the number of occurrences of $ab$ in it.
+        Determine how many words there are of weight 0, 1 and 2.
+        Determine the generating series.
+        \begin{sol}
+          There are $2^4 = 16$ possible words.
+
+          There is one word of weight 2, namely $abab$.
+
+          A single occurrence of $ab$ can be placed at the start, middle, or end.
+          If at the start/end, there are 3 ways to fill the other 2 letters ($aa$, $bb$, and $ba$).
+          Otherwise, there are 4 (since we do not worry about accidentally making another $ab$).
+          This gives $3+4+3 = 10$ words of weight 1.
+
+          The remaining 4 words have weight 0.
+
+          This gives a generating series $4 + 10x + 2x^2$.
+        \end{sol}
+  \item Do the same for five-letter words over the same alphabet, but preferably,
+        without listing the words separately.
+        \begin{sol}
+          There are $2^5 = 32$ possible words.
+
+          Two occurrences can be placed at the start ($ababX$), end ($Xabab$), or split ($abXab$).
+          The $X$ can be either $a$ or $b$, giving $3 \times 2 = 6$ words of weight 2.
+
+          A word with no $ab$ in it can only go from a run of $b$'s to $a$'s,
+          so if we consider $b^* a^*$ we have 6 words with weight 0.
+
+          This means there are $32 - 6 - 6 = 20$ words with weight 1.
+
+          This gives a genearting series $6 + 20x + 6x^2$.
+        \end{sol}
+  \item Do the same for six-letter words.
+        \begin{sol}
+          There are $2^6 = 64$ possible words.
+
+          Three occurrences fit six letters, so there is 1 word of weight 3.
+
+          Two occurrences can be placed in 4 positions:
+          $ababXX$, $abXabX$, $abXXab$, $XababX$, $XabXab$, $XXabab$.
+          Like in (a), there are 3, 4, 3, 4, 4, and 3 ways to fill the $X$'s.
+          This gives $3 + 4 + 3 + 4 + 4 + 3 = 21$ words of weight 2.
+
+          As in (b), there are 7 words with weight 0.
+
+          There remains $64 - 1 - 21 - 7 = 35$ words with weight 1.
+
+          The generating series is therefore $7 + 35x + 21x^2 + x^3$.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}\label{xca:2-dice}\end{xca}
+\begin{enumerate}
+  \item Consider throwing two six-sided dice, one red and one green.
+        The weight of a throw is the total number of pips showing on
+        the top faces of both dice (that is, the usual score).
+        Make a table showing the number of throws of each weight,
+        and write down the generating series.
+        \begin{sol}
+          Construct the table:
+          \begin{center}
+            \begin{tabular}{c|l|c}
+              Sum & Outcomes          & Count \\ \hline
+              0   & $\varnothing$     & 0     \\
+              1   & $\varnothing$     & 0     \\
+              2   & 11                & 1     \\
+              3   & 12 21             & 2     \\
+              4   & 13 22 31          & 3     \\
+              5   & 14 23 32 41       & 4     \\
+              6   & 15 24 33 42 51    & 5     \\
+              7   & 16 25 34 43 52 61 & 6     \\
+              8   & 26 35 44 53 62    & 5     \\
+              9   & 36 45 54 63       & 4     \\
+              10  & 46 55 64          & 3     \\
+              11  & 56 65             & 2     \\
+              12  & 66                & 1
+            \end{tabular}
+          \end{center}
+          with generating series $x^2+2x^3+3x^4+4x^5+5x^6+6x^7+5x^8+4x^9+3x^{10}+2x^{11}+x^{12}$.
+        \end{sol}
+  \item Do the same as for part (a), but throwing three dice:
+        one red, one green, and one white
+        \begin{sol}
+          Construct the table:
+          \begin{center}
+            \tiny\begin{tabular}{c|l|c}
+              Sum & Outcomes                                                                                                    & Count \\ \hline
+              0   & $\varnothing$                                                                                               & 0     \\
+              1   & $\varnothing$                                                                                               & 0     \\
+              2   & $\varnothing$                                                                                               & 0     \\
+              3   & 111                                                                                                         & 1     \\
+              4   & 112 121 211                                                                                                 & 3     \\
+              5   & 113 122 131 212 221 311                                                                                     & 6     \\
+              6   & 114 123 132 141 213 222 231 312 321 411                                                                     & 10    \\
+              7   & 115 124 133 142 151 214 223 232 241 313 322 331 412 421 511                                                 & 15    \\
+              8   & 116 125 134 143 152 161 215 224 233 242 251 314 323 332 341 413 422 431 512 521 611                         & 21    \\
+              9   & 126 135 144 153 162 216 225 234 243 252 261 315 324 333 342 351 414 423 432 441 513 522 531 612 621         & 25    \\
+              10  & 136 145 154 163 226 235 244 253 262 316 325 334 343 352 361 415 424 433 442 451 514 523 532 541 613 622 631 & 27    \\
+              11  & 146 155 164 236 245 254 263 326 335 344 353 362 416 425 434 443 452 461 515 524 533 542 551 614 623 632 641 & 27    \\
+              12  & 156 165 246 255 264 336 345 354 363 426 435 444 453 462 516 525 534 543 552 561 615 624 633 642 651         & 25    \\
+              13  & 166 256 265 346 355 364 436 445 454 463 526 535 544 553 562 616 625 634 643 652 661                         & 21    \\
+              14  & 266 356 365 446 455 464 536 545 554 563 626 635 644 653 662                                                 & 15    \\
+              15  & 366 456 465 546 555 564 636 645 654 663                                                                     & 10    \\
+              16  & 466 556 565 646 655 664                                                                                     & 6     \\
+              17  & 566 656 665                                                                                                 & 3     \\
+              18  & 666                                                                                                         & 1
+            \end{tabular}
+          \end{center}
+          which gives generating series $x^3 + 3x^4 + 6x^5 + 10x^6 + 15x^7 + 21x^8 + 25x^9 + 27x^{10} + 27x^{11} + 25x^{12} + 21x^{13} + 15x^{14} + 10x^{15} + 6x^{16} + 3x^{17} + x^{18}$.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  Construct a table, as in Exercise 2.10(a),
+  if the weight of a throw is defined to be
+  the absolute value of the difference between
+  the number of pips showing on the two dice.
+  Also, write down the generating series.
+\end{xca}
+\begin{sol}
+  Construct the table:
+  \begin{center}
+    \begin{tabular}{c|l|c}
+      Sum & Outcomes                      & Count \\ \hline
+      0   & 11 22 33 44 55 66             & 6     \\
+      1   & 12 21 23 32 34 43 45 54 56 65 & 10    \\
+      2   & 13 24 31 35 42 46 53 64       & 8     \\
+      3   & 14 25 36 41 52 63             & 6     \\
+      4   & 15 26 51 62                   & 4     \\
+      5   & 16 61                         & 2
+    \end{tabular}
+  \end{center}
+  giving generating series $6 + 10x + 8x^2 + 6x^3 + 4x^4 + 2x^5$.
+\end{sol}
+
+\begin{xca}
+  Let $\rl S$ be the set of ordered pairs $(a, b)$ of integers with $0 \leq \abs{b} \leq a$.
+  Each part gives a function $\omega$ defined on the set $\rl S$.
+  Determine whether or not $\omega$ is a weight function on the set $\rl S$.
+  If it is not, then explain why not.
+  If it is a weight function, then determine
+  the generating series $\Phi_{\rl S}(x)$ of $\rl S$ with respect to $\omega$,
+  and write it as a polynomial or a quotient of polynomials.
+\end{xca}
+\begin{enumerate}
+  \item For $(a,b) \in \rl S$, let $\omega((a,b)) = a$.
+        \begin{sol}
+          This is a weight function. First, $a \geq 0$ for all $(a,b)$.
+
+          Given finite $a \in \Z$ with $a \geq \abs{b} \geq 0$,
+          there are finitely many $b$ to choose from, namely, $-a \leq b \leq a$.
+          That is, there are $2a+1$ options for $(a,b)$ given $\omega((a,b)) = a$.
+
+          Therefore, $\Phi_{\rl S}(x) = \sum (2n+1) x^n = 2x\sum n x^{n-1} + \sum x^n
+            = \frac{2x}{(1-x)^2} + \frac{1}{1-x} = \frac{1+x}{(1-x)^2}$.
+        \end{sol}
+  \item For $(a,b) \in \rl S$, let $\omega((a,b)) = a+b$.
+        \begin{sol}
+          This is not a weight function.
+          Notice that $\omega^{-1}(0)$ has infinite size,
+          namely, given any $a \geq 0$, set $b = a$ so that $\omega((a,b)) = 0$.
+        \end{sol}
+  \item For $(a,b) \in \rl S$, let $\omega((a,b)) = 2a+b$.
+        \begin{sol}
+          This is a weight function. First, $a \geq \abs{b} \geq 0$ means $2a+b \geq 0$.
+
+          Given $\omega((a,b)) = n$, we can construct $n$ as $2a + b$
+          for $a = \ceil{\frac{n}{3}},\dotsc,n$
+          and corresponding $b = n-2a = n-2\ceil{\frac{n}{3}},\dotsc,-n$.
+          That is, $\omega^{-1}(n)$ has size $n-\ceil{\frac{n}{3}}+1$.
+
+          This means $\Phi_{\rl S}(x) = \sum(n-\ceil{\frac{n}{3}}+1)x^n
+            = \sum n x^n - \sum\ceil{\frac{n}{3}}x^n + \sum x^n$.
+          Write
+          \begin{align*}
+            \sum\ceil*{\frac{n}{3}}x^n
+             & = x + x^2 + x^3 + 2x^4 + 2x^5 + 2x^6 + \dotsb                            \\
+             & = (x + 2x^4 + \dotsb) + (x^2 + 2x^5 + \dotsb) + (x^3 + 2x^6 + \dotsb)    \\
+             & = x(1 + 2x^3 + \dotsb) + x^2(1 + 2x^3 + \dotsb) + x^3(1 + 2x^3 + \dotsb) \\
+             & = (x+x^2+x^3)\sum(n+1)x^{3n}                                             \\
+             & = \frac{x+x^2+x^3}{(1-x^3)^2}
+          \end{align*}
+
+          By part (a), we know the other series give $\frac{x}{(1-x)^2} - \frac{x+x^2+x^3}{(1-x^3)^2} + \frac{1}{1-x}$.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  Let $\rl S = [6]^4$ be the set of outcomes when rolling four six-sided dice.
+  For $(a,b,c,d) \in S$, define its weight to be $\omega(a,b,c,d) = a+b+c+d$.
+  Consider the generating series $\Phi_{\rl S}(x)$ of $\rl S$ with respect to $\omega$.
+\end{xca}
+\begin{enumerate}
+  \item Explain why $\Phi_{\rl S}(x) = \qty(\frac{x-x^7}{1-x})^4$.
+        \begin{sol}
+          The inner term gives the finite geometric series for $1+x+x^2+x^3+x^4+x^5+x^6$.
+          This is exactly $\Phi_{[6]}(x)$.
+          By the Generalized Product Lemma (\Cref{xca:genprodlem}),
+          the generating series for $\rl S = [6]^4$ is $(\Phi_{[6]}(x))^4$.
+        \end{sol}
+  \item How many outcomes in $\rl S$ have weight 19?
+        % TODO
+  \item Let $m$, $d$, $k$ be positive integers.
+        When rolling $m$ dice, each of which has exactly $d$ sides,
+        how many different ways are there to roll
+        a total of $k$ pips on the top faces of the dice?
+        \begin{sol}
+          The general generating series is $\Phi(x) = \qty(\frac{x-x^{d+1}}{1-x})^m$.
+          We want $[x^k]\Phi(x)$.
+          % TODO
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  Let $\rl A$ be a set with weight function $\omega : \rl A \to \N$.
+  Show that for any $n \in \N$, the number of $\alpha \in \rl A$
+  with $\omega(\alpha) \leq n$ is $[x^n]\frac{1}{1-x}\Phi_{\rl A}(x)$.
+\end{xca}
+\begin{prf}
+  By the Binomial Series, $B(x) = \frac{1}{1-x} = 1+x+x^2+\dotsb$, i.e., $b_n = 1$ for all $n$.
+
+  When we multiply $\Phi_{\rl A}(x) = \sum a_n x^n$ by $\frac{1}{1-x}$,
+  the product coefficient is by definition $\sum_{i=0}^n a_i b_{n-i} = \sum_{i=0}^n a_i$.
+  That is, the sum of the $a_i$ for $i \leq n$.
+
+  But since $a_i$ is the number of elements of $\alpha \in \rl A$ with $\omega(\alpha) = i$,
+  we have counted the number of elements $\omega(\alpha) \leq n$.
+\end{prf}
+
+\begin{xca}
+  For each of the following sets of compositions,
+  obtain a rational function formula for the generating series of that set
+  with respect to size.
+\end{xca}
+\begin{enumerate}
+  \item Let $\rl A$ be the set of compositions of length congruent to 1 (modulo 3).
+        \begin{sol}
+          The allowed sizes for a part are $P = \{1,\dotsc,\}$
+          so $\Phi_P(x) = \frac{x}{1-x}$.
+
+          We can generate compositions of length $3k+1$ as $P(P^3)^k$.
+          In general, $\rl A = P(P^3)^*$.
+
+          Then, by the Product Lemma, the generating series for $P^3$ is $(\frac{x}{1-x})^3$
+          and by the String Lemma, the generating series for $(P^3)*$ is
+          $\sum (\frac{x}{1-x})^{3j} = \frac{1}{1-x^3/(1-x)^3} = \frac{(1-x)^3}{(1-x)^3-x^3}$.
+
+          Finally, $\Phi_{\rl A}(x) = \frac{x(1-x)^3}{(1-x)(1-3x+3x^2-2x^3)}
+            = \frac{x-2x^2+x^3}{1-3x-3x^2-2x^3}$.
+        \end{sol}
+  \item Let $\rl B$ be the set of compositions of length congruent to 2 (modulo 3).
+        \begin{sol}
+          Proceed as in (a) up to the last multiplication, then square $\Phi_P$ to get
+          $\Phi_{\rl B}(x) = \frac{x^2(1-x)^3}{(1-x)^2(1-3x+2x^2-2x^3)}
+            = \frac{x^2 - x^3}{1-3x+2x^2-2x^3}$.
+        \end{sol}
+  \item Let $\rl C$ be the set of compositions of even length,
+        with each part being at most 3.
+        \begin{sol}
+          Here, $P = \{1,2,3\}$, so $\Phi_P(x) = x+x^2+x^3$.
+
+          Then, to get even length, $\rl C = (P^2)^*$.
+
+          By the Product Lemma, $\Phi_{P^2}(x) = (x+x^2+x^3)^2$
+          and by the String Lemma, we have
+          $\Phi_{\rl C}(x) = \frac{1}{1-(x+x^2+x^3)^{-2}}
+            = \frac{(x+x^2+x^3)^2}{(x+x^2+x^3)^2-1}$.
+        \end{sol}
+  \item Let $\rl D$ be the set of compositions of odd length,
+        with each part being at least 2.
+        \begin{sol}
+          Let $P = \{2,3,\dotsc\}$ so $\Phi_P(x) = x^2 + x^3 + \dotsb
+            = x^2(1 + x + \dotsb) = \frac{x^2}{1-x}$.
+
+          Then, to get odd length, $\rl D = P(P^2)^*$.
+          By the Product Lemma, $\Phi_{P^2} = \frac{x^4}{(1-x)^2}$
+          and by the String Lemma $\Phi_{(P^2)^*} = \frac{1}{1-x^4(1-x)^{-2}}
+            = \frac{(1-x)^2}{(1-x)^2-x^4} = \frac{1-2x+x^2}{1-2x+x^2-x^4}$.
+
+          Finally, by the Product Lemma, $\Phi_{\rl D} = \frac{x^4-2x^5+x^6}{(1-x)(1-2x+x^2-x^4)}
+            = \frac{x^4-2x^5+x^6}{1-3x+3x^2-x^3-x^4+x^5}$
+        \end{sol}
+  \item Let $\rl E$ be the set of compositions $\gamma = (c_i)$ of any length,
+        in which each part $c_i$ is congruent to $i$ (modulo 2).
+        So $c_1$ is odd, $c_2$ is even, $c_3$ is odd, and so on.
+        \begin{sol}
+          If $\rl O = \{1,3,5,\dotsc\}$ and $\rl P = \{2,4,6,\dotsc\}$,
+          we can write $\rl E = (\rl O\rl P)^* \cup (\rl O\rl P)^*\rl O$
+          depending on if the length is even or odd.
+
+          Write $\Phi_{\rl O} = x + x^3 + \dotsb = x(1 + x^2 + \dotsb) = \frac{x}{1-x^2}$
+          and $\Phi_{\rl P} = x^2(1 + x^2 + \dotsb) = \frac{x^2}{1-x^2}$.
+
+          Then, by the Product Lemma, $\Phi_{\rl{OP}} = \frac{x^3}{(1-x^2)^2}$
+          and by the String Lemma, $\Phi_{(\rl{OP})^*} = \frac{1}{1-x^3(1-x^2)^{-2}}
+            = \frac{(1-x^2)^2}{(1-x^2)^2-x^3}$.
+
+          Finally, by the Product and Sum Lemmas,
+          $\Phi_{\rl E} = \frac{(1-x^2)^2}{(1-x^2)^2-x^3} + \frac{x(1-x^2)^2}{(1-x^2)((1-x^2)^2-x^3)}$
+          and I am too lazy to simplify.
         \end{sol}
 \end{enumerate}
 
