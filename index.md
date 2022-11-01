@@ -191,6 +191,13 @@ Note that I use the notation from the book, which might hurt when MATH 136 start
 My [lecture notes](./MATH239/notes.pdf) (incomplete and somewhat experimental) are available.
 You might be interested in the [source](./MATH239/notes.tex) if you want to use TIKZ for graph theory.
 
+There are also [exercise solutions](./MATH239/exercises.pdf) for the course notes
+(using the Part I F2020 and Part II S2018 course notes). Progress:
+
+| Chapter                  |      Complete?       | Notes               |
+| ------------------------ | :------------------: | ------------------- |
+| Ch. 1 (Basic Principles) | :black_large_square: | Missing 1.1(d), 1.6 |
+
 ### CO 485/685 (F2022) <small>Mathematics of Public-Key Cryptography</small>
 
 More [lecture notes](./CO485/notes.pdf) with the caveat that
