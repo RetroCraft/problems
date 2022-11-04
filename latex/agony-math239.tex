@@ -10,3 +10,14 @@
 \newcommand{\coNP}{\textsf{co-NP}}
 
 \setlist[enumerate,1]{label={(\roman*)}}
+
+\ifagony@tikz
+  \usetikzlibrary{graphs,graphs.standard,graphdrawing}
+  \usegdlibrary{circular,force,trees,layered}
+  \tikzset{
+    graphs/math nodes,
+    graphs/dots nodes/.style={
+      empty nodes, nodes={circle, draw, fill, inner sep=2pt}
+    }
+  }
+\fi
