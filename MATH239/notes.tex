@@ -1,7 +1,7 @@
 \documentclass[class=math239,notes]{agony}
 \usepackage{tikz}
 \usetikzlibrary{graphs,graphs.standard,graphdrawing}
-\usegdlibrary{circular,force}
+\usegdlibrary{circular,force,trees,layered}
 \tikzset{graphs/math nodes}
 
 \title{MATH 239 Fall 2022: Lecture Notes}
@@ -1475,7 +1475,7 @@ We can abbreviate paths (and walks) as $v_0v_1v_2\dots v_k$ since it is unambigu
 
 \section{(10/28)}
 
-\begin{corollary}[4.6.3]
+\begin{corollary}[4.6.3]\label{cor:463}
   Let $G$ be a graph. If there exists a path from $u$ to $v$ in $G$
   and there exists a path from $v$ to $w$ in $G$,
   then there exists a path from $u$ to $w$ in $G$.
@@ -1525,7 +1525,7 @@ We can abbreviate paths (and walks) as $v_0v_1v_2\dots v_k$ since it is unambigu
   But then $P' = v_0 \cdots v_k v_{k+1}$ is a path in $G$ with length longer than $P$.
   Contradiction.
 \end{prf}
-\begin{corollary}
+\begin{corollary}[cycle corollary]\label{cor:464-pos}
   Let $G$ be a graph. \TFAE:
   (1) $G$ contains a cycle; and
   (2) $G$ contains a subgraph where every vertex has degree at least 2.
@@ -1534,7 +1534,7 @@ We can abbreviate paths (and walks) as $v_0v_1v_2\dots v_k$ since it is unambigu
   If $G$ contains a cycle, then the cycle is indeed such a subgraph.
   If $G$ contains such a subgraph, then by \nameref{thm:deg2cycle} it contains a cycle.
 \end{prf}
-\begin{corollary}
+\begin{corollary}[no cycle corollary]\label{cor:464-neg}
   Let $G$ be a graph. Then, \Tfae:
   (1) $G$ does not contain a cycle;
   (2) all subgraphs of $G$ contain a vertex with degree at most 1; and
@@ -1562,9 +1562,294 @@ Consider now the question: can we decide efficiently whether a graph $G$ contain
 \begin{defn}[polynomial time]
   A decision problem is in polynomial time if it can be solved in
   $O(\abs{V(G)}^k)$ for some $k \in \N$.
-  Denote the set of such problems by $\symsf{P}$.
+  Denote the set of such problems by $\P$.
 \end{defn}
 
-Then, ask if the decision problem ``does $G$ contain a cycle?'' lies in $\symsf{P}$.
+Then, ask if the decision problem ``does $G$ contain a cycle?'' lies in $\P$.
+
+\section{(10/31)}
+
+\begin{defn}[nondeterministic polynomial time]
+  A decision problem is in $\NP$ if the problem of verifying
+  a certificate of correctness for ``yes'' results is in $\P$.
+
+  Equivalently, a nondeterministic algorithm can solve ``yes'' instances in $\P$.
+\end{defn}
+\begin{defn}[$\coNP$ time]
+  A decision problem is in $\coNP$ if verification of ``no'' instances is in $\P$.
+\end{defn}
+
+\begin{remark}
+  Clearly, $\P \subseteq \NP$ and $\P \subseteq \coNP$.
+\end{remark}
+
+It is simple to verify a cycle exists after finding one, so this is in $\NP$.
+
+Point (3) of the \nameref{cor:464-neg} is a sufficient ``no'' certificate,
+so this is also in $\coNP$.
+
+It is not obvious that this problem is in $\P$ or not in $\P$.
+
+\begin{conjecture}
+  $\P \neq \NP$
+\end{conjecture}
+
+\begin{conjecture}
+  $\P = \NP \cap \coNP$
+\end{conjecture}
+
+\begin{defn}[$\NP$-complete]
+  A problem in $\NP$ and, if it is in $\P$, implies that $\P = \NP$.
+  Informally, a problem in $\NP$ that is as hard as possible.
+\end{defn}
+
+We can use the \nameref{cor:464-neg} to find whether a cycle exists in $G$:
+\begin{enumerate}[1.,nosep]
+  \item $i \gets \abs{V(G)}$
+  \item $G_n \gets G$
+  \item \textbf{while} $\exists v_i \in V(G)$, $\deg v_i \leq 1$ \textbf{do:} \\
+        \hspace*{2em} $G_{i-1} \gets G_i \setminus \{v_i\}$ \\
+        \hspace*{2em} $i \gets i - 1$
+  \item \textbf{if} $i = 0$ \textbf{then} NO \textbf{else} YES
+\end{enumerate}
+
+\begin{defn}[connectedness]
+  For every $u,v\in V(G)$, there exists a path from $u$ to $v$.
+\end{defn}
+\begin{example}
+  $K_n$, $C_n$, and $P_n$ are all connected for every $n$ (trivial).
+  $K_{m,n}$ is connected as long as either $m \neq 0$ or $n \neq 0$.
+\end{example}
+
+\begin{defn}[component]
+  A non-empty subset $X$ of $V(G)$ such that the graph induced by $X$ is connected
+  and $X$ is maximal with respect to this property.
+\end{defn}
+
+\begin{example}
+  The graph \tikz[baseline=-15pt]\graph{ 1[y=-0.5]--2--3--4[y=-0.5], 2--5[x=1.5]--3 };
+  is connected and has one component.
+\end{example}
+\begin{example}
+  The graph \tikz[baseline=-15pt]\graph[grow=right]{
+    2--{1,3} -!- 4--{5,6}; 5--6;
+  }; has two unconnected components.
+\end{example}
+
+\begin{theorem}
+  The components of a graph are pairwise disjoint and partition $V(G)$.
+\end{theorem}
+
+\begin{defn}[equivalence relation]
+  A binary relation $\sim$ if it is (1) reflexive, i.e., $x \sim x$,
+  (2) symmetric, i.e., $x \sim y \implies y \sim x$,
+  and (3) transitive, i.e., $x \sim y \sim z \implies x \sim z$.
+\end{defn}
+
+\begin{defn}[equivalence class]
+  The set $[x]_\sim := \{y : x \sim y\}$.
+\end{defn}
+
+\begin{prop}
+  Given equivalence relation $\sim : S \to S$,
+  the equivalence classes of $\sim$ partition $S$.
+\end{prop}
+
+\section{(11/02)}
+
+\begin{theorem}[path equivalence]\label{thm:patheq}
+  Let $\sim_G$ be a binary relation on $V(G)$ 
+  such that $x \sim_G y$ if a path exists from $x$ to $y$ in $G$.
+  Then, $\sim_G$ is an equivalence relation.
+\end{theorem}
+\begin{prf}
+  Show reflexivity, symmetry, and transitivity.
+  Let $x,y,z \in V(G)$.
+
+  Notice that a path from $x$ to $x$ exists, namely, the path $\vb p = (x)$.
+  Then, $x \sim_G x$.
+
+  Suppose $x \sim_G y$.
+  Then, there exists a path $(x,xv_1,\dotsc,v_ky,y)$ from $x$ to $y$.
+  But then $(y,yv_k,\dotsc,v_1x,x)$ is a path from $y$ to $x$.
+  Therefore, $y \sim_G x$.
+
+  Suppose $x \sim_G y \sim_G z$.
+  Then, there exist paths from $x$ to $y$ and $y$ to $z$.
+  By Corollary \nameref{cor:463}, there exists a path from $x$ to $z$.
+  Therefore, $x \sim_G z$.
+
+  Thus, $\sim_G$ is an equivalence relation.
+\end{prf}
+\begin{corollary}
+  A subset of $V(G)$ is an equivalence class of $\sim_G$
+  if and only if it is a component.
+\end{corollary}
+\begin{prf}
+  Exercise.
+\end{prf}
+
+The immediate consequence is the theorem
+
+\begin{theorem}
+  The components of a graph $G$ partition $V(G)$.
+\end{theorem}
+
+Consider the decision problem if a graph $G$ is connected.
+Is this in \P? \NP? \coNP?
+
+Given a set of paths from every pair of vertices $(x,y)$,
+it will take $O(\abs{V(G)}^3)$ time to verify that all the paths exist.
+This is polynomial, so we are in \NP.
+
+\begin{defn}[cut]
+  For graph $G$ and $X \subseteq V(G)$,
+  the \term{cut induced by $X$} is
+  $\delta(X) = \{xy \in E(G) : x \in X, y \not\in X\}$. 
+\end{defn}
+
+\begin{example}
+  In \tikz[baseline=-15pt]\graph{{1,2}--3--4--{5,6}};,
+  $\delta(\{1,2,4\}) = \{13,23,43,45,46\}$.
+\end{example}
+
+\begin{example}
+  In \tikz[baseline=-15pt]\graph{ {1,2}--3-!-{4,5}-!-{6,7}; 1--2, 4--5--6--7;};,
+  $\delta(\{1,3,7\}) = \{12,23,67\}$
+  and $\delta(\{1,2,3\}) = \varnothing$.
+\end{example}
+
+\begin{theorem}[4.8.5]
+  A graph $G$ is connected if and only if there does not exist
+  non-empty $X \subsetneq V(G)$ with $\delta(X) = \varnothing$.
+\end{theorem}
+\begin{prf}
+  Suppose $G$ is not connected.
+  Then, $G$ has at least two components.
+  Let $X$ be one of them, so that $X \subseteq V(G)$ and $X \neq V(G)$.
+  Then, $\delta(X) = \varnothing$ because if $u \in X$ and $uv \in \delta(X)$,
+  then $u \sim_G v$, so $v \in X$ and $uv \not\in \delta(X)$.
+
+  Conversely, there exists non-empty $X \subsetneq V(G)$ 
+  with $\delta(X) = \varnothing$.
+  Then, pick $x \in \delta(X)$ and $y \in V(G) \setminus \delta(X)$.
+  
+  Notice that for there to be a path $xv_1\cdots v_ky$ from $x$ to $y$,
+  we must cross between $X$ and $V(G) \setminus X$.
+  This is because either (1) $v_1,\dotsc,v_k$ are all in $X$,
+  meaning $v_ky \in \delta(X)$
+  or (2) some $v_i$ is the first that is not in $X$, meaning $v_{i-1}v_i \in \delta(X)$.
+
+  Since $\delta(X)$ is empty, there cannot be a path from $x$ to $y$.
+  Therefore, $G$ is not connected.
+\end{prf}
+
+With this theorem, connectivity is in \coNP.
+Given a component $\varnothing \neq X \subsetneq V(N)$,
+we need only examine $\delta(X)$ and find it is empty.
+This runs in $O(\abs{V(G)} + \abs{E(G)})$.
+
+\section{(11/04)}
+
+Recall the Seven Bridges of K\"onigsberg across the Pregel:
+there is a bridge between the islands of Kneiphof and Lomse,
+two bridges from each bank of the Pregel to Kneiphof
+and one bridge from each bank to Lomse.
+Is it possible to start and end in the same place and traverse each bridge once?
+
+Recast as a graph theory problem:
+given the graph \tikz[baseline=-5pt]\graph{1 --[bend left] {2[y=1],3} -- 4; 1 --[bend right] {2,3}, 1--4;};
+is there a closed walk that uses every edge exactly once?
+Generalize.
+
+\begin{defn}[Eulerian circuit]
+  A closed walk in $G$ that uses every edge exactly once.
+\end{defn}
+
+Finding an Eulerian circuit is in $\NP$:
+given an Eulerian circuit, traverse it to verify correctness.
+
+\begin{theorem}[4.9.2]
+  Let $G$ be a connected graph.
+  Then, $G$ has an Eulerian circuit if and only if every vertex of $G$ has even degree.
+\end{theorem}
+\begin{prf}
+  Suppose an Eulerian circuit exists.
+  Let $v \in V(G)$.
+  Every appearance of $v$ in the circuit has an incoming and outgoing edge.
+  Then, since the circuit uses all edges, $\abs{\delta(v)} = \deg v$ is even.
+
+  Conversely, suppose that $G$ is connected and every vertex has even degree.
+
+  Proceed by induction on $\abs{E(G)}$.
+
+  If there exists a vertex with degree 0,
+  then since $G$ is connected, it is the only vertex and $G$ has no edges.
+  Then, the empty walk is an Eulerian circuit.
+
+  If every vertex has degree at least 2,
+  then by Theorem \nameref{thm:deg2cycle}, $G$ contains a cycle $C$.
+  
+  Let $G'$ be the subgraph of $G$ without $E(C)$.
+  Note that every vertex of $G'$ still has even degree,
+  since we either leave it alone or remove two edges.
+  Let $C_i$ be the components of $G'$.
+  Inductively, each component $C_i$ has an Eulerian circuit $W_i$
+  since $\abs{E(C_i)} < \abs{E(G)}$.
+  
+  Finally, for each $C_i$, there is a $v_i \in V(C_i) \cap V(C)$
+  since $G$ is connected.
+  Insert at $v_i$ the circuit $W_i$ to create an Eulerian circuit of $G$.
+\end{prf}
+
+\begin{corollary}
+  Let $G$ be a graph. Then $G$ has an Eulerian circuit if and only if
+  every vertex has even degree and all edges are in the same component.
+\end{corollary}
+
+Now, it is obvious that finding an Eulerian circuit is in \coNP:
+either an odd degree vertex or an empty cut with an edge on both sides.
+We can also show it is in \P, analyzing the algorithm.
+
+\begin{defn}[bridge]
+  An edge $e \in E(G)$ such that $G - e$ has more components than $G$.
+\end{defn}
+
+\begin{example}
+  In the graph \tikz[baseline=-30pt]\graph{1[y=-1]--{2,3,4} -!- 5[y=-1] -- {6,7[y=-1]}; 2--3--4, 3--5, 6--7;};,
+  the edge 35 is a bridge.
+\end{example}
+
+\begin{example}
+  In the graph
+  \begin{center}
+    \tikz\graph[spring layout]{1--2--3--1, 3--4--5, 6--7, 8--9--10--8, 10--11--12, 9--13};
+  \end{center}
+  the edges 34, 45, 67, 913, 1011, and 1012 are bridges.
+\end{example}
+
+\begin{theorem}[4.10.2]
+  Let $G$ be a connected graph.
+
+  If $e = xy$ is a bridge of $G$, then $G-e$ has exactly two components
+  and $x$ and $y$ are in different components of $G-e$.
+\end{theorem}
+
+\begin{prf}
+  Let $A = \{v \in V(G) : v \sim_{G-e} x\}$
+  and $B = \{v \in V(G) : v \sim_{G-e} y\}$.
+
+  Claim that $V(G) = A \cup B$.
+  Since $G$ is connected, there exists a path $P$ from $x$ to $v$.
+  If $y \not\in V(P)$, then $P$ is a path from $x$ to $v$ in $G-e$, hence $v \in A$.
+
+  Assume $y \in V(P)$. Then, the subpath $P'$ of $P$ from $y$ to $v$
+  does not use $e$ and hence $v \in B$. This completes the proof of the claim.
+
+  If $A \cap B = \varnothing$, then all of $G-e$ is in one equivalence class of $\sim_{G-e}$,
+  contradicting that $G-e$ has at least 2 components.
+
+  Therefore, $A$ and $B$ partition $V(G)$ and indeed are the components of $G-e$.
+\end{prf}
 
 \end{document}

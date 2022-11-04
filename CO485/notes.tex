@@ -1028,4 +1028,208 @@ and define $H(b_0\cdots b_n) = h(h(H(b_0 \cdots b_{n-1})))$ as above.
 Then, we cannot arrive at $x_\varepsilon$
 because generating pairs of $f(f(\dots))$ and $h(h(\dots))$ cannot create $g(f(\dots))$.
 
+\section{Signature Schemes (10/31)}
+
+Consider some RSA modulus $n = pq$, $p > 2$, $q > 2$, $p \neq q$
+where $p \equiv 3 \pmod 4$ and $q \equiv 3 \pmod 4$ (Blum integers,
+notable for use in the Blum--Blum--Shub generator).
+
+Let $y_p$ and $-y_p$ be square roots of $y$ mod $p$ (and for $q$).
+Notice that $\leg{-1}{p} = -1$ and $\leg{-1}{q} = -1$.
+Then, exactly one of $\{y_p,-y_p\}$ is a square mod $p$ (and for $q$).
+
+Finally, combining gives exactly one of the square roots of $y$ mod $n$
+is a square mod $n$.
+This means that $f(x) = x^2$ is a permutation on $(\mgrp n)^2$.
+
+Choose $a \in \mgrp n$ such that $\leg{a}{n}=-1$
+Then, define $g(y) = a^2 y^2$ which is also a permutation.
+
+Note: suppose $f(x) = g(y)$.
+Then, $x^2 = (ay)^2$ and $x \neq \pm ay$
+because if $x = \pm ay$ then $\leg{x}{n} = \leg{\pm 1}{n}\leg{a}{n}\leg{y}{n}$
+but this is $1 = (1)(-1)(1)$, contradiction.
+From this, we can factor $n$ (by Fermat).
+
+Overall: claw-free permutations $\to$ collision-resistant hash functions
+$\to$ \{secure digital signatures, CCA2-secure encryption, etc.\}
+
+How do we generate secure digital signatures?
+
+Suppose we have RSA $pk = (n,e)$ and $sk = (n,d)$.
+Then, define signing and verification as
+$Sign : \mgrp{n} \to \mgrp{n} m \mapsto \sigma := m^d \bmod n$
+and $Verify : (m,\sigma) \mapsto \sigma^e \bmod n \stackrel{?}{=} m$.
+
+\begin{defn}[signature schemes]
+  A signature (scheme) is a tuple $(KeyGen, Sign, Verify)$ where
+  \begin{itemize}[nosep]
+    \item $KeyGen : \one^\lambda \mapsto (pk, sk)$
+    \item $Sign : (sk, m) \mapsto \sigma$
+    \item $Verify : (pk, m, \sigma) \mapsto \{0,1\}$
+  \end{itemize}
+  and we have that if $(pk, sk) \xgets{\$} KG(\one^\lambda)$
+  and $\sigma \xgets{\$} S(sk,m)$, then $V(pk, m, \sigma) = 1$.
+\end{defn}
+
+Under Textbook RSA, it is trivial to forge junk (but valid) signatures,
+i.e., given random signature $\sigma$, it signs some calculable message.
+
+Example security definition game: EUF-CMA \\
+Existential unforgeability (EUF): adversary produces a valid signature \\
+Chosen-message attack (CMA): adversary can always use a signing oracle
+\begin{enumerate}[1., nosep]
+  \item $(pk, sk) \xgets{\$} KeyGen(\one^\lambda)$
+  \item \textbf{for} $i=1\dots q$ \textbf{do:} \\
+        \hspace*{1cm} $m_i \xgets{\$} \mathcal A(\one^\lambda, pk, (m_1,\sigma_1),\dotsc,(m_{i-1},\sigma_{i-1}))$ \\
+        \hspace*{1cm} $\sigma_i \xgets{\$} Sign(sk, m_i)$ \\
+        \textbf{end}
+  \item $(m,\sigma) \xgets{\$} \mathcal A(\one^\lambda, pk, (m_1,\sigma_1),\dotsc,(m_q,\sigma_q))$
+\end{enumerate}
+with win condition $Verify(pk,m,\sigma)=1$ and for all $i$, $m \neq m_i$.
+
+\begin{defn}[EUF-CMA]
+  A signature scheme is EUF-CMA if there does not exist a probabilistic polynomial time
+  adversary $\mathcal A$ which wins the EUF-CMA game with non-negligible probability.
+\end{defn}
+
+\paragraph{Hashed RSA} $KeyGen : \one^\lambda \mapsto ((n,e), (n,d))$ \\
+$Sign : m \mapsto H(m)^d \bmod n$ for hash $H : \{0,1\}^* \to \mgrp n$ (i.e., a claw-free permutation) \\
+$Verify : (m, \sigma) \mapsto H(m) \stackrel{?}{=} \sigma^e \bmod n$
+
+We can prove that if the RSA assumption holds\footnote{Given $n$, $e$, $m^e$, it is infeasible to find $m$.}
+and the hash function $H$ is a random oracle,
+then Hashed RSA is EUF-CMA.
+
+\section{Hashed RSA (11/02)}
+
+Recall EUF-CMA and Hashed RSA. We want to prove
+
+\begin{theorem}
+  Hashed RSA is EUF-CMA assuming:
+  \begin{itemize}[nosep]
+    \item The RSA assumption holds
+    \item The hash functions $H$ are random oracles
+  \end{itemize}
+\end{theorem}
+\begin{prf}
+  For a contradiction, let $\mathcal A$ be an adversary that wins the EUF-CMA game,
+  generating a forged signature $(m_*, \sigma_*)$.
+  Note that we must expose the hash function $H$ to the adversary.
+
+  Consider when $H$ has the property that
+  for some $\sigma \in \mgrp{n}$, $H(m_*) = m\sigma^e$.
+  Then, $\sigma_* = H(m_*)^d = (m\sigma^e)^d = m^d\sigma$
+  so $\sigma_*\sigma^{-1} = m^d$.
+  We could return $H(m_*) = m\sigma^e$
+  but we still have to respond to signing queries of $\mathcal A$ somehow.
+
+  To respond to a query for $m_i$,
+  pick a random $\sigma_i \xgets{\$} \mgrp{n}$
+  and set $H(m_i) = \sigma_i^e$ and respond with $\sigma_i$.
+  Note that the challenger must maintain a table of $H(m_i)$ to respond to duplicates.
+
+  To make this work somehow, we define $H(m) = \begin{cases*}
+      m\sigma^e & with probability $\frac{1}{q+1}$ \\
+      \sigma^e  & with probability $\frac{q}{q+1}$
+    \end{cases*}$.
+
+  Then, notice that the adversary will make at most $q+1$ relevant hash function requests
+  ($q$ for the signing queries, 1 for $m_*$).
+  Now, the probability that we get what we want, i.e., calculate $m^d$, is
+  $\qty(\frac{q}{q+1})^q\frac{1}{1+1}Adv(\mathcal A) > \frac{1}{(q+1)\exp(1)}Adv(\mathcal A)$
+  which is non-negligible since $q$ is polynomial and $Adv(\mathcal A)$ is non-negligible.
+
+  That is, we can break RSA in probabilistic polynomial time with
+  non-negligible probability, violating the RSA assumption.
+  Therefore, $\mathcal A$ cannot exist.
+\end{prf}
+
+Note: non-negligible means that there exists an $n$ such that
+$\Pr[\mathcal A\text{ wins}] = f(\lambda) \in \Omega(\frac{1}{\lambda^n})$.
+
+Further reading: EdDSA (Schnorr), ``Short signatures without random oracles'' (Boneh--Boyen)
+
+\section{Zero-Knowledge Proofs (11/04)}
+
+Suppose that $x \in \mgrp{n}$ where $n = pq$.
+
+Claim: there exists a $y$ such that $x = y^2 \bmod n$.
+
+If Alice knows that $x = y^2$ and sends $y$ to Bob,
+that is a full-knowledge proof.
+A zero-knowledge proof would not send $y$.
+
+Instead, Alice chooses a random $r \xgets{\$} \mgrp{n}$
+and computes $xr^2 = y^2r^2 = (yr)^2$.
+If she sends $\beta = xr^2$ and $\alpha = yr$,
+Bob can verify that $\alpha^2 = \beta$.
+However, Bob cannot trust that $\alpha$ is in fact $yr$
+and cannot prove that $\frac{\beta}{x} = r^2$ without sending $r$.
+
+\paragraph{Protocol} For Alice to prove that she knows $y$ such that $y^2 = x$,
+\begin{enumerate}[1.,nosep]
+  \item Alice picks $r \xgets{\$} \mgrp{n}$ and sends $xr^2$
+  \item Bob picks $b \xgets{\$} \{0,1\}$ and sends $b$
+  \item Alice sends $\rho = y^b r$ and sends $\rho$
+  \item Bob verifies that $\rho^2 = \beta x^{b-1}$
+\end{enumerate}
+Then, if $b=0$, Bob can catch a forged $y$ and if $b=1$, Bob is more certain that $y$ exists.
+The chance that Alice is cheating and avoids being caught
+in $\lambda$ iterations is $2^{-\lambda}$.
+
+Suppose Alice does not know a square root $y = \sqrt{x}$. She could:
+\begin{itemize}[nosep]
+  \item Choose $r$ randomly, send $\beta = xr^2$, and hope that $b=0$ to send $r$
+  \item Choose $\alpha$ randomly, send $\beta = \alpha^2$, and hope that $b=1$ to send $\alpha$
+\end{itemize}
+meaning that Alice can forge with success probability 50\%,
+and indeed Bob could fool himself half the time by doing this himself.
+That is, a zero-knowledge proof does not introduce any new information
+that Bob could not have produced on his own.
+
+Then, a security definition for a ZKP protocol requires
+\begin{enumerate}[1.]
+  \item Correctness: With an honest prover and honest verifier,
+        the proof succeeds with probability 100\%.
+  \item Soundness: With a dishonest prover and honest verifier,
+        then there is a non-negligible probability that they get caught.
+  \item Zero-knowledge: With an honest prover and dishonest verifier,
+        then the verifier can simulate correct proofs with non-negligible probability.
+        This means that the verifier cannot actually use any information
+        for anything else (e.g., cannot factor a number even if the ZKP proves
+        that the prover knows the factors).
+\end{enumerate}
+where non-negligible means any useful number (e.g., 50\%, 25\%, 30\%, etc.).
+
+From a ZKP, we can construct a signature scheme. Generate a key $(x, y)$ where $y^2=x$.
+Signing is done by:
+\begin{enumerate}[1.,nosep]
+  \item Alice picks random $r$ and sends $x$ and $\beta = xr^2$.
+  \item Bob picks random $b$ and sends $b$
+  \item Alice calculates $\rho = ry^b$ and sends $\rho$
+\end{enumerate}
+To verify, ensure that $\rho^2 = \beta x^{-1}$.
+
+Alternatively, if we want to use DLOG (i.e., with $g$ and $g^x$, prove that you know $x$):
+\begin{enumerate}[1.,nosep]
+  \item Alice picks random $r$ and sends $g$, $g^x$, and $\beta = g^r$
+  \item Bob picks random bit $b$ and sends $b$
+  \item Alice calculates $\rho = r + bx$ and sends $\rho$
+\end{enumerate}
+To verify, ensure that $g^\rho = \beta(g^x)^b$.
+
+We call these $\Sigma$ protocols because the back-and-forth looks like a $\Sigma$.
+
+\begin{defn}[Fiat--Shamir transformation]
+  To transform a ZKP protocol to a signing scheme,
+  set $b = H(\beta, m)$ where $H$ is a random oracle.
+  Then, the signature of $m$ is $(\beta,\rho)$.
+  To verify, assert $\rho$ satisfies the ZKP protocol given $\beta$.
+\end{defn}
+
+Notice that there is only one bit of entropy, so it is forgeable 50\% of the time.
+If we try increasing entropy in the DLOG scheme by making $b \in \Z$,
+correctness and soundness still hold but zero-knowledge might not.
+
 \end{document}
