@@ -1,4 +1,4 @@
-\documentclass[class=math239,notes]{agony}
+\documentclass[class=math239,notes,tikz]{agony}
 \renewcommand{\thechapter}{\Roman{chapter}}
 \titleformat{\section}{\normalfont\large\bfseries}{\thesection}{1em}{}
 \settowidth{\cftsecnumwidth}{00~}
@@ -1765,6 +1765,168 @@
           Then, partial fractions gives $\frac{-1}{1-x} + \frac{1}{1-2x} + \frac{1}{(1-2x)^2}$.
 
           Extracting coefficients gives $c_n = -1 + 2^n + (n+1)2^n = (n+2)2^n - 1$.
+        \end{sol}
+\end{enumerate}
+
+\chapter{Graph Theory}
+
+\setcounter{section}{3}
+\section{Inroduction to Graph Theory}
+
+\setcounter{subsection}{3}
+\subsection{Definitions, Isomorphism, Degree, Bipartite Graphs}
+
+\begin{xca}
+  For the graphs $G_1$, $G_2$, $G_3$, and $H$ in Figure 4.13,
+  prove that no two of $G_1$, $G_2$, or $G_3$ are isomorphic.
+  Prove that one of them (which?) is isomorphic to $H$ by giving a suitable bijection.
+\end{xca}
+\begin{sol}
+  Isomorphism preserves adjacency, so if a $k$-cycle exists in a graph,
+  it must also appear in an isomorphic graph.
+
+  Notice that in $G_1$, to move from one adjacent ``outer'' vertex to another,
+  either take the edge connecting them or move down a 4-cycle.
+
+  There is also a 4-cycle in $G_3$.
+
+  In $G_2$, there are no 4-cycles, so $G_1 \not\simeq G_2 \not\simeq G_3$.
+
+  Consider $G_1$ and $G_3$.
+  There are exactly two 5-cycles in $G_1$ (outer and inner loops)
+  but at least three in $G_2$ (outer, inner, triangle at the bottom).
+  We cannot map vertices not in a cycle to a cycle, so $G_1 \not\simeq G_3$.
+
+  Finally, consider $H$.
+  Notice that travelling between adjacent outer edges can be accomplished by a 4-cycle.
+  This indicates that $H \simeq G_1$ and indeed if we map the inner vertices
+  to their vertical reflections, we recover $G_1$.
+\end{sol}
+
+\begin{xca}
+  A cubic graph is one in which every vertex has degree three.
+  Find all the nonisomorphic cubic graphs with 4, 6 and 8 vertices.
+\end{xca}
+\begin{sol}
+  The only cubic graph with 4 vertices is $K_4$
+  (every vertex must connect to the other 3, so there is no room to modify).
+
+  In 6 vertices, notice that $K_{3,3}$ is cubic
+  (each vertex connecting to the 3 opposite).
+  If we construct a triangular prism, this is also cubic.
+
+  In 8 vertices:
+  \begin{itemize}
+    \item The 3-cube is cubic (for obvious reasons).
+          \begin{center}\tikz\graph[clockwise, radius=.75cm] {
+            subgraph C_n [n=4] -- subgraph C_n [V={5,6,7,8}] };
+          \end{center}
+    \item From the 3-cube, we can remove two ``vertical'' edges
+          and add diagonals to the top/bottom faces.
+          \begin{center}\tikz\graph[clockwise, simple, radius=.75cm] {
+            subgraph C_n [n=4] -- subgraph C_n [V={5,6,7,8}],
+            4 -!- 8, 2 -!- 6, 4--2, 8--[bend left, dashed]6 };
+          \end{center}
+    \item If we remove the other two ``verticals'', we get two copies of $K_4$.
+    \item From the triangular prism, we can add vertices into two ``vertical'' edges
+          or one ``horizontal'' and one ``vertical edge''
+          (adding to ``horizontal'' edges gives a cube).
+          \begin{center}
+            \begin{tikzpicture}
+              \draw[dashed,thick] (-1,0) -- (0,0.5) edge (0,2.5) -- (1,0);
+              \draw[thick] (-1,0) rectangle (1,2) -- (0,2.5) -- (-1,2);
+              \draw[thick] (-1,1) -- (1,1);
+            \end{tikzpicture}
+            \qquad
+            \begin{tikzpicture}
+              \draw[dashed,thick] (-1,0) -- (0,0.5) edge (0,2.5) -- (1,0);
+              \draw[thick] (-1,0) rectangle (1,2) -- (0,2.5) -- (-1,2);
+              \draw[thick] (-1,1) -- (0,0);
+            \end{tikzpicture}
+          \end{center}
+    \item We can take an octagon and pair up vertices:
+          \begin{center}
+            \tikz\graph{subgraph C_n[n=8, clockwise]; 1--5, 2--6, 3--7, 4--8};
+          \end{center}
+  \end{itemize}
+  which, according to Wikipedia, is exhaustive.
+\end{sol}
+
+\begin{xca}
+  For the subset graph $S_{n,k}$ defined in Example 4.1.5,
+  find the number of vertices and the number of edges.
+\end{xca}
+\begin{sol}
+  There are $\binom{n}{k}$ vertices.
+  Each edge takes one of the $k$ elements and replaces it with a different one
+  from the $n-k$ others.
+  That is, each node has $k(n-k)$ edges.
+  By Corollary 4.3.3, this means there are $\frac12k(n-k)\binom{n}{k}$ edges.
+\end{sol}
+
+\begin{xca}
+  The \term{odd graph} $O_n$ is the graph
+  whose vertices are the $n$-subsets of a $(2n+1)$-set,
+  two such subsets being adjacent if and only if they are disjoint.
+\end{xca}
+\begin{enumerate}
+  \item Draw $O_1$ and $O_2$.
+        \begin{sol}
+          The 1-subsets of [3] are $\{1\}$, $\{2\}$, and $\{3\}$
+          where they are all disjoint.
+          Then, we can draw $O_1$ (omitting curly braces) as
+          \begin{center}
+            \tikz\graph[clockwise]{ subgraph K_n[n=3] };
+          \end{center}
+          This is isomorphic to $K_3$.
+          The 2-subsets of [5] are 12, 13, 14, 15, 23, 24, 25, 34, 35, and 45.
+          We can draw $O_2$ as
+          \begin{center}
+            \tikz\graph[radius=1.6cm]{ subgraph C_n[V={12,34,15,23,14,25,13,24,35}, clockwise] -!- 45, 15--24, 35--14, 34--25, 12--45--13, 45--23 };
+          \end{center}
+          as desired.
+        \end{sol}
+  \item Prove that $O_2$ is isomorphic to the Peterson graph.
+        \begin{sol}
+          Observe that the layout of $O_2$ is identical to that of $H$ in Figure 4.8.
+        \end{sol}
+  \item How many vertices and edges does $O_n$ have?
+        \begin{sol}
+          There are $\binom{2n+1}{n}$ vertices.
+
+          Each each vertex has $\binom{(2n+1)-2}{2} = \binom{2n-1}{2}$ adjacent vertices,
+          giving by Corollary 4.3.3 a total of $\frac12\binom{2n+1}{n}\binom{2n-1}{2}$ edges.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  The \term{line-graph} $L(G)$ of a graph $G$ is the graph
+  whose vertex set is $E(G)$ and in which two vertices are adjacent
+  if and only if the corresponding edges of $G$ are incident with a common vertex.
+\end{xca}
+\begin{enumerate}
+  \item Find a graph $G$ such that $L(G)$ is isomorphic to $G$.
+        \begin{sol}
+          Let $G = K_3 = \tikz[baseline=0]\graph[radius=0.5cm,clockwise]{ subgraph K_n[n=3] };$.
+          Then, $L(G) = \tikz[baseline=0]\graph[radius=0.5cm,clockwise]{ subgraph K_n[V={12,23,13}] };$
+          isomorphic to $G$.
+        \end{sol}
+  \item Find nonisomorphic graphs $G$, $G'$ such that $L(G)$ is isomorphic to $L(G')$.
+        \begin{sol}
+          Let $G = K_3$ as above and
+          $G' = \tikz[baseline=0]\graph[radius=0.5cm]{ subgraph K_n[clockwise, n=3] -!- 4 };$.
+
+          Since 4 has no edges in $G'$, it does not affect $L(G')$.
+          Then, $L(G) = L(G')$ (the same graph as in part (a)).
+        \end{sol}
+  \item If $G$ is the graph \tikz[baseline=-15pt]\graph[dots nodes]{{1,2}--3[y=-0.5]--4[y=-0.5]--{6,7}};
+        find $L(G)$, $L(L(G))$ and $L(L(L(G)))$.
+        \begin{sol}
+          Calculate $L(G) = \tikz[baseline=-15pt]\graph[dots nodes]{{1,2}--4[y=-0.5]--{6,7}, 1--2, 6--7};$
+          and $L(L(G)) = \tikz[baseline=-15pt]\graph[dots nodes]{1[y=-0.5]--{[clique] {2,3}--{4,5}}--6[y=-0.5]};$.
+
+          Finally, $L(L(L(G))) =
+            \tikz[baseline=-15pt]\graph[dots nodes, simple]{{1,2}--3[y=-0.5]--{[clique] 4[y=0.5],5[y=0.75,x=-0.35],6[y=1.25,x=0.35],7[y=1.5]}--8[y=-0.5]--{9,10}, 1--2, 9--10, 5-!-6, 4-!-7, 5--1--4, 6--2--7, 4--9--5, 6--10--7};$
         \end{sol}
 \end{enumerate}
 
