@@ -1036,7 +1036,7 @@
   we have counted the number of elements $\omega(\alpha) \leq n$.
 \end{prf}
 
-\begin{xca}
+\begin{xca}\label{xca:2-15}
   For each of the following sets of compositions,
   obtain a rational function formula for the generating series of that set
   with respect to size.
@@ -1051,17 +1051,17 @@
           In general, $\rl A = P(P^3)^*$.
 
           Then, by the Product Lemma, the generating series for $P^3$ is $(\frac{x}{1-x})^3$
-          and by the String Lemma, the generating series for $(P^3)*$ is
+          and by the String Lemma, the generating series for $(P^3)^*$ is
           $\sum (\frac{x}{1-x})^{3j} = \frac{1}{1-x^3/(1-x)^3} = \frac{(1-x)^3}{(1-x)^3-x^3}$.
 
           Finally, $\Phi_{\rl A}(x) = \frac{x(1-x)^3}{(1-x)(1-3x+3x^2-2x^3)}
-            = \frac{x-2x^2+x^3}{1-3x-3x^2-2x^3}$.
+            = \frac{x-2x^2+x^3}{1-3x+3x^2-2x^3}$.
         \end{sol}
   \item Let $\rl B$ be the set of compositions of length congruent to 2 (modulo 3).
         \begin{sol}
           Proceed as in (a) up to the last multiplication, then square $\Phi_P$ to get
-          $\Phi_{\rl B}(x) = \frac{x^2(1-x)^3}{(1-x)^2(1-3x+2x^2-2x^3)}
-            = \frac{x^2 - x^3}{1-3x+2x^2-2x^3}$.
+          $\Phi_{\rl B}(x) = \frac{x^2(1-x)^3}{(1-x)^2(1-3x+3x^2-2x^3)}
+            = \frac{x^2 - x^3}{1-3x+3x^2-2x^3}$.
         \end{sol}
   \item Let $\rl C$ be the set of compositions of even length,
         with each part being at most 3.
@@ -1072,8 +1072,8 @@
 
           By the Product Lemma, $\Phi_{P^2}(x) = (x+x^2+x^3)^2$
           and by the String Lemma, we have
-          $\Phi_{\rl C}(x) = \frac{1}{1-(x+x^2+x^3)^{-2}}
-            = \frac{(x+x^2+x^3)^2}{(x+x^2+x^3)^2-1}$.
+          $\Phi_{\rl C}(x) = \frac{1}{1-(x+x^2+x^3)^2}
+            = \frac{1}{1-x^2-2x^3-3x^4-2x^5-x^6}$.
         \end{sol}
   \item Let $\rl D$ be the set of compositions of odd length,
         with each part being at least 2.
@@ -1086,15 +1086,16 @@
           and by the String Lemma $\Phi_{(P^2)^*} = \frac{1}{1-x^4(1-x)^{-2}}
             = \frac{(1-x)^2}{(1-x)^2-x^4} = \frac{1-2x+x^2}{1-2x+x^2-x^4}$.
 
-          Finally, by the Product Lemma, $\Phi_{\rl D} = \frac{x^4-2x^5+x^6}{(1-x)(1-2x+x^2-x^4)}
-            = \frac{x^4-2x^5+x^6}{1-3x+3x^2-x^3-x^4+x^5}$
+          Finally, by the Product Lemma, $\Phi_{\rl D} = \frac{x^2-2x^3+x^4}{(1-x)(1-2x+x^2-x^4)}
+            = \frac{x^2-2x^3+x^4}{1-3x+3x^2-x^3-x^4+x^5}$
         \end{sol}
   \item Let $\rl E$ be the set of compositions $\gamma = (c_i)$ of any length,
         in which each part $c_i$ is congruent to $i$ (modulo 2).
         So $c_1$ is odd, $c_2$ is even, $c_3$ is odd, and so on.
         \begin{sol}
           If $\rl O = \{1,3,5,\dotsc\}$ and $\rl P = \{2,4,6,\dotsc\}$,
-          we can write $\rl E = (\rl O\rl P)^* \cup (\rl O\rl P)^*\rl O$
+          we can write $\rl E = (\rl O\rl P)^* \cup (\rl O\rl P)^*\rl O
+            = (\rl O\rl P)^*(\{\varepsilon\} \cup \rl O)$
           depending on if the length is even or odd.
 
           Write $\Phi_{\rl O} = x + x^3 + \dotsb = x(1 + x^2 + \dotsb) = \frac{x}{1-x^2}$
@@ -1105,8 +1106,10 @@
             = \frac{(1-x^2)^2}{(1-x^2)^2-x^3}$.
 
           Finally, by the Product and Sum Lemmas,
-          $\Phi_{\rl E} = \frac{(1-x^2)^2}{(1-x^2)^2-x^3} + \frac{x(1-x^2)^2}{(1-x^2)((1-x^2)^2-x^3)}$
-          and I am too lazy to simplify.
+          $\Phi_{\rl E} = \frac{(1-x^2)^2}{(1-x^2)^2-x^3}\qty(1+\frac{x}{1-x^2})
+            = \frac{(1-x^2)^2}{(1-x^2)^2-x^3}\cdot\frac{1+x-x^2}{1-x^2}
+            = \frac{(1-x^2)(1+x-x^2)}{(1-x^2)^2-x^3}
+            = \frac{1+x-2x^2-x^3+x^4}{1-2x^2-x^3+x^4}$.
         \end{sol}
 \end{enumerate}
 
@@ -1577,6 +1580,191 @@
           If $n$ is odd, then we have $0 + 2\cdot 3^{(n-1)/2} + 0 = 2\cdot 3^{\floor{n/2}-1}$.
 
           Which isn't right???
+        \end{sol}
+\end{enumerate}
+
+\section{Recurrence Relations}
+
+\begin{xca}
+  For each of the sets of compositions from \Cref{xca:2-15}, do the following:
+  \begin{itemize}[nosep]
+    \item Derive a recurrence relation and initial conditions for the coefficients of the corresponding generating series.
+    \item Calculate the coefficients for $n=0$ up to 9.
+  \end{itemize}
+\end{xca}
+\begin{enumerate}
+  \item $A(x) = \frac{x-2x^2+x^3}{1-3x+3x^2-2x^3}$
+        \begin{sol}
+          Apply Theorem 4.8 to read:
+          \[
+            a_n - 3a_{n-1} + 3a_{n-2} - 2a_{n-3} = \begin{cases}
+              0  & n = 0    \\
+              1  & n = 1    \\
+              -2 & n = 2    \\
+              1  & n = 3    \\
+              0  & n \geq 4
+            \end{cases}
+          \]
+          and calculate the initial conditions
+          \begin{align*}
+            a_0                          & = 0 \\
+            a_1 = 1 + 3a_0               & = 1 \\
+            a_2 = -2 + 3a_1 - 3a_0       & = 1 \\
+            a_3 = 1 + 3a_2 - 3a_1 + 2a_0 & = 1
+          \end{align*}
+          as desired.
+        \end{sol}
+  \item $B(x) = \frac{x^2-x^3}{1-3x+3x^2-2x^3}$
+        \begin{sol}
+          Apply Theorem 4.8 to read:
+          \[
+            b_n - 3b_{n-1} + 3b_{n-2} - 2b_{n-3} = \begin{cases}
+              0  & n = 0    \\
+              0  & n = 1    \\
+              1  & n = 2    \\
+              -1 & n = 3    \\
+              0  & n \geq 4
+            \end{cases}
+          \]
+          and calculate the initial conditions
+          \begin{align*}
+            b_0                           & = 0 \\
+            b_1 = 0 + 3b_0                & = 0 \\
+            b_2 = 1 + 3b_1 - 3b_0         & = 1 \\
+            b_3 = -1 + 3b_2 - 3b_1 + 2b_0 & = 2
+          \end{align*}
+          as desired.
+        \end{sol}
+  \item $C(x) = \frac{1}{1 - x^2 - 2x^3 - 3x^4 - 2x^5 - x^6}$
+        \begin{sol}
+          Apply Theorem 4.8 to read:
+          \[
+            c_n - c_{n-2} - 2c_{n-3} - 3c_{n-4} - 2c_{n-5} - c_{n-6} = \begin{cases}
+              1 & n = 0    \\
+              0 & n \geq 1
+            \end{cases}
+          \]
+          and calculate the initial conditions
+          \begin{align*}
+            c_0                                  & = 1  \\
+            c_1                                  & = 0  \\
+            c_2 = c_0                            & = 1  \\
+            c_3 = c_1 + 2c_0                     & = 2  \\
+            c_4 = c_2 + 2c_1 + 3c_0              & = 4  \\
+            c_5 = c_3 + 2c_2 + 3c_1 + 2c_0       & = 6  \\
+            c_6 = c_4 + 2c_3 + 3c_2 + 2c_1 + c_0 & = 12
+          \end{align*}
+          as desired.
+        \end{sol}
+  \item $D(x) = \frac{x^2 - 2x^3 + x^4}{1 - 3x + 3x^2 - x^3 - x^4 + x^5}$
+        \begin{sol}
+          Apply Theorem 4.8 to read:
+          \[
+            d_n - 3d_{n-1} + 3d_{n-2} - d_{n-3} - d_{n-4} + d_{n-5} = \begin{cases}
+              0  & n = 0    \\
+              0  & n = 1    \\
+              1  & n = 2    \\
+              -2 & n = 3    \\
+              1  & n = 4    \\
+              0  & n \geq 5
+            \end{cases}
+          \]
+          and calculate the initial conditions
+          \begin{align*}
+            d_0                                 & = 0 \\
+            d_1 = 3d_0                          & = 0 \\
+            d_2 = 1 + 3d_1 - 3d_0               & = 1 \\
+            d_3 = -2 + 3d_2 - 3d_1 + d_0        & = 1 \\
+            d_4 = 1 + 3d_3 - 3d_2 + d_1 + d_0   & = 1 \\
+            d_5 = 3d_4 - 3d_3 + d_2 + d_1 - d_0 & = 1 \\
+          \end{align*}
+          as desired.
+        \end{sol}
+  \item $E(x) = \frac{1+x-2x^2-x^3+x^4}{1-2x^2-x^3+x^4}$
+        \begin{sol}
+          Apply Theorem 4.8 to read:
+          \[
+            e_n - 2e_{n-2} - e_{n-3} + e_{n-4} = \begin{cases}
+              1  & n = 0    \\
+              1  & n = 1    \\
+              -2 & n = 2    \\
+              -2 & n = 3    \\
+              1  & n = 4    \\
+              0  & n \geq 5
+            \end{cases}
+          \]
+          and calculate the initial conditions
+          \begin{align*}
+            e_0                        & = 1 \\
+            e_1                        & = 1 \\
+            e_2 = -2 + 2e_0            & = 0 \\
+            e_3 = -2 + 2e_1 + e_0      & = 1 \\
+            e_4 = 1 + 2e_2 + e_1 - e_0 & = 1
+          \end{align*}
+          as desired.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  Let $\rl K$ be the set of compositions $\gamma = (c_i)$
+  with at least one part such that the first part is odd.
+  Let $K(x)$ be the generating series for $\rl K$ with respect to size.
+\end{xca}
+\begin{enumerate}
+  \item Show that $K(x) = \frac{x}{(1+x)(1-x)}$.
+        \begin{sol}
+          Write $\rl K = \{1,3,5,\dotsc\}\times\{1,2,3,\dotsc\}^*$.
+
+          The generating series for the odd parts is $\frac{x}{1-x^2}$
+          and for the normal parts $\frac{x}{1-x}$.
+
+          By the String Lemma, we get $\frac{1}{1-\frac{x}{1-x}} = \frac{1-x}{1-2x}$.
+
+          Finally, by the Product Lemma, we have $K(x) =
+            \frac{x(1-x)}{(1-x^2)(1-2x)} = \frac{x-x^2}{1-2x-x^2+2x^3}$.
+        \end{sol}
+  \item Use part (a) to show that among all $2^{n-1}$ compositions of size $n \geq 1$,
+        the fraction of these compositions in the set $\rl K$
+        is $\frac{2}{3}+\frac{1}{3}(\frac{-1}{2})^{n-1}$.
+        \begin{sol}
+          Use partial fractions to decompose $\frac{x-x^2}{(1-x)(1+x)(1-2x)}
+            = \frac{1/3}{1-2x}-\frac{1/3}{1+x}$.
+
+          Then, $k_n = \frac13[x^n]\frac{1}{1-2x} - \frac13[x^n]\frac{1}{1+x}
+            = \frac13\cdot 2^n - \frac13 (-1)^n$
+          so that $\frac{k_n}{2^{n-1}} = \frac23 + \frac13(\frac{-1}{2})^{n-1}$
+          as desired.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  Consider the power series $\sum_{n=0}^\infty c_n x^n
+    = \frac{1-2x^2}{1-5x+8x^2-4x^3}
+    = 1 + 5x + 15x^2 + 39x^3 + \dotsb$
+\end{xca}
+\begin{enumerate}
+  \item Give a linear recurrence relation that
+        (together with the initial conditions above)
+        determines the sequence of coefficients
+        \begin{sol}
+          Apply Theorem 4.8:
+          \[
+            c_n - 5c_{n-1} + 8c_{n-2} - 4c_{n-3} = \begin{cases}
+              1  & n = 0    \\
+              0  & n = 1    \\
+              -2 & n = 2    \\
+              0  & n \geq 3
+            \end{cases}
+          \]
+          and we are given initial conditions 1, 5, 15, 39.
+        \end{sol}
+  \item Derive a formula for $c_n$ as a function of $n \geq 0$.
+        \begin{sol}
+          Write $\frac{1-2x^2}{1-5x+8x^2-4x^3} = \frac{1-2x^2}{(1-x)(1-2x)^2}$.
+
+          Then, partial fractions gives $\frac{-1}{1-x} + \frac{1}{1-2x} + \frac{1}{(1-2x)^2}$.
+
+          Extracting coefficients gives $c_n = -1 + 2^n + (n+1)2^n = (n+2)2^n - 1$.
         \end{sol}
 \end{enumerate}
 
