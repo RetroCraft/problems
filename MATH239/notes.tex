@@ -1628,7 +1628,7 @@ We can use the \nameref{cor:464-neg} to find whether a cycle exists in $G$:
 \end{example}
 \begin{example}
   The graph \tikz[baseline=-15pt]\graph[grow=right]{
-    2--{1,3} -!- 4--{5,6}; 5--6;
+  2--{1,3} -!- 4--{5,6}; 5--6;
   }; has two unconnected components.
 \end{example}
 
@@ -1654,7 +1654,7 @@ We can use the \nameref{cor:464-neg} to find whether a cycle exists in $G$:
 \section{(11/02)}
 
 \begin{theorem}[path equivalence]\label{thm:patheq}
-  Let $\sim_G$ be a binary relation on $V(G)$ 
+  Let $\sim_G$ be a binary relation on $V(G)$
   such that $x \sim_G y$ if a path exists from $x$ to $y$ in $G$.
   Then, $\sim_G$ is an equivalence relation.
 \end{theorem}
@@ -1701,7 +1701,7 @@ This is polynomial, so we are in \NP.
 \begin{defn}[cut]
   For graph $G$ and $X \subseteq V(G)$,
   the \term{cut induced by $X$} is
-  $\delta(X) = \{xy \in E(G) : x \in X, y \not\in X\}$. 
+  $\delta(X) = \{xy \in E(G) : x \in X, y \not\in X\}$.
 \end{defn}
 
 \begin{example}
@@ -1726,10 +1726,10 @@ This is polynomial, so we are in \NP.
   Then, $\delta(X) = \varnothing$ because if $u \in X$ and $uv \in \delta(X)$,
   then $u \sim_G v$, so $v \in X$ and $uv \not\in \delta(X)$.
 
-  Conversely, there exists non-empty $X \subsetneq V(G)$ 
+  Conversely, there exists non-empty $X \subsetneq V(G)$
   with $\delta(X) = \varnothing$.
   Then, pick $x \in \delta(X)$ and $y \in V(G) \setminus \delta(X)$.
-  
+
   Notice that for there to be a path $xv_1\cdots v_ky$ from $x$ to $y$,
   we must cross between $X$ and $V(G) \setminus X$.
   This is because either (1) $v_1,\dotsc,v_k$ are all in $X$,
@@ -1785,14 +1785,14 @@ given an Eulerian circuit, traverse it to verify correctness.
 
   If every vertex has degree at least 2,
   then by Theorem \nameref{thm:deg2cycle}, $G$ contains a cycle $C$.
-  
+
   Let $G'$ be the subgraph of $G$ without $E(C)$.
   Note that every vertex of $G'$ still has even degree,
   since we either leave it alone or remove two edges.
   Let $C_i$ be the components of $G'$.
   Inductively, each component $C_i$ has an Eulerian circuit $W_i$
   since $\abs{E(C_i)} < \abs{E(G)}$.
-  
+
   Finally, for each $C_i$, there is a $v_i \in V(C_i) \cap V(C)$
   since $G$ is connected.
   Insert at $v_i$ the circuit $W_i$ to create an Eulerian circuit of $G$.
@@ -1824,12 +1824,12 @@ We can also show it is in \P, analyzing the algorithm.
   the edges 34, 45, 67, 913, 1011, and 1012 are bridges.
 \end{example}
 
-\begin{theorem}[4.10.2]
+\begin{lemma}[4.10.2]\label{lem:bridgecomp}
   Let $G$ be a connected graph.
 
   If $e = xy$ is a bridge of $G$, then $G-e$ has exactly two components
   and $x$ and $y$ are in different components of $G-e$.
-\end{theorem}
+\end{lemma}
 
 \begin{prf}
   Let $A = \{v \in V(G) : v \sim_{G-e} x\}$
@@ -1846,6 +1846,248 @@ We can also show it is in \P, analyzing the algorithm.
   contradicting that $G-e$ has at least 2 components.
 
   Therefore, $A$ and $B$ partition $V(G)$ and indeed are the components of $G-e$.
+\end{prf}
+
+\section{(11/07)}
+
+\begin{prop}[converse of \nameref{lem:bridgecomp}]\label{prop:compbridge}
+  Let $e = xy \in E(G)$.
+  If $x$ and $y$ are in different components of $G-e$, $e$ is a bridge.
+\end{prop}
+\begin{prf}
+  First, note that if $u \not\sim_G v$, then $u \not\sim_{G-e} v$.
+  This implies that $G/{\sim_G} \subseteq G_{G-e}/{\sim_{G-e}}$.
+  Then, since $x \sim_G y$ (i.e., $[x] = [y]$)
+  but $x \not\sim_{G-e} y$ (i.e., $[x] \neq [y]$),
+  $G/{\sim_G}$ must be a strict subset.
+  Since $G-e$ has more components than $G$, $e$ is a bridge.
+\end{prf}
+
+\begin{theorem}[4.10.3]\label{thm:bridge}
+  Let $e = xy \in E(G)$. Then, \Tfae,
+  \begin{enumerate}[(1),nosep]
+    \item $e$ is a bridge of $G$;
+    \item $x$ and $y$ are in different components of $G-e$;
+    \item there does not exist a path from $x$ to $y$ in $G-e$;
+    \item there does not exist a cycle of $G$ containing $e$
+  \end{enumerate}
+\end{theorem}
+\begin{prf}
+  (1) and (2) are equivalent by Lemma \nameref{lem:bridgecomp}
+  and the \nameref{prop:compbridge}.
+
+  (2) and (3) are equivalent since a component of $G-e$
+  is exactly an equivalence class of $\sim_{G-e}$,
+  so being in different components means that there is no path.
+
+  (3) and (4) are equivalent since if there is a path $P$ from $x$ to $y$ in $G-e$,
+  then $P + e$ is a cycle in $G$.
+  Conversely, if $C$ is a cycle in $G$ containing $e$, then $C-e$
+  is a path from $x$ to $y$ in $G-e$.
+
+  Note: $(1) \iff (4)$ is Theorem 4.10.3.
+\end{prf}
+
+
+\begin{corollary}[4.10.4]\label{cor:pathcycle}
+  Let $G$ be a graph and $u,v \in V(G)$.
+  If there exist two distinct paths from $u$ to $v$ in $G$,
+  then $G$ contains a cycle.
+\end{corollary}
+\begin{prf}
+  Let $P_1 = u x_1 \cdots x_k v$ and $P_2 = u y_1 \cdots y_\ell v$.
+
+  Since $P_1 \neq P_2$, there exists $i$ such that
+  $x_i \neq y_i$ and for all $j < i$, $x_j = y_j$.
+
+  Notice that $P_2' = y_{i-1}y_i\cdots y_\ell v$
+  is a path from $y_{i-1}$ to $v$ in $G-x_{i-1}x_i$.
+  Also, $P_1' = x_i x_{i+1} \cdots x_k v$ is a path from $x_{i+1}$ to $v$
+  in $G - x_{i-1}x_i$.
+  That is, $x_i \sim_{G-e} v \sim_{G-e} y_{i-1} = x_{i-1}$.
+  Therefore, $x_i$ and $x_{i-1}$ are in the same component of $G-x_ix_{i-1}$.
+
+  By Theorem \nameref{thm:bridge}, there exists a cycle of $G$ containing $x_ix_{i-1}$.
+\end{prf}
+
+\chapter{Trees}
+
+\begin{defn}[tree]
+  A connected graph that has no cycles.
+\end{defn}
+
+\begin{defn}[forest]
+  A graph that has no cycles.
+\end{defn}
+
+Notice that every tree is a forest.
+Also, the components of a forest are trees.
+Taking a subgraph cannot induce a cycle,
+so subgraphs of forests are forests
+and subgraphs of trees are forests.
+Finally, every forest is the disjoint union of trees (namely, its components).
+
+\begin{lemma}[5.1.3]
+  If $u$ and $v$ are vertices of a tree $T$,
+  then there is a unique $u$,$v$-path in $T$.
+\end{lemma}
+\begin{prf}
+  There exists at least one such path since $T$ is connected.
+  But there is at most one path by Corollary \nameref{cor:pathcycle}
+  since $T$ has no cycle by definition.
+\end{prf}
+
+\begin{lemma}[5.1.4]\label{lem:treebridge}
+  Every edge of a tree $T$ is a bridge.
+\end{lemma}
+\begin{prf}
+  There are no cycles in $T$, so by Theorem \nameref{thm:bridge}, every edge is a bridge.
+\end{prf}
+
+\begin{defn}[leaf]
+  A vertex in a tree of degree exactly 1.
+\end{defn}
+
+\begin{theorem}[leaf existence]\label{thm:leafexist}
+  Every tree $T$ with at least two vertices has a leaf.
+\end{theorem}
+\begin{sol}
+  Since $T$ has no cycle, then $T$ has a vertex $\deg(v) \leq 1$ by
+  the \nameref{cor:464-neg}.
+
+  If $\deg(v) = 0$, then $v$ is a component by itself.
+  But since $\abs{V(T)} \geq 2$, there is another component,
+  contradicting that $T$ is a tree.
+
+  Therefore, $v$ is a leaf.
+\end{sol}
+
+\section{(11/09)}
+
+\begin{theorem}
+  \TFAE:
+  \begin{enumerate}[(1),nosep]
+    \item $G$ is a tree
+    \item $G$ is connected and every connected subgraph of $G$
+          with at least two vertices has a leaf
+    \item There exists an ordering $(v_i,\dotsc,v_n)$ such that
+          $\abs{N(v_i) \cap \{v_1,\dotsc,v_{i-1}\}} = 1$ for all $2 \leq i \leq n$
+  \end{enumerate}
+\end{theorem}
+
+\begin{theorem}[very useful theorem]\label{thm:leafremove}
+  Let $T$ be a tree and $v$ a leaf of $T$.
+  Then, $T-v$ is a tree.
+\end{theorem}
+\begin{prf}
+  Clearly, $T-v$ is a forest (removal cannot create a cycle).
+
+  By Lemma~\nameref{lem:treebridge}, every edge of $T$ is a bridge.
+
+  Let $u$ be the unique neighbour of $v$ and $e=uv$.
+  Then, $e$ is a bridge.
+
+  Since $T$ is connected, $T-e$ has exactly two components
+  and $u$ and $v$ are in different components.
+  Since $v$ now has degree 0 in a component on its lonesome,
+  $V(T) \setminus \{v\}$ is a component of $T-e$ and in fact of $T-v$.
+
+  Therefore, $T-v$ is connected and $T-v$ is a tree
+\end{prf}
+
+Notice that induction on this theorem proves equivalence of (1) and (3) above.
+
+\begin{theorem}[5.1.8]\label{thm:2leaves}
+  Every tree with at least two vertices has at least two leaves.
+\end{theorem}
+\begin{prf}[Postle]
+  Proceed by induction on $\abs{V(T)}$.
+  
+  If $\abs{V(T)} = 2$, then $T = K_2$ with both vertices being leaves.
+
+  Otherwise, if $\abs{V(T)} \geq 3$, by \nameref{thm:leafexist},
+  $T$ has at least one leaf $v$.
+  Then, by the \nameref{thm:leafremove}, $T-v$ is a tree
+  where $\abs{V(T-v)} = \abs{V(T)} - 1$.
+  By induction, $T-v$ has at least two leaves $v_1$ and $v_2$.
+
+  Let $u$ be the neighbour of $v$.
+  Then, $u$ cannot be both $v_1$ and $v_2$, so either $v_1$ or $v_2$ is another
+  leaf in $T-v$ and in $T$, as desired.
+\end{prf} 
+\begin{prf}[Book]
+  Let $P = v_1 \cdots v_k$ be a longest path in $T$.
+  Then, $v_1$ and $v_k$ are leaves of $T$
+  (if not, then there is either a longer path or a cycle).
+\end{prf}
+
+\begin{theorem}[5.1.5]\label{thm:edgenum}
+  If $T$ is a tree, then $\abs{E(T)} = \abs{V(T)} - 1$.
+\end{theorem}
+\begin{prf}
+  Proceed by induction on $\abs{V(T)}$.
+  If $\abs{V(T)} = 1$, then $E(T) = 0 = \abs{V(T)} - 1$.
+
+  Assume $\abs{V(T)} \geq 2$.
+  Then, $T$ has a leaf by Theorem~\nameref{thm:2leaves}.
+  But $T-v$ is a tree by the \nameref{thm:leafremove}.
+  Since $T-v$ removed a leaf, it removed only one edge.
+  That is, by induction,
+  $\abs{E(T)} = \abs{E(T-v)} + 1 = (\abs{V(T-v)} - 1) + 1 = \abs{V(T)} - 1$
+  as desired.
+\end{prf}
+
+\begin{corollary}[5.1.6]\label{cor:forestedgenum}
+  If $G$ is a forest with exactly $k$ components,
+  then $\abs{E(G)} = \abs{V(G)} - k$.
+\end{corollary}
+\begin{prf}
+  Let $T_1,\dotsc,T_k$ be the components of $G$.
+  Then, $T_i$ are trees.
+  By Theorem~\nameref{thm:edgenum}, $\abs{E(T_i)} = \abs{V(T_i)} - 1$.
+
+  Then, $\sum \abs{E(T_i)} = \sum(\abs{V(T_i)} - 1) = \abs{V(T)} - k$.
+\end{prf}
+
+\begin{prop}
+  If $T$ is a tree with at least two vertices
+  and $n_r = \{ v \in V(T) : \deg(v) = r \}$, then we can write
+  $n_1 = 2 + \sum_{r \geq 3} (r-2) n_r$.
+\end{prop}
+\begin{prf}
+  By Theorem~\nameref{thm:edgenum}, $\abs{E(T)} = \abs{V(T)} - 1$.
+  But by the Handshaking Lemma, $2\abs{E(T)} = \sum \deg(r) = \sum n_r r$.
+  Combining, $2(\abs{V(T)}-1) = 2\abs{E(T)} = \sum n_r r$.
+
+  This gives $2(\sum n_r r) - 2 = \sum r n_r$,
+  so that $2n_1 + 2n_2 + \dotsb - 2 = n_1 + 2n_2 + \dotsb$
+  and we can write $n_1 = 2 + \sum_{r \geq 3}(r-2)n_r$.
+\end{prf}
+
+This proposition gives another altnernate proof for Theorem~\nameref{thm:2leaves}.
+
+\begin{defn}[spanning tree]
+  A spanning subgraph of $G$ that is a tree.
+\end{defn}
+
+\begin{theorem}[5.2.1]
+  A graph $G$ is connected if and only if $G$ has a spanning tree.
+\end{theorem}
+\begin{prf}
+  If $G$ has a spanning tree, then $G$ is clearly connected
+  since paths exist by walking along the connected spanning tree.
+
+  If $G$ is connected, then we proceed by induction on $\abs{E(G)}$.
+  If $G$ is a tree, then we are done.
+
+  Since $G$ is connected, it contains a cycle $C$ by Theorem~\nameref{thm:deg2cycle}.
+  Let $e \in C$.
+  Then, by Theorem~\nameref{thm:bridge}, $e$ is not a bridge.
+  Hence, $G-e$ has the same number of components.
+
+  But $\abs{E(G-e)} = \abs{E(G)} - 1 < \abs{E(G)}$.
+  By induction, $G-e$ has a spanning tree $T$.
+  Since we deleted only an edge, $T$ is a spanning tree for $G$.
 \end{prf}
 
 \end{document}

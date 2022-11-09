@@ -944,6 +944,8 @@ Since this is basically the same process as random squares,
 it is no surprise it has similar time complexity $L_p(\frac12,\sqrt2)$.
 Practically, it's slightly harder than factoring.
 
+\chapter{Signatures}
+
 \section{Hash Functions (10/28)}
 
 To establish something that is NM-CCA2 secure, we need to somehow ``sign''
@@ -1231,5 +1233,162 @@ We call these $\Sigma$ protocols because the back-and-forth looks like a $\Sigma
 Notice that there is only one bit of entropy, so it is forgeable 50\% of the time.
 If we try increasing entropy in the DLOG scheme by making $b \in \Z$,
 correctness and soundness still hold but zero-knowledge might not.
+
+\section{ZKP Signatures (11/07)}
+
+Recall the Fiat--Shamir transform:
+
+Given a $\Sigma$ protocol,
+Peggy sends Victor the problem $\pi$
+and a commitment $c$ (usually some sort of randomized value).
+Victor returns a challenge $b$.
+Peggy's response $r$ depends on $b$.
+
+From the perspective of a signature scheme,
+we generate a private key (statement to be proved)
+and public key $\pi$.
+
+To sign, choose a commitment at random $c \xgets{\$} C$.
+Set the challenge to be a deterministic but random function $b = H(m, c)$.
+Calculate a response for $b$.
+Then, let $\sigma = (c, r)$.
+
+To verify, recalculate the challenge and verify with the response.
+
+Notice that if $b \in \{0,1\}$, then signature forgery is permitted half the time.
+To actually use this, the challenge space must be large.
+
+Generically, the signer repeats the protocol $\lambda$ times
+and initially commit to a commitment vector $\vb c = (c_1,\dotsc,c_\lambda)$.
+They also make a challenge vector $\vb b = (b_1,\dotsc,b_\lambda) = H(m,\vb c)$.
+Then, to successfully fake the proof (and forge a signature),
+the signer would need to very luckily get a $\vb b$
+that matches perfectly with a malicious $\vb c$.
+Finally, generate a response vector $\vb r$ and return $\sigma = (\vb c, \vb r)$.
+
+This cannot be proved to be ZK because the proof cannot be simulated.
+We assume that the heuristic (that ZKP's produce ZKP's) holds.
+
+\begin{example}
+  Why do we need to generate the vectors at once?
+
+  \WLOG, suppose we want to prove knowledge of $x$ (in the DLOG problem).
+
+  The public key is $\pi = g^x$.
+  The commitment is $c = g^y$ for random $y$.
+  The challenge is a bit $b$.
+  The response is $r = y + bx$.
+
+  If Peggy predicts $b = 0$,
+  pick $y$ randomly, set $c = g^y$,
+  and Victor verifies $r = y$.
+  Otherwise, if she predicts $b = 1$,
+  pick $r_0$ randomly, set $c = \frac{g^{r_0}}{g^x}$,
+  and Victor verifies $r = r_0$.
+
+  If Peggy continuously generates random $y$,
+  she only has to try twice until getting desired $b=0$.
+  Then, she only needs to do $2\lambda$ work instead of $2^\lambda$ work.
+\end{example}
+
+What we're describing is the Schnorr signature.
+
+\paragraph{Schnorr scheme}
+Given a group $G$ and $g \in G$,
+generate keys $(pk, sk) = (g^x, x)$.
+
+A signature of $m$ is a proof of knowledge of $x$.
+First, generate a commitment $r \xgets{\$} \Z$, $c = g^r$.
+Then, calculate a challenge $b \gets H(m,c) = H(m,g^r)$.
+The response is $r+bx$, so return $(c, \sigma) = (g^r, r+bx)$.
+
+To verify a signature $(c, \sigma)$,
+check if $g^\sigma \stackrel{?}{=} c(g^x)^{H(m, g^r)}$.
+That is, compute $b' \gets H(m, c) = H(m, g^r)$
+and check if $g^{r+bx} = g^r (g^x)^b \stackrel{?}{=} c(pk)^{b'}$.
+
+Alternatively, send $(b, \sigma)$.
+Then, calculate $c' \gets \frac{g^\sigma}{(g^x)^b}$
+and check if $H(m, c') \stackrel{?}{=} b$.
+This is better since $b$ is an integer,
+which is easier to serialize and send than a group element $c$.
+
+\begin{theorem}[Schnorr]
+  Assuming that $H$ is a random oracle and that DLOG is hard in $G$,
+  the Schnorr signature scheme is EUF-CMA.
+\end{theorem}
+\begin{prf}
+  Suppose we are an adversary $\mathcal A_1$ trying to solve DLOG.
+  Let $g$, $g^\alpha$ be a challenge from $\mathcal C_1$.
+  Suppose also that we are a challenger $\mathcal C_2$
+  with access to an adversary $\mathcal A_2$ that breaks Schnorr.
+
+  Give $\mathcal A_2$ the parameter $g^\alpha$.
+  Then, the adversary forges a signature $(b, r + b\alpha)$.
+  We want to isolate $\alpha$, so we need two signatures
+  with the same public key, same commitment, but with different hashes $b$ and $b'$.
+  Using the \emph{forking lemma}, we stop execution before the hashing 
+  and swap out the hash function $H$.
+
+  Then, we have $(b, r + b\alpha)$ and $(b', r + b'\alpha)$.
+  We can now solve for $\alpha$ and return it to $\mathcal C_1$.
+
+  Since $\mathcal A_2$ runs in poly.\ time,
+  we ($\mathcal A_1$) ran in poly.\ time,
+  meaning that DLOG is easy.
+\end{prf}
+
+\section{CCA2-Secure Signature Schemes (11/09)}
+
+Recall: in IND-CCA2, $\mathcal A$ can use a decryption oracle,
+then produce two messages.
+$\mathcal C$ picks a random one of the two and encrypts it.
+Then, $\mathcal A$ gets access to the decryption oracle
+and wins if they can distinguish which message was encrypted.
+
+In Textbook RSA, $E(m) = m^e \bmod n$,
+so an attacker can pick garbage $k$ and ask for the decryption of $m^e k^e$.
+The core issue here is that $E$ is a group homomorphism, i.e.,
+$E(m_1m_2) = E(m_1)E(m_2)$.
+
+\begin{remark}
+  Any homomorphic cryptosystem is not CCA2-secure.
+\end{remark}
+
+For example, Rabin encryption $E(m) = m^2 \bmod n$ is homomorphic and
+Elgamal $E(m) = (g^y, g^{xy}m)$ is also homomorphic in each entry.
+
+\paragraph{Symmetric + asymmetric hybrid}
+Let $KeyGen$, $Enc : M \to C$, and $Dec : C \to M$ be a public key cryptosystem.
+Also let $\mathcal{Enc}$ and $\mathcal{Dec}$ be a symmetric key cryptosystem.
+
+Suppose Alice wants to send to Bob.
+Bob generates $(pk, sk) \xgets{\$} KeyGen$ and publishes $pk$.
+
+Alice picks random $\sigma \xgets{\$} M$,
+encrypts both $c = Enc(pk, \sigma)$ and $d = \mathcal{Enc}(\sigma, m)$,
+and sends $(c, d)$.
+Notice that we can reinterpret $\sigma$ as a key for the SKC
+by just treating it as an appropriately-sized bistring.
+
+Bob can now decrypt $(c, d)$ by first decrypting $\sigma = Dec(sk, c)$
+and then $m = \mathcal{Dec}(\sigma, d)$.
+
+\paragraph{One-time pad (OTP) hybrid} (Fujisaki--Okamoto 1999) is CCA2 secure.
+Let $KeyGen$, $Enc$, $Dec$ be a PKC.
+Then, make a pseudo-OTP $\mathcal{Enc}(k,m) = m \oplus H_1(k)$
+and add a $MAC(k,m) = H_2(k,m)$.
+
+Generate $(pk, sk) \xgets{\$} KeyGen(\one^\ell)$
+and pick $\sigma \xgets{\$} M$.
+
+Then, $E(m) = (Enc(pk, \sigma), m \oplus H_1(\sigma), H_2(\sigma,m))$.
+
+To invert, $D(c, d, e) = d \oplus H_1(Dec(sk, c)) = m$
+and check $H_2(\sigma, m) = e$.
+If the MAC does not check out, either explicitly error
+or implicitly output random garbage $H_3(s,(c,d,e))$ with a secret seed $s$.
+
+Then, the CCA2 oracle is sabotaged.
 
 \end{document}
