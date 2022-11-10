@@ -163,10 +163,10 @@
 \newenvironment{choices}{\begin{enumerate}[(a),nosep]}{\end{enumerate}}
 
 % Cute initialisms (with versions for start of sentences)
-\newcommand{\Wlog}{\textsc{wlog}}
-\newcommand{\WLOG}{\textsc{Wlog}}
-\newcommand{\Tfae}{\textsc{tfae}}
-\newcommand{\TFAE}{\textsc{Tfae}}
+\newcommand{\Wlog}{\textsc{wlog}\xspace}
+\newcommand{\WLOG}{\textsc{Wlog}\xspace}
+\newcommand{\Tfae}{\textsc{tfae}\xspace}
+\newcommand{\TFAE}{\textsc{Tfae}\xspace}
 
 % Typesetting
 \newcolumntype{C}{>{$}c<{$}} % math version of "C" column type

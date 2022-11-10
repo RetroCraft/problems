@@ -1930,4 +1930,122 @@
         \end{sol}
 \end{enumerate}
 
+\begin{xca}
+  For integer $n \geq 0$, define the graph $G_n$ as follows:
+  $V(G_n)$ is the set of all binary strings of length $n$
+  having at most one block of 1's.
+  Two vertices are adjacent if they differ in exactly one position.
+\end{xca}
+\begin{enumerate}
+  \item Find $\abs{V(G_n)}$.
+        \begin{sol}
+          We can map $V(G_n) \bijects S_{n+1,2} \cup \{\varnothing\}$ as follows:
+          given $\alpha = 0^i1^j0^k \in V(G_n)$, let $f(\alpha) = \{i,j\}$.
+          Then, $f^{-1}(\{\ell,m\}) = 0^\ell 1^m 0^{n-\ell-m}$.
+          Map $\varnothing$ to the string $0^n$ with no 1's.
+          Notice that for this to work, we define $[n+1] = \{0,\dotsc,n\}$.
+
+          Therefore, $\abs{V(G_n)} = \binom{n+1}{2} + 1 = \frac{1}{2}n(n+1) + 1 = \frac12n^2 + \frac12n + 1$.
+        \end{sol}
+  \item Make drawings of $G_3$ and $G_4$.
+        \begin{sol}
+          Construct $V(G_3) = \{000, 100, 010, 001, 110, 011, 111\}$.
+          Likewise, construct $V(G_4) = \{0000, 1000, 0100, 0010, 0001, 1100, 0110, 0011, 1110, 0111, 1111\}$.
+          Then, notice that differing by exactly one position
+          can either add a 1 (swap $0 \to 1$) or remove a 1 ($1 \to 0$).
+          Then, we can draw
+          \begin{center}
+            \tikz\graph[layered layout]{ 000 --[complete bipartite] {100, 010, 001} --[complete bipartite] {110, 011} --[complete bipartite] 111 };
+            \qquad
+            \tikz\graph[layered layout]{ 0000 --[complete bipartite] {1000, 0100, 0010, 0001} --[complete bipartite] {1100, 0110, 0011} --[complete bipartite] {1110, 0111} --[complete bipartite] 1111 };
+          \end{center}
+          as desired.
+        \end{sol}
+  \item Find $\abs{E(G_n)}$.
+        \begin{sol}
+          Consider the triangle and the $0^n$ separately.
+          Between each layer with $i-1$ and $i$ 0's,
+          there are $i(i-1)$ edges.
+          Then, $\sum_{i=2}^{n} i(i-1) = 2\sum_{i=1}^{n}\binom{i}{2} = 2\binom{n+1}{3}$.
+          Finally, there are $n$ edges incident to $0^n$,
+          so we have $\abs{E(G_n)} = 2\binom{n+1}{3} + n$.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}\end{xca}
+\begin{enumerate}
+  \item Draw $K_{m,n}$ for all $m$, $n$ such that $1 \leq m \leq n \leq 3$.
+        \begin{sol}
+          Draw:
+          \begin{center}
+            \tikz\graph[dots nodes]{ subgraph K_nm[n=1,m=1] };
+            \qquad
+            \tikz\graph[dots nodes]{ subgraph K_nm[n=1,m=2] };
+            \qquad
+            \tikz\graph[dots nodes]{ subgraph K_nm[n=1,m=3] };
+            \qquad
+            \tikz\graph[dots nodes]{ subgraph K_nm[n=2,m=2] };
+            \qquad
+            \tikz\graph[dots nodes]{ subgraph K_nm[n=2,m=3] };
+            \qquad
+            \tikz\graph[dots nodes]{ subgraph K_nm[n=3,m=3] };
+          \end{center}
+          as desired.
+        \end{sol}
+  \item How many vertices does $K_{m,n}$ have?
+        \begin{sol}
+          There are $\abs{V(K_{m,n})} = m + n$ vertices.
+        \end{sol}
+  \item Let $K$ be a complete bipartite graph on $p$ vertices.
+        Prove that $K$ has at most $\floor{p^2/4}$ edges.
+        \begin{sol}
+          Suppose $K \simeq K_{m,n}$.
+          Then, there are $\abs{E(K)} = \abs{E(K_{m,n})} = m \times n$ edges
+          to connect each of the $m$ left vertices to $n$ right vertices.
+
+          \WLOG, suppose $m \leq n$.
+          By high school algebra, $\abs{E(K)}$ is maximized when $m = n$.
+
+          If $p$ is even, let $m = n = \frac{p}{2}$.
+          Then, $\abs{E(K)} \leq \frac{p^2}{4}$.
+
+          If $p = 2k+1$ is odd, let $m = k = \floor{\frac{p}{2}}$ and $n = k+1 = \floor{\frac{p}{2}}+1$.
+          Notice that $\floor{\frac{p^2}{4}} = \frac{4k^2+4k+1}{4} = k^2+k$.
+          Then, $\abs{E(K)} \leq mn = k^2 + k = \floor{\frac{p^2}{4}}$,
+
+          Therefore, $K$ has at most $\floor{\frac{p^2}{4}}$ edges.
+        \end{sol}
+  \item Let $G$ be a bipartite graph on $p$ vertices.
+        Prove that $G$ has at most $\floor{p^2/4}$ edges.
+        \begin{sol}
+          Since $G$ is bipartite, all edges cross the bipartition
+          $(A,B)$ where $\abs{A} = m$ and $\abs{B} = n$.
+          That is, all edges exist in $K_{m,n}$.
+
+          Thus, $G$ is a subgraph of $K_{m,n}$
+          and by (c), $\abs{E(G)} \leq \abs{E(K_{m,n})} \leq \floor{\frac{p^2}{4}}$, as desired.
+        \end{sol}
+  \item Let $G$ be a $k$-regular bipartite graph with bipartition $(X,Y)$.
+        Prove that $\abs{X} = \abs{Y}$ if $k > 0$.
+        Is this still valid when $k=0$?
+        \begin{prf}
+          Let $k \geq 1$ and suppose $\abs{X} \neq \abs{Y}$.
+
+          Then, notice that since $G$ is bipartite, by definition,
+          the edges incident to $X$ are the edges incident to $Y$,
+          i.e., $\abs{\delta(X)} = \abs{\delta(Y)}$.
+          But each of $X$ (resp.\ $Y$) consist of $\abs{X}$
+          vertices of $k$ degree going to vertices in $Y$,
+          so $\abs{\delta(X)} = k\abs{X} = k\abs{Y} = \abs{\delta(Y)}$.
+
+          But $\abs{X} \neq \abs{Y}$, implying $k = 0$. Contradiction.
+
+          This is not valid when $k=0$.
+          Notice that if $V(G) = \{1\}$, $E(G) = \varnothing$,
+          $X = \{1\}$, and $Y = \varnothing$,
+          we have a 0-regular bipartite graph with bipartition $(X,Y)$
+          and $\abs{X} \neq \abs{Y}$.
+        \end{prf}
+\end{enumerate}
+
 \end{document}

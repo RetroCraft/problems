@@ -200,7 +200,7 @@ There are also [exercise solutions](./MATH239/exercises.pdf) for the course note
 | Ch. 2 (Generating Series)    | :black_large_square: | Missing 2.8, 2.13(b)-(c), 2.16-2.21 |
 | Ch. 3 (Binary Strings)       | :black_large_square: | Missing 3.13(b), 3.14-3.17          |
 | Ch. 4 (Recurrence Relations) | :black_large_square: | Missing 4.4-4.12                    |
-| Ch. 4 (Graph Theory Intro.)  | :black_large_square: | Missing 4.4.6-4.10.9                |
+| Ch. 4 (Graph Theory Intro.)  | :black_large_square: | Missing 4.4.8-4.10.9                |
 
 ### CO 485/685 (F2022) <small>Mathematics of Public-Key Cryptography</small>
 
