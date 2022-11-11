@@ -1335,7 +1335,7 @@ Note: if the graph includes loops and/or parallel edges, it is a \term{multigrap
   Given a graph $G$, there exists a partition $(A,B)$ of $V(G)$
   such that every edge has exactly one element in $A$ and one element in $B$.
 \end{defn}
-\begin{example}
+\begin{example}\label{exa:17-2}
   Which of the above graphs are bipartite?
 \end{example}
 \begin{sol}
@@ -2047,7 +2047,7 @@ so subgraphs of forests are forests
 and subgraphs of trees are forests.
 Finally, every forest is the disjoint union of trees (namely, its components).
 
-\begin{lemma}[5.1.3]
+\begin{lemma}[5.1.3]\label{lem:uniquepath}
   If $u$ and $v$ are vertices of a tree $T$,
   then there is a unique $u$,$v$-path in $T$.
 \end{lemma}
@@ -2190,7 +2190,7 @@ This proposition gives another altnernate proof for Theorem~\nameref{thm:2leaves
   A spanning subgraph of $G$ that is a tree.
 \end{defn}
 
-\begin{theorem}[5.2.1]
+\begin{theorem}[5.2.1]\label{thm:conspan}
   A graph $G$ is connected if and only if $G$ has a spanning tree.
 \end{theorem}
 \begin{prf}
@@ -2208,6 +2208,142 @@ This proposition gives another altnernate proof for Theorem~\nameref{thm:2leaves
   But $\abs{E(G-e)} = \abs{E(G)} - 1 < \abs{E(G)}$.
   By induction, $G-e$ has a spanning tree $T$.
   Since we deleted only an edge, $T$ is a spanning tree for $G$.
+\end{prf}
+
+\section{(11/11)}
+
+Consider again the forwards (hard) direction of Theorem~\nameref{thm:conspan}.
+
+\begin{prf}[``grow a tree'']
+  Let $T$ be a tree in $G$ such that $\abs{V(T)}$ is maximized.
+  Such a $T$ exists as $G$ has a single vertex.
+  If $V(T) = V(G)$, then $T$ is spanning and we are done.
+
+  Assume $V(T) \neq V(G)$.
+  Then, since $G$ is connected, there exists a non-empty cut $\delta(V(T))$
+  because $\varnothing \neq V(T) \neq V(G)$.
+  Therefore, there exists an edge $e \in \delta(V(T))$.
+  Then, $T' = T + e$ is a tree with $\abs{V(T')} = \abs{V(T)} + 1 > \abs{V(T)}$
+  contradicting the choice of $T$.
+\end{prf}
+
+\begin{prf}[``grow a forest'']
+  Let $F$ be a spanning forest such that $\abs{E(F)}$ is maximized.
+  This exists since $F$ with all vertices, no edges is such a graph.
+
+  If $\abs{E(F)} = \abs{V(G)} - 1$,
+  then $F$ is a spanning tree.
+
+  Assume $\abs{E(F)} \leq \abs{V(G)} - 1$
+  so that $F$ is not a tree.
+
+  Let $F_1$ be a component of $F$.
+  Since $G$ is connected, $\delta(F_1) \neq \varnothing$
+  so $\exists e \in \delta(F_1)$.
+  Then, $F' = F + e$ is a spanning forest with more edges.
+\end{prf}
+
+\begin{prf}[cute]
+  Induct on $\abs{V(G)}$.
+  Let $v \in V(G)$. Then $G-v$ has components $H_1,\dotsc,H_k$ for $k \geq 1$.
+  These components are connected with fewer vertices,
+  so by induction, spanning trees $T_1,\dotsc,T_k$ exist.
+  Then, since $G$ is connected, there exist $u_i \in V(H_i)$ where $vu_i \in E(G)$.
+  Finally, $\bigcup (T_i + vu_i)$ is a spanning tree of $G$.
+\end{prf}
+
+\begin{corollary}[5.2.2]\label{cor:treenum}
+  If $G$ is connected and $\abs{E(G)} = \abs{V(G)} - 1$, then $G$ is a tree.
+\end{corollary}
+\begin{prf}
+  By Theorem~\nameref{thm:conspan}, $G$ has a spanning tree $T$ where $V(G) = V(T)$.
+  By Theorem~\nameref{thm:edgenum}, $\abs{E(T)} = \abs{V(T)} - 1 = \abs{V(G)} - 1$.
+  Since $E(T) \subseteq E(G)$, we have that $E(G) = E(T)$ and $G$ is the tree $T$.
+\end{prf}
+
+\begin{theorem}[5.2.3]
+  If $T$ is a spanning tree of $G$ and $e$ is an edge of $G$ not in $T$,
+  then $T + e$ contains exactly one cycle $C$.\tablefootnote{This is the \term{fundamental cycle of $e$ with respect to $T$}}
+  Also, if $e' \in E(C)$, then $T + e - e'$ is a spanning tree of $G$.
+\end{theorem}\spewnotes
+\begin{prf}
+  Since $T$ is a tree, every cycle of $T+e$ must contain $e$.
+
+  Let $C$ be a cycle containing $e = uv$.
+  Then, $C-e$ is a path in $T$ from $u$ to $v$.
+  By Lemma~\nameref{lem:uniquepath}, $C-e$, and indeed $C$, is unique.
+
+  Suppose $e' \in E(C)$.
+  Then, by Lemma~\nameref{lem:bridgecomp}, $e'$ is not a bridge.
+  That is, $T+e-e'$ has the same number of components as $T+e$, i.e., it is connected.
+  But $\abs{E(T+e-e')} = \abs{E(T)}$ so by Corollary~\nameref{cor:treenum}, it is a tree.
+\end{prf}
+
+\begin{theorem}[5.2.4]
+  If $T$ is a spanning tree of $G$ and $e \in E(T)$,
+  then $T-e$ has two components.
+  If $e'$ is in the cut induced by one of the components,
+  $T-e+e'$ is a spanning tree.
+\end{theorem}
+\begin{prf}
+  The first part is obvious by Lemma~\nameref{lem:bridgecomp}.
+
+  Let $X$ and $Y$ be the components of $T-e$.
+  Since $e' \in \delta(X) = \delta(Y)$,\footnote{The \term{fundamental cut of $e$ with respect to $T$}}
+  we have that $X$ and $Y$ are the same component
+  in $T-e+e'$, meaning that it is connected.
+  As above, by Corollary~\nameref{cor:treenum}, it is a tree.
+\end{prf}
+
+Equivalently, if we \emph{add} an edge $e$ to $T$,
+then \emph{deleting} an edge in its fundamental cycle yields a spanning tree;
+and if we instead \emph{delete} the edge,
+\emph{adding} from its fundamental cut gives a spanning tree.
+
+\begin{lemma}[5.3.1]\label{lem:oddbi}
+  An odd cycle is not bipartite.
+\end{lemma}
+\begin{prf}
+  See \Cref{exa:17-2}.
+
+  Let $V(C_n) = \{v_1,\dotsc,v_n\}$.
+  Suppose for a contradiction there exists a bipartition
+  $(A,B)$ of $V(C_n)$ with $E(C_n) \subseteq \delta(A)$.
+
+  We assume \Wlog that $v_1 \in A$.
+  Given $v_1v_2 \in E(G)$, this means $v_2 \in B$.
+  Likewise up to $v_n \in A$.
+  But then $v_1v_n \not\in \delta(A)$.
+  Contradiction.
+\end{prf}
+
+\begin{prop}
+  If $G$ is bipartite, then every subgraph of $G$ is bipartite.
+\end{prop}
+\begin{prf}
+  There exists a bipartition of $G$.
+  If we restrict it to a subgraph, it is stil valid.
+\end{prf}
+
+\begin{theorem}[5.3.2]\label{thm:oddbi}
+  A graph is not bipartite if and only if it has no odd cycles.
+\end{theorem}
+\begin{prf}
+  The forwards direction follows from the above proposition
+  and by Lemma~\nameref{lem:oddbi}.
+
+  Suppose $G$ has no odd cycles.
+  By the proposition, $G$ is bipartite if and only if its components are bipartite.
+
+  Then, we may assume $G$ is connected.
+  By Theorem~\nameref{thm:conspan}, there exists a spanning tree $T$.
+  Let $v \in V(T)$.
+  Partition based on the parity of the distance from $v$.
+
+  If this is not the desired bipartition, then we may assume \Wlog
+  that there exists $v_1,v_2 \in A$, $v_1v_2 \in E(G)$.
+  But the unique path $P$ from $v_1$ to $v_2$ in $T$ has an even number of edges,s
+  so $P + v_1v_2$ is an odd cycle in $G$.
 \end{prf}
 
 \end{document}

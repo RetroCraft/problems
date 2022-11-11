@@ -1327,7 +1327,7 @@ which is easier to serialize and send than a group element $c$.
   Then, the adversary forges a signature $(b, r + b\alpha)$.
   We want to isolate $\alpha$, so we need two signatures
   with the same public key, same commitment, but with different hashes $b$ and $b'$.
-  Using the \emph{forking lemma}, we stop execution before the hashing 
+  Using the \emph{forking lemma}, we stop execution before the hashing
   and swap out the hash function $H$.
 
   Then, we have $(b, r + b\alpha)$ and $(b', r + b'\alpha)$.
@@ -1374,10 +1374,10 @@ by just treating it as an appropriately-sized bistring.
 Bob can now decrypt $(c, d)$ by first decrypting $\sigma = Dec(sk, c)$
 and then $m = \mathcal{Dec}(\sigma, d)$.
 
-\paragraph{One-time pad (OTP) hybrid} (Fujisaki--Okamoto 1999) is CCA2 secure.
+\paragraph{Fujisaki--Okamoto} (1999) is a CCA2-secure one-time pad (OTP) hybrid.
 Let $KeyGen$, $Enc$, $Dec$ be a PKC.
 Then, make a pseudo-OTP $\mathcal{Enc}(k,m) = m \oplus H_1(k)$
-and add a $MAC(k,m) = H_2(k,m)$.
+and add a MAC $H_2(k,m)$.
 
 Generate $(pk, sk) \xgets{\$} KeyGen(\one^\ell)$
 and pick $\sigma \xgets{\$} M$.
@@ -1390,5 +1390,112 @@ If the MAC does not check out, either explicitly error
 or implicitly output random garbage $H_3(s,(c,d,e))$ with a secret seed $s$.
 
 Then, the CCA2 oracle is sabotaged.
+
+\section{Proving Fujisaki--Okamoto Security (11/11)}
+
+Recall the Fujisaki--Okamoto inputs:
+$KGen : \one^\ell \mapsto (pk, sk)$,
+$Enc : M \to C$,
+$Dec : C \to M$,
+$H_1 : M \to \{0,1\}^n$, and
+$H_2 : \{0,1\}^n \times M \to T$.
+
+Then, $\mathcal{Enc}(pk, m) = (Enc(pk, r), m \oplus H_1(\sigma), H_2(m, \sigma))$
+where $m \in \{0,1\}^n$ and $\sigma \xgets{\$} M$.
+
+\begin{theorem}
+  If the original PKC is OW-CPA and $H_1$, $H_2$ are reandom oracles,
+  then this basic Fujisaki--Okamoto is IND-CPA.
+\end{theorem}
+\begin{prf}
+  Let $\mathcal{A}$ be an adversary that can win IND-CPA for FO.
+  Recall IND-CPA: let $m_0,m_1 \gets \mathcal{A}(\one^\ell, pk)$
+  and $b' \gets \mathcal{A}(\one^\ell, pk, \mathcal{Enc}(pk, m_b))$.
+  Then, $\mathcal{A}$ can find $b = b'$ with non-negligible probability.
+
+  Notice that the second term $m \oplus H_1(\sigma)$ is garbage
+  since $\sigma$ is random so $m$ is randomly scrambled.
+  Therefore, it is information-theoretically indistinguishable from random garbage.
+  So the only way to get any information about $m$ is to find $\sigma$.
+
+  Therefore, $\Pr[\text{$\mathcal{A}$ wins}] \leq \Pr[\text{$\mathcal{A}$ finds $\sigma$}]$.
+
+  Suppose we are challenged to break the PKC in the OW-CPA game
+  and are given $(pk,\sigma)$.
+
+  Then, we can challenge $\mathcal{A}$
+  with $(Enc(pk, \sigma), \tau, \mu)$ with random garbage $\tau$, $\mu$.
+  Then, at some point $\mathcal{A}$ must call $H_1(\sigma)$.
+  We intercept all the calls to $H_1$ (since we control $H_1$)
+  and respond with $\sigma$ with non-negligible probability.
+  Therefore, if FO is not IND-CPA, then the PKC is not OW-CPA.
+\end{prf}
+
+This reduction is not \emph{tight} because we randomly pick potential $\sigma$ candidates.
+If the original PKC is deterministic,
+then we can re-encrypt all potential $\sigma$ to find the right one.
+
+\begin{theorem}
+  If $Enc$ is deterministic, the PKS is OW-CPA, and $H_1$, $H_2$ are random oracles,
+  then FO is IND-CCA2.
+\end{theorem}
+\begin{prf}
+  First, notice that the IND-CCA2 game
+  without the decryption oracle is the IND-CPA game.
+
+  However, in FO, we claim the decryption oracle is ``useless''
+  because there is no information-theoretic use of it.
+  Therefore, since FO is IND-CPA, it is also IND-CCA2.
+
+  To prove the claim, consider $\mathcal{Enc}(pk,m) = (Enc(pk,\sigma), m\oplus H_1(\sigma), H_2(m,\sigma))$.
+
+  Then, $\mathcal{Dec}(sk, (c_1,c_2,c_3)) = \begin{cases}
+      \underbrace{H_1(\overbrace{Dec(sk, c_1)}^{\sigma'}) \oplus c_2}_{m'} & \text{otherwise}          \\
+      \bot                                                                 & c_3 \neq H_2(m', \sigma')
+    \end{cases}$
+
+  Since encryption is deterministic,
+  the only way to construct a valid ciphertext that gets a return value
+  is to know both $m$ and $\sigma$ to calculate $Enc(pk,m)$ and $H_2(m,\sigma)$.
+
+  We can simulate this for the adversary by intercepting calls to $H_2$
+  and checking if $\sigma$ matches the encryption of $m$ (i.e. $c_1$).
+  Therefore, there is no difference between IND-CPA and IND-CCA2.
+\end{prf}
+
+\paragraph{Full Fujisaki--Okamoto}
+Instead of using $Enc(pk, \sigma)$,
+randomize to $Enc(pk, \sigma; r)$.
+For example, in Elgamal, $Enc(g^x, \sigma; r) = (g^r, g^{xr}\sigma)$.
+
+Then, $\mathcal{Enc}(pk,m) = (Enc(pk,\sigma;H_2(m,\sigma)), m \oplus H_1(\sigma))$
+for $\sigma \xgets{\$} M$.
+That is, we use the tag as the randomness.
+
+Finally, $\mathcal{Dec}(sk, (c_1,c_2)) = \begin{cases}
+    \underbrace{H_1(\overbrace{Dec(sk, c_1)}^{\sigma'}) \oplus c_2}_{m'} & \text{otherwise}                      \\
+    \bot                                                                 & c_1 \neq Enc(pk, \sigma'; H_2(m',s'))
+  \end{cases}$
+
+\begin{theorem}
+  If the PKC is OW-CPA and $H_1$, $H_2$ are random oracles,
+  then full FO is IND-CCA2.
+\end{theorem}
+
+What if we don't have random oracles?
+Cramer--Shoup (1998) gets IND-CCA2 using DDH and a collision-resistant hash function.
+It is also stupid complicated.
+
+Given a group $\abs{G} = q$ with two generators $g_1$, $g_2$ where $\expval{g_1} = \expval{g_2} = G$.
+
+The $sk = (x_1,x_2,y_1,y_2,z) \in (\Z/q\Z)^5$
+and $pk = (c,d,h) = (g_1^{x_1}g_2^{x_2}, g_1^{y_1}g_2^{y_2}, g_1^z)$.
+
+Encryption is $Enc(pk, m) = (g_1^r, g_2^r, h^r m, c^r d^{rH(g_1^m, g_2^m, h^r m)})$
+for $m \in G$ and $r \xgets{\$} \Z/q\Z$.
+
+Then, the last part $c^r d^{r\alpha}$ acts as a checksum.
+To generate a valid ciphertext and use the CCA2 oracle,
+an adversary must generate this, which breaks DDH.
 
 \end{document}
