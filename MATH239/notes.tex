@@ -1395,7 +1395,127 @@ Note: if the graph includes loops and/or parallel edges, it is a \term{multigrap
   When $m \geq 3$, this doesn't work. So $K_{m,n}$ is planar if $m \leq 2$ or $n \leq 2$.
 \end{sol}
 
-\section{(10/24)}
+\section{(10/24; from Bradley)}
+
+\begin{defn}
+  Given vertices $u$, $v$ and an edge $e$ in $G$:
+  \begin{itemize}[nosep]
+    \item If $uv \in E(G)$, then $u$ and $v$ are \term{adjacent}
+    \item If $e = uv$, then $e$ \term{joins} the \term{endpoints} $u$ and $v$
+    \item If $v \in e$, then $e$ is \term{incident} with $v$
+    \item If $u$ and $v$ are adjacent, $u$ is a \term{neighbour} of $v$
+    \item The \term{neighbourhood of $v$} $N_G(v)$ is the set of neighbours of $v$
+  \end{itemize}
+\end{defn}
+
+\begin{defn}[degree]
+  The number of neighbours $\deg_G(v) = \abs{N_G(v)}$ of a vertex $v$ in a graph $G$.
+\end{defn}
+
+\begin{defn}[$k$-regularity]
+  A graph where every vertex has degree exactly $k$.
+\end{defn}
+
+\begin{example}
+  What are the degrees for $K_n$, $P_n$, $C_n$, and $K_{m,n}$?
+\end{example}
+\begin{sol}
+  Every vertex in $K_n$ connects to the other $n-1$,
+  so they all have degree $n-1$ and $K_n$ is $(n-1)$-regular.
+
+  Every vertex $v \in V(C_n)$ has $\deg(v) = 2$, so $C_n$ is 2-regular.
+
+  For $P_n$, the endpoints $\deg(v_1) = \deg(v_n) = 1$
+  and the middle vertices $\deg(v_i) = 2$ for $2 \leq i \leq n-1$.
+  Edge case: in $P_0$, $\deg(v_1) = 0$.
+
+  In $K_{m,n}$, $\deg(s_i) = \abs{N(s_i)} = \abs{\{t_i\}} = n$
+  and $\deg(t_i) = \abs{N(t_i)} = \abs{\{s_i\}} = m$.
+\end{sol}
+
+\begin{defn}[degree sequence]
+  An ordering $d_1 \geq d_2 \geq \dotsb \geq d_n$ of degrees of vertices.
+\end{defn}
+
+\begin{theorem}[Handshaking Lemma]\label{thm:hand}
+  If $G$ is a graph, then $2\abs{E(G)} = \smashoperator{\sum\limits_{v \in V(G)}} \deg_G(v)$.
+\end{theorem}
+\begin{prf}[Informal]
+  Every edge is a ``handshake'' betwen two ``people''.
+  The number of hands is twice the number of handshakes,
+  since each handshake takes two hands.
+\end{prf}
+\begin{prf}[Formal]
+  Let $S = \{(e,v) : e \in E(G), v \in V(G), \text{$v$ incident with $e$}\}$.
+  Counting edges,
+  \[
+    \abs{S} = \smashoperator{\sum_{e \in E(G)}} \abs{\{(e,v) \in S\}}
+    = \smashoperator{\sum_{v \in V(G)}} 2
+    = 2 \abs{E(G)}
+  \]
+  since every edge has exactly two endpoints.
+  Counting vertcies,
+  \[
+    \abs{S} = \smashoperator{\sum_{v \in V(G)}} \abs{\{(e,v) \in S\}}
+    = \smashoperator{\sum_{v \in V(G)}} \deg_G(v)
+  \]
+  by definition of $N_G(v)$.
+  Therefore, $2\abs{E(G)} = \abs{S} = \smashoperator{\sum\limits_{v \in V(G)}} \deg_G(v)$.
+\end{prf}
+
+\begin{corollary}[4.3.2]
+  The number of vertices of odd degree in a graph is even.
+\end{corollary}
+\begin{prf}
+  Let $\mathcal O(G)$ be the set of odd degree vertices.
+  Let $\mathcal E(G)$ be the set of even degree vertices.
+  By the \nameref{thm:hand},
+  \[
+    2\abs{E(G)} = \smashoperator{\sum_{v \in V(G)}} \deg_G(v)
+    = \smashoperator{\sum_{v \in \mathcal O(G)}} \deg_G(v) + \smashoperator{\sum_{v \in \mathcal E(G)}} \deg_G(v)
+  \]
+  Take the congruence modulo 2:
+  \[
+    0 \equiv \smashoperator{\sum_{v \in \mathcal O(G)}} 1 + \smashoperator{\sum_{v \in \mathcal E(G)}} 0
+    \equiv \abs{\mathcal O(G)} + 0 \pmod{2}
+  \]
+  which means that $\abs{\mathcal O(G)}$ is even, as desired.
+\end{prf}
+
+\begin{corollary}[4.3.3]
+  The average degree for a graph $G$ is $\frac{2\abs{E(G)}}{\abs{V(G)}}$.
+\end{corollary}
+\begin{prf}
+  Average degree is $\frac{\sum_{v\in V(G)} \deg_G(v)}{\abs{V(G)}} = \frac{2\abs{E(G)}}{\abs{V(G)}}$.
+\end{prf}
+
+\begin{corollary}
+  If $G$ is a $k$-regular graph, then $\abs{E(G)} = \frac{k}{2}\abs{V(G)}$.
+\end{corollary}
+\begin{prf}
+  By the \nameref{thm:hand}, $2\abs{E(G)} = \smashoperator{\sum\limits_{v \in V(G)}} \deg_G(v)
+    = \smashoperator{\sum\limits_{v \in V(G)}} k = k\abs{V(G)}$.
+\end{prf}
+
+\begin{defn}[isomorphism]
+  Graphs $G$ and $H$ are isomorphic if there exists a \term{(graph) isomorphism}
+  between them, i.e., a bijection $f : V(G) \to V(H)$ such that
+  $uv \in E(G)$ if and only if $f(u)f(v) \in E(H)$.
+\end{defn}
+
+\begin{example}
+  $K_1$ is isomorphic to $P_1$, $K_2$ to $P_2$, and $K_3$ to $C_3$.
+\end{example}
+
+\begin{example}
+  The following are isomorphic representations of the Peterson graph:
+  \begin{center}
+    \tikz\graph[clockwise] {subgraph K_n[name=inner,V={6,7,8,9,10}] -- subgraph C_n[name=outer,n=5]};
+    \qquad
+    \tikz\graph[clockwise] {j[y=-1] -!- subgraph C_n[V={a,b,c,d,e,f,g,h,i}]; i--e, b--f, h--c, j--{a,g,d}};
+  \end{center}
+  under the isomorphism $(a,b,c,d,e,f,g,h,i,j) \mapsto (1,6,9,7,10,8,3,4,5,2)$.
+\end{example}
 
 \section{(10/26)}
 
