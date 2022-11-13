@@ -2048,4 +2048,161 @@
         \end{prf}
 \end{enumerate}
 
+\subsection{How to Specify a Graph}
+
+\subsection{Paths and Cycles}
+\begin{xca}
+  Let $G$ be a graph with minimum degree $k$, where $k \geq 2$.
+  Prove that:
+\end{xca}
+\begin{enumerate}
+  \item $G$ contains a path of length at least $k$
+        \begin{prf}
+          Proceed by induction on $k$.
+          Let $v \in V(G)$ be a vertex.
+
+          If $k = 0$, then notice that $v$ is a path of length 0.
+
+          If $k = 1$, then $v$ must have a neighbour $u$.
+          Then, $v,u$ is a path of length 1.
+
+          For $k \geq 2$, since $k > k-1$, suppose
+          there exists a path $P = v_0,\dotsc,v_{k-1}$ of length $k-1$.
+          Since $v_{k-1}$ has degree at least $k$, $\abs{N_G(v_{k-1})} \geq k$,
+          so $\abs{N_G(v_{k-1}) \setminus \{v_0,\dotsc,v_{k-2}\}} \geq 1$.
+          Let $v_k \in N_G(v_{k-1}) \setminus \{v_0,\dotsc,v_{k-2}\}$
+          and notice that $P + v_k$ is a path of length $k$.
+        \end{prf}
+  \item $G$ contains a cycle of length at least $k+1$
+        \begin{prf}
+          By part (a), a path of length at least $k$ exists in $G$.
+          Let $P = v_0,\dotsc,v_k,\dotsc,v_\ell$ be the longest such path.
+          Then, as above, notice that $\abs{N_G(v_\ell) \setminus \{v_{\ell-k},\dotsc,v_{\ell-1}\}} \geq 1$.
+          Select any $x \in N_G(v_\ell) \setminus \{v_{\ell-k+1},\dotsc,v_{\ell-1}\}$.
+          If $x \not\in P$, then $P' = P + x$ is a longer path.
+          Otherwise, $x = v_i$ for $0 \leq i \leq \ell-k$.
+
+          The cycle $v_i,\dotsc,v_\ell$ has length at least $k+1$.
+        \end{prf}
+\end{enumerate}
+
+\setcounter{xca}{3} % Skip adjacency matrix questions
+
+\begin{xca}
+  Let $G$ be the graph whose set of vertices is the set of all
+  ``lower 48'' states of the United States, plus Washington, DC,
+  with two vertices being adjacent if they share a boundary.
+  Let $H$ be the subgraph of $G$ whose vertices are those of $G$
+  whose first letter is one of W, O, M, A, N,
+  and whose edges are the edges of G whose ends have this property.
+  Find a path in $H$ from Washington to Washington, DC.
+\end{xca}
+\begin{sol}
+  Consult a map and get WA, OR, NV, AZ, NM, OK, MO, NB, WY, MT, ND, MN, WI, MI, OH, WV, MD, DC.
+\end{sol}
+
+\begin{xca}
+  Consider the word graph $W_n$ defined in Example 4.1.2.\footnote{
+    $V(W_n)$ is the set of English words of length $n$
+    with adjacency if they differ by exactly one letter.}
+\end{xca}
+\begin{enumerate}
+  \item Find a cycle through \emph{math} in $W_4$.
+        \begin{sol}
+          (\emph{math}, \emph{meth}, \emph{mete}, \emph{mate}, \emph{math})
+          is a cycle in $W_4$.
+        \end{sol}
+  \item Find a path from \emph{pink} to \emph{blue} in $W_4$.
+        \begin{sol}
+          (\emph{pink}, \emph{tink}, \emph{tank}, \emph{tans}, \emph{tens}, \emph{fens}, \emph{feus}, \emph{flus}, \emph{flue}, \emph{blue})
+          using words in Merriam--Webster.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  For $n \geq 2$, prove that the $n$-cube contains a Hamilton cycle.
+\end{xca}
+\begin{prf}
+  Let $G_n$ denote the $n$-cube. Proceed by induction on $n$.
+
+  Notice that for $n = 2$, $(00,01,11,10,00)$ is a Hamilton cycle.
+
+  Let $n \geq 3$.
+  Partition $V(n) = V_0 \cup V_1$ based on the first digit in the binary string.
+  Now, the subgraphs induced by $V_0$ and $V_1$ are isomorphic to $G_{n-1}$
+  under the isomorphism $f_b : G_{n-1} \to V_b : \alpha \mapsto b\alpha$
+  and inverse $f^{-1}_b : V_b \to G_{n-1} : b_1\cdots b_n \to b_2 \cdots b_n$.
+
+  Assume $G_{n-1}$ has a Hamilton cycle.
+  \WLOG, suppose that it begins at $0^{n-1}$ and ends at $0^{n-2}1$,
+  so that $V_0$ has a Hamilton cycle $(00^{n-2}0, \dotsc, 00^{n-2}1)$
+  and $V_1$ has a Hamilton cycle $(10^{n-2}0, \dotsc, 10^{n-2}1)$.
+
+  Then, $(00^{n-2}0, \dotsc, 00^{n-2}0, 10^{n-2}0, \dotsc, 10^{n-2}1, 00^{n-2}1)$
+  is a Hamilton cycle for $G_n$.
+\end{prf}
+
+\begin{xca}
+  Prove that the complete bipartite graph $K_{m,n}$ has a Hamilton cycle
+  if and only if $m = n$ and $m > 1$.
+\end{xca}
+\begin{prf}
+  Suppose $m = n$ and $m > 1$.
+  Then, $(s_1,t_1,s_2,t_2,\dotsc,s_m,t_n)$ is a Hamilton cycle.
+
+  Conversely, assume \Wlog that $m \leq n$ and that there is a Hamilton cycle.
+
+  When $m = 0$, there are no edges and no Hamilton cycle.
+  For $m = 1$, trace the Hamilton cycle starting at $s_1$.
+  First $N(s_1) = \{t_i\}$, so the next vertex must be $t_k$ for some $k$.
+  However, $N(t_k) = \{s_1\}$ and we cannot continue because $s_1t_k$ is already in the cycle.
+
+  Otherwise, suppose $m \neq n$ and $1 < m < n$.
+  Every edge is $s_i t_j$, so the cycle goes $s_{a_1},t_{b_1},s_{a_2},t_{b_2},\dotsc$.
+  At $t_{b_m}$, we have visited $m$ vertices $s_i$, i.e., all of them.
+  Therefore, the cycle must end here and return to $s_{a_1}$.
+  However, there are vertices $t_{b_{m+1}},\dotsc,t_{b_n}$ which are not in the cycle.
+  That is, the cycle is not a Hamilton cycle.
+
+  Therefore, there is a Hamilton cycle if and only if $m = n$ and $m > 1$.
+\end{prf}
+
+\begin{xca}
+  Show that if there is a closed walk of odd length in the graph $G$,
+  then $G$ contains an odd cycle
+  (that is, $G$ has a subgraph which is a cycle on an odd number of vertices).
+\end{xca}
+\begin{prf}
+  Suppose that $W = v_1,\dotsc,v_n,v_1$
+  is the shortest closed walk of odd length that exists in $G$ (i.e., $n$ is odd).
+  
+  Induct on the number of such vertices in $W$ that appear multiple times.
+  
+  If $W$ is a path, i.e., there are no such vertices, $W$ is a cycle and we are done.
+  
+  Otherwise, there exists $i$ and $j$ such that $v_i = v_j$.
+  Then, the edges in $W$ can be partitioned into two closed walks
+  $W_1 = v_1,\dotsc,v_{i-1},v_i,v_{j+1},\dotsc,v_1$ and $W_2 = v_i,v_{i+1},\dotsc,v_{j-1},v_i$.
+  Since $W$ has an odd number of edges and $E(W_1) \cup E(W_2)$ partition $E(W)$,
+  exactly one of $W_1$ and $W_2$ has an odd number of edges.
+  By the inductive hypothesis, since that walk necessarily has fewer duplicates,
+  there exists an odd cycle in that walk.
+
+  Therefore, there exists an odd cycle in $G$.
+\end{prf}
+
+\setcounter{subsection}{9}
+\subsection{Equivalence Relations, Connectedness, Eulerian Circuits, Bridges}
+
+\section{Trees}
+
+\subsection{Trees}
+
+\setcounter{subsection}{3}
+\subsection{Spanning Trees, Characterizing Bipartite Graphs}
+
+\subsection{Breadth-First Search}
+
+\subsection{Applications of Breadth-First Search}
+
 \end{document}
