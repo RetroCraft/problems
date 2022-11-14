@@ -1498,4 +1498,80 @@ Then, the last part $c^r d^{r\alpha}$ acts as a checksum.
 To generate a valid ciphertext and use the CCA2 oracle,
 an adversary must generate this, which breaks DDH.
 
+\chapter{Elliptic Curve Cryptography}
+
+\section{Elliptic Curves (11/14)}
+
+Recall the conic sections:
+$y^2 = 1 - x^2$ (circles), $y^2 = x^2 - 1$ (hyperbola), etc.
+If we replace the quadratic in $x$ with a cubic, we get an elliptic curve.
+For our purposes,
+
+\begin{defn}[curve]
+  The set of points satisfying $f(x,y) = 0$ where $f \in K[x,y]$ for a field $K$.
+\end{defn}
+
+where $K$ is a (usually finite) field, e.g., $\Z/p\Z$ or something funny like $\Z/3\Z[i] = \F_9$.
+
+Note that we can rewrite any cubic $ax^3 + bx^2 + cx + d$
+by first dividing through by $a$ to get $x^3 + b'x^2 + c'x + d'$.
+Then, send $x \mapsto x - \frac{b'}{3}$ to get $x^3 + c''x + d''$.
+This only works if $3 \neq 0$ so we can divide by 3,
+i.e., the characteristic of $K$ is not 3.
+
+To simplify the quadratic in $y$, we can complete the square as long as
+$2 \neq 0$, i.e., the characteristic of $K$ is not 3.
+
+\begin{defn}[elliptic curve]
+  A solution set to an equation of the form $y^2 = x^3 + ax + b$
+  where $a,b \in K$ and $\operatorname{char}(K) \neq 2,3$.
+\end{defn}
+
+Consider an ellipse centered at the origin with semimajor axes $a$ and $b$.
+Then, the arc length is $\int_0^{\pi/2}\sqrt{a^2\cos^2t + b^2\sin^2t} \dd{t}$.
+Make the substitution $u = \sin t$, $\dd{u} = \cos t \dd{t}$ to get
+$\int \sqrt{a^2 - \frac{(a^2-b^2)u^2}{1-u^2}} \dd{u}$.
+Then, $k^2 = 1-\frac{b^2}{a^2}$ gives $\int a\sqrt{\frac{1-k^2u^2}{1-u^2}}\dd{u}$
+and finally $x = 1-k^2u^2$ for $\frac12\int_{1-k^2}^1\frac{x\dd{x}}{\sqrt{x(x-1)(x-(1-k^2))}}$.
+This is our \emph{elliptic integral}.
+
+Generally, elliptic integrals of the first kind $\int \frac{\dd{x}}{\sqrt{x^3+\dotsb}}$
+and of the second kind $\int \frac{x\dd{x}}{\sqrt{x^3+\dotsb}}$.
+
+Just as $\int \frac{\dd{x}}{\sqrt{x^2 + \dotsb}}$ gives $\sin^{-1}(x)$,
+the inverse of a periodic function, complex analysis shows that 
+elliptic integrals of the first kind gives the inverse of the doubly periodic
+Weierstrass function $\wp^{-1}(x)$.
+
+By analogy to circles which can be defined by $f^2 + f'^2 = 1$,
+elliptic integrals of the first kind satisfy $\wp'^2 = 4\wp^3 + c_1\wp + c_2$.
+
+Elliptic curves have a somewhat natural group law.
+
+\begin{lemma}
+  Every line intersects an elliptic curve in exactly three places
+  (up to multiplicity).
+\end{lemma}
+\begin{prf}
+  Let $y^2 = x^3 + ax + b$ be an elliptic curve.
+
+  Consider a line $L$ through $P = (x_P, y_P)$ and $Q = (x_Q, y_Q)$.
+  Then, the slope of $L$ is $\frac{y_Q-y_P}{x_Q-x_P} = m$.
+  Substitute $y = mx + c$ into the elliptic curve to get a cubic in $x$.
+  The cubic has three roots.
+
+  Then, it is $(x-x_P)(x-x_Q)(x-x_R)$.
+  Taking the coefficient on $x^2$, we have $x_R = m^2 - x_P - x_Q$
+  and $y_R = m((m^2-x_P-x_Q)-x_P)+y_P$.
+\end{prf}
+
+Define the group law as $P + Q = (x_R, -y_R)$.
+
+What is $P+P$? Take the tangent line to $P$, i.e., ``$\lim_{Q \to P}(P+Q)$''.
+
+What if there is no tangent line (self-intersection or cusps)?
+To ensure this cannot happen, assert that the discriminant $4a^3 + 27b^2 \neq 0$.
+
+What is the identity? Not really a point, denote $\infty$ or $[0:1:0]$ in Sage.
+
 \end{document}

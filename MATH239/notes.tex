@@ -2122,7 +2122,7 @@ Notice that induction on this theorem proves equivalence of (1) and (3) above.
 \end{theorem}
 \begin{prf}[Postle]
   Proceed by induction on $\abs{V(T)}$.
-  
+
   If $\abs{V(T)} = 2$, then $T = K_2$ with both vertices being leaves.
 
   Otherwise, if $\abs{V(T)} \geq 3$, by \nameref{thm:leafexist},
@@ -2134,7 +2134,7 @@ Notice that induction on this theorem proves equivalence of (1) and (3) above.
   Let $u$ be the neighbour of $v$.
   Then, $u$ cannot be both $v_1$ and $v_2$, so either $v_1$ or $v_2$ is another
   leaf in $T-v$ and in $T$, as desired.
-\end{prf} 
+\end{prf}
 \begin{prf}[Book]
   Let $P = v_1 \cdots v_k$ be a longest path in $T$.
   Then, $v_1$ and $v_k$ are leaves of $T$
@@ -2325,6 +2325,8 @@ and if we instead \emph{delete} the edge,
   If we restrict it to a subgraph, it is stil valid.
 \end{prf}
 
+\section{(11/14)}
+
 \begin{theorem}[5.3.2]\label{thm:oddbi}
   A graph is not bipartite if and only if it has no odd cycles.
 \end{theorem}
@@ -2338,12 +2340,113 @@ and if we instead \emph{delete} the edge,
   Then, we may assume $G$ is connected.
   By Theorem~\nameref{thm:conspan}, there exists a spanning tree $T$.
   Let $v \in V(T)$.
-  Partition based on the parity of the distance from $v$.
+  Partition $(A,B)$ based on the parity of the distance from $v$.
 
-  If this is not the desired bipartition, then we may assume \Wlog
-  that there exists $v_1,v_2 \in A$, $v_1v_2 \in E(G)$.
-  But the unique path $P$ from $v_1$ to $v_2$ in $T$ has an even number of edges,s
-  so $P + v_1v_2$ is an odd cycle in $G$.
+  If this is not the desired bipartition, then there exists $u_1u_2 \in E(G)$
+  with $u_1$ and $u_2$ both in either $A$ or $B$.
+  Let $w$ be the vertex of the unique $(u_1, u_2)$-path $P$
+  whose $(w,v)$-path has minimum length.
+
+  Then, let $P_1$ be the $(u_1,v)$-path in $T$, $P_2$ be the $(u_2,v)$-path,
+  $P_1'$ be the $(u_1,w)$-path, $P_2'$ be the $(u_2,w)$-path,
+  and $Q$ be the $(v,w)$-path.
+  By path uniqueness, $\abs{E(P_1)} = \abs{E(P_1')} + \abs{E(Q)}$
+  and $\abs{E(P_2)} = \abs{E(P_2')} + \abs{E(Q)}$.
+
+  But since $u_1$ and $u_2$ are in the same partition,
+  $\abs{E(P_1)} \equiv \abs{E(P_2)} \pmod{2}$.
+  It follows that $\abs{E(P_1')} \equiv \abs{E(P_2')} \pmod{2}$.
+  Therefore, $\abs{E(P)} = \abs{E(P_1')} + \abs{E(P_2')} \equiv 0 \pmod{2}$.
+
+  Therefore, $P$ has an even number of edges, so $P + u_1u_2$ is an odd cycle in $G$.
 \end{prf}
+
+Consider the decision problem of whether $G$ is bipartite.
+
+It is in \NP, since we can just give the bipartition.
+By Theorem~\nameref{thm:oddbi}, it is also in \coNP, since we can give an odd cycle.
+
+We can give a polynomial-time algorithm to find the bipartition/odd cycle:
+
+\begin{enumerate}[1.,nosep]
+  \item \textbf{for} $H_i$ component of $G$ \textbf{do:}
+  \item \hspace*{0.5cm} $T_i \gets$ spanning tree of $H_i$
+  \item \hspace*{0.5cm} pick $v_i \in V(T_i)$
+  \item \hspace*{0.5cm} construct $A_i$ and $B_i$ as in the proof
+  \item \hspace*{0.5cm} \textbf{if} there are no edges with both ends in $A_i$ or $B_i$ \textbf{then:}
+  \item \hspace*{1cm} \textbf{continue}
+  \item \hspace*{0.5cm} \textbf{else:}
+  \item \hspace*{1cm} \textbf{return} NO
+  \item \textbf{return} YES
+\end{enumerate}
+
+\setcounter{chapter}{6}
+\chapter{Planar Graphs}
+
+\begin{defn}[planar graph]
+  A graph that can be \term{drawn in the plane} without edges crossing,
+  i.e., vertices are distinct points and
+  edges are continuous, non-interescting curves connecting those points.
+  This drawing is a \term{planar embedding}.
+  A \term{plane graph} is a planar graph with a planar embedding.
+\end{defn}
+
+\begin{example}
+  These two distinct planar embeddings embed the same graph:
+  \begin{center}
+    \tikz\graph[dots nodes]{ subgraph C_n[n=3,clockwise] -- 4 -!- 5[x=-1,y=0.5] };
+    \qquad
+    \tikz\graph[dots nodes]{ subgraph C_n[n=3,clockwise] -- 4 -!- 5[x=-1.4,y=0.3] };
+  \end{center}
+\end{example}
+
+\begin{defn}[face]
+  A connected region of $\R^2 - (E(G) \cup V(G))$.
+  Let $F(G)$ be the set of faces of $G$.
+\end{defn}
+
+\begin{defn}[boundary walk]
+  A sequence $v_0,e_1,v_1,\dotsc,v_0$
+  which traverses the edges on the boundary of a face.\tablefootnote{i.e., ``incident'' to the face}
+\end{defn}\spewnotes
+
+Note: a vertex may appear multiple times in a boundary walk.
+
+\begin{example}
+  In the graph
+  \begin{center}
+    \tikz\graph[spring layout, dots nodes]{
+      1--2--3--4--1, 1--5--6--1, 1--7, 1--8
+    };
+  \end{center}
+  the central vertex appears 4 times in the boundary walk of the ``outside''.
+\end{example}
+
+An edge appears twice if and only if that edge is a bridge.
+
+\begin{defn}[degree (length) of a face]
+  The length of the boundary walk, counting multiplicity.
+\end{defn}
+
+If the boundary is not connected, then the boundary walk is the union
+of the boundary walks with respect to each component.
+
+\begin{lemma}[Faceshaking Lemma]\label{lem:face}
+  Let $G$ be a plane graph. Then,
+  \[ \smashoperator{\sum_{f \in F(G)}} \deg(f) = 2\abs{E(G)} \]
+  (by analogy to the \nameref{thm:hand})
+\end{lemma}
+\begin{prf}
+  Each edge contributes exactly 2 to this sum.
+  If it is a bridge, 2 to the one face it is incident with;
+  otherwise, 1 to each of the 2 faces it is incident with.
+\end{prf}
+
+\begin{corollary}
+  There are an even number of odd-degree faces.
+\end{corollary}
+\begin{corollary}
+  The average degree of a face is $\frac{2\abs{E(G)}}{\abs{F(G)}}$.
+\end{corollary}
 
 \end{document}

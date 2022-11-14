@@ -1,6 +1,6 @@
 \documentclass[class=math239,notes,tikz]{agony}
 \renewcommand{\thechapter}{\Roman{chapter}}
-\titleformat{\section}{\normalfont\large\bfseries}{\thesection}{1em}{}
+\titleformat{\section}{\pagebreak\normalfont\large\bfseries}{\thesection}{1em}{}
 \settowidth{\cftsecnumwidth}{00~}
 \renewcommand\cftsecpresnum{}
 \setlist[enumerate,1]{label={(\alph*)}}
@@ -2167,7 +2167,7 @@
   Therefore, there is a Hamilton cycle if and only if $m = n$ and $m > 1$.
 \end{prf}
 
-\begin{xca}
+\begin{xca}\label{xca:oddcycle}
   Show that if there is a closed walk of odd length in the graph $G$,
   then $G$ contains an odd cycle
   (that is, $G$ has a subgraph which is a cycle on an odd number of vertices).
@@ -2175,11 +2175,11 @@
 \begin{prf}
   Suppose that $W = v_1,\dotsc,v_n,v_1$
   is the shortest closed walk of odd length that exists in $G$ (i.e., $n$ is odd).
-  
+
   Induct on the number of such vertices in $W$ that appear multiple times.
-  
+
   If $W$ is a path, i.e., there are no such vertices, $W$ is a cycle and we are done.
-  
+
   Otherwise, there exists $i$ and $j$ such that $v_i = v_j$.
   Then, the edges in $W$ can be partitioned into two closed walks
   $W_1 = v_1,\dotsc,v_{i-1},v_i,v_{j+1},\dotsc,v_1$ and $W_2 = v_i,v_{i+1},\dotsc,v_{j-1},v_i$.
@@ -2191,12 +2191,144 @@
   Therefore, there exists an odd cycle in $G$.
 \end{prf}
 
+\begin{xca}
+  A \term{diagonal} of a cycle in a graph is an edge that joins vertices
+  that are not consecutive in the cycle.
+\end{xca}
+\begin{enumerate}
+  \item Prove that a shortest cycle has no diagonal.
+        \begin{prf}
+          Let $C = v_1,\dotsc,v_k,v_1$ be a shortest cycle.
+          Suppose a diagonal $v_iv_j$, $i < j$, $j \neq i + 1$ exists.
+          Then, $v_1,\dotsc,v_i,v_j,\dotsc,v_k,v_1$
+          is a shorter cycle. Contradiction.
+        \end{prf}
+  \item Prove that a shortest odd cycle has no diagonal.
+        \begin{prf}
+          Let $C = v_1,\dotsc,v_k,v_1$ be a shortest odd cycle, i.e., $k$ is odd.
+          Suppose a diagonal $v_iv_j$, $i < j$, $j \neq i + 1$ exists.
+          Then, as in \cref{xca:oddcycle}, we can create two cycles
+          $C_1 = v_1,\dotsc,v_i,v_j,\dotsc,v_k,v_1$
+          and $C_2 = v_i,\dotsc,v_j,v_i$.
+
+          Since $V(C_1) \cap V(C_2) = \{v_i,v_j\}$,
+          we have $\abs{V(C)} = \abs{V(C_1)} + \abs{V(C_2)} - 2$.
+          That is, $1 \equiv \abs{V(C_1)} + \abs{V(C_2)} \pmod{2}$.
+          Then, either $C_1$ or $C_2$ must be a shorter odd cycle.
+          Contradiction.
+        \end{prf}
+  \item Give an example of a graph in which a shortest even cycle has a diagonal.
+        \begin{sol}
+          The minimal example \tikz[baseline=-3pt]\graph[dots nodes, radius=0.5cm]{ subgraph C_n[n=4, clockwise], 1--3 };.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}\end{xca}
+\begin{enumerate}
+  \item Prove that a $k$-regular graph of girth 4 has at least $2k$ vertices ($k \geq 2$).
+  \item For $k = 2,3$, find a $k$-regular graph of girth 4 with precisely $2k$ vertices.
+        Generalize these examples to find one for each $k \geq 2$.
+  \item Prove that a $k$-regular graph of girth 5 has at least $k^2+1$ vertices ($k \geq 2$).
+  \item 
+\end{enumerate}
+
 \setcounter{subsection}{9}
 \subsection{Equivalence Relations, Connectedness, Eulerian Circuits, Bridges}
 
 \section{Trees}
 
 \subsection{Trees}
+
+\begin{xca}
+  \begin{enumerate}
+    \item Draw one tree from each isomorphism class of trees on six or fewer vertices.
+    \item For each tree in (a), exhibit a bipartition $(X,Y)$ by coloring the vertices
+          in $X$ with one colour and the vertices in $Y$ with another.
+  \end{enumerate}
+\end{xca}
+
+\begin{xca}
+  Prove that every tree is bipartite.
+\end{xca}
+\begin{prf}
+  Let $T$ be a non-empty tree and $r \in V(T)$.
+
+  Then, by Lemma 5.1.3, for all vertices $u \in V(T)$,
+  there exists a unique path $P_u$ from $u$ to $r$.
+  Define $P_r = \varnothing$.
+  Claim that $X = \{ u \in V(T) : \text{length of $P_u$ even} \}$
+  and $Y = \{ u \in V(T) : \text{length of $P_u$ odd} \}$
+  are a bipartition of $T$.
+
+  Let $uv \in E(T)$.
+  Then, either $P_v = P_u + uv$ or $P_u = P_v + uv$
+  because if $uv$ is in both paths, then there exists a cycle
+  based on the walk $(r,P_u,u,v,P_v,r)$.
+  \WLOG, suppose $P_v = P_u + uv$.
+  Then, the length of $P_v$ is exactly one more than the length of $P_u$.
+  That is, the parity is different.
+  Therefore, $u$ and $v$ are partitioned by $(X,Y)$.
+
+  It follows that $T$ is bipartite.
+\end{prf}
+
+\begin{xca}\label{xca:leaf-from-deg}
+  What is the smallest number of vertices of degree 1 in a tree
+  with 3 vertices of degree 4 and 2 vertices of degree 5?
+  Justify your answer by proving that this is the smallest possible number
+  and by giving a tree with this many vertices of degree 1.
+\end{xca}
+\begin{sol}
+  Let $n_r$ be the number of vertices with degree $r$ in such a tree.
+  By the alternate proof of Theorem 5.1.8,
+  $n_1 = 2 + \sum_{r \geq 3}(n-2)n_r = 2 + n_3 + 2n_4 + 3n_5 + \sum_{r \geq 6}(n-2)n_r$.
+  If $n_4 = 3$ and $n_5 = 2$, then $n_1 \geq 2 + 6 + 6 = 14$.
+
+  Construct the tree:
+  \begin{center}
+    \begin{tikzpicture}
+      \graph[dots nodes, layered layout, grow down, sibling distance=0.5cm] {
+        4a--{4b--{a,b,c},4c--{e,f,g},5a--{i,j,k,l},5b--{n,o,p,q}}
+        };
+    \end{tikzpicture}
+  \end{center}
+  which has 14 leaves.
+\end{sol}
+
+\begin{xca}
+  Find the smallest number $r$ of vertices in a tree having
+  two vertices of degree 3, one vertex of degree 4, and two vertices of degree 6.
+  Justify your answer by proving that any such tree has at least $r$ vertices,
+  and by giving an example of such a tree with exactly $r$ vertices.
+\end{xca}
+\begin{sol}
+  As in \cref{xca:leaf-from-deg}, write $n_1 = 2 + n_3 + 2n_4 + 3n_5 + 4n_6 + \sum_{r \geq 7}(n-2)n_r$
+  and notice that if $n_3 = 2$, $n_4 = 1$, and $n_6 = 2$,
+  then $n_1 \geq 2 + 2 + 2 + 8 = 14$.
+  Draw the tree:
+  \begin{center}
+    \begin{tikzpicture}
+      \graph[dots nodes, layered layout, grow down, sibling distance=0.5cm] {
+        4a--{3a--{1,2},3b--{4,5},6a--{6,7,8,9,10},6b--{11,12,13,14,15}}
+        };
+    \end{tikzpicture}
+  \end{center}
+  which has 14 leaves.
+\end{sol}
+
+\begin{xca}
+  A cubic tree is a tree whose vertices have degree either 3 or 1.
+  Prove that a cubic tree with exactly $k$ vertices of degree 1
+  has $2(k - 1)$ vertices.
+\end{xca}
+\begin{prf}
+  As in \cref{xca:leaf-from-deg}, $k =: n_1 = 2 + n_3$ so $n_3 = k - 2$.
+  Then, there are $n_1 + n_3 = k + k - 2 = 2(k-1)$ vertices in total.
+\end{prf}
+
+\begin{xca}
+  Prove that a forest with $p$ vertices and $q$ edges has $p - q$ components.
+\end{xca}
 
 \setcounter{subsection}{3}
 \subsection{Spanning Trees, Characterizing Bipartite Graphs}
