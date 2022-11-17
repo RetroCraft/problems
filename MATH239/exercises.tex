@@ -2050,6 +2050,8 @@
 
 \subsection{How to Specify a Graph}
 
+Not covered in Fall 2022 offering.
+
 \subsection{Paths and Cycles}
 \begin{xca}
   Let $G$ be a graph with minimum degree $k$, where $k \geq 2$.
@@ -2229,7 +2231,12 @@
   \item For $k = 2,3$, find a $k$-regular graph of girth 4 with precisely $2k$ vertices.
         Generalize these examples to find one for each $k \geq 2$.
   \item Prove that a $k$-regular graph of girth 5 has at least $k^2+1$ vertices ($k \geq 2$).
-  \item 
+  \item Prove that a $k$-regular graph of girth $2t$, where $t \geq 2$,
+        has at least $\frac{2(k-1)^t-2}{k-2}$ vertices.
+  \item Prove that a $k$-regular graph of girth $2t+1$, where $t \geq 2$,
+        has at least $\frac{k(k-1)^t-2}{k-2}$ vertices.
+  \item For $k = 2,3$, give an example of a $k$-regular graph of girth 5
+        with exactly $k^2+1$ vertices.
 \end{enumerate}
 
 \setcounter{subsection}{9}
@@ -2246,6 +2253,19 @@
           in $X$ with one colour and the vertices in $Y$ with another.
   \end{enumerate}
 \end{xca}
+\begin{sol}
+  Draw the trees:
+  \begin{center}
+    \tikz\graph[dots tree]{6[red]--1[blue]--{2[red]--3[blue], 4[red]--5[blue]}}; \qquad
+    \tikz\graph[dots tree]{1[red]--{2[blue]--3[red], 4[blue]--5[red]--6[blue]}}; \qquad
+    \tikz\graph[dots tree]{3[red]--{1[blue]--2[red], 4[blue]--{5[red],6[red]}}}; \qquad
+    \tikz\graph[dots tree]{1[red]--{2[blue]--{3[red],4[red]}, 5[blue], 6[blue]}}; \qquad
+    \tikz\graph[dots tree]{2[red]--{1[blue], 3[blue]--{4[red],5[red],6[red]}}}; \qquad
+    \tikz\graph[dots tree]{1[red]--{2[blue],3[blue],4[blue],5[blue],6[blue]}}; \qquad
+  \end{center}
+  where we colour the vertices an even distance away from the root
+  in \textcolor{red}{red} and those an odd distance away in \textcolor{blue}{blue}.
+\end{sol}
 
 \begin{xca}
   Prove that every tree is bipartite.
@@ -2329,12 +2349,117 @@
 \begin{xca}
   Prove that a forest with $p$ vertices and $q$ edges has $p - q$ components.
 \end{xca}
+\begin{prf}
+  Let $G$ be such a forest and $T_1,\dotsc,T_k$ be its $k$ components,
+  which are all trees because they are connected and have no cycles.
+  By Theorem 5.1.5, $\abs{E(T_i)} = \abs{V(T_i)} - 1$, so
+  \[
+    q = E(G) = \sum_{i=1}^k \abs{E(T_i)}
+    = \sum_{i=1}^k  (\abs{V(T_i) - 1})
+    = \qty(\sum_{i=1}^k \abs{V(T_i)}) - k
+    = p - k
+  \]
+  so $k = p - q$, as desired.
+\end{prf}
 
-\setcounter{subsection}{3}
+\begin{xca}
+  Let $p \geq 2$. Show that a sequence of $(d_1,\dotsc,d_p)$ of positive integers
+  is the degree sequence of a tree on $p$ vertices if and only if
+  $\sum_{i=1}^p d_i = 2p-2$.
+\end{xca}
+\begin{prf}
+  Suppose that $T$ is a tree with $V(T) = \{v_1,\dotsc,v_p\}$.
+  Let $d_i = \deg(v_i)$. Then, apply Theorem 5.1.5 ($\abs{E(T)} = p-1$)
+  and the Handshaking Lemma ($\sum d_i = 2\abs{E(T)} = 2p - 2$), as desired.
+
+  Suppose that $\delta = (d_1,\dotsc,d_p)$ is a sequence with sum $2p-2$.
+  We induct on $p$.
+
+  If $p=2$, then $2p-2 = 2$.
+  There is only one composition of 2, $\delta = (1,1)$.
+  Draw the tree \tikz\graph[dots tree]{1--2}; with two vertices of degree 1.
+
+  Let $p \geq 3$.
+  Since all the $p$ parts of the sequence are positive, i.e., $d_i \geq 1$,
+  we have $\sum d_i \geq p$.
+  Then, by the pigeonhole principle, since there remains $p-2$ weight to distribute
+  into $p$ parts of the sequence, there exists $d_i = 1$ and $d_j > 1$ for distinct $i,j$.
+  Let $\delta'$ be $\delta$ with $d_j \mapsto d_j-1$ and skipping $d_i$.
+  This is a sequence of $p-1$ elements that sums to $(2p-2)-2 = 2(p-1)-2$.
+
+  Inductively, a tree $T'$ of $p-1$ vertices exists with degree sequence $\delta'$.
+  Then, add a leaf to $v_j \in V(T)$, i.e., a vertex of degree 1,
+  and increase the degree of $v_j$ by 1.
+  This is a tree of $p$ vertices with degree sequence $\delta$.
+
+  Therefore, by induction, $\delta$ is the degree sequence of a tree of $p$ vertices.
+\end{prf}
+
+\setcounter{subsection}{2}
 \subsection{Spanning Trees, Characterizing Bipartite Graphs}
+
+\begin{xca}
+  Let $r$ be a fixed vertex of a tree $T$.
+  For each vertex $v$ of $T$, let $d(v)$ be
+  the length of the path from $v$ to $r$ in $T$. Prove that
+\end{xca}
+\begin{enumerate}
+  \item for each edge $uv$ of $T$, $d(u) \neq d(v)$, and
+        \begin{prf}
+          Let $P_u$ and $P_v$ be the paths from $u$ and $v$ to $r$, respectively.
+
+          Suppose $uv \not\in P_u$ and $uv \not\in P_v$.
+          Then, $(u,P_u,r,P_v,v)$ is a $(u,v)$-walk in $T-uv$,
+          meaning a $(u,v)$-path exists in $T-uv$.
+          But then $T$ has two $(u,v)$-paths because $(u,uv,v)$ is a path,
+          contradicting Lemma 5.1.3.
+          Therefore, $uv \in P_u$ or $uv \in P_v$.
+
+          \WLOG, suppose $uv \in P_u$.
+          That is, $P_u = (u,uv,v,\dotsc,r) = u + P_v$
+          because $P_v$ is the unique path from $v$ to $r$ in $T$.
+          Therefore, $d(u) = \abs{E(P_u)} \neq \abs{E(P_v)} + 1 = d(v)$.
+        \end{prf}
+  \item for each vertex $x$ of $T$ other than $r$,
+        there exists a unique vertex $y$
+        such that $y$ is adjacent to $x$ and $d(y) < d(x)$.
+        \begin{prf}
+          Let $P_x = (x,y,\dotsc,r)$ be the unique $(x,r)$-path (note that $y$ could be $r$).
+          Clearly, $\delta(y) < \delta(x)$ since the unique $(y,r)$-path
+          is contained inside $P_x$.
+
+          Let $z \in N_T(x)$, $z \neq y$.
+          Suppose $P_z$ does not contain $P_x$.
+          Then, $(z,P_z,r,P_x,x,xz,z)$ is a cycle in $T$.
+          By contradiction, $P_z$ contains $P_x$ and $d(z) > d(x)$.
+
+          Therefore, $y$ is unique.
+        \end{prf}
+\end{enumerate}
 
 \subsection{Breadth-First Search}
 
+Not covered in Fall 2022 offering.
+
 \subsection{Applications of Breadth-First Search}
+
+Not covered in Fall 2022 offering.
+
+\section{Codes}
+
+Not covered in Fall 2022 offering.
+
+\section{Planar Graphs}
+
+\setcounter{subsection}{2}
+\subsection{Planarity, Euler's Formula, Stereographic Projection}
+
+\subsection{Platonic Solids}
+
+\setcounter{subsection}{5}
+\subsection{Nonplanar Graphs, Kuratowski's Theorem}
+
+\setcounter{subsection}{7}
+\subsection{Colouring and Planar Graphs, Dual Planar Maps}
 
 \end{document}
