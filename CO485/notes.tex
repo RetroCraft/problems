@@ -1,4 +1,5 @@
 \documentclass[notes]{agony}
+\usepackage{emoji}
 \newcommand{\xgets}{\xleftarrow}
 \newcommand{\one}{\symbb{1}}
 \newcommand{\ord}{\operatorname{ord}}
@@ -1539,7 +1540,7 @@ Generally, elliptic integrals of the first kind $\int \frac{\dd{x}}{\sqrt{x^3+\d
 and of the second kind $\int \frac{x\dd{x}}{\sqrt{x^3+\dotsb}}$.
 
 Just as $\int \frac{\dd{x}}{\sqrt{x^2 + \dotsb}}$ gives $\sin^{-1}(x)$,
-the inverse of a periodic function, complex analysis shows that 
+the inverse of a periodic function, complex analysis shows that
 elliptic integrals of the first kind gives the inverse of the doubly periodic
 Weierstrass function $\wp^{-1}(x)$.
 
@@ -1573,5 +1574,154 @@ What if there is no tangent line (self-intersection or cusps)?
 To ensure this cannot happen, assert that the discriminant $4a^3 + 27b^2 \neq 0$.
 
 What is the identity? Not really a point, denote $\infty$ or $[0:1:0]$ in Sage.
+
+\section{(11/16)}
+
+\section{Attacks on ECDH (11/18)}
+
+Recall: we have an elliptic curve $y^2 = x^3 + ax + b$ over a field $K$
+and a group law $x_{P+Q} = m^2 - x_P - x_Q$ and $y_{P+Q} = y_P - m(x_{P+Q}-x_P)$
+where $m = \frac{y_Q - y_P}{x_Q - x_P}$ if $x_P \neq x_Q$
+and $m = \frac{3x_P^2+a}{2y_P}$ if $P = Q$.
+
+We denote this as $E(K) = \{\overbrace{(x,y) \in K^2 : y^2 = x^3 + ax + b}^{\text{affine (finite) points}}\} \cup \{\infty\}$,
+so $E(K) \subset K^2 \cup \{\infty\}$.
+
+We can show by Hasse--Weil that for any elliptic curve over $\F_q$
+with prime power $q$, $\abs{E(\F_q)} = q + 1 - t$ for a trace of Frobenius $\abs{t} \leq 2\sqrt{q}$.
+
+Consider the size of $E(\F_p)$.
+We want to find square roots of $x^3+ax+b$ for all $x$ to find $y$.
+There are two square roots $(x, \pm y)$, one square root $(x, 0)$, or potentially none.
+We can show that \[ \abs{\{P \in E : x_P = x_0\}} = \leg{x_0^3+ax_0+b}{p}+1 \]
+This gives us \[
+  \abs{E(\F_p)} = 1 + \sum_{x \in \F_p}\qty(1 + \leg{x^3+ax+b}{p})
+  = p + 1 + \sum_{x \in \F_p}\leg{x^3+ax+b}{p}
+\]
+and we can say that $t = -\sum\leg{x^3+ax+b}{p}$.\footnote{Consider that $\sum\leg{x}{p} \leq \sqrt{p}\ln p$}
+
+Then, $\abs{E(\F_p)} \approx O(p)$,
+so a generic DLOG algorithm over $E$ should take around $O(\sqrt{p})$ steps.
+For some elliptic curves, this is the best we can do.
+
+This is very attractive.
+To get time approximately $2^{128}$, $p$ only needs to be $2^{256}$
+whereas the NFS would require $n \geq 2^{3072}$.
+This means faster computation with smaller keys.
+
+There are some issues.
+
+\paragraph{CRT attack}
+Suppose that $\abs{E(\F_p)} = p+1-t = p_1p_2$ for small primes
+(or in general, that it is $q$-smooth).
+Then, Pohlig--Hellman allows us to find DLOG by the CRT
+in about $O(\sqrt{p_1}+\sqrt{p_2})$ time.
+
+This is because $E \simeq \Z/p_1p_2\Z \simeq \Z/p_1\Z \times \Z/p_2\Z$.
+We can compute these isomorphisms.
+Let $P \in E$ with order $p_1p_2$ and $Q = \alpha P$.
+Then, $p_1Q$ has order $p_2$ and $p_2Q$ has order $p_1$.
+
+That is, $p_1\alpha P = p_1 Q$ is in $\Z/p_2\Z$ and we can solve DLOG here
+to obtain $\alpha \bmod p_2$.
+Likewise with $p_2$ to find $\alpha \bmod p_1$.
+Then, by CRT, we can find $\alpha$.
+
+\paragraph{Invalid curve attack}
+Let an otherwise secure curve $y^2=x^3+ax+b$ over $\abs{E(\F_p)} = q$.
+Notice that the equations to calculate $P + Q$ do not use $B$.
+
+Suppose Alice generates $A = \alpha P$ and Bob $B = \beta P$
+so that they calculate $\alpha B$ and $\beta A$, respectively.
+If Bob instead sends $B \in E' : y^2 = x^3 + ax + b'$
+where $\abs{E'(\F_p)} = 3 \cdots$ (or smooth or otherwise insecure).
+Then, Alice instead computes $\alpha B \in E'$ and Bob can find $\alpha \bmod 3$.
+Repeating, Bob can recover Alice's key by CRT.
+
+To avoid this, just check that $B \in E$.
+Alternatively, express $P+Q$ using $b$.
+When we are doubling $P + P$, $m^2 = \frac{(3x_P^2 + a)^2}{4y_P^2}
+  = \frac{(3x_P^2 +a)^2}{4(x_P^3 + ax_P + b)}$
+so then $x_{2P} = \frac{(3x_P^2 +a)^2}{4(x_P^3 + ax_P + b)} - 2x_P$.
+
+Since this relies only on $x_P$, we can only send the $x$-coordinate in ECDH.
+That is, Alice sends $x_{\alpha P}$ (i.e., $\pm \alpha P$)
+and Bob sends $x_{\beta P}$ (i.e., $\pm \beta P$).
+They both calculate $\pm \alpha \beta P = \pm \beta \alpha P$,
+so $x_{\alpha\beta P}$ is the shared secret.
+
+\section{Pairing-Based Cryptography (11/21)}
+
+Recall: starting at an elliptic curve $E$,
+we get a group $E(\F_p)$ and from there get ECDLOG and ECDH.
+Applying the idea of Schnorr signatures gives us EdDSA.\footnote{
+  There is a slight difference, where instead of hashing $H(m,g^r)$, we hash $H(m,g^r,g^\alpha)$}
+CCA2 security can be achieved with Cramer--Shoup.
+
+After basic ECC developed, pairing-based
+and post-quantum isogeny\footnote{
+  SIDH and SIKE broken but CSIDH and SQIsign still unbroken.
+}-based cryptosystems developed.
+
+\begin{defn}[cryptographic pairing]
+  Bilinear\tablefootnote{
+    i.e., $e(g^\alpha,g^\beta) = e(g,g)^{\alpha\beta} = \text{\emoji{egg}}^{\alpha\beta}$
+    (or in additive notation, $e(\alpha P, \beta P) = e(P,P)^{\alpha\beta}$)
+  } non-degenerate\tablefootnote{
+    i.e., for all $g$, $(\forall h, e(g,h) = 1_T) \implies g = 1_G$
+    and for all $h$, $(\forall g, e(g,h) = 1_T) \implies h = 1_G$
+  } map $e : G \times G \to G_T$
+  where (usually) $\abs{G} = \abs{G_T} = p$.
+\end{defn}\spewnotes
+
+\paragraph{MOV attack} (Menezes--Okamoto--Vanstone)
+Suppose $E$ is an elliptic curve admitting a cryptographic pairing.
+Consider a ECDLOG problem $P, \alpha P \to \alpha$.
+
+Let $e(P,P) = g$ so that $e(P,\alpha P) = g^\alpha$ by bilinearity.
+Then, we can consider the DLOG for $g$ and $g^\alpha$ in the new group $G_T$
+which is some finite field $\F_q^*$.
+But the whole point of ECDLOG is that it is harder than DLOG on a similarly sized finite field.
+Transferring from $E$ to $\F_q^*$ made it easy again.
+
+Over time, people found enough use in pairings to make it worth using
+large enough curves admitting pairings.
+
+\paragraph{Joux} (2000) 3-party Diffie-Hellman setup.
+Suppose Alice, Bob, and Carol have keys $g^a$, $g^b$, and $g^c$.
+Alice and Bob can generate a shared secret $g^{ab}$ by normal DH
+but can't easily add Carol.
+
+But with pairings, each one calculates $e(g,g)^{abc} 
+= \underbrace{e(g^a,g^b)^c}_{\text{Carol}}
+= \underbrace{e(g^b,g^c)^a}_{\text{Alice}}
+= \underbrace{e(g^a,g^c)^b}_{\text{Bob}}$.
+
+For this to work, we must assume the bilinear Diffie--Hellman assumption:
+given $g^a$, $g^b$, $g^c$, it is infeasible to compute $e(g,g)^{abc}$.
+
+Likewise, define bilinear DDH as given $g^a,g^b,g^c \in G$ and $h \in G_T$,
+it is infeasible to compute $h \stackrel{?}{=} e(g,g)^{abc}$.
+
+Note that normal DDH does not hold in a pairing, i.e.,
+given $g^a,g^b,g^z \in G$, is $z = ab$?
+Simply take $e(g,g^z) = e(g,g)^z \stackrel{?}{=} e(g,g)^{ab} = e(g^a,g^b)$.
+
+\begin{prop}
+  CDH $\geq_P$ BDH
+\end{prop}
+\begin{prf}
+  Suppose CDH is broken, i.e., we can find $g^{ab}$ from $g^a$ and $g^b$.
+  Then, we can take $e(g^{ab},g^c) = e(g,g)^{abc}$.
+\end{prf}
+
+\begin{prop}
+  CDH\textsubscript{T} $\geq_P$ BDH
+\end{prop}
+\begin{prf}
+  Suppose CDH\textsubscript{T} is broken.
+  Then, we can find $e(g^a,g^b) = e(g,g)^{ab}$ and $e(g,g^c) = e(g,g)^c$
+  normally but use CDH\textsubscript{T} to get $e(g,g)^{abc}$.
+\end{prf}
 
 \end{document}

@@ -5,14 +5,14 @@
 \newcommand{\rx}{\mathsf}
 \DeclareMathOperator*{\smilesum}{\smile}
 
-\def\P{\textsf{P}}
-\newcommand{\NP}{\textsf{NP}}
-\newcommand{\coNP}{\textsf{co-NP}}
+\def\P{\textsf{P}\xspace}
+\newcommand{\NP}{\textsf{NP}\xspace}
+\newcommand{\coNP}{\textsf{co-NP}\xspace}
 
 \setlist[enumerate,1]{label={(\roman*)}}
 
 \ifagony@tikz
-  \usetikzlibrary{graphs,graphs.standard,graphdrawing}
+  \usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes}
   \usegdlibrary{circular,force,trees,layered}
   \tikzset{
     graphs/math nodes,

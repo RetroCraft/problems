@@ -2449,4 +2449,320 @@ of the boundary walks with respect to each component.
   The average degree of a face is $\frac{2\abs{E(G)}}{\abs{F(G)}}$.
 \end{corollary}
 
+\section{(11/16; from Bradley)}
+
+\begin{theorem}[Euler's Formula]\label{thm:euler}
+  Let $G$ be a connected planar graph.
+  Then, $\abs{V(G)} - \abs{E(G)} + \abs{F(G)} = 2$.
+\end{theorem}
+\begin{prf}
+  Proceed by induction on $\abs{E(G)}$.
+
+  If $G$ is a tree, the number of edges is minimized.
+  Then, $\abs{V(G)} = \abs{E(G)} - 1$ by Corollary~\nameref{cor:treenum}
+  and there is one face, so $\abs{V(G)} - \abs{E(G)} + \abs{F(G)} = 1 + 1 = 2$.
+
+  Otherwise, $G$ is not a tree.
+  Then, $G$ contains a cycle $C$.
+  Let $e \in C$ and $G' = G - e$.
+
+  Then, $\abs{V(G')} = \abs{V(G)}$ and $\abs{E(G')} = \abs{E(G)} - 1$.
+  Since $e$ was in a cycle, it was incident to two faces that are now joined,
+  so $\abs{F(G')} = \abs{F(G)} - 1$.
+  Finally, since $e$ is a bridge, $G'$ is connected.
+  Therefore, by induction, since $\abs{E(G')} < \abs{E(G)}$,
+  we have $\abs{V(G')} - \abs{E(G')} + \abs{F(G')} = 2$.
+  Substituting, $\abs{V(G)} - \abs{E(G)} + \abs{F(G)} = 2 + 1 - 1 = 2$ as desired.
+\end{prf}
+
+\begin{corollary}[Euler's Formula for unconnected graphs]\label{cor:euler}
+  Let $G$ be a graph with $k$ components.
+  Then, $\abs{V(G)} - \abs{E(G)} + \abs{F(G)} = 1 + k$.
+\end{corollary}
+\begin{prf}
+  Do the same thing but with the base case of a forest instead of a tree.
+  Alternatively, add the minimum $k-1$ edges to connect the components
+  and apply the ordinary formula.
+\end{prf}
+
+\begin{lemma}[7.5.1]\label{lem:751}
+  Let $G$ be a planar graph. If $G$ contains a cycle,
+  the boundary of any face contains a cycle.
+\end{lemma}
+\begin{prf}
+  Since $G$ contains a cycle, there are at least two faces.
+  Then, a face $f$ is incident to at least one other face $g$.
+  Pick an edge $e$ on the boundary of $f$ and $g$.
+  Consider the component of the boundary of $f$ that $e$ lies in
+  and consider the boundary walk.
+  Since $e$ is incident to two faces, $e$ appears once in the walk.
+  Therefore, there is a cycle in the component since $e$ is not a bridge.
+\end{prf}
+
+\begin{lemma}[7.5.2]\label{lem:752}
+  Let $G$ be a planar graph. If each face of $G$ has degree at least $g$,
+  then $\abs{E(G)} \leq \frac{g}{g-2}(\abs{V(G)}-2)$.
+\end{lemma}
+\begin{prf}
+  By the~\nameref{lem:face}, $2\abs{E(G)} = \sum \deg(f) \geq g \abs{F(G)}$.
+  Then, by \nameref{cor:euler},
+  \begin{align*}
+    \abs{V(G)} - \abs{E(G)} + \abs{F(G)} = 1 + k & \leq 2               \\
+    \abs{V(G)} - 2 + \abs{F(G)}                  & \leq \abs{E(G)}      \\
+    g(\abs{V(G)} - 2) + g\abs{F(G)}              & \leq g\abs{E(G)}     \\
+    g(\abs{V(G)} - 2) + 2\abs{E(G)}              & \leq g\abs{E(G)}     \\
+    g(\abs{V(G)} - 2)                            & \leq (g-2)\abs{E(G)} \\
+    \frac{g}{g-2}(\abs{V(G)} - 2)                & \leq \abs{E(G)}
+  \end{align*}
+  as desired.
+\end{prf}
+
+\begin{theorem}[7.5.3]\label{thm:753}
+  Let $G$ be a planar graph with $\abs{V(G)} \geq 3$.
+  Then, $\abs{E(G)} \leq 3\abs{V(G)} - 6$.
+\end{theorem}
+\begin{prf}
+  Suppose $G$ does not contain a cycle.
+  Then, it is a forest and by Corollary \nameref{cor:forestedgenum},
+  $\abs{E(G)} = \abs{V(G)} - k \leq \abs{V(G)} - 1 \leq \abs{V(G)} - 6$
+  since there is at least 1 component and 3 vertices.
+
+  Otherwise, $G$ contains a cycle.
+  By Lemma~\nameref{lem:751}, every face contains a cycle in its boundary.
+  Since a cycle has at least 3 edges, the degree of every face is at least 3.
+  So by Lemma~\nameref{lem:752}, $\abs{E(G)} \leq \frac{3}{3-2}(\abs{V(G)-2}) = 3\abs{V(G)} - 6$,
+  as desired.
+\end{prf}
+\begin{corollary}[7.5.4]
+  $K_5$ is not planar.
+\end{corollary}
+\begin{prf}
+  Notice that $\abs{E(K_5)} = \binom{5}{2} = 10$ but $3\abs{V(G)} - 6 = 9$.
+\end{prf}
+
+\begin{theorem}[7.5.6]
+  Let $G$ be a planar graph with $\abs{V(G)} \geq 3$.
+  If $G$ is triangle-free, then $\abs{E(G)} \leq 2\abs{V(G)}-4$.
+\end{theorem}
+\begin{prf}
+  Follow the proof of Theorem~\nameref{thm:753}
+  but notice that cycles will have length at least 4,
+  so $\abs{E(G)} \leq \frac{4}{4-2}(\abs{V(G)} - 2) = 2\abs{V(G)} - 4$.
+\end{prf}
+
+\begin{lemma}[7.5.7]
+  $K_{3,3}$ is not planar.
+\end{lemma}
+\begin{prf}
+  First, notice that since $K_{3,3}$ is bipartite, it is triangle-free.
+  But $\abs{E(G)} = 9$ and $2\abs{V(G)} - 4 = 8$.
+\end{prf}
+
+\section{(11/18)}
+
+Recall Euler's formula: $V - E + F = 2$ if connected
+or in general $V - E + F = k+1$ for $k$ components.
+
+If $V \geq 3$ and $G$ planar, then $E \leq 3V - 6$.
+Thus, $K_5$ and $K_{3,3}$ are non-planar.
+
+Consider the decision problem of whether $G$ is planar.
+We cannot certify planarity by giving equations of curves,
+since showing no intersections is not efficient and the equations can be arbitrarily complex.
+However, a planar embedding is equivalently a list of boundary walks of faces.
+To certify, assert that every edge appears twice, Euler's formula holds,
+and edges cut a vertex cone in a clockwise order.
+Therefore, planarity is in \NP.
+
+\begin{prop}
+  If $G$ is a planar graph and $H$ is a subgraph of $G$,
+  then $H$ is planar.
+\end{prop}
+\begin{prf}
+  Obvious (delete from the planar embedding of $G$ until you get $H$).
+\end{prf}
+
+\begin{corollary}
+  If $G$ contains $K_5$ or $K_{3,3}$ as a subgraph, then $G$ is not planar.
+\end{corollary}
+
+\begin{defn}[edge subdivision]
+  Let $e = uv \in E(G)$ and $z \not\in V(G)$.
+  Obtain $G'$ as $V(G') = V(G) \cup \{z\}$
+  and $E(G') = E(G) \setminus \{e\} \cup \{uz, zv\}$.
+\end{defn}
+
+\begin{example}
+  If $G$ is \tikz[baseline=-18pt]\graph[dots nodes]{1[y=-0.5]--{2,3}--4[y=-0.5],2--3};,
+  we can draw $G'$ as \tikz[baseline=-18pt]\graph[dots nodes]{1[y=-0.5]--{2,3}-!-5[x=-0.5,y=-0.25]--4[x=-1,y=-0.5],2--3,3--4,2--5};
+\end{example}
+
+\begin{defn}[subdivision]
+  A graph obtained from $G$ by any number (including none)
+  of repeated edge subdivisions.
+\end{defn}
+
+\begin{example}
+  If $G = K_4$, then $G'$ could be
+  \tikz[baseline=-3pt]\graph[dots nodes, no placement]{ subgraph C_n[n=3, clockwise] -- 4, 5[x=0.4,y=-0.5], 6[x=-0.4,y=-0.5], 7[x=0,y=-0.5], 8[x=0.4,y=-0.23], 9[x=0,y=0.5], 10[x=0.4,y=0.38]};
+\end{example}
+
+\begin{prop}
+  If $G$ is a planar graph and $H$ is a subdivision of $G$, then $H$ is planar.
+\end{prop}
+\begin{prf}
+  Subdivide the planar embedding of $G$ and notice it is still planar.
+\end{prf}
+\begin{corollary}
+  If $G$ is a subdivision of $K_{3,3}$ or a subdivision of $K_5$,
+  then $G$ is not planar.
+\end{corollary}
+
+\begin{theorem}[Kuratowski's Theorem]\label{thm:kur}
+  A graph $G$ is planar if and only if
+  it does not contain a subdivision of $K_{3,3}$ or a subdivision of $K_5$.
+\end{theorem}
+\begin{prf}
+  Very hard. See CO 342.
+\end{prf}
+
+Now, we can say that planarity is in \coNP because we can give by Kuratowski
+a subgraph that is a subdivision of $K_{3,3}$ or a subdivision of $K_5$.
+
+\begin{example}
+  Is the graph \tikz[baseline=-3pt]\graph[dots nodes]{ subgraph C_n[n=8,clockwise], 1--5,2--6,3--7,4--8 }; planar?
+\end{example}
+\begin{sol}
+  No. We can highlight $K_{3,3}$ as a subgraph:
+  \tikz[baseline=-40pt]\graph[dots nodes, simple necklace layout, simple, radius=0.25cm]{ 1[red]--2[blue]--3[red]--4--5[blue]--6[red]--7[blue]--8--1, 1--5,2--6,3--7 };
+\end{sol}
+
+We can show that planarity is in \P with an $O(\abs{V(G)}^3)$ algorithm.
+
+\begin{defn}[contraction]
+  Let $e = uv \in E(G)$ and $z \not \in V(G)$.
+  Obtain $G' = G/e$ as $V(G') = V(G) \setminus \{u,v\} \cup \{z\}$
+  and $E(G') = E(G \setminus \{u,v\}) \cup \{wz : w \in N_G(u) \cup N_G(v)\}$.
+\end{defn}
+
+\begin{example}
+  If $G$ is \tikz[baseline=-18pt]\graph[dots nodes]{{1,2}--3[y=-0.5]--[red, "$e$"]4[y=-0.5]--{5,6}, 1--2, 5--6};,
+  then $G/e$ is \tikz[baseline=-18pt]\graph[dots nodes]{{1,2}--3[y=-0.5]--{5,6}, 1--2, 5--6};.
+\end{example}
+
+\begin{defn}[minor]
+  A graph $H$ is a minor of a graph $G$ if it can be
+  obtained from a subgraph of $G$ by contracting edges.
+\end{defn}
+
+\begin{prop}
+  If $G$ is planar and $H$ is a minor of $G$, then $H$ is planar.
+\end{prop}
+\begin{corollary}
+  If $G$ contains $K_5$ or $K_{3,3}$ as a minor, then $G$ is not planar.
+\end{corollary}
+
+\section{(11/21)}
+
+We can equivalently state \nameref{thm:kur} in terms of minors due to Wagner:
+
+\begin{theorem}[Kuratowski's Theorem for minors]
+  A graph $G$ is planar if and only if
+  $G$ does not contain $K_{3,3}$ or $K_5$ as a minor.
+\end{theorem}
+\begin{prf}[sketch]
+  We must show that containing $K_{3,3}$ or $K_5$ as a subdivision
+  is equivalent to containing $K_{3,3}$ or $K_5$ as a minor.
+
+  In fact, claim that $K_5$ subdivisions give $K_5$ minors
+  and $K_{3,3}$ subdivisions give $K_{3,3}$ minors.
+  If we contract the paths in subdivisions to single edges,
+  we get the respective minors.
+
+  Conversely, a $K_{3,3}$ minor will give a $K_{3,3}$ subdivision.
+  But a $K_5$ minor can give either a $K_5$ or $K_{3,3}$ subdivision
+  (depending on if a vertex in the minor is the result of contracting).
+\end{prf}
+
+\begin{theorem}[Graph Minors Theorem]
+  Every minor-closed property is characterized by a finite list of forbidden minors.
+\end{theorem}
+
+\begin{defn}[colouring]
+  Assignment of one of $k$ colours to the vertices of $G$
+  such that no two adjacent vertices have the same colour.
+  If $G$ has a $k$-colouring, it is \term{$k$-colourable}.
+\end{defn}
+Equivalently, partition $V(G)$ into $k$ sets such that for all edges $uv \in E(G)$,
+$u$ and $v$ are in different sets.
+When $k=2$, this is bipartiteness.
+
+Clearly, every graph is $\abs{V(G)}$-colourable, so we are interested
+in the minimum $k$ such that $G$ is $k$-colourable.
+
+\begin{defn}[chromatic number]
+  The minimum $\chi(G)$ such that $G$ is $\chi(G)$-colourable.
+\end{defn}
+
+\begin{example}
+  \tikz[spring layout, horizontal=5 to 6]\graph[dots nodes]{1[red]--2[blue]--3[red]--4[blue]--5[green]--1, 6[red]--7[blue]--8[green]--6, 5--6};
+  has chromatic number 3.
+\end{example}
+
+\begin{example}
+  \tikz\graph[layered layout, dots nodes, grow down, simple]{1[red]--{[same layer] 2[green],3[blue],4[green],5[blue]}--{[same layer] 6[red],7}; 2--3, 4--5, 3--6, 3-!-7, 6--7};
+  is clearly not bipartite (has triangle) and trying to 3-colour gives a contradiction,
+  so $\chi(G) \geq 4$ and in fact we can colour it to get $\chi(G) = 4$.
+\end{example}
+
+If we fix $k$, consider the decision problem of $k$-colourability.
+This is in \NP, since we can just show the colouring.
+It is probably not in \coNP because if it were, we could show $\P \neq \NP$
+because it is \NP-complete.
+
+\begin{theorem}[Four-Colour Theorem]
+  Every planar graph is 4-colourable.
+\end{theorem}
+\begin{prf}
+  Pain.
+\end{prf}
+
+We settle for the next best things: the Six- and Five-Colour Theorems.
+
+\begin{lemma}[7.5.5]\label{lem:pla.deg.5}
+  Every planar graph has a vertex of degree at most 5.
+\end{lemma}
+\begin{prf}
+  Suppose a planar graph $G$ exists where every vertex has degree 6 or greater.
+  Then, $\abs{V(G)} \geq 7$.
+  By Theorem 7.5.3, since $\abs{V(G)} \geq 3$,
+  we have $\abs{E(G)} \leq 3\abs{V(G)} - 6$, i.e., $2\abs{E(G)} \leq 6\abs{V(G)} - 12$.
+
+  But by the \nameref{thm:hand}, $2\abs{E(G)}
+    = \smashoperator{\sum\limits_{v \in V(G)}} \deg(v) \geq 6\abs{V(G)}$,
+  a contradiction.
+\end{prf}
+
+\begin{theorem}[Six-Colour Theorem]
+  Every planar graph is 6-colourable.
+\end{theorem}
+\begin{prf}
+  Proceed by induction on $\abs{V(G)}$.
+
+  If $\abs{V(G)} = 1$, then $G$ is 1-colourable.
+
+  Suppose $\abs{V(G)} \geq 2$.
+  Then, by Lemma~\nameref{lem:pla.deg.5},
+  there exists a vertex $v$ of $G$ with $\deg(v) \leq 5$.
+
+  Let $G' = G-v$. Note that $\abs{V(G')} < \abs{V(G)}$ and $G'$ is planar.
+
+  Then, by induction, there exists a 6-colouring $\phi : V(G') \to [6]$ of $G'$.
+  But since $\deg(v) < 6$, there exists
+  $c \in [6] \setminus \{\phi(u) : u \in N_G(v)\}$.
+  Define $\phi(v) = c$ and $\phi$ is a 6-colouring for $G$.
+
+  Therefore, by induction, every planar graph is 6-colourable.
+\end{prf}
+
 \end{document}
