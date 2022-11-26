@@ -2765,4 +2765,196 @@ We settle for the next best things: the Six- and Five-Colour Theorems.
   Therefore, by induction, every planar graph is 6-colourable.
 \end{prf}
 
+\section{(11/23)}
+
+\begin{theorem}[Five-Colour Theorem]
+  Every planar graph is 5-colourable.
+\end{theorem}
+\begin{prf}
+  Proceed by induction on $\abs{V(G)}$.
+
+  If $\abs{V(G)} = 1$, then $G$ is 1-colourable.
+
+  Suppose $\abs{V(G)} \geq 2$. Then, by Lemma~\nameref{lem:pla.deg.5},
+  $G$ has a vertex $v$ with $\deg(v) \leq 5$.
+
+  If $\deg_G(v) \leq 4$, let $G' = G-v$.
+  Since $\abs{V(G')} = \abs{V(G)} - 1 < \abs{V(G)}$,
+  by induction, $G'$ is 5-colourable.
+  Let $\phi$ be a 5-colouring of $G'$
+  and extend it so that $\phi(v) \in [5] \setminus \im_\phi(N_G(v))$
+  which exists since $\abs{N_G(v)} \leq 4$.
+  Then, $\phi$ is a 5-colouring of $G$.
+
+  Otherwise, $\deg_G(v) = 5$.
+  Since $G$ is planar, $G$ does not contain $K_5$ as a subgraph.
+  Therefore, of the five neighbours of $v$,
+  there exist two, $a$ and $b$, that are not adjacent in $G$.
+
+  Let $G' = G / \{av,bv\}$, i.e., merge $a$, $b$, and $v$ into a new vertex $z$.
+  Then, $\abs{V(G')} = \abs{V(G)} - 2 < \abs{V(G)}$
+  and since planarity is closed under contraction,
+  we have by induction that $G'$ is 5-colourable.
+
+  Let $\phi$ be a 5-colouring of $G'$.
+  Construct $\phi' : G \to [5]$:
+  \[
+    \phi'(x) = \begin{cases}
+      \phi(x)                                 & x \in V(G) \setminus \{a,b,v\} \\
+      \phi(z)                                 & x \in \{a,b\}                  \\
+      c \in [5] \setminus \im_{\phi'}(N_G(v)) & x = v
+    \end{cases}
+  \]
+  and verify this is a colouring.
+
+  Let $e = xy \in E(G)$.
+
+  If $x,y \in V(G) \setminus \{a,b,v\}$,
+  then $\phi'(x) = \phi(x) \neq \phi(y) = \phi'(y)$
+  since $\phi$ is a colouring on $G'$.
+
+  If $x \in V(G) \setminus\{a,b,v\}$ and $y \in \{a,b\}$
+  then $\phi'(x) = \phi(z) \neq \phi(y) = \phi'(y)$.
+
+  If $x = v$ and $y \in N_G(v)$, then $\phi'(x) \neq \phi'(y)$ by construction.
+
+  Note that $e \neq ab$ because we chose $a$ and $b$ not adjacent.
+\end{prf}
+
+\begin{quote}
+  \textbf{Generalizing the Four-Colour Theorem} (NOT COURSE CONTENT)
+
+  Is there a generalization of the Four-Colour Theorem to all graphs?
+
+  Notice that $\chi(K_n) \leq n$ since every vertex can get at most one colour
+  and $\chi(K_n) \geq n$ since any vertex is adjacent to all others.
+  Then, $\chi(K_n) = n$.
+
+  \textbf{Haj\'os' Conjecture.} If $G$ does not contain a subdivision of $K_t$
+  as a subgraph, then $G$ is $(t-1)$-colourable.
+
+  This was proven false for all $t \geq 7$
+  and almost every graph is a counterexample.
+  In fact, $\frac{t^2}{\sqrt{\log t}} \leq \max \chi(G) \leq t^2$
+  so not even on the right order of magnitude.
+
+  \textbf{Hadwiger's Conjecture.} If $G$ does not contain $K_t$ as a minor,
+  then $G$ is $(t-1)$-colourable.
+
+  This is proved for $t \leq 6$ but open for $t \geq 7$.
+  For general $t$, $\max \chi(G) \leq t(\log \log t)$ due to Delcourt--Postle.
+\end{quote}
+
+\begin{defn}[dual]
+  Given a planar graph $G$, $G^*$ is a planar multigraph where $V(G^*) = F(G)$
+  and then for every $e \in E(G)$, draw an edge $e^*$ in $G^*$ crossing $e$
+  and connecting the faces of $G$ to the left and right of $e$ in $G$.
+\end{defn}
+
+\begin{example}
+  \tikz\graph[dots nodes]{{1,2}--3[y=-0.5]--4[y=-0.5]--5[x=-0.4,y=-0.5]--{6[x=-1],7[x=-1]}, 1--2, 6--7, 4--6, 4--7};
+  has a dual \tikz\graph[dots nodes]{left[y=-0.5]--outer[y=-0.5]--{1,2}--3[y=-0.5], left--[bend right]outer, left--[bend left]outer, 1--2, 3--[bend left=-90]outer, outer--[loop below]outer};
+\end{example}
+
+Note: this is a multigraph, so loops can be created by crossing bridges
+and parallel edges if two faces share more than one edge.
+
+It is planar, so it satisfies \nameref{thm:euler}.
+
+Observe that handshaking for $G^*$ is equivalent to faceshaking for $G$.
+
+If $G$ is connected, then $(G^*)^* = G$.
+
+\section{(11/25)}
+
+\begin{defn}[matching]
+  On a graph $G$, a set of edges $M \subseteq E(G)$ such that no two edges
+  share a common endpoint.
+\end{defn}
+
+\begin{example}
+  \tikz\graph[dots nodes, simple]{{1,2}--3[y=-0.5]--{4,5}--6[y=-0.5]--[red, very thick]7; 1--[red, very thick]2, 4--[red, very thick]5, 5-!-6};
+  is a matching.
+\end{example}
+
+\begin{defn}
+  $M$ \term{saturates} $v$ if $v$ is an end of an edge in $M$.
+
+  $M$ is \term{perfect} if every vertex of $G$ is saturated by $M$.
+
+  The \term{size} of $M$ is the number of edges it contains, i.e., $\abs{M}$.
+
+  $M$ is a \term{maximum matching} if it has maximum size over all matchings of $G$.
+\end{defn}
+
+Notice that a perfect matching obviously cannot exist
+for components an odd number of vertices.
+
+Finding a perfect matching is in \NP (just give the matching),
+\coNP (since CO 250 expresses this as a linear program),
+and \P (for proof, take CO 342).
+
+\begin{defn}[alternating]
+  Given a matching $M$ of $G$,
+  a path $P$ in $G$ is \term{$M$-alternating}
+  if every other edge of $P$ is in $M$.
+  Equivalently, all $v \in V(P)$ are saturated by $M$.
+\end{defn}
+
+\begin{example}
+  The path \tikz\graph[dots nodes]{0--1--[red, very thick]2--3--[red, very thick]4--5};
+  is \textcolor{red}{$M$}-alternating.
+\end{example}
+
+\begin{defn}[augmenting]
+  A path $P$ which is $M$-alternating and whose ands are not saturated by $M$.
+\end{defn}
+
+\begin{lemma}[8.1.1]
+  Let $G$ be a graph with matching $M$.
+  If there exists an $M$-augmenting path, then $M$ is not a maximum matching.
+\end{lemma}
+\begin{prf}
+  Let $P$ be an $M$-augmenting path.
+  Then, $M' = M \sym E(P)$ is a larger matching of $G$.
+  This is because, starting from the unsaturated ends,
+  flip the exactly one incident edges to the other incident edge
+  which exists because the degree of vertices on a path are exactly two.
+  Finally, $\abs{M'} > \abs{M}$ because $\abs{E(P) \setminus M} > \abs{E(P) \cap M}$
+  by definition of $M$-augmenting.
+\end{prf}
+
+\begin{lemma}[converse of Lemma 8.1.1]
+  Let $G$ be a graph with matching $M$.
+  If $M$ is not a maximum matching,
+  then there exists an $M$-augmenting path of $G$.
+\end{lemma}
+\begin{prf}
+  Let $M'$ be a maximum matching of $G$.
+  Consider $M \sym M'$.
+  For example, the matchings \textcolor{red}{$M$} and \textcolor{blue}{$M'$}
+  \begin{center}
+    \begin{tikzpicture}
+      \graph[dots nodes]{1--[very thick,blue]2--[decoration=snake,decorate,red]3--[very thick,blue]4 -!- 5--[decoration=snake,decorate,red]6, 5--[very thick,blue]6};
+    \end{tikzpicture}
+  \end{center}
+  have symmetric difference \textcolor{violet}{$M \sym M'$}
+  \begin{center}
+    \begin{tikzpicture}
+      \graph[dots nodes]{1--[very thick,violet]2--[very thick,violet]3--[very thick,violet]4 -!- 5--6};
+    \end{tikzpicture}
+  \end{center}
+  Observe that since $M$ and $M'$ are matchings,
+  then $M \sym M'$ is a disjoint union of $M$-alternating paths (or $M'$-alternating paths).
+
+  Let $P_1,\dotsc,P_k$ be the components of $M \sym M'$.
+  If the ends of $P_i$ are saturated by $M'$
+  (i.e., $\abs{E(P_i) \cap M'} > \abs{E(P_i) \cap M}$),
+  then $P_i$ is an $M$-augmenting path as desired.
+
+  Otherwise, $\abs{M'} = \abs{M' \cap M} + \sum\abs{E(P_i) \cap M'}
+    \leq \abs{M' \cap M} + \sum\abs{E(P_i) \cap M} = \abs{M}$,
+  a contradiction.
+\end{prf}
+
 \end{document}
