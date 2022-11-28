@@ -2454,12 +2454,101 @@ Not covered in Fall 2022 offering.
 \setcounter{subsection}{2}
 \subsection{Planarity, Euler's Formula, Stereographic Projection}
 
+\begin{xca}
+  Prove that every planar embedding has either a vertex of degree at most 3
+  or a face of degree 3.
+\end{xca}
+\begin{prf}
+  Let $G$ be a component of a planar graph.
+
+  If $G$ has no faces (besides the outer face),
+  then $G$ is a tree with at least two leaves (by Theorem 5.1.8)
+  and those leaves have degree $1 \leq 3$.
+
+  Otherwise, let $V = \abs{V(G)}$,
+  $E = \abs{E(G)}$, and $F = \abs{F(G)}$.
+  Then, by Euler's Formula, $V - E + F = 2$.
+
+  Suppose that all vertices have degrees at least 4
+  and all faces have degrees at least 4.
+  Then, by the Handshaking Lemma, $2E = \sum \deg(v) \geq 4V$ so $E \geq 2V$.
+  Likewise, by the Faceshaking Lemma, $2E = \sum \deg(f) \geq 4F$ so $E \geq 2F$.
+  That is, $2E \geq 2(V + F)$, i.e., $E \geq V + F$.
+  But then $2 = (V + F) - E < 0$, a contradiction.
+
+  Therefore, there either exists a vertex with degree at most 3
+  or a face of degree 3.\footnote{Note that inner faces have degree at least 3
+    and smaller degree implies a tree.}
+\end{prf}
+
+\begin{xca}
+  Prove that each of the graphs shown in Figure 7.6 is planar,
+  by exhibiting a planar embedding.
+\end{xca}
+\begin{sol}
+  Draw planar embeddings:
+  \begin{center}
+    \begin{tikzpicture}
+      \graph{subgraph C_n[V={b,c,d,i,e,f,g}, clockwise] -!- h, {b,c,i,e,f,g}--h, a[y=1.2,x=2]--{c,d}, a--[bend right]b, a--[bend left]i, f--[out=130,in=90,looseness=1.2]a};
+    \end{tikzpicture}
+    \qquad
+    \begin{tikzpicture}
+      \graph{subgraph C_n[V={c,g,b,f,a,i,e,h}, clockwise], f--{e,c,g}, d[x=-2], d--{h,i}, a--[bend left]d, c--[bend right]d, f--[out=-100,in=-90,looseness=1.3]d};
+    \end{tikzpicture}
+  \end{center}
+  as desired.
+\end{sol}
+
+\begin{xca}
+  Let $n \geq 3$ be an integer.
+  Suppose that a convex $n$-gon is drawn in the plane
+  and then each pair of nonadjacent corner points
+  is joined by a straight line through the interior.
+  Suppose that no three of these lines through the interior
+  meet at a common point in the interior.
+
+  Let $f_n$ be the number of regions into which
+  the interior of the $n$-gon is divided by this process.
+  Use Euler's Formula to find $f_n$.
+\end{xca}
+\begin{sol}
+  Let $v_n$, $e_n$, and $f_n$ be the number of vertices, edges, and faces as described.
+  Picking four corners of the $n$-gon uniquely determines
+  a pair of intersecting lines (i.e., an added vertex),
+  so we have in total $v_n = n + \binom{n}{4}$ vertices.
+
+  Each vertex from the $n$-gon has degree $n-1$
+  and each new vertex has degree 4 (as the intersection of two lines),
+  so by the Handshaking Lemma, $2e = n(n-1) + 4\binom{n}{4}$
+  or equivalently $e = \binom{n}{2} + 2\binom{n}{4}$.
+
+  Therefore, by Euler's Formula, discounting the outer face because 
+  we are counting only the interior of the $n$-gon, $f_n = 1 - v_n + e_n
+    = 1 - n + \binom{n}{2} + \binom{n}{4}$.\footnote{This is a \href{https://www.youtube.com/watch?v=K8P8uFahAgc}{3Blue1Brown} video.}
+\end{sol}
+
 \subsection{Platonic Solids}
+
+Not covered in Fall 2022 offering.
 
 \setcounter{subsection}{5}
 \subsection{Nonplanar Graphs, Kuratowski's Theorem}
 
 \setcounter{subsection}{7}
 \subsection{Colouring and Planar Graphs, Dual Planar Maps}
+
+\section{Matchings}
+
+\setcounter{subsection}{1}
+\subsection{Matchings, Covers}
+
+\subsection{K\"onig's Theorem}
+
+\setcounter{subsection}{5}
+\subsection{Applications of K\"onig's Theorem, Systems of Distinct Representatives, Perfect Matchings in Bipartite Graphs}
+
+\setcounter{subsection}{7}
+\subsection{Edge-Colouring, Application to Timetabling}
+
 
 \end{document}
