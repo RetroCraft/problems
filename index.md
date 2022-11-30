@@ -208,10 +208,10 @@ There are also [exercise solutions](./MATH239/exercises.pdf) for the course note
 | Ch. 2 (Generating Series)    | :black_large_square: | Missing 2.8, 2.13(b)-(c), 2.16-21              |
 | Ch. 3 (Binary Strings)       | :black_large_square: | Missing 3.13(b), 3.14-17                       |
 | Ch. 4 (Recurrence Relations) | :black_large_square: | Missing 4.4-12                                 |
-| Ch. 4 (Graph Theory Intro.)  | :black_large_square: | Missing 4.4.8-12, 4.5, 4.6.2-3, 4.6.10, 4.10   |
+| Ch. 4 (Graph Theory Intro.)  | :black_large_square: | Missing 4.4.9-10, 4.4.12, 4.5, 4.6.2-3, 4.6.10 |
 | Ch. 5 (Trees)                | :black_large_square: | Missing 5.3.2, 5.4, 5.5                        |
 | Ch. 6 (Codes)                |         :x:          |                                                |
-| Ch. 7 (Planar Graphs)        |         :x:          |                                                |
+| Ch. 7 (Planar Graphs)        | :black_large_square: | Missing 7.4, 7.6, 7.8                          |
 | Ch. 8 (Matchings)            |         :x:          |                                                |
 
 ### CO 485/685 (F2022) <small>Mathematics of Public-Key Cryptography</small>

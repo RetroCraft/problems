@@ -2048,12 +2048,101 @@
         \end{prf}
 \end{enumerate}
 
+\begin{xca}
+  The \term{complement} of a graph $G$, denoted $\bar G$,
+  is the graph with $V(\bar G) = V(G)$
+  and the edge $uv \in E(\bar G)$ if and only if $uv \not\in E(G)$.
+\end{xca}
+\begin{enumerate}
+  \item Let $G$ have vertices 1, 2, 3, 4 and edges 12, 23, 34, 14. Draw $\bar G$.
+        \begin{sol}
+          Note that $E(\bar G) = \{13,24\}$ (with $E(G)$ in dashes):
+          \begin{center}
+            \tikz\graph[simple necklace layout]{1,2,3,4; 1--3; 2--4; {[edges=dashed] 1--2--3--4--1, 3--4}};
+          \end{center}
+          as desired.
+        \end{sol}
+  \item Find a 5-vertex graph that is isomorphic to its complement.
+        \begin{sol}
+          Consider the 5-cycle $C_5$ and its complement (dashed) $\bar C_5$:
+          \begin{center}
+            \tikz\graph{subgraph C_n[n=5, clockwise]; {[edges=dashed] 1--3--5--2--4--1}};
+          \end{center}
+          and notice that the complement is the cycle $\{1,3,5,2,4\}$.
+        \end{sol}
+  \item Prove that no 6-vertex graph is isomorphic to its complement.
+        \begin{prf}
+          Notice that for a graph $G$, we have $E(G) \cup E(\bar G)$
+          is a disjoint union of the set of subsets of $V(G)$ with size 2.
+
+          Notice that for a 6-vertex graph, there are $\binom{6}{2} = 15$
+          subsets of $V(G)$ with size 2.
+          These cannot be partitioned into $\abs{E(G)} = \abs{E(\bar G)}$
+          because 15 is odd.
+        \end{prf}
+  \item Let $G_1$ and $G_2$ be two graphs.
+        Prove that $G_1$ is isomorphic to $G_2$
+        if and only if $\bar G_1$ is isomorphic to $\bar G_2$.
+        \begin{prf}
+          Suppose $G_1 \simeq G_2$.
+          Then, there exists an isomorphism $\phi : V(G_1) \to V(G_2)$
+          such that $uv \in E(G_1) \iff \phi(u)\phi(v) \in E(G_2)$.
+          It follows that
+          \[ uv \in E(\bar G_1) \iff uv \not\in E(G_1) \iff \phi(u)\phi(v) \not\in E(G_2) \iff \phi(u)\phi(v) \in E(\bar G_2) \]
+          so $\phi$ is also an isomorphism between $\bar G_1$ and $\bar G_2$.
+
+          Finally, since $\bar{\bar G} = G$ (because $E(G)$ and $E(\bar G)$ are set complements),
+          this goes in both directions.
+        \end{prf}
+  \item Find all 2-regular non-isomorphic graphs on 6 vertices
+        (prove that these are the only ones).
+        \begin{prf}
+          Notice that a 2-regular component is a cycle.
+          The smallest cycle is the 3-cycle,
+          so we can either have two 3-cycles or one 6-cycle.
+        \end{prf}
+  \item Prove that there are only two 3-regular non-isomorphic graphs on 6 vertices.
+        \begin{prf}
+          Let $G$ be such a graph.
+          For each vertex, there are three incident edges.
+          The other two potential edges lie in the complement.
+          Therefore, $\bar G$ is a 2-regular graph on 6 vertices.
+          By (d), the complement preserves isomorphism.
+          By (e), there are only two classes of 2-regular isomorphic graphs on 6 vertices.
+          Therefore, there must be only two 3-regular non-isomorphic graphs on 6 vertices.
+        \end{prf}
+\end{enumerate}
+
+\begin{xca}
+  Make drawings of the 15 non-isomorphic graphs having six vertices and six edges,
+  such that every vertex has degree at least one.
+\end{xca}
+
+\begin{xca}
+  Are the graphs in Figure 4.14 isomorphic? Justify your answer.
+\end{xca}
+
+\begin{xca}\label{xca:prime}
+  For $n$ a positive integer, define the \term{prime graph} $B_n$
+  to be the graph with vertex set $\{1,2,\dotsc,n\}$,
+  where $\{u,v\}$ is an edge if and only if $u + v$ is a prime number.
+  Prove that $B_n$ is bipartite.
+\end{xca}
+\begin{prf}
+  Notice that for $u+v > 2$ to be prime, it must be odd
+  (since we cannot have a $\{1,1\}$ loop to make 2).
+  Therefore, exactly one of $u$ and $v$ must be odd.
+  It follows that if we partition $V(B_n) = [n]$
+  into $X = \{ i \in [n] : i \bmod 2 = 0 \}$ and $Y = \{ i \in [n] : i \bmod 2 = 1 \}$,
+  we have a bipartition of $B_n$.
+\end{prf}
+
 \subsection{How to Specify a Graph}
 
 Not covered in Fall 2022 offering.
 
 \subsection{Paths and Cycles}
-\begin{xca}
+\begin{xca}\label{xca:deg-path}
   Let $G$ be a graph with minimum degree $k$, where $k \geq 2$.
   Prove that:
 \end{xca}
@@ -2241,6 +2330,159 @@ Not covered in Fall 2022 offering.
 
 \setcounter{subsection}{9}
 \subsection{Equivalence Relations, Connectedness, Eulerian Circuits, Bridges}
+
+\begin{xca}
+  Prove that the prime graph $B_n$ defined in \Cref{xca:prime} is connected for every $n$.
+  You may use without proof the following fact:
+  For every integer $k \geq 2$,
+  there is a prime number $r$ such that $k < r < 2k$.
+\end{xca}
+\begin{prf}
+  Proceed by induction on $n$.
+  Clearly, $B_1$ is connected with a single vertex.
+
+  Let $n \geq 2$. We may assume that $B_{n-1} = B_n - n$ is connected.
+
+  There exists a prime number $r$ such that $n < r < 2n$.
+  That is, $r = n + m$ for $1 \leq m \leq n-1$.
+  Since $m \in \{1,\dotsc,n-1\} \subseteq [n] = V(B_n)$,
+  the edge $mn$ exists in $B_n$.
+  For any $k \in V(B_n) \setminus \{n\} = V(B_{n-1})$,
+  since $B_{n-1}$ is connected, there exists a $k,m$-path.
+  Adjoining $mn$, there exists a $k,n$-path in $B_n$.
+
+  Therefore, by Theorem 4.8.2, $B_n$ is connected.
+\end{prf}
+
+\begin{xca}
+  Prove that if $G$ is connected,
+  any two longest paths have a vertex in common.
+\end{xca}
+\begin{prf}
+  Let $P_1$ be a $s,t$-path and $P_2$ be a $u,v$-path in $G$
+  such that both $P_1$ and $P_2$ are longest paths in $G$ with length $k$.
+
+  Then, suppose that $V(P_1) \cap V(P_2) = \varnothing$.
+
+  Since $G$ is connected, there exists a $t,u$-path $P_3$ in $G$.
+  Consider the walk $W = P_1P_3P_2$.
+  By the process in the proof in Theorem 4.6.2,
+  there exists a $s,v$-path $P$ using all the non-overlapping
+  vertices in $P_1$ and $P_2$ (but only some of $P_3$).
+  That is, $P$ has length at least $2k$, meaning that $P_1$ and $P_2$ are not longest paths.
+
+  Therefore, by contradiction, $P_1$ and $P_2$ must share a vertex.
+\end{prf}
+
+\begin{xca}
+  Which graphs, with at least one edge,
+  have the property that every edge is a bridge?
+\end{xca}
+\begin{sol}
+  By Theorem 4.10.3, an edge is a bridge if and only if it is not contained in a cycle.
+  Therefore, every edge is a bridge if and only if the graph contains no cycles.
+  That is, the graph is a forest.
+\end{sol}
+
+\begin{xca}
+  If every vertex of a graph $H$ with $p$ vertices has degree at least $\frac{p}{5}$,
+  prove that $H$ cannot have more than 4 components.
+\end{xca}
+\begin{prf}
+  Let $v \in V(H)$. Since $\deg v \geq \frac{p}{5}$,
+  its component has size at least $\frac{p}{5} + 1$.
+
+  This applies to all components, so if there are $k$ components,
+  $p \geq k(\frac{p}{5}+1)$, that is, $k \leq \frac{p}{\frac{p}{5}+1} < \frac{p}{p/5} = 5$.
+  Therefore, there are at most 4 components.
+\end{prf}
+
+\begin{xca}
+  If an edge $e$ is not a bridge of a connected graph $G$,
+  prove that $e$ is an edge of some cycle.
+\end{xca}
+\begin{prf}
+  If $e = uv \in E(G)$ is not a bridge, then $G - e$ remains connected.
+  But that means there is a $u,v$-path $P$ in $G - e$.
+  Then, $P + e$ is a cycle in $G$ containing $e$.
+\end{prf}
+
+\begin{xca}
+  Prove that a 4-regular graph has no bridge.
+\end{xca}
+\begin{prf}
+  Consider an edge $e = uv$ in a 4-regular component $G$.
+  Then, by the proof of \Cref{xca:deg-path}, $e$ lies in a 5-cycle.
+  Since $e$ lies in a cycle, it is not a bridge by Theorem 4.10.3.
+\end{prf}
+
+\begin{xca}\label{xca:4107}
+  Let $A_n$ be the graph whose vertices are the $\{0,1\}$-strings of length $n \geq 2$,
+  and edges are between strings that differ in exactly two positions.
+\end{xca}
+\begin{enumerate}
+  \item How many edges does $A_n$ have?
+        \begin{sol}
+          Since each of the $2^n$ strings have $\binom{n}{2}$ neighbours
+          (must pick two positions to change),
+          we have $\abs{E(A_n)} = \binom{n}{2}2^{n-1}$ by the Handshaking Lemma.
+        \end{sol}
+  \item Is $A_n$ bipartite for any $n \geq 2$?
+        \begin{sol}
+          When $n = 2$, $V(A_2) = \{00,01,10,11\}$
+          and $E(A_2) = \{\{00,11\},\{01,10\}\}$
+          which is bipartite with bipartition $(X,Y) = (\{00,11\},\{01,10\})$.
+
+          For $n \geq 3$, there exists an odd cycle
+          $(0000^{n-3}, 0110^{n-3}, 1100^{n-3}, 0000^{n-3})$.
+          Therefore, by Theorem 5.3.2, $A_n$ is not bipartite.
+        \end{sol}
+  \item How many components does $A_n$ have?
+        \begin{sol}
+          Claim: there are two components.
+
+          Divide the elements of $V(A_n)$ by parity.
+          Notice that changing exactly two positions either sends
+          two 0's to two 1's, two 1's to two 0's, or one of each (cancelling).
+          These do not change the parity.
+          Therefore, no path exists between any string of even and odd parity.
+
+          Now, consider two strings with the same parity.
+          Then, they differ by an even number of positions.
+          By changing two at a time, there exists a path between them.
+
+          Therefore, there are exactly two components of $A_n$.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  Let $B_n$ be the graph whose vertices are the $\{0,1\}$-strings of length $n \geq 2$,
+  and edges are between strings that differ in exactly two consecutive positions.
+\end{xca}
+\begin{enumerate}
+  \item How many edges does $B_n$ have?
+        \begin{sol}
+          The neighbours of a string can differ in the positions starting at $1,\dotsc,n-1$.
+          That is, the degree of every vertex is $n-1$.
+          By the Handshaking Lemma, since $\abs{V(B_n)} = 2^n$,
+          $\abs{E(B_n)} = (n-1)2^{n-1}$. 
+        \end{sol}
+  \item How many components does $B_n$ have?
+        \begin{sol}
+          There are at least two components by \Cref{xca:4107}.
+
+          Consider two strings with even parity.
+          Follow a path sending each instance of 01 to 10.
+          This will give a string of the form $1^{2k}0^{n-2k}$.
+          Then, there is clearly a path to $0^n$.
+          Therefore, all the even parity strings form a single component by Theorem 4.8.2.
+
+          Likewise, for odd parity strings, there is always a path to $10^{n-1}$
+          and they form a single component by Theorem 4.8.2.
+
+          Therefore, there are exactly two components of $B_n$.
+        \end{sol}
+\end{enumerate}
 
 \section{Trees}
 
@@ -2487,16 +2729,13 @@ Not covered in Fall 2022 offering.
 \end{xca}
 \begin{sol}
   Draw planar embeddings:
-  \begin{center}
-    \begin{tikzpicture}
-      \graph{subgraph C_n[V={b,c,d,i,e,f,g}, clockwise] -!- h, {b,c,i,e,f,g}--h, a[y=1.2,x=2]--{c,d}, a--[bend right]b, a--[bend left]i, f--[out=130,in=90,looseness=1.2]a};
-    \end{tikzpicture}
-    \qquad
-    \begin{tikzpicture}
-      \graph{subgraph C_n[V={c,g,b,f,a,i,e,h}, clockwise], f--{e,c,g}, d[x=-2], d--{h,i}, a--[bend left]d, c--[bend right]d, f--[out=-100,in=-90,looseness=1.3]d};
-    \end{tikzpicture}
-  \end{center}
-  as desired.
+  \begin{tikzpicture}
+    \graph{subgraph C_n[V={b,c,d,i,e,f,g}, clockwise] -!- h, {b,c,i,e,f,g}--h, a[y=1.2,x=2]--{c,d}, a--[bend right]b, a--[bend left]i, f--[out=130,in=90,looseness=1.2]a};
+  \end{tikzpicture}
+  \quad
+  \begin{tikzpicture}
+    \graph{subgraph C_n[V={c,g,b,f,a,i,e,h}, clockwise], f--{e,c,g}, d[x=-2], d--{h,i}, a--[bend left]d, c--[bend right]d, f--[out=-100,in=-90,looseness=1.3]d};
+  \end{tikzpicture}
 \end{sol}
 
 \begin{xca}
@@ -2522,7 +2761,7 @@ Not covered in Fall 2022 offering.
   so by the Handshaking Lemma, $2e = n(n-1) + 4\binom{n}{4}$
   or equivalently $e = \binom{n}{2} + 2\binom{n}{4}$.
 
-  Therefore, by Euler's Formula, discounting the outer face because 
+  Therefore, by Euler's Formula, discounting the outer face because
   we are counting only the interior of the $n$-gon, $f_n = 1 - v_n + e_n
     = 1 - n + \binom{n}{2} + \binom{n}{4}$.\footnote{This is a \href{https://www.youtube.com/watch?v=K8P8uFahAgc}{3Blue1Brown} video.}
 \end{sol}
