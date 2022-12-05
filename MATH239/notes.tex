@@ -2865,6 +2865,9 @@ Observe that handshaking for $G^*$ is equivalent to faceshaking for $G$.
 
 If $G$ is connected, then $(G^*)^* = G$.
 
+\setcounter{chapter}{7}
+\chapter{Matchings}
+
 \section{(11/25)}
 
 \begin{defn}[matching]
@@ -2910,7 +2913,7 @@ and \P (for proof, take CO 342).
   A path $P$ which is $M$-alternating and whose ands are not saturated by $M$.
 \end{defn}
 
-\begin{lemma}[8.1.1]
+\begin{lemma}[8.1.1]\label{lem:811}
   Let $G$ be a graph with matching $M$.
   If there exists an $M$-augmenting path, then $M$ is not a maximum matching.
 \end{lemma}
@@ -2956,5 +2959,262 @@ and \P (for proof, take CO 342).
     \leq \abs{M' \cap M} + \sum\abs{E(P_i) \cap M} = \abs{M}$,
   a contradiction.
 \end{prf}
+
+\section{(11/28)}
+
+\begin{defn}[cover]
+  A set $X \subseteq V(G)$ such that every edge of $G$ has at least one end in $X$.
+\end{defn}
+
+\begin{example}\label{exa:331}
+  \tikz\graph[dots nodes,spring layout,horizontal=1 to 4]{1[red]--2--3[red]--1--4};
+  \quad
+  \tikz\graph[dots nodes,simple necklace layout]{1[red]--2[red]--3[red]--4--1, 1--3, 2--4};
+  \quad
+  \tikz\graph[dots nodes,simple necklace layout]{1[red]--2--3[red]--4[red]--5[red]--1};
+  have covers in red.
+\end{example}
+
+Every graph has the obvious cover $X = V(G)$.
+
+\begin{defn}[minimum cover]
+  A cover of minimum size (i.e., $\abs{X}$),
+  which exists because $V(G)$ is a cover.
+\end{defn}
+
+Notice that in \Cref{exa:331}, the first and second covers are minimal.
+
+Determining if a graph has a cover of size $k$ is obviously in \NP.
+It is in fact \NP-complete, so it is not in \coNP or \P (assuming $\P \neq \NP$).
+
+\begin{lemma}[8.2.1]\label{lem:821}
+  Let $M$ be a matching and $C$ be a cover of the graph $G$.
+  Then, $\abs{M} \leq \abs{C}$.
+\end{lemma}
+\begin{prf}
+  Let $e_i$ be the edges of $M$.
+  For each edge, at least one of the two incident vertices must be covered by $C$.
+  Therefore, $\abs{C} \geq \sum\abs{C \cap e_i} \geq \sum 1 = k = \abs{M}$.
+\end{prf}
+
+\begin{corollary}
+  Let $G$ be a graph, $M$ be a maximum matching of $G$,
+  and $C$ be a minimum cover of $G$.
+  Then, $\abs{M} \leq \abs{C}$.
+\end{corollary}
+
+\begin{example}
+  \tikz\graph[dots nodes,spring layout,horizontal=1 to 4]{1[red]--2--[blue,very thick]3[red]--1--[blue,very thick]4};
+  \quad
+  \tikz\graph[dots nodes,simple necklace layout]{1[red]--2--3[red]--4--1, 1--[blue,very thick]3, 2--[blue,very thick]4};
+  \quad
+  \tikz\graph[dots nodes,simple necklace layout]{1[red]--[blue,very thick]2--3[red]--4--[blue,very thick]5[red]--1};
+  have minimum covers in red and maximum matchings in blue.
+\end{example}
+
+How many graphs have the property that $\abs{M} = \abs{C}$?
+We must exclude subgraphs of $C_{2n+1}$ since the minimum cover is $n+1$
+but the maximum matching is $n$.
+
+\begin{theorem}[K\"onig's Theorem]\label{thm:konig}
+  Let $G$ be a bipartite graph, $M$ be a maximum matching of $G$,
+  and $C$ be a minimum cover of $G$.
+  Then, $\abs{M} = \abs{C}$.
+\end{theorem}
+
+\begin{lemma}[8.2.2]\label{lem:822}
+  Let $G$ be a graph, $M$ be a matching of $G$, and $C$ be a cover of $G$.
+  If $\abs{M} = \abs{C}$, then $M$ is a maximum matching and $C$ is a minimum cover.
+\end{lemma}
+\begin{prf}
+  Let $M'$ be a matching of $G$.
+  Since $C$ is a cover, then by Lemma~\nameref{lem:821}, $\abs{M'} < \abs{C}$.
+  Since $\abs{C} = \abs{M}$, then $\abs{M'} < \abs{M}$
+  and $M$ is maximum, as desired.
+
+  Likewise, let $C'$ be a covery of $G$.
+  Then, by Lemma~\nameref{lem:821}, $\abs{M} \leq \abs{C'}$.
+  Since $\abs{M} = \abs{C}$,
+  then $\abs{C} \leq \abs{C'}$ and $\abs{C} \leq \abs{C'}$
+  for all covers, meaning $C$ is minimum, as desired.
+\end{prf}
+
+\section{(11/30)}
+
+\begin{defn}[reachability]
+  Given a graph $G$ with matching $M$ and $v \in V(G)$,
+  a vertex $u$ is $M$-reachable from $v$
+  if there exists an $M$-alternating $u,v$-path of $G$.
+  For a set $S \subseteq V(G)$, $u$ is $M$-reachable from $S$
+  if there exists a $v \in S$ such that $u$ is $M$-reachable from $v$.
+\end{defn}
+
+\begin{example}
+  \tikz\graph[dots nodes]{{1[Green],2[Green]}-!-{3[Green],4[Green]}-!-{5[red],6[Green]}-!-{7[orange],8[red]}; 2--[blue,very thick]1--4, 2--3--[blue,very thick]6--7, 6--5--8};
+  has a \textcolor{Green}{set of vertices} that are \textcolor{blue}{$M$}-reachable from \textcolor{orange}{$v$}.
+  and a \textcolor{red}{set of \textcolor{blue}{$M$}-unreachable vertices}.
+\end{example}
+
+Recall \nameref{thm:konig}.
+
+\begin{prf}
+  Let $G$ be a graph with bipartition $(A, B)$.
+
+  Let $M$ be a maximum matching of $G$ and
+  $U$ be the set of $M$-unsaturated vertices of $G$.
+
+  Let $X_0 = U \cap A$.
+
+  First, suppose $X_0 = \varnothing$.
+  Let $C := A$. Then, $A$ is a cover of $G$
+  because every edge has exactly one end in $A$.
+  Also, since $X_0 = \varnothing$, we have that $\abs{C} = \abs{A} = \abs{M}$
+  because every vertex of $A$ is $M$-saturated.
+  
+  By Lemma~\nameref{lem:822}, it follows that $M$ is maximum, $C$ is minimum,
+  and $\abs{M} = \abs{C}$ as desired.
+
+  Assume $X_0 \neq \varnothing$.
+  Let $X \subseteq A$ and $Y \subseteq B$ be the $M$-reachable vertices from $X_0$.
+  Define $C := (A \setminus X) \cup Y$.
+  We claim that (1) $C$ is a cover and then that (2) $\abs{C} = \abs{M}$.
+
+  Suppose for a contradiction $C$ is not a cover, i.e.,
+  there exists $e = uv \in E(G)$ where $u,v \not\in C$.
+  \WLOG assume $u \in A$, $v \in B$.
+  Then, since $u,v \not\in C$,
+  we have $u \not\in A \setminus X$, so $u \in X$.
+  That is, $u$ is $M$-reachable from $X_0$.
+  We also have $v \not\in Y$, so $v$ is not $M$-reachable from $X_0$.
+
+  Let $P$ be an $M$-alternating $u,x$-path for some $x \in X_0$.
+  Then, since $v$ is not $M$-reachable, $v \not\in V(P)$.
+
+  Let $P' = P + uv$.
+  The edge of $P$ incident with $x$ is not in $M$ since $x \in X_0$ is $M$-unsaturated.
+  Then, $\abs{E(P)}$ is even because $u,x \in A$,
+  so we know that the edge of $P$ incident with $u$ is in $M$.
+  Therefore, $P'$ is an $M$-alternating $u,v$-path, so $v \in Y$.
+  This is a contradiction, giving us (1).
+
+  Claim now (2a) that $Y \cap U = \varnothing$.
+  Suppose that $Y \cap U \neq \varnothing$.
+  Let $w \in Y \cap U$.
+  Since $w \in Y$, there is an $M$-alternating $w,x$-path $P$ for some $x \in X_0$.
+  But then $w \in U$ and $x \in U$ and hence $P$ is $M$-augmenting,
+  contradicting Lemma~\nameref{lem:811} since $M$ is a maximum matching.
+  Therefore, every vertex of $Y$ is $M$-saturated, i.e., (2a).
+
+  Finally, suppose there exists $e = ab \in M$
+  where $b \in Y$ and $a \in A \setminus X$.
+  Then, there exists an $M$-alternating $b,x$-path $P$ for some $x \in X_0$.
+  This path has odd length because it goes from $A$ to $B$.
+  It starts on $x \in U$, so the last edge is not in $M$.
+  Again, we can now take $P' = P + ba$
+  to get a contradicting $M$-alternating path.
+  Therefore, (2b) no edge from $A \setminus X$ to $Y$ exists.
+
+  Now, recall that $(A \setminus X) \cap U = \varnothing$
+  since $U \cap A = X_0 \subseteq X$.
+  That is, every vertex in $A \setminus X$ is $M$-saturated.
+  Finally (actually this time), by (2b),
+  notice that all edges from $A \setminus X$, i.e.,
+  the saturated edges of the matching, must then go to $B \setminus Y$.
+
+  Let $M_1 \subseteq E(M)$ have ends in $Y$ and $M_2 \subseteq E(M)$ have ends in $A \setminus X$.
+  From before, there does not exist edges from $A \setminus X$ to $Y$,
+  so $M_1 \cap M_2 = \varnothing$.
+  Yet $C = (A \setminus X) \cup Y$ is a cover.
+  So $M \subseteq M_1 \cup M_2$ and in fact $M = M_1 \cup M_2$.
+  But by (2a), $Y \cap U = \varnothing$, so $\abs{M_1} = \abs{Y}$.
+  Similarly $\abs{M_2} = \abs{A \setminus X}$.
+  
+  Finally (for the third time), $\abs{M} = \abs{M_1} + \abs{M_2}
+    = \abs{Y} + \abs{A \setminus X} = \abs{C}$, i.e., (2).
+
+  Then, since (1) and (2) hold, by Lemma~\nameref{lem:822},
+  it follows that $M$ is maximum and $C$ is minimum, as desired.
+\end{prf}
+
+\section{(12/02; missing)}
+
+XY Algorithm
+
+\section{(12/05)}
+
+\begin{theorem}[Hall's Theorem]\label{thm:hall}
+  Let $G = (A,B)$ be a bipartite graph.
+  Then, $G$ has a matching saturating every vertex of $A$
+  if and only if $\forall D \subseteq A, \abs{D} \leq \abs{N(D)}$
+  where $N(D) = \bigcup\limits_{v \in D} N(v)$.
+\end{theorem}
+\begin{prf}
+  Suppose $G$ has a matching $M$ saturating every vertex of $A$.
+  Let $D \subseteq A$.
+  Then, let $X := \{u \in B : \exists v \in A, uv \in M\}$.
+  Since $M$ is a matching, $\abs{X} = \abs{D}$.
+  But $X \subseteq N(D)$, so $\abs{D} \leq \abs{N(D)}$, as desired.
+
+  Suppose that there exists a matching saturating $A$.
+  Recall that by \nameref{thm:konig}, the size of a maximum matching
+  is equal to the size of a minimum cover.
+
+  Let $C$ be a (possibly minimum) cover of $G$.
+  Then, because $G$ is bipartite, there does not exist an edge $e = ab$
+  where $a \in A \setminus C$ and $b \in B \setminus C$.
+  It follows that $N(A \setminus C) \subseteq B \cap C$.
+
+  Then, $\abs{A \setminus C} \leq N(A \setminus C) \leq \abs{B \cap C}$
+  because $A \setminus C$ is a subset of $A$.
+
+  Finally, $\abs{A} = \abs{A \cap C} + \abs{A \setminus C}
+    \leq \abs{A \cap C} + \abs{B \cap C} = \abs{C}$.
+  Therefore, a minimum cover has size at least $\abs{A}$.
+  By K\"onig's, a maximum matching has size at least $\abs{A}$
+  and the matching saturates all of $A$ by bipartiteness.
+\end{prf}
+
+Note: K\"onig's and Hall's theorems show that for a bipartite graph $G = (A,B)$,
+deciding if there exists a matching saturating all of $A$ is in \coNP.
+
+\begin{corollary}[8.6.1]\label{cor:bip.pm}
+  A bipartite graph $G = (A,B)$ has a perfect matching
+  if and only if $\abs{A} = \abs{B}$ and $\forall D \subseteq A, \abs{D} \leq \abs{N(D)}$.
+\end{corollary}
+\begin{prf}
+  Suppose $G$ has a perfect matching $M$.
+  Then, $\abs{A} = \abs{B}$ by bipartiteness
+  and $\forall D \subseteq A, \abs{D} \leq \abs{N(D)}$ as in \nameref{thm:hall}.
+
+  Suppose $\abs{A} = \abs{B}$ and $\forall D \subseteq A, \abs{D} \leq \abs{N(D)}$.
+  Then, by \nameref{thm:hall}, there exists a matching saturating $A$.
+  But since $\abs{A} = \abs{B}$, $M$ must be perfect by bipartiteness.
+\end{prf}
+
+\begin{theorem}[8.6.2]
+  All $k$-regular bipartite graphs with $k \geq 1$ have perfect matchings.
+\end{theorem}
+\begin{prf}
+  By Corollary~\nameref{cor:bip.pm}, it suffices to show that $\abs{A}=\abs{B}$
+  and $\forall D \subseteq A, \abs{D} \leq \abs{N(D)}$.
+  Since $G$ is bipartite,
+  \[ \sum_{v \in A}\deg(v) = \abs{E(G)} = \sum_{v \in B}\deg(v) \]
+  But by $k$-regularity,
+  \[ \sum_{v \in A}\deg(v) = k\abs{A} = \abs{E(G)} = k\abs{B} = \sum_{v \in B}\deg(v) \]
+  and $\abs{A} = \abs{B}$ since $k \geq 1$.
+
+  Let $D \subseteq A$.
+  Then, $\sum_{v \in D} \deg(v)$ is the number of edges with one end in $D$,
+  which is at least the number of edges with one end in $N(D)$, i.e.,
+  $\sum_{v \in N(D)} \deg(v)$.
+  As above, this gives us $k\abs{D} \leq k\abs{N(D)} \implies \abs{D} \leq \abs{N(D)}$, as desired.
+\end{prf}
+
+\begin{theorem}
+  Given a bipartite graph $G = (A,B)$
+  and integer $k \geq 1$ such that every vertex in $A$ has degree at least $k$
+  and every vertex in $B$ has degree at most $k$,
+  then $G$ has a matching saturating $A$.
+\end{theorem}
 
 \end{document}
