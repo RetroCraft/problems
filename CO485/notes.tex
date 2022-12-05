@@ -5,6 +5,7 @@
 \newcommand{\ord}{\operatorname{ord}}
 \newcommand{\leg}[2]{\qty(\frac{#1}{#2})}
 \newcommand{\mgrp}[1]{(\Z/#1\Z)^\times}
+\newcommand{\Div}{\operatorname{Div}}
 
 \title{CO 485/685 Fall 2022: Lecture Notes}
 \begin{document}
@@ -1768,7 +1769,6 @@ We have $(1) = \log 1 = 0$, the ``empty divisor''.
   $\deg((P) - (\infty)) = 0$ and $\deg(2(P) - 4(Q)) = -2$.
 \end{example}
 
-\newcommand{\Div}{\operatorname{Div}}
 \begin{prop}
   $\deg : \Div(E) \to \Z$ is a homomorphism, i.e.,
   $\deg(D_1 + D_2) = \deg(D_1) + \deg(D_2)$.
@@ -1914,5 +1914,144 @@ In fact, $\deg(\div f) = 0$ for all $f$.
   Then, we have $\sum((P_i) + (-P_i)) - 8(\infty)$.
   By symmetry, $\div(x^2+y) = \sum(\pm (P_i)) - 4(\infty)$.
 \end{sol}
+
+\section{Weil Pairing (11/28)}
+
+\begin{defn}[Weil pairing]
+  $e_n(P,Q) = \frac{f_P(A_Q)}{f_Q(A_P)}$
+  where $A_P \sim (P) - (\infty)$,
+  $A_Q \sim (Q) - (\infty)$,
+  $\div f_P = nA_P$, and $\div f_Q = nA_Q$.
+\end{defn}
+
+\begin{defn}[equivalence]
+  For $P, Q \in \Div(E)$, $P \sim Q$
+  if there exists a rational function $f \in K(E)$ such that $P-Q = \div f$.
+\end{defn}
+\begin{lemma}
+  $\sim$ is an equivalence relation.
+\end{lemma}
+
+Useful properties:
+\begin{itemize}[nosep]
+  \item $P \sim Q$ implies $\deg(P) = \deg(Q)$ because $\deg(\div f) = 0$.
+  \item $(P) \sim (\infty)$ if and only if $P = \infty$
+\end{itemize}
+
+\begin{example}
+  Consider collinear points $P$, $Q$, and $R$
+  which lie on a line $L : f(x,y) = 0$.
+  Then, $\div f = (P) + (Q) + (R) - 3(\infty)$
+  since $f$ vanishes only at those 3 points.
+  By definition, $(P) - (\infty) + (Q) - (\infty) \sim (R) - (\infty)$.
+
+  With $L' : g(x,y)=0$ being the line with $R$ and $S = P+Q$,
+  we get $\div g = (R) + (S) - 2(\infty)$
+  and $(\infty)-(R) \sim (S)-(\infty)$.
+  Then, $(P) - (\infty) + (Q) - (\infty) \sim (P+Q) - (\infty)$
+\end{example}
+
+\begin{example}
+  Let $D \in \Div^0(E)$
+  so that $D = \sum a_P(P)$ with $\sum a_P = 0$.
+  Then, $D = \sum a_P((P) - (\infty))$.
+  By the last example, $D \sim (\sum a_P P) - (\infty)$.
+\end{example}
+
+Therefore (up to abuse of notation),
+$\Div^0(E) \sim \{ (P) - (\infty) : P \in E \} \cong E$.
+
+Notice that $K[E] = K[x][\sqrt{x^3+ax+b}] =: R$ is a field extension and
+has some ideal class group $Cl(R) \cong \Div^0(E)/~ \cong E$.
+
+Suppose that $P$ and $Q$ lie in the $n$-torsion subgroup $E[n]$
+such that $nP = nQ = \infty$.
+
+Consider the Weil pairing $e_n(P,Q)$. We want to:
+\begin{enumerate}[1.]
+  \item Choose $A_P \in \Div^0(E)$ such that $A_P \sim (P) - (\infty)$.
+  \item Choose $A_Q \in \Div^0(E)$ such that $A_Q \sim (Q) - (\infty)$.
+  \item By Example, $nA_P \sim n((P) - (\infty)) \sim (nP) - (\infty) = (\infty) - (\infty) = \varnothing$.
+        Then, there must exist $f_P$ such that $\div f_P = nA_P$
+  \item Likewise, let $f_Q$ be some function such that $\div f_Q = nA_Q$.
+\end{enumerate}
+Then, $e_n(P,Q) := \frac{f_P(A_Q)}{f_Q(A_P)}$.
+
+\begin{defn}[function at a divisor]
+  If $D = \sum a_P(P)$ and $f \in K(E)$, then $f(D) = \prod f(P)^{a_P}$
+\end{defn}
+
+Notice that rational functions $f_Q$ and $f'_Q$
+can only have the same roots and poles (i.e., divisors)
+if $f'_Q = cf_Q$ for some constant $c$.
+
+Then, $f'_Q(A_P) = f_Q(A_P)\prod c^{a_P}
+  = f_Q(A_P) c^{\sum a_P} = f_Q(A_P) c^0 = f_Q(A_P)$.
+
+\section{(12/02)}
+
+\section{Closing Remarks (12/05)}
+
+This class takes us to state-of-the-art cryptography as of about 2001.
+
+We defined a pairing $e(P, Q) = \frac{f_P(A_Q)}{f_Q(A_P)}$
+with bilinearity, anti-symmetry, and non-degeneracy.
+
+Sometimes, we don't actually want anti-symmetry because we need
+$e(g,g) \neq 1$ for tripartite Diffie--Hellman to work.
+
+Consider a curve $E : y = x^3 + ax$ over $\F_p$ where $p \equiv 3 \pmod 4$.
+We need this because we want $i = \sqrt{-1} \not\in \F_p$ but $i \in \F_p^2$.
+
+We define a $\phi$ such that $\phi(P) = (-x,iy)$, so that $P \in E$ implies $\phi(P) \in E$.
+Also, we want $\phi$ to be a homomorphism $\phi(P+Q) = \phi(P)+\phi(Q)$.
+
+Then, we define a modified Weil pairing $\hat e(P,Q) = e(P,\phi(Q))$
+which is still bilinear and non-degenerate (which we can prove since $\phi^2 = -1$).
+
+Alternatively, consider $E : y = x^3 + b$ over $\F_p$ where $p \equiv 2 \pmod 3$.
+Then, pick a cube root of unity $\zeta$ such that $\zeta \in \F_p^2 \setminus \F_p$.
+With $\phi(x,y) = (\zeta x,y)$, we get a pairing $\hat e(P,Q) = e(P,\phi(Q))$
+with the same desired properties.
+
+These days, DLOG over curves with small characteristic is insecure,
+because $e(\alpha P,Q) = e(P,Q)^\alpha$, so if DLOG can be solved in $\F_{p^k}$,
+it can be solved by the MOV attack in the elliptic curve using modified index calculus due to Joux.
+
+\paragraph{Boneh--Franklin Identity-Based Encryption}
+Any binary string is a valid public key.
+
+Public parameters: pairing $e : G \times G \to G_T$, element $g \in G$, 
+hash $H : \{0,1\}^* \to G$.
+
+Trusted third-party picks a system private key $\alpha \xgets{\$}\Z$
+and generates system pubkey $g^\alpha$.
+
+User $\mathcal A$ has public key $pk_{\mathcal A} \in \{0,1\}^*$.
+TTP generates $sk_{\mathcal A} = h^\alpha$ where $h = H(pk_{\mathcal A})$.
+
+To encrypt, $E(pk_{\mathcal A}, m) = (g^r, e(g^\alpha, h^r) \oplus m)$ with random $r \xgets{\$} \Z$.
+
+To decrypt, $D(sk_{\mathcal A}, (c_1, c_2)) = e(sk_{\mathcal A}, c_1) \oplus c_2 = m$.
+
+Can prove that Boneh--Franklin is IND-CPA
+assuming decisional bilinear Diffie--Hellman and random oracle.
+
+Recall (DBDH): Given $g,g^a,g^b,g^c,h$ it is hard to determine if $h = e(g,g)^{abc}$.
+
+This is technically not secure enough, so we want IND-ID-CPA
+(semantically secure assuming an arbitrary number of other identities are compromised).
+
+Consider now the hash $H : \{0,1\}^* \to G = E(\F_q)$.
+Bad idea: do this in two steps $H: \{0,1\}^* \to \Z \to E: pk_{\mathcal A} \mapsto \beta \mapsto g^\beta$.
+But then $sk_{\mathcal A} = h^\alpha = g^{\alpha\beta} = (g^\alpha)^\beta$
+and this is all computable by anyone since $g^\alpha$ is public
+and the initial step in the hash function gives $\beta$.
+
+Good idea: consider the curve $E : y^2 = x^3 + b$ with $p \equiv 2 \pmod 3$.
+Then, $\zeta = \sqrt[3]{1} \in \F_{p^2} \setminus \F_p$
+and $\forall \beta \in \F_p, \exists! \alpha \in \F_p, \alpha^3 = \beta$.
+This lets us hash by first picking the $y$-coordinate
+then calculating the unique $x$-coordinate to place us on the curve.
 
 \end{document}
