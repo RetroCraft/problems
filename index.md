@@ -44,10 +44,6 @@ Quizlet flashcards are not mine: thank Imaad for them.
 
 ### BU 111 (F2020) <small>Introduction to the Business Environment</small>
 
-Are you currently taking MATH 135 or BU 111?
-Imaad is hosting a final review session with the Double Degree Club on December 1:
-please sign up [here](https://forms.gle/yrmpdZtvUA6GxowY9).
-
 Flashcards available for [PEST factors](https://quizlet.com/ca/553312795/bu111-final-review-f2020-all-pest-factors-flash-cards/)
 and [strategic expansion](https://quizlet.com/ca/553644800/bu111-final-review-f2020-intl-business-strategic-expansion-flash-cards/).
 
@@ -133,10 +129,6 @@ Might also be helpful: Will put together a compilation of sample
 ## Math
 
 ### MATH 135 (F2020) <small>Algebra for Honours Mathematics</small>
-
-Are you currently taking MATH 135 or BU 111?
-I'm hosting a final review session with the Double Degree Club on December 1:
-please sign up [here](https://forms.gle/yrmpdZtvUA6GxowY9).
 
 | File                                         |      Complete?       | Notes                              |
 | -------------------------------------------- | :------------------: | ---------------------------------- |
