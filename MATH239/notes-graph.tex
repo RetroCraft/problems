@@ -1,0 +1,1936 @@
+
+\part{Graph Theory}
+
+\setcounter{chapter}{3}
+\chapter{Introduction to Graph Theory}
+
+Note: In the notes, there are two chapter 4's
+(Recurrence Relations and Introduction to Graph Theory).
+This numbering is maintained.
+
+\section{(10/21; from Bradley)}
+
+\begin{defn}[graph]
+  A graph $G = (V, E)$ is a finite set of \term{vertices} $V$
+  and a set\tablefootnote{if we allow multisets, they are \term{multiple} or \term{parallel} edges}
+  of unordered\tablefootnote{if ordered, the graph is \term{directed}}
+  pairs\tablefootnote{if larger tuples, it is a \term{hypergraph}}
+  of distinct\tablefootnote{if not, the edge is a \term{loop}} vertices $E$ called \term{edges}.
+  Denote the set of vertices $V(G)$ and edges $E(G)$.
+\end{defn}
+\spewnotes
+
+Note: if the graph includes loops and/or parallel edges, it is a \term{multigraph}.
+
+\begin{defn}[complete graph on $n$ vertices]
+  The graph $K_n$ given by $V(K_n) = [n]$ and $E(K_n) = \{S \subseteq [n] : \abs{S} = 2\}$.
+\end{defn}
+\begin{example}
+  Draw $K_1$ through $K_6$.
+\end{example}
+\begin{sol}
+  Connect every node in a $n$-gon:
+  \begin{center}
+    \tikz\graph{ subgraph K_n [n=1, clockwise] };\quad
+    \tikz\graph{ subgraph K_n [n=2, clockwise] };\quad
+    \tikz\graph{ subgraph K_n [n=3, clockwise] };\quad
+    \tikz\graph{ subgraph K_n [n=4, clockwise] };\quad
+    \tikz\graph{ subgraph K_n [n=5, clockwise] };\quad
+    \tikz\graph{ subgraph K_n [n=6, clockwise] };
+  \end{center}
+  as desired.
+\end{sol}
+
+\begin{defn}[path on $n$ vertices]
+  The graph $P_n$ given by $V(P_n) = [n]$ and $E(P_n) = \{ \{i,i+1\} : i \in [n-1] \}$.
+\end{defn}
+
+\begin{defn}[cycle on $n$ vertices]
+  The graph $C_n$ for $n \geq 3$ given by $V(C_n) = [n]$ and $E(C_n) = E(P_n) \cup \{1,n\}$.
+\end{defn}
+
+\begin{defn}[bipartite]
+  Given a graph $G$, there exists a partition $(A,B)$ of $V(G)$
+  such that every edge has exactly one element in $A$ and one element in $B$.
+\end{defn}
+\begin{example}\label{exa:17-2}
+  Which of the above graphs are bipartite?
+\end{example}
+\begin{sol}
+  $K_1$ and $K_2$ are bipartite, but $K_n$ for $n \geq 3$ is note.
+
+  In general, $P_n$ is bipartite with bipartition $A = \{i \in [n] : \text{$i$ odd}\}$
+  and $B = \{i \in [n] : \text{$i$ even}\}$.
+
+  In general, $C_n$ is bipartite when $n$ is even
+  (under the same bipartition as $P_n$) and not when $n$ is odd.
+\end{sol}
+
+\begin{defn}[complete bipartite graph]
+  The graph $K_{m,n}$ described by
+  $V(K_{m,n}) = \{s_i : i \in [m]\} \cup \{t_j : j \in [n]\}$
+  and $E(K_{m,n}) = \{\{s_i, t_j\} : i \in [n], j \in [m]\}$.
+\end{defn}
+\begin{example}
+  Draw $K_{1,0}$, $K_{2,1}$, $K_{2,3}$, $K_{3,2}$, and $K_{3,3}$.
+\end{example}
+\begin{sol}
+  Connect $m$ nodes with $n$ nodes:
+  \begin{center}
+    \tikz\graph{ s_1 };\quad
+    \tikz\graph{ subgraph K_nm [V={s_1,s_2}, W={t_1}] };\quad
+    \tikz\graph{ subgraph K_nm [V={s_1,s_2}, W={t_1,t_2,t_3}] };\quad
+    \tikz\graph{ subgraph K_nm [V={s_1,s_2,s_3}, W={t_1,t_2}] };\quad
+    \tikz\graph{ subgraph K_nm [V={s_1,s_2,s_3}, W={t_1,t_2,t_3}] };
+  \end{center}
+  Notice that $K_{2,3}$ and $K_{3,2}$ have the same structure.
+\end{sol}
+
+\begin{defn}[planar]
+  A graph that can be drawn on the plane such that no two edges cross
+\end{defn}
+\begin{example}
+  Which of $K_n$, $P_n$, $C_n$, and $K_{m,n}$ are planar?
+\end{example}
+\begin{sol}
+  Obviously, $K_1$, $K_2$, and $K_3$ are planar.
+
+  We can redraw $K_4$ like \tikz[baseline=-2pt]\graph{ subgraph C_n [n=3, clockwise] -- 4 };
+  to make it planar.
+
+  However, $K_5$ can't do that.
+
+  $P_n$ and $C_n$ are planar for all $n$.
+
+  For $K_{m,n}$, when $m=0$, we just have $n$ unconnected vertices, which is planar.
+
+  When $m=1$, we have a star
+  (e.g. \tikz[baseline=-1pt]\graph{ subgraph C_n [V={t_1,t_2,t_3,t_4,t_5,t_6}, clockwise, -!-] -- s_1};).
+
+  When $m=2$, put $s_1$ on the left and $s_2$ on the right and connect
+  (e.g. \tikz[baseline=-1pt]\graph{ s_1 -- {t_1[y=1], t_2[y=1], t_3[y=1]} -- s_2 };)
+
+  When $m \geq 3$, this doesn't work. So $K_{m,n}$ is planar if $m \leq 2$ or $n \leq 2$.
+\end{sol}
+
+\section{(10/24; from Bradley)}
+
+\begin{defn}
+  Given vertices $u$, $v$ and an edge $e$ in $G$:
+  \begin{itemize}[nosep]
+    \item If $uv \in E(G)$, then $u$ and $v$ are \term{adjacent}
+    \item If $e = uv$, then $e$ \term{joins} the \term{endpoints} $u$ and $v$
+    \item If $v \in e$, then $e$ is \term{incident} with $v$
+    \item If $u$ and $v$ are adjacent, $u$ is a \term{neighbour} of $v$
+    \item The \term{neighbourhood of $v$} $N_G(v)$ is the set of neighbours of $v$
+  \end{itemize}
+\end{defn}
+
+\begin{defn}[degree]
+  The number of neighbours $\deg_G(v) = \abs{N_G(v)}$ of a vertex $v$ in a graph $G$.
+\end{defn}
+
+\begin{defn}[$k$-regularity]
+  A graph where every vertex has degree exactly $k$.
+\end{defn}
+
+\begin{example}
+  What are the degrees for $K_n$, $P_n$, $C_n$, and $K_{m,n}$?
+\end{example}
+\begin{sol}
+  Every vertex in $K_n$ connects to the other $n-1$,
+  so they all have degree $n-1$ and $K_n$ is $(n-1)$-regular.
+
+  Every vertex $v \in V(C_n)$ has $\deg(v) = 2$, so $C_n$ is 2-regular.
+
+  For $P_n$, the endpoints $\deg(v_1) = \deg(v_n) = 1$
+  and the middle vertices $\deg(v_i) = 2$ for $2 \leq i \leq n-1$.
+  Edge case: in $P_0$, $\deg(v_1) = 0$.
+
+  In $K_{m,n}$, $\deg(s_i) = \abs{N(s_i)} = \abs{\{t_i\}} = n$
+  and $\deg(t_i) = \abs{N(t_i)} = \abs{\{s_i\}} = m$.
+\end{sol}
+
+\begin{defn}[degree sequence]
+  An ordering $d_1 \geq d_2 \geq \dotsb \geq d_n$ of degrees of vertices.
+\end{defn}
+
+\begin{theorem}[Handshaking Lemma]\label{thm:hand}
+  If $G$ is a graph, then $2\abs{E(G)} = \smashoperator{\sum\limits_{v \in V(G)}} \deg_G(v)$.
+\end{theorem}
+\begin{prf}[Informal]
+  Every edge is a ``handshake'' betwen two ``people''.
+  The number of hands is twice the number of handshakes,
+  since each handshake takes two hands.
+\end{prf}
+\begin{prf}[Formal]
+  Let $S = \{(e,v) : e \in E(G), v \in V(G), \text{$v$ incident with $e$}\}$.
+  Counting edges,
+  \[
+    \abs{S} = \smashoperator{\sum_{e \in E(G)}} \abs{\{(e,v) \in S\}}
+    = \smashoperator{\sum_{v \in V(G)}} 2
+    = 2 \abs{E(G)}
+  \]
+  since every edge has exactly two endpoints.
+  Counting vertcies,
+  \[
+    \abs{S} = \smashoperator{\sum_{v \in V(G)}} \abs{\{(e,v) \in S\}}
+    = \smashoperator{\sum_{v \in V(G)}} \deg_G(v)
+  \]
+  by definition of $N_G(v)$.
+  Therefore, $2\abs{E(G)} = \abs{S} = \smashoperator{\sum\limits_{v \in V(G)}} \deg_G(v)$.
+\end{prf}
+
+\begin{corollary}[4.3.2]
+  The number of vertices of odd degree in a graph is even.
+\end{corollary}
+\begin{prf}
+  Let $\mathcal O(G)$ be the set of odd degree vertices.
+  Let $\mathcal E(G)$ be the set of even degree vertices.
+  By the \nameref{thm:hand},
+  \[
+    2\abs{E(G)} = \smashoperator{\sum_{v \in V(G)}} \deg_G(v)
+    = \smashoperator{\sum_{v \in \mathcal O(G)}} \deg_G(v) + \smashoperator{\sum_{v \in \mathcal E(G)}} \deg_G(v)
+  \]
+  Take the congruence modulo 2:
+  \[
+    0 \equiv \smashoperator{\sum_{v \in \mathcal O(G)}} 1 + \smashoperator{\sum_{v \in \mathcal E(G)}} 0
+    \equiv \abs{\mathcal O(G)} + 0 \pmod{2}
+  \]
+  which means that $\abs{\mathcal O(G)}$ is even, as desired.
+\end{prf}
+
+\begin{corollary}[4.3.3]
+  The average degree for a graph $G$ is $\frac{2\abs{E(G)}}{\abs{V(G)}}$.
+\end{corollary}
+\begin{prf}
+  Average degree is $\frac{\sum_{v\in V(G)} \deg_G(v)}{\abs{V(G)}} = \frac{2\abs{E(G)}}{\abs{V(G)}}$.
+\end{prf}
+
+\begin{corollary}
+  If $G$ is a $k$-regular graph, then $\abs{E(G)} = \frac{k}{2}\abs{V(G)}$.
+\end{corollary}
+\begin{prf}
+  By the \nameref{thm:hand}, $2\abs{E(G)} = \smashoperator{\sum\limits_{v \in V(G)}} \deg_G(v)
+    = \smashoperator{\sum\limits_{v \in V(G)}} k = k\abs{V(G)}$.
+\end{prf}
+
+\begin{defn}[isomorphism]
+  Graphs $G$ and $H$ are isomorphic if there exists a \term{(graph) isomorphism}
+  between them, i.e., a bijection $f : V(G) \to V(H)$ such that
+  $uv \in E(G)$ if and only if $f(u)f(v) \in E(H)$.
+\end{defn}
+
+\begin{example}
+  $K_1$ is isomorphic to $P_1$, $K_2$ to $P_2$, and $K_3$ to $C_3$.
+\end{example}
+
+\begin{example}
+  The following are isomorphic representations of the Peterson graph:
+  \begin{center}
+    \tikz\graph[clockwise] {subgraph K_n[name=inner,V={6,7,8,9,10}] -- subgraph C_n[name=outer,n=5]};
+    \qquad
+    \tikz\graph[clockwise] {j[y=-1] -!- subgraph C_n[V={a,b,c,d,e,f,g,h,i}]; i--e, b--f, h--c, j--{a,g,d}};
+  \end{center}
+  under the isomorphism $(a,b,c,d,e,f,g,h,i,j) \mapsto (1,6,9,7,10,8,3,4,5,2)$.
+\end{example}
+
+\section{(10/26)}
+
+\begin{defn}[subgraph]
+  Graph $H$ of a graph $G$ where $V(H) \subseteq V(G)$
+  and $E(H) \subseteq \{ uv \in E(G), u,v \in V(H) \}$.
+\end{defn}
+Equivalently, a subgraph is obtained from $G$ by deleting a subset of $V(G)$
+and the edges incident with those vertices and then deleting a subset of remaining edges.
+
+\begin{example}{}
+  \tikz[baseline=-30pt]\graph[simple necklace layout]{ 1--2--3--4--5--1, 2--5 };
+  has a subgraph
+  \tikz[baseline=-30pt]\graph[simple necklace layout]{ "", 2--3, 4--5, 2--5 };
+\end{example}
+
+\begin{defn}[types of subgraphs]
+  A subgraph $H$ of $G$ is \term{spanning} if $V(H) = V(G)$ (only edge deletions),
+  \term{proper} if $H \neq G$,
+  and \term{induced} if $E(H) = \{uv \in E(G) : u,v \in V(H)\}$ (only vertex deletions).
+\end{defn}
+
+\begin{defn}[walk]
+  A sequence $W = (v_0,e_1,v_1,\dotsc,e_k,v_k)$ where $v_i \in V(G)$
+  and $e_i = v_{i-1}v_i \in E(G)$ is a \term{walk from $v_0$ to $v_k$}.
+  If $v_0 = v_k$, then $W$ is \term{closed}.
+  Call $k$ the \term{length} of the walk.
+\end{defn}
+
+\begin{example}\label{exa:bowtie}
+  In the graph $G$
+  \tikz[baseline=-16pt]\graph[spring layout]{
+    u_1--u_2--u_3--u_1,
+    u_4--u_5--u_6--u_4,
+    u_3--u_4
+  };,
+  the sequence\\
+  $(u_5,u_5u_6,u_6,u_6u_5,u_5,u_5u_4,u_4,u_4u_3,u_3,u_3u_1)$ is a walk.
+\end{example}
+
+\begin{defn}[path]
+  A walk $W = (v_0,\dotsc,v_k)$ where all the $v_i$ are distinct.
+  Then, the distinct $v_0$ and $v_k$ are the \term{ends} of the path.
+\end{defn}
+
+We call this a path because the subgraph $H$ formed by $V(H) = \{v_0,\dotsc,v_k\}$
+and $E(H) = \{e_1,\dotsc,e_k\}$ is isomorphic to $P_{k+1}$.
+
+\begin{example}
+  In the graph from \cref{exa:bowtie}, $(u_5,u_5u_4,u_4,u_4u_3,u_3,u_3u_1,u_1)$ is a path.
+\end{example}
+
+We can abbreviate paths (and walks) as $v_0v_1v_2\dots v_k$ since it is unambiguous.
+
+\begin{theorem}[4.6.2]\label{thm:pathwalk}
+  Given a graph $G$ and there exists a walk from $u$ to $v$,
+  then there exists a path from $u$ to $v$.
+\end{theorem}
+\begin{prf}[informal]
+  If $W$ has no repeat vertices, then $W$ is already a path.
+
+  Otherwise, there exists a vertex that repeats twice.
+  Remove the subsequence between these two instances (and repeat).
+\end{prf}
+\begin{prf}
+  Let $W = v_0,\dotsc,v_k$ be the shortest walk from $u$ to $v$.
+  If $W$ has no repeated vertices, then we are done.
+
+  Otherwise, there exists a subsequence starting and ending with a repeated
+  node $v_i = v_j$, so we delete $e_i$ through $v_j$.
+  This is a strictly shorter path $W'$, so $W$ is not the shortest. Contradiction.
+\end{prf}
+
+\section{(10/28)}
+
+\begin{corollary}[4.6.3]\label{cor:463}
+  Let $G$ be a graph. If there exists a path from $u$ to $v$ in $G$
+  and there exists a path from $v$ to $w$ in $G$,
+  then there exists a path from $u$ to $w$ in $G$.
+\end{corollary}
+\begin{prf}
+  Append the two paths together to get a walk from $u$ to $w$ in $G$.
+  Then, by \nameref{thm:pathwalk} there exists a path from $u$ to $w$ in $G$.
+\end{prf}
+
+\begin{defn}[cycle]
+  A subgraph isomorphic to $C_k$ for some $k \geq 3$.
+  The \term{length} of a cycle $k$ is the number of edges in it
+  and the \term{girth} of a graph is the length of its largest cycle.
+  A \term{Hamilton cycle} is a spanning cycle
+  and a \term{Hamiltonian graph} contains one.
+\end{defn}
+
+\begin{theorem}[4.6.4]\label{thm:deg2cycle}
+  If $G$ is a graph and every vertex of $G$ has degree at least 2,
+  then $G$ contains a cycle.
+\end{theorem}
+\begin{prf}[algorithmic sketch]
+  We give an algorithm that always finds such a cycle.
+
+  Let $P = v_0\cdots v_k$ be a path in $G$ with $k \geq 2$.
+
+  The node $v_k$ has at least two neighbours, so there is one other than $v_{k-1}$.
+  If the other neighbour $v_i \in V(P)$,
+  then $v_i \cdots v_k$ is a cycle.
+  Otherwise, the neighbour $v_{k+1} \not\in V(P)$.
+  Set $P \gets v_0\cdots v_k v_{k+1}$ and repeat.
+
+  We have to prove correctness (that it generates a path and finds cycles)
+  and that it terminates (since length increases and $V(G)$ finite).
+\end{prf}
+\begin{prf}
+  Let $P = v_0 \cdots v_k$ be a longest path in $G$.
+  Since a vertex has degree at least 2, $k \geq 2$.
+
+  Suppose $v_k$ has a neighbour $v_i \in V(P)$ where $0 \leq i \leq k-2$.
+  Then, $C = v_i \cdots v_k$ is a cycle, as desired.
+
+  Otherwise, $N(v_k) \cap V(P) = \{v_{k-1}\}$.
+  Since $v_k$ has degree at least two, $\abs{N(v_k)} \geq 2$.
+  Therefore, $N(v_k) \setminus V(P) \neq \varnothing$.
+  Select $v_{k+1} \in N(v_k) \setminus V(P) \neq \varnothing$.
+  But then $P' = v_0 \cdots v_k v_{k+1}$ is a path in $G$ with length longer than $P$.
+  Contradiction.
+\end{prf}
+\begin{corollary}[cycle corollary]\label{cor:464-pos}
+  Let $G$ be a graph. \TFAE:
+  (1) $G$ contains a cycle; and
+  (2) $G$ contains a subgraph where every vertex has degree at least 2.
+\end{corollary}
+\begin{prf}
+  If $G$ contains a cycle, then the cycle is indeed such a subgraph.
+  If $G$ contains such a subgraph, then by \nameref{thm:deg2cycle} it contains a cycle.
+\end{prf}
+\begin{corollary}[no cycle corollary]\label{cor:464-neg}
+  Let $G$ be a graph. Then, \Tfae:
+  (1) $G$ does not contain a cycle;
+  (2) all subgraphs of $G$ contain a vertex with degree at most 1; and
+  (3) there exists an ordering $v_1,\dotsc,v_n$ of $V(G)$ such that
+  $\abs{N(v_i) \cap \{v_1,\dotsc,v_{i-1}\}} \leq 1$ for all $i \in [n]$.
+\end{corollary}
+\begin{prf}
+  (1) and (2) are equivalent by the last corollary.
+
+  (2) implies (3) by induction on $V(G)$.
+  By assumption, $G$ has a vertex $\deg v_n \leq 1$.
+  Let $G' = G$ without $v_n$.
+  By assumption, every subgraph of $G'$ has a vertex with degree at most 1 since $G$ does.
+  By induction, there exists the desired ordering $v_1,\dotsc,v_{n-1}$ of $V(G')$
+  but then just let $v_1,\dotsc,v_n$ as desired.
+
+  (3) implies (2): let $H$ be a subgraph of $G$
+  and $i$ be the largest index such that $v_i \in V(H)$.
+  Then, $\abs{N_H(v_i)} \leq \abs{N_G(v_i) \cap \{v_1,\dotsc,v_{i-1}\}} \leq 1$
+  by assumption.
+\end{prf}
+
+Consider now the question: can we decide efficiently whether a graph $G$ contains a cycle?
+
+\begin{defn}[polynomial time]
+  A decision problem is in polynomial time if it can be solved in
+  $O(\abs{V(G)}^k)$ for some $k \in \N$.
+  Denote the set of such problems by $\P$.
+\end{defn}
+
+Then, ask if the decision problem ``does $G$ contain a cycle?'' lies in $\P$.
+
+\section{(10/31)}
+
+\begin{defn}[nondeterministic polynomial time]
+  A decision problem is in $\NP$ if the problem of verifying
+  a certificate of correctness for ``yes'' results is in $\P$.
+
+  Equivalently, a nondeterministic algorithm can solve ``yes'' instances in $\P$.
+\end{defn}
+\begin{defn}[$\coNP$ time]
+  A decision problem is in $\coNP$ if verification of ``no'' instances is in $\P$.
+\end{defn}
+
+\begin{remark}
+  Clearly, $\P \subseteq \NP$ and $\P \subseteq \coNP$.
+\end{remark}
+
+It is simple to verify a cycle exists after finding one, so this is in $\NP$.
+
+Point (3) of the \nameref{cor:464-neg} is a sufficient ``no'' certificate,
+so this is also in $\coNP$.
+
+It is not obvious that this problem is in $\P$ or not in $\P$.
+
+\begin{conjecture}
+  $\P \neq \NP$
+\end{conjecture}
+
+\begin{conjecture}
+  $\P = \NP \cap \coNP$
+\end{conjecture}
+
+\begin{defn}[$\NP$-complete]
+  A problem in $\NP$ and, if it is in $\P$, implies that $\P = \NP$.
+  Informally, a problem in $\NP$ that is as hard as possible.
+\end{defn}
+
+We can use the \nameref{cor:464-neg} to find whether a cycle exists in $G$:
+\begin{enumerate}[1.,nosep]
+  \item $i \gets \abs{V(G)}$
+  \item $G_n \gets G$
+  \item \textbf{while} $\exists v_i \in V(G)$, $\deg v_i \leq 1$ \textbf{do:} \\
+        \hspace*{2em} $G_{i-1} \gets G_i \setminus \{v_i\}$ \\
+        \hspace*{2em} $i \gets i - 1$
+  \item \textbf{if} $i = 0$ \textbf{then} NO \textbf{else} YES
+\end{enumerate}
+
+\begin{defn}[connectedness]
+  For every $u,v\in V(G)$, there exists a path from $u$ to $v$.
+\end{defn}
+\begin{example}
+  $K_n$, $C_n$, and $P_n$ are all connected for every $n$ (trivial).
+  $K_{m,n}$ is connected as long as either $m \neq 0$ or $n \neq 0$.
+\end{example}
+
+\begin{defn}[component]
+  A non-empty subset $X$ of $V(G)$ such that the graph induced by $X$ is connected
+  and $X$ is maximal with respect to this property.
+\end{defn}
+
+\begin{example}
+  The graph \tikz[baseline=-15pt]\graph{ 1[y=-0.5]--2--3--4[y=-0.5], 2--5[x=1.5]--3 };
+  is connected and has one component.
+\end{example}
+\begin{example}
+  The graph \tikz[baseline=-15pt]\graph[grow=right]{
+  2--{1,3} -!- 4--{5,6}; 5--6;
+  }; has two unconnected components.
+\end{example}
+
+\begin{theorem}
+  The components of a graph are pairwise disjoint and partition $V(G)$.
+\end{theorem}
+
+\begin{defn}[equivalence relation]
+  A binary relation $\sim$ if it is (1) reflexive, i.e., $x \sim x$,
+  (2) symmetric, i.e., $x \sim y \implies y \sim x$,
+  and (3) transitive, i.e., $x \sim y \sim z \implies x \sim z$.
+\end{defn}
+
+\begin{defn}[equivalence class]
+  The set $[x]_\sim := \{y : x \sim y\}$.
+\end{defn}
+
+\begin{prop}
+  Given equivalence relation $\sim : S \to S$,
+  the equivalence classes of $\sim$ partition $S$.
+\end{prop}
+
+\section{(11/02)}
+
+\begin{theorem}[path equivalence]\label{thm:patheq}
+  Let $\sim_G$ be a binary relation on $V(G)$
+  such that $x \sim_G y$ if a path exists from $x$ to $y$ in $G$.
+  Then, $\sim_G$ is an equivalence relation.
+\end{theorem}
+\begin{prf}
+  Show reflexivity, symmetry, and transitivity.
+  Let $x,y,z \in V(G)$.
+
+  Notice that a path from $x$ to $x$ exists, namely, the path $\vb p = (x)$.
+  Then, $x \sim_G x$.
+
+  Suppose $x \sim_G y$.
+  Then, there exists a path $(x,xv_1,\dotsc,v_ky,y)$ from $x$ to $y$.
+  But then $(y,yv_k,\dotsc,v_1x,x)$ is a path from $y$ to $x$.
+  Therefore, $y \sim_G x$.
+
+  Suppose $x \sim_G y \sim_G z$.
+  Then, there exist paths from $x$ to $y$ and $y$ to $z$.
+  By Corollary \nameref{cor:463}, there exists a path from $x$ to $z$.
+  Therefore, $x \sim_G z$.
+
+  Thus, $\sim_G$ is an equivalence relation.
+\end{prf}
+\begin{corollary}
+  A subset of $V(G)$ is an equivalence class of $\sim_G$
+  if and only if it is a component.
+\end{corollary}
+\begin{prf}
+  Exercise.
+\end{prf}
+
+The immediate consequence is the theorem
+
+\begin{theorem}
+  The components of a graph $G$ partition $V(G)$.
+\end{theorem}
+
+Consider the decision problem if a graph $G$ is connected.
+Is this in \P? \NP? \coNP?
+
+Given a set of paths from every pair of vertices $(x,y)$,
+it will take $O(\abs{V(G)}^3)$ time to verify that all the paths exist.
+This is polynomial, so we are in \NP.
+
+\begin{defn}[cut]
+  For graph $G$ and $X \subseteq V(G)$,
+  the \term{cut induced by $X$} is
+  $\delta(X) = \{xy \in E(G) : x \in X, y \not\in X\}$.
+\end{defn}
+
+\begin{example}
+  In \tikz[baseline=-15pt]\graph{{1,2}--3--4--{5,6}};,
+  $\delta(\{1,2,4\}) = \{13,23,43,45,46\}$.
+\end{example}
+
+\begin{example}
+  In \tikz[baseline=-15pt]\graph{ {1,2}--3-!-{4,5}-!-{6,7}; 1--2, 4--5--6--7;};,
+  $\delta(\{1,3,7\}) = \{12,23,67\}$
+  and $\delta(\{1,2,3\}) = \varnothing$.
+\end{example}
+
+\begin{theorem}[4.8.5]
+  A graph $G$ is connected if and only if there does not exist
+  non-empty $X \subsetneq V(G)$ with $\delta(X) = \varnothing$.
+\end{theorem}
+\begin{prf}
+  Suppose $G$ is not connected.
+  Then, $G$ has at least two components.
+  Let $X$ be one of them, so that $X \subseteq V(G)$ and $X \neq V(G)$.
+  Then, $\delta(X) = \varnothing$ because if $u \in X$ and $uv \in \delta(X)$,
+  then $u \sim_G v$, so $v \in X$ and $uv \not\in \delta(X)$.
+
+  Conversely, there exists non-empty $X \subsetneq V(G)$
+  with $\delta(X) = \varnothing$.
+  Then, pick $x \in \delta(X)$ and $y \in V(G) \setminus \delta(X)$.
+
+  Notice that for there to be a path $xv_1\cdots v_ky$ from $x$ to $y$,
+  we must cross between $X$ and $V(G) \setminus X$.
+  This is because either (1) $v_1,\dotsc,v_k$ are all in $X$,
+  meaning $v_ky \in \delta(X)$
+  or (2) some $v_i$ is the first that is not in $X$, meaning $v_{i-1}v_i \in \delta(X)$.
+
+  Since $\delta(X)$ is empty, there cannot be a path from $x$ to $y$.
+  Therefore, $G$ is not connected.
+\end{prf}
+
+With this theorem, connectivity is in \coNP.
+Given a component $\varnothing \neq X \subsetneq V(N)$,
+we need only examine $\delta(X)$ and find it is empty.
+This runs in $O(\abs{V(G)} + \abs{E(G)})$.
+
+\section{(11/04)}
+
+Recall the Seven Bridges of K\"onigsberg across the Pregel:
+there is a bridge between the islands of Kneiphof and Lomse,
+two bridges from each bank of the Pregel to Kneiphof
+and one bridge from each bank to Lomse.
+Is it possible to start and end in the same place and traverse each bridge once?
+
+Recast as a graph theory problem:
+given the graph \tikz[baseline=-5pt]\graph{1 --[bend left] {2[y=1],3} -- 4; 1 --[bend right] {2,3}, 1--4;};
+is there a closed walk that uses every edge exactly once?
+Generalize.
+
+\begin{defn}[Eulerian circuit]
+  A closed walk in $G$ that uses every edge exactly once.
+\end{defn}
+
+Finding an Eulerian circuit is in $\NP$:
+given an Eulerian circuit, traverse it to verify correctness.
+
+\begin{theorem}[4.9.2]
+  Let $G$ be a connected graph.
+  Then, $G$ has an Eulerian circuit if and only if every vertex of $G$ has even degree.
+\end{theorem}
+\begin{prf}
+  Suppose an Eulerian circuit exists.
+  Let $v \in V(G)$.
+  Every appearance of $v$ in the circuit has an incoming and outgoing edge.
+  Then, since the circuit uses all edges, $\abs{\delta(v)} = \deg v$ is even.
+
+  Conversely, suppose that $G$ is connected and every vertex has even degree.
+
+  Proceed by induction on $\abs{E(G)}$.
+
+  If there exists a vertex with degree 0,
+  then since $G$ is connected, it is the only vertex and $G$ has no edges.
+  Then, the empty walk is an Eulerian circuit.
+
+  If every vertex has degree at least 2,
+  then by Theorem \nameref{thm:deg2cycle}, $G$ contains a cycle $C$.
+
+  Let $G'$ be the subgraph of $G$ without $E(C)$.
+  Note that every vertex of $G'$ still has even degree,
+  since we either leave it alone or remove two edges.
+  Let $C_i$ be the components of $G'$.
+  Inductively, each component $C_i$ has an Eulerian circuit $W_i$
+  since $\abs{E(C_i)} < \abs{E(G)}$.
+
+  Finally, for each $C_i$, there is a $v_i \in V(C_i) \cap V(C)$
+  since $G$ is connected.
+  Insert at $v_i$ the circuit $W_i$ to create an Eulerian circuit of $G$.
+\end{prf}
+
+\begin{corollary}
+  Let $G$ be a graph. Then $G$ has an Eulerian circuit if and only if
+  every vertex has even degree and all edges are in the same component.
+\end{corollary}
+
+Now, it is obvious that finding an Eulerian circuit is in \coNP:
+either an odd degree vertex or an empty cut with an edge on both sides.
+We can also show it is in \P, analyzing the algorithm.
+
+\begin{defn}[bridge]
+  An edge $e \in E(G)$ such that $G - e$ has more components than $G$.
+\end{defn}
+
+\begin{example}
+  In the graph \tikz[baseline=-30pt]\graph{1[y=-1]--{2,3,4} -!- 5[y=-1] -- {6,7[y=-1]}; 2--3--4, 3--5, 6--7;};,
+  the edge 35 is a bridge.
+\end{example}
+
+\begin{example}
+  In the graph
+  \begin{center}
+    \tikz\graph[spring layout]{1--2--3--1, 3--4--5, 6--7, 8--9--10--8, 10--11--12, 9--13};
+  \end{center}
+  the edges 34, 45, 67, 913, 1011, and 1012 are bridges.
+\end{example}
+
+\begin{lemma}[4.10.2]\label{lem:bridgecomp}
+  Let $G$ be a connected graph.
+
+  If $e = xy$ is a bridge of $G$, then $G-e$ has exactly two components
+  and $x$ and $y$ are in different components of $G-e$.
+\end{lemma}
+
+\begin{prf}
+  Let $A = \{v \in V(G) : v \sim_{G-e} x\}$
+  and $B = \{v \in V(G) : v \sim_{G-e} y\}$.
+
+  Claim that $V(G) = A \cup B$.
+  Since $G$ is connected, there exists a path $P$ from $x$ to $v$.
+  If $y \not\in V(P)$, then $P$ is a path from $x$ to $v$ in $G-e$, hence $v \in A$.
+
+  Assume $y \in V(P)$. Then, the subpath $P'$ of $P$ from $y$ to $v$
+  does not use $e$ and hence $v \in B$. This completes the proof of the claim.
+
+  If $A \cap B = \varnothing$, then all of $G-e$ is in one equivalence class of $\sim_{G-e}$,
+  contradicting that $G-e$ has at least 2 components.
+
+  Therefore, $A$ and $B$ partition $V(G)$ and indeed are the components of $G-e$.
+\end{prf}
+
+\section{(11/07)}
+
+\begin{prop}[converse of \nameref{lem:bridgecomp}]\label{prop:compbridge}
+  Let $e = xy \in E(G)$.
+  If $x$ and $y$ are in different components of $G-e$, $e$ is a bridge.
+\end{prop}
+\begin{prf}
+  First, note that if $u \not\sim_G v$, then $u \not\sim_{G-e} v$.
+  This implies that $G/{\sim_G} \subseteq G_{G-e}/{\sim_{G-e}}$.
+  Then, since $x \sim_G y$ (i.e., $[x] = [y]$)
+  but $x \not\sim_{G-e} y$ (i.e., $[x] \neq [y]$),
+  $G/{\sim_G}$ must be a strict subset.
+  Since $G-e$ has more components than $G$, $e$ is a bridge.
+\end{prf}
+
+\begin{theorem}[4.10.3]\label{thm:bridge}
+  Let $e = xy \in E(G)$. Then, \Tfae,
+  \begin{enumerate}[(1),nosep]
+    \item $e$ is a bridge of $G$;
+    \item $x$ and $y$ are in different components of $G-e$;
+    \item there does not exist a path from $x$ to $y$ in $G-e$;
+    \item there does not exist a cycle of $G$ containing $e$
+  \end{enumerate}
+\end{theorem}
+\begin{prf}
+  (1) and (2) are equivalent by Lemma \nameref{lem:bridgecomp}
+  and the \nameref{prop:compbridge}.
+
+  (2) and (3) are equivalent since a component of $G-e$
+  is exactly an equivalence class of $\sim_{G-e}$,
+  so being in different components means that there is no path.
+
+  (3) and (4) are equivalent since if there is a path $P$ from $x$ to $y$ in $G-e$,
+  then $P + e$ is a cycle in $G$.
+  Conversely, if $C$ is a cycle in $G$ containing $e$, then $C-e$
+  is a path from $x$ to $y$ in $G-e$.
+
+  Note: $(1) \iff (4)$ is Theorem 4.10.3.
+\end{prf}
+
+
+\begin{corollary}[4.10.4]\label{cor:pathcycle}
+  Let $G$ be a graph and $u,v \in V(G)$.
+  If there exist two distinct paths from $u$ to $v$ in $G$,
+  then $G$ contains a cycle.
+\end{corollary}
+\begin{prf}
+  Let $P_1 = u x_1 \cdots x_k v$ and $P_2 = u y_1 \cdots y_\ell v$.
+
+  Since $P_1 \neq P_2$, there exists $i$ such that
+  $x_i \neq y_i$ and for all $j < i$, $x_j = y_j$.
+
+  Notice that $P_2' = y_{i-1}y_i\cdots y_\ell v$
+  is a path from $y_{i-1}$ to $v$ in $G-x_{i-1}x_i$.
+  Also, $P_1' = x_i x_{i+1} \cdots x_k v$ is a path from $x_{i+1}$ to $v$
+  in $G - x_{i-1}x_i$.
+  That is, $x_i \sim_{G-e} v \sim_{G-e} y_{i-1} = x_{i-1}$.
+  Therefore, $x_i$ and $x_{i-1}$ are in the same component of $G-x_ix_{i-1}$.
+
+  By Theorem \nameref{thm:bridge}, there exists a cycle of $G$ containing $x_ix_{i-1}$.
+\end{prf}
+
+\chapter{Trees}
+
+\begin{defn}[tree]
+  A connected graph that has no cycles.
+\end{defn}
+
+\begin{defn}[forest]
+  A graph that has no cycles.
+\end{defn}
+
+Notice that every tree is a forest.
+Also, the components of a forest are trees.
+Taking a subgraph cannot induce a cycle,
+so subgraphs of forests are forests
+and subgraphs of trees are forests.
+Finally, every forest is the disjoint union of trees (namely, its components).
+
+\begin{lemma}[5.1.3]\label{lem:uniquepath}
+  If $u$ and $v$ are vertices of a tree $T$,
+  then there is a unique $u$,$v$-path in $T$.
+\end{lemma}
+\begin{prf}
+  There exists at least one such path since $T$ is connected.
+  But there is at most one path by Corollary \nameref{cor:pathcycle}
+  since $T$ has no cycle by definition.
+\end{prf}
+
+\begin{lemma}[5.1.4]\label{lem:treebridge}
+  Every edge of a tree $T$ is a bridge.
+\end{lemma}
+\begin{prf}
+  There are no cycles in $T$, so by Theorem \nameref{thm:bridge}, every edge is a bridge.
+\end{prf}
+
+\begin{defn}[leaf]
+  A vertex in a tree of degree exactly 1.
+\end{defn}
+
+\begin{theorem}[leaf existence]\label{thm:leafexist}
+  Every tree $T$ with at least two vertices has a leaf.
+\end{theorem}
+\begin{sol}
+  Since $T$ has no cycle, then $T$ has a vertex $\deg(v) \leq 1$ by
+  the \nameref{cor:464-neg}.
+
+  If $\deg(v) = 0$, then $v$ is a component by itself.
+  But since $\abs{V(T)} \geq 2$, there is another component,
+  contradicting that $T$ is a tree.
+
+  Therefore, $v$ is a leaf.
+\end{sol}
+
+\section{(11/09)}
+
+\begin{theorem}
+  \TFAE:
+  \begin{enumerate}[(1),nosep]
+    \item $G$ is a tree
+    \item $G$ is connected and every connected subgraph of $G$
+          with at least two vertices has a leaf
+    \item There exists an ordering $(v_i,\dotsc,v_n)$ such that
+          $\abs{N(v_i) \cap \{v_1,\dotsc,v_{i-1}\}} = 1$ for all $2 \leq i \leq n$
+  \end{enumerate}
+\end{theorem}
+
+\begin{theorem}[very useful theorem]\label{thm:leafremove}
+  Let $T$ be a tree and $v$ a leaf of $T$.
+  Then, $T-v$ is a tree.
+\end{theorem}
+\begin{prf}
+  Clearly, $T-v$ is a forest (removal cannot create a cycle).
+
+  By Lemma~\nameref{lem:treebridge}, every edge of $T$ is a bridge.
+
+  Let $u$ be the unique neighbour of $v$ and $e=uv$.
+  Then, $e$ is a bridge.
+
+  Since $T$ is connected, $T-e$ has exactly two components
+  and $u$ and $v$ are in different components.
+  Since $v$ now has degree 0 in a component on its lonesome,
+  $V(T) \setminus \{v\}$ is a component of $T-e$ and in fact of $T-v$.
+
+  Therefore, $T-v$ is connected and $T-v$ is a tree
+\end{prf}
+
+Notice that induction on this theorem proves equivalence of (1) and (3) above.
+
+\begin{theorem}[5.1.8]\label{thm:2leaves}
+  Every tree with at least two vertices has at least two leaves.
+\end{theorem}
+\begin{prf}[Postle]
+  Proceed by induction on $\abs{V(T)}$.
+
+  If $\abs{V(T)} = 2$, then $T = K_2$ with both vertices being leaves.
+
+  Otherwise, if $\abs{V(T)} \geq 3$, by \nameref{thm:leafexist},
+  $T$ has at least one leaf $v$.
+  Then, by the \nameref{thm:leafremove}, $T-v$ is a tree
+  where $\abs{V(T-v)} = \abs{V(T)} - 1$.
+  By induction, $T-v$ has at least two leaves $v_1$ and $v_2$.
+
+  Let $u$ be the neighbour of $v$.
+  Then, $u$ cannot be both $v_1$ and $v_2$, so either $v_1$ or $v_2$ is another
+  leaf in $T-v$ and in $T$, as desired.
+\end{prf}
+\begin{prf}[Book]
+  Let $P = v_1 \cdots v_k$ be a longest path in $T$.
+  Then, $v_1$ and $v_k$ are leaves of $T$
+  (if not, then there is either a longer path or a cycle).
+\end{prf}
+
+\begin{theorem}[5.1.5]\label{thm:edgenum}
+  If $T$ is a tree, then $\abs{E(T)} = \abs{V(T)} - 1$.
+\end{theorem}
+\begin{prf}
+  Proceed by induction on $\abs{V(T)}$.
+  If $\abs{V(T)} = 1$, then $E(T) = 0 = \abs{V(T)} - 1$.
+
+  Assume $\abs{V(T)} \geq 2$.
+  Then, $T$ has a leaf by Theorem~\nameref{thm:2leaves}.
+  But $T-v$ is a tree by the \nameref{thm:leafremove}.
+  Since $T-v$ removed a leaf, it removed only one edge.
+  That is, by induction,
+  $\abs{E(T)} = \abs{E(T-v)} + 1 = (\abs{V(T-v)} - 1) + 1 = \abs{V(T)} - 1$
+  as desired.
+\end{prf}
+
+\begin{corollary}[5.1.6]\label{cor:forestedgenum}
+  If $G$ is a forest with exactly $k$ components,
+  then $\abs{E(G)} = \abs{V(G)} - k$.
+\end{corollary}
+\begin{prf}
+  Let $T_1,\dotsc,T_k$ be the components of $G$.
+  Then, $T_i$ are trees.
+  By Theorem~\nameref{thm:edgenum}, $\abs{E(T_i)} = \abs{V(T_i)} - 1$.
+
+  Then, $\sum \abs{E(T_i)} = \sum(\abs{V(T_i)} - 1) = \abs{V(T)} - k$.
+\end{prf}
+
+\begin{prop}
+  If $T$ is a tree with at least two vertices
+  and $n_r = \{ v \in V(T) : \deg(v) = r \}$, then we can write
+  $n_1 = 2 + \sum_{r \geq 3} (r-2) n_r$.
+\end{prop}
+\begin{prf}
+  By Theorem~\nameref{thm:edgenum}, $\abs{E(T)} = \abs{V(T)} - 1$.
+  But by the Handshaking Lemma, $2\abs{E(T)} = \sum \deg(r) = \sum n_r r$.
+  Combining, $2(\abs{V(T)}-1) = 2\abs{E(T)} = \sum n_r r$.
+
+  This gives $2(\sum n_r r) - 2 = \sum r n_r$,
+  so that $2n_1 + 2n_2 + \dotsb - 2 = n_1 + 2n_2 + \dotsb$
+  and we can write $n_1 = 2 + \sum_{r \geq 3}(r-2)n_r$.
+\end{prf}
+
+This proposition gives another altnernate proof for Theorem~\nameref{thm:2leaves}.
+
+\begin{defn}[spanning tree]
+  A spanning subgraph of $G$ that is a tree.
+\end{defn}
+
+\begin{theorem}[5.2.1]\label{thm:conspan}
+  A graph $G$ is connected if and only if $G$ has a spanning tree.
+\end{theorem}
+\begin{prf}
+  If $G$ has a spanning tree, then $G$ is clearly connected
+  since paths exist by walking along the connected spanning tree.
+
+  If $G$ is connected, then we proceed by induction on $\abs{E(G)}$.
+  If $G$ is a tree, then we are done.
+
+  Since $G$ is connected, it contains a cycle $C$ by Theorem~\nameref{thm:deg2cycle}.
+  Let $e \in C$.
+  Then, by Theorem~\nameref{thm:bridge}, $e$ is not a bridge.
+  Hence, $G-e$ has the same number of components.
+
+  But $\abs{E(G-e)} = \abs{E(G)} - 1 < \abs{E(G)}$.
+  By induction, $G-e$ has a spanning tree $T$.
+  Since we deleted only an edge, $T$ is a spanning tree for $G$.
+\end{prf}
+
+\section{(11/11)}
+
+Consider again the forwards (hard) direction of Theorem~\nameref{thm:conspan}.
+
+\begin{prf}[``grow a tree'']
+  Let $T$ be a tree in $G$ such that $\abs{V(T)}$ is maximized.
+  Such a $T$ exists as $G$ has a single vertex.
+  If $V(T) = V(G)$, then $T$ is spanning and we are done.
+
+  Assume $V(T) \neq V(G)$.
+  Then, since $G$ is connected, there exists a non-empty cut $\delta(V(T))$
+  because $\varnothing \neq V(T) \neq V(G)$.
+  Therefore, there exists an edge $e \in \delta(V(T))$.
+  Then, $T' = T + e$ is a tree with $\abs{V(T')} = \abs{V(T)} + 1 > \abs{V(T)}$
+  contradicting the choice of $T$.
+\end{prf}
+
+\begin{prf}[``grow a forest'']
+  Let $F$ be a spanning forest such that $\abs{E(F)}$ is maximized.
+  This exists since $F$ with all vertices, no edges is such a graph.
+
+  If $\abs{E(F)} = \abs{V(G)} - 1$,
+  then $F$ is a spanning tree.
+
+  Assume $\abs{E(F)} \leq \abs{V(G)} - 1$
+  so that $F$ is not a tree.
+
+  Let $F_1$ be a component of $F$.
+  Since $G$ is connected, $\delta(F_1) \neq \varnothing$
+  so $\exists e \in \delta(F_1)$.
+  Then, $F' = F + e$ is a spanning forest with more edges.
+\end{prf}
+
+\begin{prf}[cute]
+  Induct on $\abs{V(G)}$.
+  Let $v \in V(G)$. Then $G-v$ has components $H_1,\dotsc,H_k$ for $k \geq 1$.
+  These components are connected with fewer vertices,
+  so by induction, spanning trees $T_1,\dotsc,T_k$ exist.
+  Then, since $G$ is connected, there exist $u_i \in V(H_i)$ where $vu_i \in E(G)$.
+  Finally, $\bigcup (T_i + vu_i)$ is a spanning tree of $G$.
+\end{prf}
+
+\begin{corollary}[5.2.2]\label{cor:treenum}
+  If $G$ is connected and $\abs{E(G)} = \abs{V(G)} - 1$, then $G$ is a tree.
+\end{corollary}
+\begin{prf}
+  By Theorem~\nameref{thm:conspan}, $G$ has a spanning tree $T$ where $V(G) = V(T)$.
+  By Theorem~\nameref{thm:edgenum}, $\abs{E(T)} = \abs{V(T)} - 1 = \abs{V(G)} - 1$.
+  Since $E(T) \subseteq E(G)$, we have that $E(G) = E(T)$ and $G$ is the tree $T$.
+\end{prf}
+
+\begin{theorem}[5.2.3]
+  If $T$ is a spanning tree of $G$ and $e$ is an edge of $G$ not in $T$,
+  then $T + e$ contains exactly one cycle $C$.\tablefootnote{This is the \term{fundamental cycle of $e$ with respect to $T$}}
+  Also, if $e' \in E(C)$, then $T + e - e'$ is a spanning tree of $G$.
+\end{theorem}\spewnotes
+\begin{prf}
+  Since $T$ is a tree, every cycle of $T+e$ must contain $e$.
+
+  Let $C$ be a cycle containing $e = uv$.
+  Then, $C-e$ is a path in $T$ from $u$ to $v$.
+  By Lemma~\nameref{lem:uniquepath}, $C-e$, and indeed $C$, is unique.
+
+  Suppose $e' \in E(C)$.
+  Then, by Lemma~\nameref{lem:bridgecomp}, $e'$ is not a bridge.
+  That is, $T+e-e'$ has the same number of components as $T+e$, i.e., it is connected.
+  But $\abs{E(T+e-e')} = \abs{E(T)}$ so by Corollary~\nameref{cor:treenum}, it is a tree.
+\end{prf}
+
+\begin{theorem}[5.2.4]
+  If $T$ is a spanning tree of $G$ and $e \in E(T)$,
+  then $T-e$ has two components.
+  If $e'$ is in the cut induced by one of the components,
+  $T-e+e'$ is a spanning tree.
+\end{theorem}
+\begin{prf}
+  The first part is obvious by Lemma~\nameref{lem:bridgecomp}.
+
+  Let $X$ and $Y$ be the components of $T-e$.
+  Since $e' \in \delta(X) = \delta(Y)$,\footnote{The \term{fundamental cut of $e$ with respect to $T$}}
+  we have that $X$ and $Y$ are the same component
+  in $T-e+e'$, meaning that it is connected.
+  As above, by Corollary~\nameref{cor:treenum}, it is a tree.
+\end{prf}
+
+Equivalently, if we \emph{add} an edge $e$ to $T$,
+then \emph{deleting} an edge in its fundamental cycle yields a spanning tree;
+and if we instead \emph{delete} the edge,
+\emph{adding} from its fundamental cut gives a spanning tree.
+
+\begin{lemma}[5.3.1]\label{lem:oddbi}
+  An odd cycle is not bipartite.
+\end{lemma}
+\begin{prf}
+  See \Cref{exa:17-2}.
+
+  Let $V(C_n) = \{v_1,\dotsc,v_n\}$.
+  Suppose for a contradiction there exists a bipartition
+  $(A,B)$ of $V(C_n)$ with $E(C_n) \subseteq \delta(A)$.
+
+  We assume \Wlog that $v_1 \in A$.
+  Given $v_1v_2 \in E(G)$, this means $v_2 \in B$.
+  Likewise up to $v_n \in A$.
+  But then $v_1v_n \not\in \delta(A)$.
+  Contradiction.
+\end{prf}
+
+\begin{prop}
+  If $G$ is bipartite, then every subgraph of $G$ is bipartite.
+\end{prop}
+\begin{prf}
+  There exists a bipartition of $G$.
+  If we restrict it to a subgraph, it is stil valid.
+\end{prf}
+
+\section{(11/14)}
+
+\begin{theorem}[5.3.2]\label{thm:oddbi}
+  A graph is not bipartite if and only if it has no odd cycles.
+\end{theorem}
+\begin{prf}
+  The forwards direction follows from the above proposition
+  and by Lemma~\nameref{lem:oddbi}.
+
+  Suppose $G$ has no odd cycles.
+  By the proposition, $G$ is bipartite if and only if its components are bipartite.
+
+  Then, we may assume $G$ is connected.
+  By Theorem~\nameref{thm:conspan}, there exists a spanning tree $T$.
+  Let $v \in V(T)$.
+  Partition $(A,B)$ based on the parity of the distance from $v$.
+
+  If this is not the desired bipartition, then there exists $u_1u_2 \in E(G)$
+  with $u_1$ and $u_2$ both in either $A$ or $B$.
+  Let $w$ be the vertex of the unique $(u_1, u_2)$-path $P$
+  whose $(w,v)$-path has minimum length.
+
+  Then, let $P_1$ be the $(u_1,v)$-path in $T$, $P_2$ be the $(u_2,v)$-path,
+  $P_1'$ be the $(u_1,w)$-path, $P_2'$ be the $(u_2,w)$-path,
+  and $Q$ be the $(v,w)$-path.
+  By path uniqueness, $\abs{E(P_1)} = \abs{E(P_1')} + \abs{E(Q)}$
+  and $\abs{E(P_2)} = \abs{E(P_2')} + \abs{E(Q)}$.
+
+  But since $u_1$ and $u_2$ are in the same partition,
+  $\abs{E(P_1)} \equiv \abs{E(P_2)} \pmod{2}$.
+  It follows that $\abs{E(P_1')} \equiv \abs{E(P_2')} \pmod{2}$.
+  Therefore, $\abs{E(P)} = \abs{E(P_1')} + \abs{E(P_2')} \equiv 0 \pmod{2}$.
+
+  Therefore, $P$ has an even number of edges, so $P + u_1u_2$ is an odd cycle in $G$.
+\end{prf}
+
+Consider the decision problem of whether $G$ is bipartite.
+
+It is in \NP, since we can just give the bipartition.
+By Theorem~\nameref{thm:oddbi}, it is also in \coNP, since we can give an odd cycle.
+
+We can give a polynomial-time algorithm to find the bipartition/odd cycle:
+
+\begin{enumerate}[1.,nosep]
+  \item \textbf{for} $H_i$ component of $G$ \textbf{do:}
+  \item \hspace*{0.5cm} $T_i \gets$ spanning tree of $H_i$
+  \item \hspace*{0.5cm} pick $v_i \in V(T_i)$
+  \item \hspace*{0.5cm} construct $A_i$ and $B_i$ as in the proof
+  \item \hspace*{0.5cm} \textbf{if} there are no edges with both ends in $A_i$ or $B_i$ \textbf{then:}
+  \item \hspace*{1cm} \textbf{continue}
+  \item \hspace*{0.5cm} \textbf{else:}
+  \item \hspace*{1cm} \textbf{return} NO
+  \item \textbf{return} YES
+\end{enumerate}
+
+\setcounter{chapter}{6}
+\chapter{Planar Graphs}
+
+\begin{defn}[planar graph]
+  A graph that can be \term{drawn in the plane} without edges crossing,
+  i.e., vertices are distinct points and
+  edges are continuous, non-interescting curves connecting those points.
+  This drawing is a \term{planar embedding}.
+  A \term{plane graph} is a planar graph with a planar embedding.
+\end{defn}
+
+\begin{example}
+  These two distinct planar embeddings embed the same graph:
+  \begin{center}
+    \tikz\graph[dots nodes]{ subgraph C_n[n=3,clockwise] -- 4 -!- 5[x=-1,y=0.5] };
+    \qquad
+    \tikz\graph[dots nodes]{ subgraph C_n[n=3,clockwise] -- 4 -!- 5[x=-1.4,y=0.3] };
+  \end{center}
+\end{example}
+
+\begin{defn}[face]
+  A connected region of $\R^2 - (E(G) \cup V(G))$.
+  Let $F(G)$ be the set of faces of $G$.
+\end{defn}
+
+\begin{defn}[boundary walk]
+  A sequence $v_0,e_1,v_1,\dotsc,v_0$
+  which traverses the edges on the boundary of a face.\tablefootnote{i.e., ``incident'' to the face}
+\end{defn}\spewnotes
+
+Note: a vertex may appear multiple times in a boundary walk.
+
+\begin{example}
+  In the graph
+  \begin{center}
+    \tikz\graph[spring layout, dots nodes]{
+      1--2--3--4--1, 1--5--6--1, 1--7, 1--8
+    };
+  \end{center}
+  the central vertex appears 4 times in the boundary walk of the ``outside''.
+\end{example}
+
+An edge appears twice if and only if that edge is a bridge.
+
+\begin{defn}[degree (length) of a face]
+  The length of the boundary walk, counting multiplicity.
+\end{defn}
+
+If the boundary is not connected, then the boundary walk is the union
+of the boundary walks with respect to each component.
+
+\begin{lemma}[Faceshaking Lemma]\label{lem:face}
+  Let $G$ be a plane graph. Then,
+  \[ \smashoperator{\sum_{f \in F(G)}} \deg(f) = 2\abs{E(G)} \]
+  (by analogy to the \nameref{thm:hand})
+\end{lemma}
+\begin{prf}
+  Each edge contributes exactly 2 to this sum.
+  If it is a bridge, 2 to the one face it is incident with;
+  otherwise, 1 to each of the 2 faces it is incident with.
+\end{prf}
+
+\begin{corollary}
+  There are an even number of odd-degree faces.
+\end{corollary}
+\begin{corollary}
+  The average degree of a face is $\frac{2\abs{E(G)}}{\abs{F(G)}}$.
+\end{corollary}
+
+\section{(11/16; from Bradley)}
+
+\begin{theorem}[Euler's Formula]\label{thm:euler}
+  Let $G$ be a connected planar graph.
+  Then, $\abs{V(G)} - \abs{E(G)} + \abs{F(G)} = 2$.
+\end{theorem}
+\begin{prf}
+  Proceed by induction on $\abs{E(G)}$.
+
+  If $G$ is a tree, the number of edges is minimized.
+  Then, $\abs{V(G)} = \abs{E(G)} - 1$ by Corollary~\nameref{cor:treenum}
+  and there is one face, so $\abs{V(G)} - \abs{E(G)} + \abs{F(G)} = 1 + 1 = 2$.
+
+  Otherwise, $G$ is not a tree.
+  Then, $G$ contains a cycle $C$.
+  Let $e \in C$ and $G' = G - e$.
+
+  Then, $\abs{V(G')} = \abs{V(G)}$ and $\abs{E(G')} = \abs{E(G)} - 1$.
+  Since $e$ was in a cycle, it was incident to two faces that are now joined,
+  so $\abs{F(G')} = \abs{F(G)} - 1$.
+  Finally, since $e$ is a bridge, $G'$ is connected.
+  Therefore, by induction, since $\abs{E(G')} < \abs{E(G)}$,
+  we have $\abs{V(G')} - \abs{E(G')} + \abs{F(G')} = 2$.
+  Substituting, $\abs{V(G)} - \abs{E(G)} + \abs{F(G)} = 2 + 1 - 1 = 2$ as desired.
+\end{prf}
+
+\begin{corollary}[Euler's Formula for unconnected graphs]\label{cor:euler}
+  Let $G$ be a graph with $k$ components.
+  Then, $\abs{V(G)} - \abs{E(G)} + \abs{F(G)} = 1 + k$.
+\end{corollary}
+\begin{prf}
+  Do the same thing but with the base case of a forest instead of a tree.
+  Alternatively, add the minimum $k-1$ edges to connect the components
+  and apply the ordinary formula.
+\end{prf}
+
+\begin{lemma}[7.5.1]\label{lem:751}
+  Let $G$ be a planar graph. If $G$ contains a cycle,
+  the boundary of any face contains a cycle.
+\end{lemma}
+\begin{prf}
+  Since $G$ contains a cycle, there are at least two faces.
+  Then, a face $f$ is incident to at least one other face $g$.
+  Pick an edge $e$ on the boundary of $f$ and $g$.
+  Consider the component of the boundary of $f$ that $e$ lies in
+  and consider the boundary walk.
+  Since $e$ is incident to two faces, $e$ appears once in the walk.
+  Therefore, there is a cycle in the component since $e$ is not a bridge.
+\end{prf}
+
+\begin{lemma}[7.5.2]\label{lem:752}
+  Let $G$ be a planar graph. If each face of $G$ has degree at least $g$,
+  then $\abs{E(G)} \leq \frac{g}{g-2}(\abs{V(G)}-2)$.
+\end{lemma}
+\begin{prf}
+  By the~\nameref{lem:face}, $2\abs{E(G)} = \sum \deg(f) \geq g \abs{F(G)}$.
+  Then, by \nameref{cor:euler},
+  \begin{align*}
+    \abs{V(G)} - \abs{E(G)} + \abs{F(G)} = 1 + k & \leq 2               \\
+    \abs{V(G)} - 2 + \abs{F(G)}                  & \leq \abs{E(G)}      \\
+    g(\abs{V(G)} - 2) + g\abs{F(G)}              & \leq g\abs{E(G)}     \\
+    g(\abs{V(G)} - 2) + 2\abs{E(G)}              & \leq g\abs{E(G)}     \\
+    g(\abs{V(G)} - 2)                            & \leq (g-2)\abs{E(G)} \\
+    \frac{g}{g-2}(\abs{V(G)} - 2)                & \leq \abs{E(G)}
+  \end{align*}
+  as desired.
+\end{prf}
+
+\begin{theorem}[7.5.3]\label{thm:753}
+  Let $G$ be a planar graph with $\abs{V(G)} \geq 3$.
+  Then, $\abs{E(G)} \leq 3\abs{V(G)} - 6$.
+\end{theorem}
+\begin{prf}
+  Suppose $G$ does not contain a cycle.
+  Then, it is a forest and by Corollary \nameref{cor:forestedgenum},
+  $\abs{E(G)} = \abs{V(G)} - k \leq \abs{V(G)} - 1 \leq \abs{V(G)} - 6$
+  since there is at least 1 component and 3 vertices.
+
+  Otherwise, $G$ contains a cycle.
+  By Lemma~\nameref{lem:751}, every face contains a cycle in its boundary.
+  Since a cycle has at least 3 edges, the degree of every face is at least 3.
+  So by Lemma~\nameref{lem:752}, $\abs{E(G)} \leq \frac{3}{3-2}(\abs{V(G)-2}) = 3\abs{V(G)} - 6$,
+  as desired.
+\end{prf}
+\begin{corollary}[7.5.4]
+  $K_5$ is not planar.
+\end{corollary}
+\begin{prf}
+  Notice that $\abs{E(K_5)} = \binom{5}{2} = 10$ but $3\abs{V(G)} - 6 = 9$.
+\end{prf}
+
+\begin{theorem}[7.5.6]
+  Let $G$ be a planar graph with $\abs{V(G)} \geq 3$.
+  If $G$ is triangle-free, then $\abs{E(G)} \leq 2\abs{V(G)}-4$.
+\end{theorem}
+\begin{prf}
+  Follow the proof of Theorem~\nameref{thm:753}
+  but notice that cycles will have length at least 4,
+  so $\abs{E(G)} \leq \frac{4}{4-2}(\abs{V(G)} - 2) = 2\abs{V(G)} - 4$.
+\end{prf}
+
+\begin{lemma}[7.5.7]
+  $K_{3,3}$ is not planar.
+\end{lemma}
+\begin{prf}
+  First, notice that since $K_{3,3}$ is bipartite, it is triangle-free.
+  But $\abs{E(G)} = 9$ and $2\abs{V(G)} - 4 = 8$.
+\end{prf}
+
+\section{(11/18)}
+
+Recall Euler's formula: $V - E + F = 2$ if connected
+or in general $V - E + F = k+1$ for $k$ components.
+
+If $V \geq 3$ and $G$ planar, then $E \leq 3V - 6$.
+Thus, $K_5$ and $K_{3,3}$ are non-planar.
+
+Consider the decision problem of whether $G$ is planar.
+We cannot certify planarity by giving equations of curves,
+since showing no intersections is not efficient and the equations can be arbitrarily complex.
+However, a planar embedding is equivalently a list of boundary walks of faces.
+To certify, assert that every edge appears twice, Euler's formula holds,
+and edges cut a vertex cone in a clockwise order.
+Therefore, planarity is in \NP.
+
+\begin{prop}
+  If $G$ is a planar graph and $H$ is a subgraph of $G$,
+  then $H$ is planar.
+\end{prop}
+\begin{prf}
+  Obvious (delete from the planar embedding of $G$ until you get $H$).
+\end{prf}
+
+\begin{corollary}
+  If $G$ contains $K_5$ or $K_{3,3}$ as a subgraph, then $G$ is not planar.
+\end{corollary}
+
+\begin{defn}[edge subdivision]
+  Let $e = uv \in E(G)$ and $z \not\in V(G)$.
+  Obtain $G'$ as $V(G') = V(G) \cup \{z\}$
+  and $E(G') = E(G) \setminus \{e\} \cup \{uz, zv\}$.
+\end{defn}
+
+\begin{example}
+  If $G$ is \tikz[baseline=-18pt]\graph[dots nodes]{1[y=-0.5]--{2,3}--4[y=-0.5],2--3};,
+  we can draw $G'$ as \tikz[baseline=-18pt]\graph[dots nodes]{1[y=-0.5]--{2,3}-!-5[x=-0.5,y=-0.25]--4[x=-1,y=-0.5],2--3,3--4,2--5};
+\end{example}
+
+\begin{defn}[subdivision]
+  A graph obtained from $G$ by any number (including none)
+  of repeated edge subdivisions.
+\end{defn}
+
+\begin{example}
+  If $G = K_4$, then $G'$ could be
+  \tikz[baseline=-3pt]\graph[dots nodes, no placement]{ subgraph C_n[n=3, clockwise] -- 4, 5[x=0.4,y=-0.5], 6[x=-0.4,y=-0.5], 7[x=0,y=-0.5], 8[x=0.4,y=-0.23], 9[x=0,y=0.5], 10[x=0.4,y=0.38]};
+\end{example}
+
+\begin{prop}
+  If $G$ is a planar graph and $H$ is a subdivision of $G$, then $H$ is planar.
+\end{prop}
+\begin{prf}
+  Subdivide the planar embedding of $G$ and notice it is still planar.
+\end{prf}
+\begin{corollary}
+  If $G$ is a subdivision of $K_{3,3}$ or a subdivision of $K_5$,
+  then $G$ is not planar.
+\end{corollary}
+
+\begin{theorem}[Kuratowski's Theorem]\label{thm:kur}
+  A graph $G$ is planar if and only if
+  it does not contain a subdivision of $K_{3,3}$ or a subdivision of $K_5$.
+\end{theorem}
+\begin{prf}
+  Very hard. See CO 342.
+\end{prf}
+
+Now, we can say that planarity is in \coNP because we can give by Kuratowski
+a subgraph that is a subdivision of $K_{3,3}$ or a subdivision of $K_5$.
+
+\begin{example}
+  Is the graph \tikz[baseline=-3pt]\graph[dots nodes]{ subgraph C_n[n=8,clockwise], 1--5,2--6,3--7,4--8 }; planar?
+\end{example}
+\begin{sol}
+  No. We can highlight $K_{3,3}$ as a subgraph:
+  \tikz[baseline=-40pt]\graph[dots nodes, simple necklace layout, simple, radius=0.25cm]{ 1[red]--2[blue]--3[red]--4--5[blue]--6[red]--7[blue]--8--1, 1--5,2--6,3--7 };
+\end{sol}
+
+We can show that planarity is in \P with an $O(\abs{V(G)}^3)$ algorithm.
+
+\begin{defn}[contraction]
+  Let $e = uv \in E(G)$ and $z \not \in V(G)$.
+  Obtain $G' = G/e$ as $V(G') = V(G) \setminus \{u,v\} \cup \{z\}$
+  and $E(G') = E(G \setminus \{u,v\}) \cup \{wz : w \in N_G(u) \cup N_G(v)\}$.
+\end{defn}
+
+\begin{example}
+  If $G$ is \tikz[baseline=-18pt]\graph[dots nodes]{{1,2}--3[y=-0.5]--[red, "$e$"]4[y=-0.5]--{5,6}, 1--2, 5--6};,
+  then $G/e$ is \tikz[baseline=-18pt]\graph[dots nodes]{{1,2}--3[y=-0.5]--{5,6}, 1--2, 5--6};.
+\end{example}
+
+\begin{defn}[minor]
+  A graph $H$ is a minor of a graph $G$ if it can be
+  obtained from a subgraph of $G$ by contracting edges.
+\end{defn}
+
+\begin{prop}
+  If $G$ is planar and $H$ is a minor of $G$, then $H$ is planar.
+\end{prop}
+\begin{corollary}
+  If $G$ contains $K_5$ or $K_{3,3}$ as a minor, then $G$ is not planar.
+\end{corollary}
+
+\section{(11/21)}
+
+We can equivalently state \nameref{thm:kur} in terms of minors due to Wagner:
+
+\begin{theorem}[Kuratowski's Theorem for minors]
+  A graph $G$ is planar if and only if
+  $G$ does not contain $K_{3,3}$ or $K_5$ as a minor.
+\end{theorem}
+\begin{prf}[sketch]
+  We must show that containing $K_{3,3}$ or $K_5$ as a subdivision
+  is equivalent to containing $K_{3,3}$ or $K_5$ as a minor.
+
+  In fact, claim that $K_5$ subdivisions give $K_5$ minors
+  and $K_{3,3}$ subdivisions give $K_{3,3}$ minors.
+  If we contract the paths in subdivisions to single edges,
+  we get the respective minors.
+
+  Conversely, a $K_{3,3}$ minor will give a $K_{3,3}$ subdivision.
+  But a $K_5$ minor can give either a $K_5$ or $K_{3,3}$ subdivision
+  (depending on if a vertex in the minor is the result of contracting).
+\end{prf}
+
+\begin{theorem}[Graph Minors Theorem]
+  Every minor-closed property is characterized by a finite list of forbidden minors.
+\end{theorem}
+
+\begin{defn}[colouring]
+  Assignment of one of $k$ colours to the vertices of $G$
+  such that no two adjacent vertices have the same colour.
+  If $G$ has a $k$-colouring, it is \term{$k$-colourable}.
+\end{defn}
+Equivalently, partition $V(G)$ into $k$ sets such that for all edges $uv \in E(G)$,
+$u$ and $v$ are in different sets.
+When $k=2$, this is bipartiteness.
+
+Clearly, every graph is $\abs{V(G)}$-colourable, so we are interested
+in the minimum $k$ such that $G$ is $k$-colourable.
+
+\begin{defn}[chromatic number]
+  The minimum $\chi(G)$ such that $G$ is $\chi(G)$-colourable.
+\end{defn}
+
+\begin{example}
+  \tikz[spring layout, horizontal=5 to 6]\graph[dots nodes]{1[red]--2[blue]--3[red]--4[blue]--5[green]--1, 6[red]--7[blue]--8[green]--6, 5--6};
+  has chromatic number 3.
+\end{example}
+
+\begin{example}
+  \tikz\graph[layered layout, dots nodes, grow down, simple]{1[red]--{[same layer] 2[green],3[blue],4[green],5[blue]}--{[same layer] 6[red],7}; 2--3, 4--5, 3--6, 3-!-7, 6--7};
+  is clearly not bipartite (has triangle) and trying to 3-colour gives a contradiction,
+  so $\chi(G) \geq 4$ and in fact we can colour it to get $\chi(G) = 4$.
+\end{example}
+
+If we fix $k$, consider the decision problem of $k$-colourability.
+This is in \NP, since we can just show the colouring.
+It is probably not in \coNP because if it were, we could show $\P \neq \NP$
+because it is \NP-complete.
+
+\begin{theorem}[Four-Colour Theorem]
+  Every planar graph is 4-colourable.
+\end{theorem}
+\begin{prf}
+  Pain.
+\end{prf}
+
+We settle for the next best things: the Six- and Five-Colour Theorems.
+
+\begin{lemma}[7.5.5]\label{lem:pla.deg.5}
+  Every planar graph has a vertex of degree at most 5.
+\end{lemma}
+\begin{prf}
+  Suppose a planar graph $G$ exists where every vertex has degree 6 or greater.
+  Then, $\abs{V(G)} \geq 7$.
+  By Theorem 7.5.3, since $\abs{V(G)} \geq 3$,
+  we have $\abs{E(G)} \leq 3\abs{V(G)} - 6$, i.e., $2\abs{E(G)} \leq 6\abs{V(G)} - 12$.
+
+  But by the \nameref{thm:hand}, $2\abs{E(G)}
+    = \smashoperator{\sum\limits_{v \in V(G)}} \deg(v) \geq 6\abs{V(G)}$,
+  a contradiction.
+\end{prf}
+
+\begin{theorem}[Six-Colour Theorem]
+  Every planar graph is 6-colourable.
+\end{theorem}
+\begin{prf}
+  Proceed by induction on $\abs{V(G)}$.
+
+  If $\abs{V(G)} = 1$, then $G$ is 1-colourable.
+
+  Suppose $\abs{V(G)} \geq 2$.
+  Then, by Lemma~\nameref{lem:pla.deg.5},
+  there exists a vertex $v$ of $G$ with $\deg(v) \leq 5$.
+
+  Let $G' = G-v$. Note that $\abs{V(G')} < \abs{V(G)}$ and $G'$ is planar.
+
+  Then, by induction, there exists a 6-colouring $\phi : V(G') \to [6]$ of $G'$.
+  But since $\deg(v) < 6$, there exists
+  $c \in [6] \setminus \{\phi(u) : u \in N_G(v)\}$.
+  Define $\phi(v) = c$ and $\phi$ is a 6-colouring for $G$.
+
+  Therefore, by induction, every planar graph is 6-colourable.
+\end{prf}
+
+\section{(11/23)}
+
+\begin{theorem}[Five-Colour Theorem]
+  Every planar graph is 5-colourable.
+\end{theorem}
+\begin{prf}
+  Proceed by induction on $\abs{V(G)}$.
+
+  If $\abs{V(G)} = 1$, then $G$ is 1-colourable.
+
+  Suppose $\abs{V(G)} \geq 2$. Then, by Lemma~\nameref{lem:pla.deg.5},
+  $G$ has a vertex $v$ with $\deg(v) \leq 5$.
+
+  If $\deg_G(v) \leq 4$, let $G' = G-v$.
+  Since $\abs{V(G')} = \abs{V(G)} - 1 < \abs{V(G)}$,
+  by induction, $G'$ is 5-colourable.
+  Let $\phi$ be a 5-colouring of $G'$
+  and extend it so that $\phi(v) \in [5] \setminus \im_\phi(N_G(v))$
+  which exists since $\abs{N_G(v)} \leq 4$.
+  Then, $\phi$ is a 5-colouring of $G$.
+
+  Otherwise, $\deg_G(v) = 5$.
+  Since $G$ is planar, $G$ does not contain $K_5$ as a subgraph.
+  Therefore, of the five neighbours of $v$,
+  there exist two, $a$ and $b$, that are not adjacent in $G$.
+
+  Let $G' = G / \{av,bv\}$, i.e., merge $a$, $b$, and $v$ into a new vertex $z$.
+  Then, $\abs{V(G')} = \abs{V(G)} - 2 < \abs{V(G)}$
+  and since planarity is closed under contraction,
+  we have by induction that $G'$ is 5-colourable.
+
+  Let $\phi$ be a 5-colouring of $G'$.
+  Construct $\phi' : G \to [5]$:
+  \[
+    \phi'(x) = \begin{cases}
+      \phi(x)                                 & x \in V(G) \setminus \{a,b,v\} \\
+      \phi(z)                                 & x \in \{a,b\}                  \\
+      c \in [5] \setminus \im_{\phi'}(N_G(v)) & x = v
+    \end{cases}
+  \]
+  and verify this is a colouring.
+
+  Let $e = xy \in E(G)$.
+
+  If $x,y \in V(G) \setminus \{a,b,v\}$,
+  then $\phi'(x) = \phi(x) \neq \phi(y) = \phi'(y)$
+  since $\phi$ is a colouring on $G'$.
+
+  If $x \in V(G) \setminus\{a,b,v\}$ and $y \in \{a,b\}$
+  then $\phi'(x) = \phi(z) \neq \phi(y) = \phi'(y)$.
+
+  If $x = v$ and $y \in N_G(v)$, then $\phi'(x) \neq \phi'(y)$ by construction.
+
+  Note that $e \neq ab$ because we chose $a$ and $b$ not adjacent.
+\end{prf}
+
+\begin{quote}
+  \textbf{Generalizing the Four-Colour Theorem} (NOT COURSE CONTENT)
+
+  Is there a generalization of the Four-Colour Theorem to all graphs?
+
+  Notice that $\chi(K_n) \leq n$ since every vertex can get at most one colour
+  and $\chi(K_n) \geq n$ since any vertex is adjacent to all others.
+  Then, $\chi(K_n) = n$.
+
+  \textbf{Haj\'os' Conjecture.} If $G$ does not contain a subdivision of $K_t$
+  as a subgraph, then $G$ is $(t-1)$-colourable.
+
+  This was proven false for all $t \geq 7$
+  and almost every graph is a counterexample.
+  In fact, $\frac{t^2}{\sqrt{\log t}} \leq \max \chi(G) \leq t^2$
+  so not even on the right order of magnitude.
+
+  \textbf{Hadwiger's Conjecture.} If $G$ does not contain $K_t$ as a minor,
+  then $G$ is $(t-1)$-colourable.
+
+  This is proved for $t \leq 6$ but open for $t \geq 7$.
+  For general $t$, $\max \chi(G) \leq t(\log \log t)$ due to Delcourt--Postle.
+\end{quote}
+
+\begin{defn}[dual]
+  Given a planar graph $G$, $G^*$ is a planar multigraph where $V(G^*) = F(G)$
+  and then for every $e \in E(G)$, draw an edge $e^*$ in $G^*$ crossing $e$
+  and connecting the faces of $G$ to the left and right of $e$ in $G$.
+\end{defn}
+
+\begin{example}
+  \tikz\graph[dots nodes]{{1,2}--3[y=-0.5]--4[y=-0.5]--5[x=-0.4,y=-0.5]--{6[x=-1],7[x=-1]}, 1--2, 6--7, 4--6, 4--7};
+  has a dual \tikz\graph[dots nodes]{left[y=-0.5]--outer[y=-0.5]--{1,2}--3[y=-0.5], left--[bend right]outer, left--[bend left]outer, 1--2, 3--[bend left=-90]outer, outer--[loop below]outer};
+\end{example}
+
+Note: this is a multigraph, so loops can be created by crossing bridges
+and parallel edges if two faces share more than one edge.
+
+It is planar, so it satisfies \nameref{thm:euler}.
+
+Observe that handshaking for $G^*$ is equivalent to faceshaking for $G$.
+
+If $G$ is connected, then $(G^*)^* = G$.
+
+\setcounter{chapter}{7}
+\chapter{Matchings}
+
+\section{(11/25)}
+
+\begin{defn}[matching]
+  On a graph $G$, a set of edges $M \subseteq E(G)$ such that no two edges
+  share a common endpoint.
+\end{defn}
+
+\begin{example}
+  \tikz\graph[dots nodes, simple]{{1,2}--3[y=-0.5]--{4,5}--6[y=-0.5]--[red, very thick]7; 1--[red, very thick]2, 4--[red, very thick]5, 5-!-6};
+  is a matching.
+\end{example}
+
+\begin{defn}
+  $M$ \term{saturates} $v$ if $v$ is an end of an edge in $M$.
+
+  $M$ is \term{perfect} if every vertex of $G$ is saturated by $M$.
+
+  The \term{size} of $M$ is the number of edges it contains, i.e., $\abs{M}$.
+
+  $M$ is a \term{maximum matching} if it has maximum size over all matchings of $G$.
+\end{defn}
+
+Notice that a perfect matching obviously cannot exist
+for components an odd number of vertices.
+
+Finding a perfect matching is in \NP (just give the matching),
+\coNP (since CO 250 expresses this as a linear program),
+and \P (for proof, take CO 342).
+
+\begin{defn}[alternating]
+  Given a matching $M$ of $G$,
+  a path $P$ in $G$ is \term{$M$-alternating}
+  if every other edge of $P$ is in $M$.
+  Equivalently, all $v \in V(P)$ are saturated by $M$.
+\end{defn}
+
+\begin{example}
+  The path \tikz\graph[dots nodes]{0--1--[red, very thick]2--3--[red, very thick]4--5};
+  is \textcolor{red}{$M$}-alternating.
+\end{example}
+
+\begin{defn}[augmenting]
+  A path $P$ which is $M$-alternating and whose ands are not saturated by $M$.
+\end{defn}
+
+\begin{lemma}[8.1.1]\label{lem:811}
+  Let $G$ be a graph with matching $M$.
+  If there exists an $M$-augmenting path, then $M$ is not a maximum matching.
+\end{lemma}
+\begin{prf}
+  Let $P$ be an $M$-augmenting path.
+  Then, $M' = M \sym E(P)$ is a larger matching of $G$.
+  This is because, starting from the unsaturated ends,
+  flip the exactly one incident edges to the other incident edge
+  which exists because the degree of vertices on a path are exactly two.
+  Finally, $\abs{M'} > \abs{M}$ because $\abs{E(P) \setminus M} > \abs{E(P) \cap M}$
+  by definition of $M$-augmenting.
+\end{prf}
+
+\begin{lemma}[converse of Lemma 8.1.1]
+  Let $G$ be a graph with matching $M$.
+  If $M$ is not a maximum matching,
+  then there exists an $M$-augmenting path of $G$.
+\end{lemma}
+\begin{prf}
+  Let $M'$ be a maximum matching of $G$.
+  Consider $M \sym M'$.
+  For example, the matchings \textcolor{red}{$M$} and \textcolor{blue}{$M'$}
+  \begin{center}
+    \begin{tikzpicture}
+      \graph[dots nodes]{1--[very thick,blue]2--[decoration=snake,decorate,red]3--[very thick,blue]4 -!- 5--[decoration=snake,decorate,red]6, 5--[very thick,blue]6};
+    \end{tikzpicture}
+  \end{center}
+  have symmetric difference \textcolor{violet}{$M \sym M'$}
+  \begin{center}
+    \begin{tikzpicture}
+      \graph[dots nodes]{1--[very thick,violet]2--[very thick,violet]3--[very thick,violet]4 -!- 5--6};
+    \end{tikzpicture}
+  \end{center}
+  Observe that since $M$ and $M'$ are matchings,
+  then $M \sym M'$ is a disjoint union of $M$-alternating paths (or $M'$-alternating paths).
+
+  Let $P_1,\dotsc,P_k$ be the components of $M \sym M'$.
+  If the ends of $P_i$ are saturated by $M'$
+  (i.e., $\abs{E(P_i) \cap M'} > \abs{E(P_i) \cap M}$),
+  then $P_i$ is an $M$-augmenting path as desired.
+
+  Otherwise, $\abs{M'} = \abs{M' \cap M} + \sum\abs{E(P_i) \cap M'}
+    \leq \abs{M' \cap M} + \sum\abs{E(P_i) \cap M} = \abs{M}$,
+  a contradiction.
+\end{prf}
+
+\section{(11/28)}
+
+\begin{defn}[cover]
+  A set $X \subseteq V(G)$ such that every edge of $G$ has at least one end in $X$.
+\end{defn}
+
+\begin{example}\label{exa:331}
+  \tikz\graph[dots nodes,spring layout,horizontal=1 to 4]{1[red]--2--3[red]--1--4};
+  \quad
+  \tikz\graph[dots nodes,simple necklace layout]{1[red]--2[red]--3[red]--4--1, 1--3, 2--4};
+  \quad
+  \tikz\graph[dots nodes,simple necklace layout]{1[red]--2--3[red]--4[red]--5[red]--1};
+  have covers in red.
+\end{example}
+
+Every graph has the obvious cover $X = V(G)$.
+
+\begin{defn}[minimum cover]
+  A cover of minimum size (i.e., $\abs{X}$),
+  which exists because $V(G)$ is a cover.
+\end{defn}
+
+Notice that in \Cref{exa:331}, the first and second covers are minimal.
+
+Determining if a graph has a cover of size $k$ is obviously in \NP.
+It is in fact \NP-complete, so it is not in \coNP or \P (assuming $\P \neq \NP$).
+
+\begin{lemma}[8.2.1]\label{lem:821}
+  Let $M$ be a matching and $C$ be a cover of the graph $G$.
+  Then, $\abs{M} \leq \abs{C}$.
+\end{lemma}
+\begin{prf}
+  Let $e_i$ be the edges of $M$.
+  For each edge, at least one of the two incident vertices must be covered by $C$.
+  Therefore, $\abs{C} \geq \sum\abs{C \cap e_i} \geq \sum 1 = k = \abs{M}$.
+\end{prf}
+
+\begin{corollary}
+  Let $G$ be a graph, $M$ be a maximum matching of $G$,
+  and $C$ be a minimum cover of $G$.
+  Then, $\abs{M} \leq \abs{C}$.
+\end{corollary}
+
+\begin{example}
+  \tikz\graph[dots nodes,spring layout,horizontal=1 to 4]{1[red]--2--[blue,very thick]3[red]--1--[blue,very thick]4};
+  \quad
+  \tikz\graph[dots nodes,simple necklace layout]{1[red]--2--3[red]--4--1, 1--[blue,very thick]3, 2--[blue,very thick]4};
+  \quad
+  \tikz\graph[dots nodes,simple necklace layout]{1[red]--[blue,very thick]2--3[red]--4--[blue,very thick]5[red]--1};
+  have minimum covers in red and maximum matchings in blue.
+\end{example}
+
+How many graphs have the property that $\abs{M} = \abs{C}$?
+We must exclude subgraphs of $C_{2n+1}$ since the minimum cover is $n+1$
+but the maximum matching is $n$.
+
+\begin{theorem}[K\"onig's Theorem]\label{thm:konig}
+  Let $G$ be a bipartite graph, $M$ be a maximum matching of $G$,
+  and $C$ be a minimum cover of $G$.
+  Then, $\abs{M} = \abs{C}$.
+\end{theorem}
+
+\begin{lemma}[8.2.2]\label{lem:822}
+  Let $G$ be a graph, $M$ be a matching of $G$, and $C$ be a cover of $G$.
+  If $\abs{M} = \abs{C}$, then $M$ is a maximum matching and $C$ is a minimum cover.
+\end{lemma}
+\begin{prf}
+  Let $M'$ be a matching of $G$.
+  Since $C$ is a cover, then by Lemma~\nameref{lem:821}, $\abs{M'} < \abs{C}$.
+  Since $\abs{C} = \abs{M}$, then $\abs{M'} < \abs{M}$
+  and $M$ is maximum, as desired.
+
+  Likewise, let $C'$ be a covery of $G$.
+  Then, by Lemma~\nameref{lem:821}, $\abs{M} \leq \abs{C'}$.
+  Since $\abs{M} = \abs{C}$,
+  then $\abs{C} \leq \abs{C'}$ and $\abs{C} \leq \abs{C'}$
+  for all covers, meaning $C$ is minimum, as desired.
+\end{prf}
+
+\section{(11/30)}
+
+\begin{defn}[reachability]
+  Given a graph $G$ with matching $M$ and $v \in V(G)$,
+  a vertex $u$ is $M$-reachable from $v$
+  if there exists an $M$-alternating $u,v$-path of $G$.
+  For a set $S \subseteq V(G)$, $u$ is $M$-reachable from $S$
+  if there exists a $v \in S$ such that $u$ is $M$-reachable from $v$.
+\end{defn}
+
+\begin{example}
+  \tikz\graph[dots nodes]{{1[Green],2[Green]}-!-{3[Green],4[Green]}-!-{5[red],6[Green]}-!-{7[orange],8[red]}; 2--[blue,very thick]1--4, 2--3--[blue,very thick]6--7, 6--5--8};
+  has a \textcolor{Green}{set of vertices} that are \textcolor{blue}{$M$}-reachable from \textcolor{orange}{$v$}.
+  and a \textcolor{red}{set of \textcolor{blue}{$M$}-unreachable vertices}.
+\end{example}
+
+Recall \nameref{thm:konig}.
+
+\begin{prf}
+  Let $G$ be a graph with bipartition $(A, B)$.
+
+  Let $M$ be a maximum matching of $G$ and
+  $U$ be the set of $M$-unsaturated vertices of $G$.
+
+  Let $X_0 = U \cap A$.
+
+  First, suppose $X_0 = \varnothing$.
+  Let $C := A$. Then, $A$ is a cover of $G$
+  because every edge has exactly one end in $A$.
+  Also, since $X_0 = \varnothing$, we have that $\abs{C} = \abs{A} = \abs{M}$
+  because every vertex of $A$ is $M$-saturated.
+  
+  By Lemma~\nameref{lem:822}, it follows that $M$ is maximum, $C$ is minimum,
+  and $\abs{M} = \abs{C}$ as desired.
+
+  Assume $X_0 \neq \varnothing$.
+  Let $X \subseteq A$ and $Y \subseteq B$ be the $M$-reachable vertices from $X_0$.
+  Define $C := (A \setminus X) \cup Y$.
+  We claim that (1) $C$ is a cover and then that (2) $\abs{C} = \abs{M}$.
+
+  Suppose for a contradiction $C$ is not a cover, i.e.,
+  there exists $e = uv \in E(G)$ where $u,v \not\in C$.
+  \WLOG assume $u \in A$, $v \in B$.
+  Then, since $u,v \not\in C$,
+  we have $u \not\in A \setminus X$, so $u \in X$.
+  That is, $u$ is $M$-reachable from $X_0$.
+  We also have $v \not\in Y$, so $v$ is not $M$-reachable from $X_0$.
+
+  Let $P$ be an $M$-alternating $u,x$-path for some $x \in X_0$.
+  Then, since $v$ is not $M$-reachable, $v \not\in V(P)$.
+
+  Let $P' = P + uv$.
+  The edge of $P$ incident with $x$ is not in $M$ since $x \in X_0$ is $M$-unsaturated.
+  Then, $\abs{E(P)}$ is even because $u,x \in A$,
+  so we know that the edge of $P$ incident with $u$ is in $M$.
+  Therefore, $P'$ is an $M$-alternating $u,v$-path, so $v \in Y$.
+  This is a contradiction, giving us (1).
+
+  Claim now (2a) that $Y \cap U = \varnothing$.
+  Suppose that $Y \cap U \neq \varnothing$.
+  Let $w \in Y \cap U$.
+  Since $w \in Y$, there is an $M$-alternating $w,x$-path $P$ for some $x \in X_0$.
+  But then $w \in U$ and $x \in U$ and hence $P$ is $M$-augmenting,
+  contradicting Lemma~\nameref{lem:811} since $M$ is a maximum matching.
+  Therefore, every vertex of $Y$ is $M$-saturated, i.e., (2a).
+
+  Finally, suppose there exists $e = ab \in M$
+  where $b \in Y$ and $a \in A \setminus X$.
+  Then, there exists an $M$-alternating $b,x$-path $P$ for some $x \in X_0$.
+  This path has odd length because it goes from $A$ to $B$.
+  It starts on $x \in U$, so the last edge is not in $M$.
+  Again, we can now take $P' = P + ba$
+  to get a contradicting $M$-alternating path.
+  Therefore, (2b) no edge from $A \setminus X$ to $Y$ exists.
+
+  Now, recall that $(A \setminus X) \cap U = \varnothing$
+  since $U \cap A = X_0 \subseteq X$.
+  That is, every vertex in $A \setminus X$ is $M$-saturated.
+  Finally (actually this time), by (2b),
+  notice that all edges from $A \setminus X$, i.e.,
+  the saturated edges of the matching, must then go to $B \setminus Y$.
+
+  Let $M_1 \subseteq E(M)$ have ends in $Y$ and $M_2 \subseteq E(M)$ have ends in $A \setminus X$.
+  From before, there does not exist edges from $A \setminus X$ to $Y$,
+  so $M_1 \cap M_2 = \varnothing$.
+  Yet $C = (A \setminus X) \cup Y$ is a cover.
+  So $M \subseteq M_1 \cup M_2$ and in fact $M = M_1 \cup M_2$.
+  But by (2a), $Y \cap U = \varnothing$, so $\abs{M_1} = \abs{Y}$.
+  Similarly $\abs{M_2} = \abs{A \setminus X}$.
+  
+  Finally (for the third time), $\abs{M} = \abs{M_1} + \abs{M_2}
+    = \abs{Y} + \abs{A \setminus X} = \abs{C}$, i.e., (2).
+
+  Then, since (1) and (2) hold, by Lemma~\nameref{lem:822},
+  it follows that $M$ is maximum and $C$ is minimum, as desired.
+\end{prf}
+
+\section{(12/02; missing)}
+
+XY Algorithm
+
+\section{(12/05)}
+
+\begin{theorem}[Hall's Theorem]\label{thm:hall}
+  Let $G = (A,B)$ be a bipartite graph.
+  Then, $G$ has a matching saturating every vertex of $A$
+  if and only if $\forall D \subseteq A, \abs{D} \leq \abs{N(D)}$
+  where $N(D) = \bigcup\limits_{v \in D} N(v)$.
+\end{theorem}
+\begin{prf}
+  Suppose $G$ has a matching $M$ saturating every vertex of $A$.
+  Let $D \subseteq A$.
+  Then, let $X := \{u \in B : \exists v \in A, uv \in M\}$.
+  Since $M$ is a matching, $\abs{X} = \abs{D}$.
+  But $X \subseteq N(D)$, so $\abs{D} \leq \abs{N(D)}$, as desired.
+
+  Suppose that there exists a matching saturating $A$.
+  Recall that by \nameref{thm:konig}, the size of a maximum matching
+  is equal to the size of a minimum cover.
+
+  Let $C$ be a (possibly minimum) cover of $G$.
+  Then, because $G$ is bipartite, there does not exist an edge $e = ab$
+  where $a \in A \setminus C$ and $b \in B \setminus C$.
+  It follows that $N(A \setminus C) \subseteq B \cap C$.
+
+  Then, $\abs{A \setminus C} \leq N(A \setminus C) \leq \abs{B \cap C}$
+  because $A \setminus C$ is a subset of $A$.
+
+  Finally, $\abs{A} = \abs{A \cap C} + \abs{A \setminus C}
+    \leq \abs{A \cap C} + \abs{B \cap C} = \abs{C}$.
+  Therefore, a minimum cover has size at least $\abs{A}$.
+  By K\"onig's, a maximum matching has size at least $\abs{A}$
+  and the matching saturates all of $A$ by bipartiteness.
+\end{prf}
+
+Note: K\"onig's and Hall's theorems show that for a bipartite graph $G = (A,B)$,
+deciding if there exists a matching saturating all of $A$ is in \coNP.
+
+\begin{corollary}[8.6.1]\label{cor:bip.pm}
+  A bipartite graph $G = (A,B)$ has a perfect matching
+  if and only if $\abs{A} = \abs{B}$ and $\forall D \subseteq A, \abs{D} \leq \abs{N(D)}$.
+\end{corollary}
+\begin{prf}
+  Suppose $G$ has a perfect matching $M$.
+  Then, $\abs{A} = \abs{B}$ by bipartiteness
+  and $\forall D \subseteq A, \abs{D} \leq \abs{N(D)}$ as in \nameref{thm:hall}.
+
+  Suppose $\abs{A} = \abs{B}$ and $\forall D \subseteq A, \abs{D} \leq \abs{N(D)}$.
+  Then, by \nameref{thm:hall}, there exists a matching saturating $A$.
+  But since $\abs{A} = \abs{B}$, $M$ must be perfect by bipartiteness.
+\end{prf}
+
+\begin{theorem}[8.6.2]
+  All $k$-regular bipartite graphs with $k \geq 1$ have perfect matchings.
+\end{theorem}
+\begin{prf}
+  By Corollary~\nameref{cor:bip.pm}, it suffices to show that $\abs{A}=\abs{B}$
+  and $\forall D \subseteq A, \abs{D} \leq \abs{N(D)}$.
+  Since $G$ is bipartite,
+  \[ \sum_{v \in A}\deg(v) = \abs{E(G)} = \sum_{v \in B}\deg(v) \]
+  But by $k$-regularity,
+  \[ \sum_{v \in A}\deg(v) = k\abs{A} = \abs{E(G)} = k\abs{B} = \sum_{v \in B}\deg(v) \]
+  and $\abs{A} = \abs{B}$ since $k \geq 1$.
+
+  Let $D \subseteq A$.
+  Then, $\sum_{v \in D} \deg(v)$ is the number of edges with one end in $D$,
+  which is at least the number of edges with one end in $N(D)$, i.e.,
+  $\sum_{v \in N(D)} \deg(v)$.
+  As above, this gives us $k\abs{D} \leq k\abs{N(D)} \implies \abs{D} \leq \abs{N(D)}$, as desired.
+\end{prf}
+
+\begin{theorem}
+  Given a bipartite graph $G = (A,B)$
+  and integer $k \geq 1$ such that every vertex in $A$ has degree at least $k$
+  and every vertex in $B$ has degree at most $k$,
+  then $G$ has a matching saturating $A$.
+\end{theorem}

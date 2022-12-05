@@ -1,0 +1,1268 @@
+\part{Enumeration}
+
+\chapter{Introduction}
+
+\section{(09/07; Section 004)}
+
+By convention, define the natural numbers $\N = \{0,1,2,\dotsc\}$.
+If we want the non-negative integers, we can write $\N_{\geq1}$.
+
+Recall from set theory, for sets $A$ and $B$,
+the union $A \cup B = \{c : c \in A \lor c \in B\}$
+and intersection $A \cap B = \{c : c \in A \land c \in B\}$.
+We call a union $A \cup B$ disjoint if $A \cap B = \varnothing$.
+When considering the sizes of finite sets,
+the disjoint union corresponds to addition:
+$\abs{A \cup B} = \abs{A} + \abs{B}$.
+
+Recall also the Cartesian product $A \times B = \{(a,b) : a \in A, b \in B\}$.
+Again for finite sets, $\abs{A \times B} = \abs{A} \cdot \abs{B}$.
+
+\begin{defn}[bijection]
+  A function $f : A \to B$ such that $f$ is injective (i.e., $f(a) = f(a') \implies a = a'$)
+  and surjective (i.e., $\forall b, \exists a, f(a) = b$).
+  When $f$ exists, we write $A \bijects B$.
+\end{defn}
+
+\begin{theorem}[Bijective Proofs]
+  If $A \bijects B$, then $\abs{A} = \abs{B}$.
+\end{theorem}
+\begin{prf}
+  Let $f : A \to B$ be a bijection.
+  For each element of $B$, it is the image of
+  at least one element of $A$ under $f$ (by surjectivity)
+  and at most one element (by injectivity).
+  Therefore, $A$ contains the same number of elements as $B$.
+\end{prf}
+
+\section{(09/09)}
+
+By convention, let $[n] := \{1,\dotsc,n\}$.
+
+\begin{theorem}
+  Let $A$ be the set of subsets of $[n]$.
+  Let $B$ be the set of binary strings of length $n$.
+  There exists a bijection from $A$ to $B$.
+\end{theorem}
+\begin{prf}
+  Let $f : A \to B$ be defined as $f(S) = a_1\dots a_n$
+  where $a_i = 1$ if $i \in S$ and $0$ otherwise.
+  Then, $f^{-1}(a_1\dots a_n) = \{i \in [n] : a_i = 1\}$.
+  Since $f^{-1} \circ f = \id$ and $f \circ f^{-1} = \id$, we have a bijection.
+\end{prf}
+
+\begin{theorem}
+  Let $A$ be the set of subsets of $[n]$ of size exactly $k$.
+  Let $B$ be the set of binary strings of length $n$ with exactly $k$ ones.
+  There exists a bijection from $A$ to $B$.
+\end{theorem}
+\begin{prf}
+  Restrict the domain of $f$ from above.
+\end{prf}
+
+\begin{defn}[permutation]
+  A list of $[n]$ for some positive integer $n$.
+  That is, a bijection from $[n]$ to $[n]$.
+  Notate the set of permutations of $[n]$ by $P_n$.
+\end{defn}
+
+\begin{theorem}[1.3]
+  The number of subsets of $[n]$ is $2^n$.
+\end{theorem}
+\begin{prf}
+  $\mathcal{P}([n]) \bijects \{0,1\}^n$ by the above theorem.
+  But we know $\abs{\{0,1\}^n} = \abs{\{0,1\}}^n = 2^n$.
+  Then, $\abs{\mathcal{P}([n])} = 2^n$.
+\end{prf}
+
+\begin{theorem}[1.5]
+  The number of subsets of $[n]$ of size $k$ is $\binom{n}{k}$.
+\end{theorem}
+\begin{prf}
+  Let $S_{n,k}$ be the subsets of $[n]$ of size $k$.
+
+  For each $A \in S_{n,k}$ define $P_A := \{\sigma_1\dots\sigma_n \in P_n : \{\sigma_1,\dotsc,\sigma_n\} = A\}$.
+  Then, $P_n$ is the disjoint union of the sets $P_A$.
+  Also, $P_A \bijects P_k \times P_{n-k}$ because the first $k$ entries are a list of $A$
+  and the last $n-k$ entries are a list of $[n] \setminus A$.
+
+  Therefore, $\abs{P_A} = k! \cdot (n-k)!$ and
+  $\abs{S_{n,k}} = \frac{\abs{P_n}}{k!\cdot(n-k)!} = \binom{n}{k}$
+  as the sets are of equal size.
+\end{prf}
+
+In general, to prove that $A$ has some size, we can either
+\begin{enumerate}[(1),nosep]
+  \item Prove $A$ is a disjoint union of smaller sets of known size
+  \item Prove $A$ is a Cartesian product of smaller sets of known size
+  \item Give a bijection $A \bijects B$ to a set of known size
+  \item Show a family of sets $A_i$ satisfies a recurrence relation and use induction
+\end{enumerate}
+
+\begin{defn}[composition]
+  A finite sequence $n=(m_1,\dotsc,m_k)$ of positive integers called parts.
+  The size of the composition $\abs{n} = \sum m_i$.
+\end{defn}
+
+\begin{theorem}
+  For all $n \geq 1$, there are $2^{n-1}$ compositions of size $n$
+\end{theorem}
+\begin{prf}
+  Proceed by induction on $n$.
+
+  When $n = 1$, there is exactly one composition (1). Assume $n \geq 2$.
+
+  Let $A_n$ be compositions of size $n$.
+  Also let $B_{1,n} := \{(a_1,\dotsc) \in A_n : a_1 = 1\}$
+  and $B_{2,n} := \{(a_1,\dotsc) \in A_n : a_1 \geq 2\}$.
+  Notice that since $a_1$ is a positive integer so either $a_1 = 1$ or $a_1 \geq 2$,
+  so $A_n$ is the disjoint union of $B_{1,n}$ and $B_{2,n}$.
+
+  Let $f : B_{1,n} \to A_{n-1}$ be given by $f((b_1,\dotsc,b_k)) = (b_2,\dotsc,b_k)$
+  and we can find the inverse $f^{-1}((a_1,\dotsc,a_k)) = (1,a_1,\dotsc,a_k)$.
+
+  Let $g : B_{2,n} \to A_{n-1}$ be given by $g((b_1,\dotsc,b_k)) = (b_1-1,b_2\dotsc,b_k)$
+  whose inverse we can likewise find $g^{-1}((a_1,\dotsc,a_k)) = (a_1+1,a_2,\dotsc,a_k)$
+  assuming $A_{n-1}$ is nonempty, i.e., $n \geq 2$.
+
+  As these are bijections, $\abs{B_{1,n}} = \abs{n-1} = \abs{B_{2,n}}$.
+  By induction $\abs{A_{n-1}} = 2^{n-2}$ and hence
+  $\abs{A_n} = \abs{B_{1,n}} + \abs{B_{2,n}} = 2\abs{A_{n-1}} = 2^{n-1}$ as desired.
+\end{prf}
+
+\section{(09/12)}
+
+\begin{theorem}[Binomial Theorem]
+  For all $n \geq 1$, $(1+x)^n = \sum_{k=0}^n \binom{n}{k}x^k$
+\end{theorem}
+\begin{prf}
+  Must choose either 1 or $x$ from each monomial,
+  so we have $(1+x)^n = \sum_{S \subseteq [n]} x^{\abs{S}} = \sum_{k=0}^n\binom{n}{k}x^k$
+  by grouping choices by the number of $x$ chosen and applying Theorem 1.5.
+\end{prf}
+
+\begin{corollary}
+  If $x=1$, then $2^n = \sum_{k=0}^n \binom{n}{k}$, i.e., Theorem 1.3.
+\end{corollary}
+\begin{prf}
+  From Theorem 1.2, $\abs{\powerset([n])} = 2^n$.
+  But $\abs{\powerset([n])} = \abs{\bigcup S_{n,k}}
+    = \sum \abs{S_{n,k}} = \sum \binom{n}{k}$ by Theorem 1.5.
+\end{prf}
+
+\begin{corollary}
+  If $x=-1$, then $0 = \sum_{k=0}^n \binom{n}{k}(-1)^k$.
+\end{corollary}
+\begin{prf}
+  See Tutorial 1-2.
+\end{prf}
+
+\begin{defn}[multiset of $t$ types]
+  Sequence $a_1,\dotsc,a_t$ where each $a_i$ is a non-negative integer.
+  The $a_i$ are the \emph{parts} and the sum $\sum a_i$ is the \emph{size}.
+\end{defn}
+
+Like compositions but permitting zero and restricting $i = 1,\dotsc,t$.
+For example, consider the multiset $(3,2,0,1)$ as being like a ``set'' $\{a_1,a_1,a_1,a_2,a_2,a_4\}$.
+
+\begin{theorem}[1.9]
+  The number of multisets of $t$ types and size $n$ is $\binom{n+t-1}{t-1}$.
+\end{theorem}
+\begin{prf}
+  Consider the creation of a multiset like dividing up the line of elements
+  (e.g. $(3,2,0,1)$ as $***\mid**\mid\;\mid*$).
+
+  Encode this as a binary string where 0 means take an element
+  and 1 means switch to the next set (in this case, $000100110$).
+  This is a string of length $n+t-1$ with exactly $t-1$ ones.
+  That is, a subset of $[n+t-1]$ with size $t-1$, of which there are $\binom{n+t-1}{t-1}$.
+
+  To be formal, write out and prove that the set of multisets $A$ bijects with $B=S_{n+t-1,t-1}$.
+
+  Under $f : A \to B : (a_1,\dotsc,a_t) \mapsto \{a_1+1,\dotsc,a_{t-1}+1\}$
+  with inverse $f^{-1} : B \to A : \{b_1,\dotsc,b_{n-1}\} \mapsto (b_1-1,b_2-b_1-1,b_3-b_2-1,\dotsc,n-b_{t-1}-1)$,
+  $A \bijects B$ and we have $\abs{A} = \binom{n+t-1}{t-1}$, as desired.
+\end{prf}
+
+\begin{theorem}[Negative Binomial Series]
+  $\frac{1}{(1-x)^t} = \sum_{t=0}^\infty \binom{n+t-1}{t-1}x^n$
+\end{theorem}
+\begin{prf}
+  Notice that $\frac{1}{(1-x)^t} = \underbrace{(1+x+x^2+\dotsb)\dotsb(1+x+x^2+\dotsb)}_{t\text{ times}}$.
+  The coefficient of $x^k$ is the number of multisets
+  $(\alpha_1,\dotsc,\alpha_t)$ of $k$ size so apply Theorem 1.9.
+\end{prf}
+
+\section{(09/14)}
+
+\begin{example}[Pascal's Identity]
+  $\binom{n}{k} = \binom{n-1}{k} + \binom{n-1}{k-1}$
+\end{example}
+\begin{prf}[informal]
+  We are counting $S \subseteq [n]$.
+  There are two kinds of subsets: $n \in S$ and $n \not\in S$.
+  If $n \in S$, then $S \setminus\{n\} \subseteq [n-1]$ with size $n-1$,
+  i.e., there are $\binom{n-1}{k-1}$ of these.
+  If $n \not\in S$, then $S \subseteq [n-1]$, i.e., there are $\binom{n-1}{k}$ of these.
+\end{prf}
+\begin{prf}
+  Let $S_{n,k} := \{ S \subseteq [n] : \abs{S} = k\}$ be the set of subsets of $[n]$ with size exactly $k$.
+  By Theorem 1.5, $\abs{S_{n,k}} = \binom{n}{k}$.
+
+  Let $A_1 = \{S \in S_{n,k} : n \in S\}$ and $A_2 = \{S \in S_{n,k} : n \not\in S\}$.
+  Then, $S_{n,k}$ is the disjoint union of $A_1$ and $A_2$ since either $n \in S$ or $n \not\in S$.
+  Thus, $\abs{S_{n,k}} = \abs{A_1} + \abs{A_2}$.
+
+  Claim $A_1 \bijects S_{n-1,k-1}$  under $f : A_1 \to S_{n-1,k-1} : S \mapsto S \setminus \{n\}$
+  with inverse $f^{-1} : S_{n-1,k-1} \to A_1 : T \mapsto T \cup \{n\}$.
+  Then, $\abs{A_1} = \abs{S_{n-1,k-1}} = \binom{n-1}{k-1}$.
+
+  Claim $A_2 \bijects S_{n-1,k}$ under $g = \id_{A_2}$ with $g^{-1} = \id_{S_{n-1,k}}$.
+  Then, $\abs{A_2} = \abs{S_{n-1,k}} = \binom{n-1}{k}$.
+
+  Finally, $\binom{n}{k} = \abs{S_{n-1,k}} = \binom{n-1}{k} + \binom{n-1}{k-1}$.
+\end{prf}
+
+\begin{example}
+  $\binom{n}{k} = \sum_{i=k}^{n} \binom{i-1}{k-1}$ for all $n \geq k \geq 1$
+\end{example}
+\begin{prf}[informal]
+  Subsets of $[n]$ of size exactly $k$ come in $n-k+1$ types, namely, classify by their maxima.
+  Then, if $i$ is largest, we have to chose $k-1$ remaining elements from $[i-1]$.
+  This goes down to $k$ being largest by the pigeonhole principle where we have $k-1$ elements from $[k-1]$.
+\end{prf}
+\begin{prf}
+  By Theorem 1.5, $\abs{S_{n,k}} = \binom{n}{k}$.
+
+  Then, since the maximum of a set is unique, we can partition $S_{n,k}$
+  into the disjoint union $A_k \cup \dotsb \cup A_n$ where for each $i$,
+  $A_i = \{S \in S_{n,k} : \max S = i\}$.
+  Thus, $\abs{S_{n,k}} = \sum_{i=k}^n \abs{A_i}$
+
+  Claim $A_i \bijects S_{i-1,k-1}$ under the bijection
+  $f : A_i \to S_{i-1,k-1} : S \mapsto S \setminus \{i\}$ with inverse
+  $f^{-1} : S_{i-1,k-1} \to A_i : T \mapsto T \cup \{i\}$ from above.
+  Then, $\abs{A_i} = \binom{i-1}{k-1}$.
+
+  Finally, $\binom{n}{k} = \abs{S_{n,k}} = \sum_{i=k}^n \binom{i-1}{k-1}$, as desired.
+\end{prf}
+
+\chapter{Generating Series}
+
+\section{(09/16)}
+
+\newcommand{\preim}{\operatorname{preim}}
+\begin{defn}[weight function]
+  $w : A \to \N$ such that $\abs{\preim_w(n)}$ is finite for all $n \in \N$.
+  Call $w(a)$ the weight of $a$.
+\end{defn}
+
+In general, answer questions of the form "how many elements of $A$ have weight $n$?"
+
+\begin{defn}[generating series]
+  $\Phi_A^w(x) = \sum_{a\in A} x^{w(a)}$ for a set $A$ and weight function $w$.
+\end{defn}
+
+This is not a polynomial but a formal power series with infinite terms.
+We do not ever evaluate $\Phi_A^w(x)$ so convergence is irrelevant.
+
+Basically, take the sequence $(\abs{\preim_w(0)},\abs{\preim_w(1)},\dotsc)$
+and make it into coefficients.
+
+Notate $[x^n]f(x)$ for the coefficient of $x^n$ in $f(x)$.
+
+\begin{example}
+  For $A = \powerset([n])$, $w = \abs{\cdot}$,
+  we have $\Phi_A^w(x) = \sum_{k=0}^n\binom{n}{k}x^k = (1+x)^n$
+\end{example}
+
+\begin{prop}
+  The number of elements of weight $i$ is the $i$th coefficient in $\Phi_A^w(x)$.
+  Equivalently, $\Phi_A^w(x) = \sum_{n\geq0}a_n x^n$ where $a_n = \abs{\preim_w(n)}$.
+\end{prop}
+
+\begin{example}
+  For set of multisets with $t$ types $A$ and $w$ size of the multiset,
+  $\Phi_A^w(x) = \sum_{n \geq 0}\binom{n+t-1}{t-1}x^n = \frac{1}{(1-x)^t}$.
+\end{example}
+\begin{example}
+  For set of binary strings $A$ and $w$ length,
+  $\Phi_A^w(x) = \sum_{n\geq0} 2^n x^n = \sum_{n\geq0}(2x)^n = \frac{1}{1-2x}$.
+\end{example}
+\begin{example}
+  For set of compositions $A$ and $w$ size,
+  $\Phi_A^w(x) = 1 + x + 2x^2 + 4x^3 + \dotsb = 1+x(1+2x+4x^2+\dotsb)$.
+  This is $1+x(\frac{1}{1-2x}) = \frac{1-x}{1-2x}=\frac{1}{1-\frac{x}{1-x}}$.
+\end{example}
+
+\begin{defn}[formal power series]
+  $A(x) = \sum_{n\geq0}a_n x^n$ where $a_n$ is finite for all $n \in \N$
+\end{defn}
+We define addition, subtraction, and equality of formal power series akin
+to polynomials: $[x^n](A(x) + B(x)) = a_n + b_n$, $[x^n](A(x) - B(x)) = a_n - b_n$,
+$A(x) = B(x) \iff \forall n(a_n = b_n)$.
+
+\section{(09/19)}
+
+Define multiplication of formal power series:
+$A(x) B(x) = \sum_{n\geq0}(\sum_{k=0}^n a_k b_{n+k})x^n$.
+
+Define division using inverses:
+$\frac{1}{A(x)}$ is the power series $C(x)$ such that $A(x)C(x) = 1$
+where we consider the unit power series $1+0x+0x^2+\dotsb$.
+
+If $A(x)C(x) = 1$, then each coefficient $\sum_{k=0}^n a_k c_{n-k} = 0$
+for $n \geq 1$ and $a_0 c_0 = 1$.
+
+Solving, $c_0 = \frac{1}{a_0}$, $c_1 = -\frac{a_1c_0}{a_0} = -\frac{a_1}{a_0^2}$,
+$c_2 = -\frac{1}{a_0}(a_1c_1-a_2c_0)$, etc.
+
+In general, $c_0 = \frac{1}{a_0}$ and
+$c_n = -\frac{1}{a_0}\sum_{k=0}^{n-1}a_k c_{n-k}$ for $n \geq 1$.
+
+\begin{theorem}
+  $A \in \R[[x]]$ has an inverse $C = A^{-1}$ if and only if $a_0 \neq 0$.
+  If $C(x)$ exists, $c_0 = a_0^{-1}$ and $c_n = -a_0^{-1}\sum_{k=1}^n a_k c_{n-k}$.
+\end{theorem}
+
+Given these four operations, we have the ring $\R[[x]]$ of power series.
+This is a superring of the polynomials $\R[x]$.
+
+\begin{theorem}
+  $A \circ B \in \R[[x]]$ exists if and only if $A \in \R[x]$ or $b_0 = 0$
+\end{theorem}
+
+\section{(09/21)}
+
+\begin{lemma}[Sum Lemma]
+  Let $C$ be the disjoint union $A \cup B$.
+  Let $w$ be a weight function of $C$.
+  Then, $\Phi_C^w(x) = \Phi_A^w(x)+\Phi_B^w(x)$.
+
+  Note: Since $w : C \to \N$, we implicitly let $\Phi_A^w = \Phi_A^{w\vert_A}$ and $\Phi_B^w = \Phi^{w\vert_B}_B$
+\end{lemma}
+\begin{prf}
+  We will show equality by the coefficient definition, i.e.,
+  $[x^n]\Phi_C^w(x) = [x^n](\Phi_A^w(x)+\Phi_B^w(x)) = [x^n]\Phi_A^w(x) + [x^n]\Phi_B^w(x)$.
+  The LHS is just the number of elements in $C=A \cup B$ of weight $n$
+  and the RHS is the sum of the elements in $A$ and $B$ of weight $n$.
+  These must be equal because $A \cap B = \varnothing$.
+\end{prf}
+\begin{prf}
+  Expand:
+  \[
+    \Phi_C^w(x) = \sum_{c \in C} x^{w(c)} = \sum_{a \in A} x^{w(a)} + \sum_{b \in B}x^{w(b)} = \Phi_A^w(x) + \Phi_B^w(x)
+  \]
+  where we can divide the sum because every $c \in C$ is in exactly one of $A$ or $B$.
+\end{prf}
+
+\begin{lemma}[Infinite Sum Lemma]
+  Let $C$ be the disjoint union $\bigcup A_i$ of countably infinite sets.
+  Let $w$ be a weight function of $C$.
+  Then, $\Phi_C^w(x) = \sum \Phi_{A_i}^w(x)$.
+\end{lemma}
+\begin{prf}
+  Since $w$ is a weight function, the preimage is finite.
+  That is, $[x^n]\Phi_C^w(x)$ is finite and we can decompose
+  the finite set $\{c \in C : w(c) = n\}$ into finitely many
+  $\{c \in A_i : w(c) = n\}$, which gives us what we want as above.
+\end{prf}
+
+Note: The proof must go in this direction. For weight functions $w_i : A_i \to \N$, $\operatorname{preim}_{w_i}(n)$ is finite but $\bigcup\operatorname{preim}_{w_i}(n)$ is not guaranteed to be finite.
+
+\begin{lemma}[Product Lemma]
+  Let $A$ and $B$ be sets and $w_A$ and $w_B$ be weight functions.
+  Define $w_{A\times B} : A \times B \to \N : (a,b) \mapsto w_A(a) + w_B(b)$.
+  Then, $\Phi_{A\times B}^{w_{A\times B}} = \Phi_A^{w_A}\cdot\Phi_B^{w_B}$.
+\end{lemma}
+\begin{prf}
+  Recall by definition $\Phi_{A\times B}^{w_{A\times B}} = \smashoperator{\sum\limits_{(a,b)\in A\times B}}x^{w_{A\times B}((a,b))}$.
+
+  But this is $\smashoperator{\sum\limits_{(a,b)\in A\times B}}x^{w_A(a) + w_B(b)}=\smashoperator{\sum\limits_{(a,b)\in A\times B}}x^{w_A(a)}x^{w_B(b)}=\sum\limits_{a\in A}\sum\limits_{b\in B}x^{w_A(a)}x^{w_B(b)}$.
+
+  We split the sum to get $\left(\sum\limits_{a\in A}x^{w_A(a)}\right)\left(\sum\limits_{b\in B}x^{w_B(b)}\right)=\Phi_A^{w_A}(x)\cdot\Phi_B^{w_B}(x)$.
+\end{prf}
+\begin{corollary}[Finite Products]
+  Define $w(a_1,\dotsc,a_k)$ on $A_1\times\dotsb\times A_k$ by $\sum\limits_{i=1}^k w_{A_i}(a_i)$.
+  Then, \[ \Phi_{A_1\dotsb\times A_k}^w(x) = \prod\limits_{i=1}^k \Phi_{A_i}^{w_{A_i}}(x) \]
+\end{corollary}
+\begin{corollary}[Cartesian Product Lemma]
+  For set $A$ with weight function $w$, $\Phi_{A^k}^{w_k}(x) = (\Phi_A^w(x))^k$ where $w_k((a_i)) = \sum w(a_i)$.
+\end{corollary}
+\begin{defn}[strings]
+  $A^* = \bigcup_{i=0}^\infty A^i$ where $A^0 = \{\varepsilon\}$ with the empty string $\varepsilon = \varnothing$.
+  That is, $A^*$ is the set of all strings (sequences) with entries from $A$.
+\end{defn}
+\begin{example}
+  For $A = \N \setminus \{0\}$, then $A^*$ is the set of all compositions.
+  For $A = \{2,4,6,\dotsc\}$, then $A^*$ is the set of all compositions with even parts.
+\end{example}
+
+\section{(09/23)}
+
+\begin{lemma}[String Lemma; 2.14]
+  Given $A$ and $w$ on $A$, define $w^* : A^* \to \N : (a_i) = \sum w(a_i)$ with $w^*(\varepsilon)=0$.
+  Also, there are no elements of $A$ with weight 0.
+  Then, $\Phi_{A^*}^{w^*}(x) = \frac{1}{1-\Phi_A^w(x)}$.
+\end{lemma}
+\begin{prf}
+  By definition, $A^* = A^0 \cup A^1 \cup \dotsb$ and this is a disjoint union.
+
+  Then, since $w^*$ is a weight function of $A^*$ becaues $A$ has no weight 0 elements,
+  we apply the Infinite Sum Lemma.
+  This gives $\Phi_{A^*}^{w^*}(x) = \sum \Phi_{A^i}^{w^*}(x)$.
+
+  By the Product Lemma, $\Phi_{A^i}^{w*}(x) = (\Phi_A^w(x))^i$.
+  That is, $\Phi_{A^*}^{w^*}(x) = \sum (\Phi_A^w(x))^i$.
+  Now, we can compose the geometric series $\frac{1}{1-x}$ with $\Phi_A^w(x)$
+  so long as $[x^0]\Phi_A^w(x)=0$ which is true by supposition.
+
+  Therefore, we get $\Phi_{A^*}{w^*}(x) = \sum(\Phi_A^w(x))^i = \frac{1}{1-\Phi_A^w(x)}$.
+\end{prf}
+
+\begin{example}
+  Let $A = \N_{\geq 1}$. Then, $A^*$ is the set of all compositions.
+  Define $w = \id$, so $A$ has no elements of weight 0 and we have $w^*$ is a weight function.
+  Namely, $w^*$ gives the size of a composition.
+
+  By the String Lemma, $\Phi_{A^*}^{w*}(x) = \frac{1}{1-\Phi_A^w(x)}$.
+  By inspection, $\Phi_A^w(x) = x + x^2 + \dotsb$.
+  By the geometric series, we have $x(1+x+\dotsb) = \frac{x}{1-x}$
+  so $\Phi_{A^*}^{w^*}(x)=\frac{1}{1-\frac{x}{1-x}} = \frac{1-x}{1-2x} = 1+\frac{x}{1-2x}$
+  and we can write this as $1+x+2x^2+4x^3+\dotsb$
+  or \[ [x^n] \Phi_{A^*}^{w^*}(x) = \begin{cases}1 & n = 0\\2^{n-1} & n \geq 1\end{cases} \]
+\end{example}
+
+\begin{example}
+  Let $A = 2\N_{\geq1}$. Then, $A^*$ is the set of all compositions with even parts
+  and as above we can define $w = \id$ and $w^*$ is a weight funciton giving the size.
+
+  By inspection, $\Phi_A^w(x) = x^2 + x^4 + x^6 + \dotsb = x^2(1+(x^2)+(x^2)^2+\dotsb) = \frac{x^2}{1-x^2}$.
+
+  Then, $\Phi_{A^*}^{w^*}(x)=\frac{1}{1-\frac{x^2}{1-x^2}} = \frac{1-x^2}{1-2x^2} = 1 + \frac{x^2}{1-2x^2}$
+  and we can write \[ [x^n]\Phi_{A^*}^{w^*}(x)=\begin{cases*}1 & $n=0$ \\ 2^{\frac{n}{2}-1} & $n$ even \\ 0 & $n$ odd\end{cases*} \]
+\end{example}
+
+\begin{example}
+  $A = \{1,2,3,4\}$, $w = \id$, $A^*$ is the set of all compositions with parts 1 to 4.
+  Again, $\Phi_A^w(x) = x + x^2 + x^3 + x^4$ and $\Phi_{A^*}^{w^*} = \frac{1}{1-x-x^2-x^3-x^4}$.
+\end{example}
+
+\begin{example}
+  $A = \{1,2\}$, $w = \id$, $\Phi_A^w(x) = x + x^2$,
+  $\Phi_{A^*}^{w^*}(x)=\frac{1}{1-x-x^2}$ which is the Fibonacci series.
+\end{example}
+
+\begin{example}
+  $A = \{6,7,8,\dotsc,100\}$, $\Phi_A^w(x) = x^6 + x^7 + \dotsb + x^{100}$.
+  By the Finite Geometric Series, this is $\frac{x^6-x^{101}}{1-x}$.
+  Then, $\Phi_{A^*}^{w^*}(x) = \frac{1}{1-\frac{x^6-x^{101}}{1-x}} = \frac{1-x}{1-x^6+x^{101}}$.
+\end{example}
+
+\chapter{Binary Strings}
+
+\section{(09/26)}
+
+\begin{defn}[binary string]
+  A sequence of 0's and 1's.
+  The \emph{length} of a binary string is the total number of 0's and 1's.
+  We notate the \emph{empty string} by $\varepsilon = \varnothing$.
+  Formally, it is an element of $\{0,1\}^*$ written without parentheses and commas.
+\end{defn}
+
+\begin{remark}
+  Define a weight function for $\{0,1\}^*$ to get the length.
+  Let $A = \{0,1\}$. Define $w(a) = 1$.
+  Then if we apply Lemma 2.13, $w^*$ is a weight function
+  and by the String Lemma, $\Phi_{A^*}^{w^*}(x) = \frac{1}{1-\Phi_A^w(x)} = \frac{1}{1-2x}$.
+\end{remark}
+
+\begin{defn}[regular expression]
+  A string of finite length that is, up to parentheses, any one of:
+  \begin{itemize}[nosep]
+    \item $\varepsilon$, 0, and 1;
+    \item $\rx R \smile \rx S$ for regular expressions $\rx R$ and $\rx S$;
+    \item $\rx{RS}$ for regular expressions $\rx R$ and $\rx S$; or
+    \item $\rx R*$ for regular expression $\rx R$
+  \end{itemize}
+\end{defn}
+
+\begin{defn}[concatenation product]
+  For binary strings $\alpha = \alpha_1\dots\alpha_n \in \{0,1\}^*$
+  and $\beta = \beta_1\dots\beta_n \in \{0,1\}^*$, define
+  $\alpha\beta = \alpha_1\dots\alpha_n\beta_1\dots\beta_n$
+
+  For sets of binary strings $A,B \subseteq \{0,1\}^*$,
+  define $AB = \{ \alpha\beta : \alpha \in A, \beta \in B\}$.
+\end{defn}
+
+\begin{remark}
+  The concatenation product acts like a flatten over the Cartesian product.
+  That is, $((1,0),1) \neq (1,(0,1))$ but $(1,0)(1) = (1)(0,1)$.
+  It follows that $\abs{AB} \leq \abs{A}\abs{B}$.
+\end{remark}
+
+\begin{defn}[rational language]
+  $\rl R \subseteq \{0,1\}^*$ produced by a regular expression $\rx R$:
+  \begin{itemize}[nosep]
+    \item $\varepsilon$, 0, and 1 produce themselves;
+    \item $\rx R\smile \rx S$ produces $\rl R \cup \rl S$;
+    \item $\rx{RS}$ produces the concatenation product $\rl{RS}$; and
+    \item $\rx R^*$ produces $\smashoperator{\bigcup_{k\geq 0}} \rl R^k$ where $\rl R^k$ is the concatenation power.
+  \end{itemize}
+\end{defn}
+
+\begin{example}
+  What languages do $(1)^*$, $(1 \smile 11)^*$, $(0 \smile 1)^*$, $1(11)^*$, $(01)^*$ produce?
+\end{example}
+\begin{sol}
+  $(1)^*$ produces the set of binary strings of only ones, i.e., $\{1\}^*$.
+
+  $(1 \smile 11)^*$ produces the same set.
+
+  $(0 \smile 1)^*$ produces $\{0,1\}^*$, the set of all binary strings.
+
+  $1(11)^*$ produces the set of all odd numbers of ones.
+
+  $(01)^*$ produces $\{\varepsilon, 01, 0101, 010101, \dotsc\}$.
+\end{sol}
+
+\begin{example}\label{exa:9-impos}
+  Not every set is a rational language.
+  The set $\{\varepsilon,01,0011,000111,0^i1^i\}$ is not a rational language
+  because it cannot be produced by a regular expression.
+\end{example}
+
+\section{(09/28; from Bradley)}
+
+\begin{defn}[unambiguity]
+  Regular expression $\rx R$ that produces every element in the corresponding
+  rational language $\rl R$ exactly once.
+\end{defn}
+
+\begin{lemma}
+  The following regular expressions are unambiguous:
+  \begin{itemize}[nosep]
+    \item $\varepsilon$, 0, and 1
+    \item $\rx R \smile \rx S$ given $\rl R \cap \rl S = \varnothing$
+    \item $\rx{RS}$ given either (1) $\abs{\rl{RS}}=\abs{\rl R}\abs{\rl S}$,
+          (2) for all $t \in \rl{RS}$, there is a unique
+          $r \in \rl R$, $s \in \rl S$ such that $rs = t$, or
+          (3) there does not exist $r_1,r_2\in \rl R$, $s_1,s_2 \in \rl S$
+          such that $r_1 s_1 = r_2 s_2$.
+    \item $\rx R^*$ given $\rx R$ unambiguous and either
+          (1) all of $\varepsilon$, $\rl R$, and $\rl R^2$ are disjoint or
+          (2) all of the $\rl R^i$ are unambiguous as products
+  \end{itemize}
+\end{lemma}
+
+\begin{example}
+  Consider the following:
+  \begin{itemize}[nosep]
+    \item $1^*$ is unambiguous because $\varepsilon$, $1$, $1^2$, etc.
+          are all disjoint meaning that $1^k$ is unambiguous for all $k$.
+    \item $(1 \smile 11)^*$ is ambiguous because we can produce 11 as either $(11)^1$ or $1^2$.
+    \item $(0 \smile 1)^*$ produces all binary strings and is unambiguous.
+          The union is clearly disjoint.
+          The binary strings of lengths $k$ are clearly disjoint.
+    \item $(101)^*$ produces $\{\varepsilon,101,1011101,\dotsc\}$ and is unambiguous.
+    \item $(1 \smile 10 \smile 01)^*$ is ambiguous because 101 is produced by $1^1(01)^1$ and $(10)^11^1$.
+  \end{itemize}
+\end{example}
+
+\begin{defn}
+  $\rx R$ leads to a rational function $R(x)$ according to its structure:
+  \begin{itemize}[nosep]
+    \item $\varepsilon$ leads to 1
+    \item 0 leads to $x$
+    \item 1 leads to 1
+    \item $R \smile S$ leads to $R(x) + S(x)$
+    \item $RS$ leads to $R(x)\cdot S(x)$
+    \item $R^*$ leads to $\frac{1}{1-R(x)}$
+  \end{itemize}
+\end{defn}
+
+\begin{example}
+  Consider the same regular expressions:
+  \begin{itemize}[nosep]
+    \item $1^*$ leads to $\frac{1}{1-x}$
+    \item $(1 \smile 11)^*$ leads to $\frac{1}{1-(x+x^2)} = \frac{1}{1-x-x^2}$
+    \item $(0 \smile 1)^*$ leads to $\frac{1}{1-2x}$.
+    \item $(101)^*$ leads to $\frac{1}{1-x^3}$
+    \item $(1 \smile 10 \smile 01)^*$ leads to $\frac{1}{1-x-2x^2}$
+    \item $0^*(11^*00^*)^*1^*$ leads to $\frac{1}{1-x}\frac{1}{1-\frac{x^2}{(1-x)^2}}\frac{1}{1-x}=\frac{1}{1-2x}$
+  \end{itemize}
+\end{example}
+
+\begin{lemma}
+  Let $\rx R$ be a regular expression, $\rl R$ its rational language,
+  $R(x)$ the rational function it leads to, and $w$ the length weight function on binary strings.
+
+  If $\rx R$ is unambiguous, then $\Phi_{\rl R}^w(x) = R(x)$.
+\end{lemma}
+\begin{prf}
+  Proceed by structural induction on the above unambiguity lemma:
+
+  Notice that $\Phi_{\{e\}}^w(x) = 1$, $\Phi_{\{0\}}^w(x) = x$, and $\Phi_{\{1\}}^w(x) = x$.
+
+  If $\rx R = \rx S \smile \rx T$ and is unambiguous, then $\rx R$ produces $\rl S \cup \rl T$ and
+  \begin{equation*}
+    \Phi_{\rl S \cup \rl T}^w(x) = \Phi_{\rl S}^w(x) + \Phi_{\rl T}^w(x) = S(x) + T(x) = R(x)
+  \end{equation*}
+  by the Sum Lemma.
+
+  Likewise by the Product Lemma, if $\rx R = \rx{ST}$ we can write
+  \begin{equation*}
+    \Phi_{\rl S\rl T}^w(x) = \Phi_{\rl S \times \rl T}^w(x) = \Phi_{\rl S}^w(x) \cdot \Phi_{\rl T}^w(x) = S(x) \cdot T(x) = R(x)
+  \end{equation*}
+  because $\rl{ST} = \rl{S}\times\rl{T}$ by unambiguity.
+
+  The case for $\rx R = \rx S^*$ goes similarly by the Infinite Sum Lemma and Product Lemma.
+\end{prf}
+
+Be careful to distinguish between:
+\begin{itemize}[nosep]
+  \item A regular expression $\rx R$
+  \item A rational language $\rl R \subseteq \{0,1\}^*$ it \emph{produces}
+  \item A rational function $R(x) \in \Z[[x]]$ it \emph{leads to},
+        equal to $\Phi_{\rl R}(x)$ when $\rx R$ is unambiguous
+\end{itemize}
+
+\section{(09/30; from Bradley)}
+
+\begin{defn}[block]
+  A maximal subsequence of a binary string with the same digit.
+\end{defn}
+
+\begin{lemma}[Block Decompositions]
+  The set of all binary strings is unambiguously produced by
+  $0^*(11^*00^*)^*1^*$ and $1^*(00^*11^*)^*0^*$.
+\end{lemma}
+\begin{prf}
+  \WLOG{} consider the second regular expression.
+  We decompose every binary string after each block of 0s.
+
+  This means each string is of the form
+  (a (possibly empty) initial block of 0s,
+  first pair of blocks of 1s, second pair of 0s, ..., last pair,
+  (possibly empty) terminal block of 1s).
+  Moreover, first/last pair may not exist.
+
+  This decomposition is unique and we can express it
+  as a regular expression of the form $\rx{I(M)^*T}$ where
+  \begin{itemize}[nosep]
+    \item $\rx I$ is a regular expression for the initial (possibly empty) block of 0s
+    \item $\rx M$ is a regular expression for a middle pair of blocks,
+          non-empty block of 1s followed by non-empty block of 0s
+    \item $\rx T$ is a regular expression for the terminal (possibly empty) block of 1s
+  \end{itemize}
+  Then, we can unambiguously write $\rx I = 0^*$, $\rx M = (11^* 00^*)^*$,
+  and $\rx T = 1^*$.
+  Using the extra 1/0 ensures each block is non-empty.
+\end{prf}
+
+\begin{example}
+  Write an unambiguous regular expression for ``the set of binary strings where
+  each block of 0s has length at least 2 and each block of 1s has even length''.
+\end{example}
+\begin{sol}
+  Follow the $\rx{I(M)^*T}$ pattern beginning with a block of 0s.
+
+  To get either no 0s or at least two 0s, set $\rx I = \varepsilon \smile (000^*)$.
+
+  To get either no 1s or an even number of 1s, set $\rx T = (11)^*$.
+
+  Combine these ideas to get $\rx M = 11(11)^*000^*$.
+
+  Altogether, write $(\varepsilon \smile (000^*))(11(11)^*000^*)^*(11)^*$.
+\end{sol}
+
+\begin{example}\label{exa:11-2}
+  Write an unambiguous regular expression for ``the set of all binary strings
+  where each block of 0s has length at least 5 and congruent to 2 (mod 3)
+  and each block of 1s has length at least 2 and at most 8''.
+\end{example}
+\begin{sol}
+  Follow the $\rx{I(M)^*T}$ pattern beginning with a block of 0s.
+
+  To get either no 0s or $5 + 3k$ 0s, set $\rx I = \varepsilon \smile (00000(000)^*)$.
+
+  To get either no 1s or between two and eight 1s, set $\rx T = (11 \smile 111 \smile \dotsb \smile 1^8 \smile \varepsilon)$.
+
+  Combine to get $\rx M = (11 \smile 111 \smile \dotsb \smile 1^8)(00000(000)^*)$.
+  Altogether,
+  \[
+    (\varepsilon \smile (00000(000)^*))((11 \smile 111 \smile \dotsb \smile 1^8)(00000(000)^*))^*(11 \smile 111 \smile \dotsb \smile 1^8 \smile \varepsilon)
+  \]
+\end{sol}
+
+\begin{example}
+  Same as \cref{exa:11-2} with the additional restriction
+  that the string is non-empty and starts with 0.
+\end{example}
+\begin{sol}
+  $(0^5(000)^*)((1^2 \smile 1^3 \smile \dotsb \smile 1^8)(0^5(000)^*))^*(1^2 \smile 1^3 \smile \dotsb \smile 1^8 \smile \varepsilon)$.
+
+  If we wanted it to start with 1 instead, decompose the blocks beginning with 1s
+  to get a similar answer:
+  $(1^2 \smile 1^3 \smile \dotsb \smile 1^8)((0^5(000)^*)(1^2 \smile 1^3 \smile \dotsb \smile 1^8))^*(0^5(000)^* \smile \varepsilon)$.
+\end{sol}
+
+\begin{example}
+  Starts with 0 and at least 2 blocks
+\end{example}
+\begin{sol}
+  $(0^5(000)^*)(1^2 \smile \dotsb \smile 1^8)((0^5(000)^*)(1^2 \smile \dotsb \smile 1^8))^*(0^5(000)^* \smile \varepsilon)$.
+\end{sol}
+
+\begin{example}
+  Starts with 0 and ends with 0
+\end{example}
+\begin{sol}
+  $(0^5(000)^*)((1^2 \smile 1^3 \smile \dotsb \smile 1^8)(0^5(000)^*))^*$.
+\end{sol}
+
+\section{(10/03)}
+
+Instead of decomposing after every block of 1s,
+we could instead decompose after every 1.
+This leads to prefix decompositions:
+the regular expression $\rx M^* \rx T$
+where $\rx M = 0^* 1$ and $\rx T = 0^*$
+unambiguously produces the set of all binary strings.
+
+As a sanity check, notice that $(M^*T)(x) = \frac{1}{1-\frac{1}{1-x}x}\frac{1}{1-x} = \frac{1}{1-2x}$
+which we expect as the generating series for all binary strings.
+
+\begin{example}\label{exa:12-1}
+  Write an unambiguous regular expression for binary strings without $k$
+  consecutive zeroes.
+\end{example}
+\begin{sol}
+  $((\varepsilon\smile 0^1 \smile \dotsb \smile 0^{k-1})1)^*(\varepsilon\smile 0^1\smile\dotsb\smile0^{k-1})$.
+
+  This leads to $\frac{1}{1-(1+\dotsb+x^{k-1})x}\cdot(1+\dotsb+x^{k-1})
+    = \frac{1+\dotsb+x^{k-1}}{1-x-\dotsb-x^k}
+    = \frac{1-x^k}{1-2x+x^{k+1}}$
+\end{sol}
+
+Similarly, decompose before every 1.
+This leads to postfix decompositions:
+the regular expression $\rx I \rx M^*$
+where $\rx I = 0^*$ and $\rx M = 1 0^*$
+unambiguously produces the set of all binary strings.
+
+\begin{defn}[recursive expression]
+  A regular expression $\rx R$ which may contain itself.
+  The rational function $R(x)$ that $\rx R$ leads to is identical
+  to if it were a regular expression except $\rx R$ leads to $R(x)$.
+\end{defn}
+
+\begin{example}
+  Interpet $\rx S = \varepsilon \smile (0\smile 1)\rx S$.
+\end{example}
+\begin{sol}
+  Clearly, $\varepsilon$ is in $\rl S$.
+  Also, $0\varepsilon = 0$ and $1\varepsilon = 1$ are in $\rl S$.
+  Onward, by induction, $\rl S$ contains all binary strings.
+
+  The rational function $S(x) = 1 + (x + x)S(x) = 1 + 2x S(x)
+    \implies S(x) = \frac{1}{1-2x}$
+  which matches the generating series for binary strings.
+\end{sol}
+
+\begin{example}
+  Interpret $\rx S = \varepsilon \smile 1\rx S$.
+\end{example}
+\begin{sol}
+  This produces the set of all binary strings with no 0s.
+
+  It leads to $S(x) = 1 + x S(x) \implies S(x) = \frac{1}{1-x}$.
+\end{sol}
+
+\begin{example}
+  Write the prefix decomposition as a recursive expression.
+\end{example}
+\begin{sol}
+  $\rx S = 0^* \smile (0^*1)\rx S$
+\end{sol}
+
+\begin{example}\label{exa:12-5}
+  Write \cref{exa:12-1} as a recursive expression.
+\end{example}
+\begin{sol}
+  $\rx S = (\varepsilon \smile 0 \smile \dotsb \smile 0^{k-1})
+    \smile ((\varepsilon \smile 0 \smile \dotsb \smile 0^{k-1})1)\rx S$.
+
+  This leads to $S(x) = (1+\dotsb+x^{k-1}) + (1+\dotsb+x^{k-1})S(x)
+    \implies S(x) = \frac{1+\dotsb+x^{k-1}}{1-(1+x+\dotsb+x^{k-1})x}$
+  as in \cref{exa:12-1}.
+\end{sol}
+
+\begin{example}
+  Write \cref{exa:9-impos} as a recursive expression.
+\end{example}
+\begin{sol}
+  $\rx S = \varepsilon \smile 0\rx S 1$.
+  Recall that this is not possible with ordinary regular expressions.
+
+  Then, the generating series $S(x) = 1 + x S(x) x = 1 + x^2 S(x)
+    \implies S(x) = \frac{1}{1-x^2}$.
+\end{sol}
+
+Recursion allows us to solve a wider range of problems.
+
+\begin{defn}[containment]
+  A binary string $\sigma$ contains $\kappa$ if there exist binary strings
+  $\alpha$ and $\beta$ such that $\sigma = \alpha\kappa\beta$.
+\end{defn}
+
+We want to solve the general problem:
+given $\kappa$ a fixed binary string and
+$\rl S_\kappa$ the set of all binary strings that do not contain $\kappa$,
+determine $\Phi_{\rl S_\kappa}(x)$.
+
+We just did this for $\kappa = 0^k$ in \cref{exa:12-1,exa:12-5},
+but what about arbitrary $\kappa$?
+
+\section{(10/05)}
+
+\begin{defn}[avoidance]
+  A binary string $\alpha$ excludes a binary string $\kappa$
+  if $\alpha$ does not contain $\kappa$.
+\end{defn}
+
+We are solving the general problem: given a binary string $\kappa$,
+let $A_{\kappa}$ be the set of binary strings avoiding $\kappa$.
+Determine $\Phi_{A_{\kappa}}(x)$.
+
+\begin{theorem}[3.26]
+  Let $\kappa$ be a fixed binary string,
+  $\rl A = \rl A_{\kappa}$ be the set of binary strings avoiding $\kappa$,
+  and $A(x) = \Phi_{\rl A_\kappa}(x)$. Then,
+  \[ A(x) = \frac{1+C(x)}{(1-2x)(1+C(x)) + x^{\ell(\kappa)}} \]
+  where $C(x) = \Phi_{\rl C}(x)$ where
+  $\rl C$ is the set of non-empty proper suffixes $\gamma$ of $\kappa$
+  such that there exists a non-empty proper prefix $\eta$
+  such that $\kappa\gamma = \eta\kappa$.
+\end{theorem}
+
+\begin{example}
+  $\kappa = 0^k$. Then, $\rl C = \{0,0^2,\dotsc,0^{k-1}\}$
+  because $0^k 0^i = 0^i 0^k$.
+\end{example}
+
+\begin{example}
+  $\kappa = 11011$. Then, $\rl C = \{011, 1011\}$
+  because we can write $(11011)(011) = (110)(11011)$
+  and $(11011)(1011) = (1101)(11011)$ but not with 1 or 11.
+\end{example}
+
+\begin{prf}
+  Let $\rl B$ be the set of all binary strings
+  with exactly one occurence of $\kappa$ and that occurence is at the end.
+  Let $B(x) = \Phi_{\rl B}(x)$.
+
+  \emph{Claim}.
+  The following are unambiguous recursive expressions relating $\rl A$ and $\rl B$:
+  \begin{align*}
+    \rx A \smile \rx B & = \varepsilon \smile \rx A(0 \smile 1)                   &
+    \rx A \kappa       & = \rx B \smile \smilesum_{\gamma \in \rl C} \rx B \gamma
+  \end{align*}
+  For (1): We know $\varepsilon \in \rl A$ and $\rx A(0 \smile 1)$
+  generates the strings of length at least 1 that are either in $\rl A$
+  (by adding a bit that does not complete $\kappa$)
+  or in $\rl B$ (by adding a bit that does).
+  In the other direction, notice that deleting a bit from $\rl A$ or $\rl B$ is in $\rl A$.
+
+  For (2): If $\sigma \in \rl A\kappa$, then $\sigma$ has an occurence of $\kappa$
+  at the end.
+
+  Let $\sigma'$ be the substring of $\sigma$ with the same start and ending at the
+  first occurence of $\kappa$. This exists since there exists at least one occurence of $\kappa$.
+
+  Thus, $\sigma' \in \rl B$ and $\sigma = \sigma'\gamma = \sigma'' \kappa$
+  and hence $\kappa\gamma = \eta\kappa$ and $\gamma \in \rl C$
+  where $\gamma$ is the suffix of $\kappa$ of length $w(\sigma) = w(\sigma')$.
+
+  Converting the expressions to equations gives
+  \begin{align*}
+    A(x) + B(x)        & = 1 + A(x) 2x                                   &
+    A(x) x^{w(\kappa)} & = B(x)\qty(1+\sum_{\gamma\in\rl C} x^w(\gamma))   \\
+                       &                                                 &
+                       & = B(x)(1+C(x))
+  \end{align*}
+  and solving gives us $A(x) = \frac{1+C(x)}{(1+2x)(1+C(x)) + x^{w(\kappa)}}$
+  by eliminating $B(x)$.
+\end{prf}
+
+\chapter{Recurrence Relations}
+
+\section{(10/07; from Bradley)}
+\begin{theorem}[4.12]\label{thm:pf}
+  Let $P(x)$ and $Q(x)$ be polynomials such that $\deg P < \deg Q$.
+  Suppose we can write $Q(x) = \prod(1-\lambda x)^{d_i}$, i.e.,
+  $Q$ has inverse roots $\lambda_i$ with multiplicity $d_i$.
+  Then, there exist complex numbers $c_i^{(1)}, \dotsc, c_i^{(d_i)}$ for each root $\lambda_i$
+  such that $P(x) = \sum\limits_{i}\sum\limits_{j=1}^{d_i}\frac{c_i^{(j)}}{(1-\lambda_i x)^j}$.
+\end{theorem}
+\begin{prf}[sketch]
+  One can show that the polynomials $\frac{1}{(1-\lambda_i x)^j}$
+  form a basis of the subspace of rational functions $P(x)/Q(x)$ with $\deg P < \deg Q$.
+\end{prf}
+
+\begin{example}\label{exa:14-1}
+  Write $\frac{1}{(1-x)(1+x)}$ using partial fractions.
+\end{example}
+\begin{sol}
+  By \nameref{thm:pf}, there exist $a$ and $b$ such that
+  $\frac{1}{(1-x)(1+x)} = \frac{a}{1-x} + \frac{b}{1+x} = \frac{a(1+x) + b(1-x)}{(1-x)(1+x)}$.
+  Setting numerators equal, $a(1+x) + b(1-x) = 1 \implies (a+b) + (a-b)x = 1 + 0x$.
+  Setting coefficients equal, $a+b = 1$ and $a-b = 0$.
+  This gives $a = b = \frac12$.
+\end{sol}
+
+This allows us to write any rational function as the sum of negative binomials,
+which we know how to extract coefficients from.
+That is, we can extract coefficients from arbitrary series.
+
+\begin{example}
+  Find the coefficients in \cref{exa:14-1}.
+\end{example}
+\begin{sol}
+  Write:
+  \begin{align*}
+    [x^n]\frac{1}{1-x^2}
+     & = [x^n]\frac{1/2}{1-x} + [x^n]\frac{1/2}{1+x}
+    = \frac12[x^n]\frac{1}{1-x} + \frac12[x^n]\frac{1}{1+x}
+    = \frac12(1)^n + \frac12(-1)^n                   \\
+     & = \begin{cases}
+           \frac12+\frac12 = 1 & n \equiv 0 \pmod 2 \\
+           \frac12-\frac12 = 0 & n \equiv 1 \pmod 2
+         \end{cases}
+  \end{align*}
+  which agrees with the known power series $\frac{1}{1-x^2} = 1+x^2+x^4+\dotsb$
+\end{sol}
+
+\begin{example}
+  Find the coefficients of $\frac{1+x}{(1-2x)(1+3x)} = \frac{a}{1-2x} + \frac{b}{1+3x}$.
+\end{example}
+\begin{sol}
+  Since the degree of the numerator is strictly smaller than the degree of the denominator ($1 < 2$),
+  we can apply partial fractions.
+
+  Write $\frac{1+x}{(1-2x)(1+3x)} = \frac{a(1+3x) + b(1-2x)}{(1-2x)(1+3x)}
+    + \frac{(a+b) + (3a-2b)x}{(1-2x)(1+3x)}$.
+
+  Equate coefficients of the numerator:
+  \[ \systeme[ab]{a+b=1,3a-2b=1} \]
+  Solving gives $a = \frac35$, $b = \frac25$.
+  To find coefficients, use the negative binomial series:
+  \begin{align*}
+    [x^n]\frac{1+x}{(1-2x)(1+3x)}
+     & = [x^n]\frac{3/5}{1-2x} + [x^n]\frac{2/5}{1+3x}           \\
+     & = \frac35[x^n]\frac{1}{1-2x} + \frac25[x^n]\frac{1}{1-3x} \\
+     & = \frac352^n + \frac25(-3)^n
+  \end{align*}
+  which is a closed-form, non-recursive expression.
+\end{sol}
+
+\begin{example}
+  Find the coefficients of $\frac{1+x}{(1-2x)^2}$.
+\end{example}
+\begin{sol}
+  Since the root has multiplicity 2, we have to use all its powers:
+  \[
+    \frac{1+x}{(1-2x)^2} = \frac{a}{1-2x} + \frac{b}{(1-2x)^2}
+    = \frac{a(1-2x) + b}{(1-2x)^2} = \frac{(a+b) - 2ax}{(1-2x)^2}
+  \]
+  Equating coefficients,
+  \[ \systeme[ab]{a+b=1,-2a=1} \]
+  which gives $a=-\frac12$, $b=\frac34$. Then,
+  \begin{align*}
+    [x^n]\frac{1+x}{(1-2x)^2}
+     & = [x^n]\frac{-1/2}{1-2x} + [x^n]\frac{3/2}{(1-2x)^2}           \\
+     & = -\frac12[x^n]\frac{1}{1-2x} + \frac32[x^n]\frac{1}{(1-2x)^2} \\
+     & = -\frac12 2^n + \frac32\binom{n+1}{1}2^n                      \\
+     & = \qty(1+\frac32n)2^n
+  \end{align*}
+  applying the negative binomial series.
+\end{sol}
+
+In summary, we have that $[x^n]\frac{P(x)}{Q(x)} = \sum f_i(n)\lambda_i^n$
+for some polynomials $f_i(n)$ with $\deg f_i < d_i$.
+
+Note that all this works only when $\deg P < \deg Q$.
+If it is not, then we must divide.
+Recall the polynomial division algorithm lemma from MATH 135:
+
+\begin{lemma}[Division Algorithm]
+  For all polynomials $\deg P \geq \deg Q$,
+  there exists polynomials $P_1$ and $P_2$ such that
+  $\frac{P(x)}{Q(x)} = P_1(x) + \frac{P_2(x)}{Q(x)}$
+  where $\deg P_2 < \deg Q$.
+\end{lemma}
+
+\begin{example}
+  $\frac{1+x^2}{1-x^2} = \frac{x^2-1+1+1}{1-x^2} = \frac{x^2-1}{1-x^2} + \frac{2}{1-x^2} = -1 + \frac{2}{1-x^2}$
+\end{example}
+\begin{example}
+  $\frac{x^3+x^2+5x+1}{1-x-x^2} = \frac{-x(1-x-x^2)-x^2-x+x^2+5x+1}{1-x-x^2}
+    = -x + \frac{4x+1}{1-x-x^2}$
+\end{example}
+
+This means that when $\deg P \geq \deg Q$,
+we have $[x^n]\frac{P(x)}{Q(x)} = [x^n]P_1(x) + \sum f_i(n) + \lambda_i^n$.
+Notice $[x^n]P_1(x)$ will be some constant for
+$n \leq \deg P_1 \leq \deg P - \deg Q$ and 0 otherwise.
+
+\begin{defn}[recurrence relation]
+  A sequence $a_0,\dotsc,a_n,\dotsc$ where there exists $n_0$
+  and constants $c_1,\dotsc,c_{n_0-1}$
+  such that for all $n \geq n_0$, $a_n = \sum_{i=1}^{n_0} c_i a_{n-i}$.
+  The terms $a_0,\dotsc,a_{n_0-1}$ are the \term{initial conditions}.
+\end{defn}
+
+\begin{example}
+  $a_0 = 1$, $a_n = a_{n-1}$ for $n \geq 1$. This solves to $a_n = 1$.
+\end{example}
+\begin{example}
+  $a_0 = 1$, $a_n = 2a_{n-1}$ for $n \geq 1$. This gives $a_n = 2^n$.
+\end{example}
+\begin{example}
+  $a_0 = 1$, $a_1 = 3$, $a_n = 2a_{n-2}$ for $n \geq 2$.
+  Then, $a_n = \begin{cases*}
+      2^{n/2}                  & $n$ even \\
+      3\cdot 2^{\frac{n-1}{2}} & $n$ odd
+    \end{cases*}$
+\end{example}
+
+\begin{example}
+  Fibonacci: $a_0 = 1$, $a_1 = 1$, $a_n = a_{n-1} + a_{n-2}$ for $n \geq 2$.
+  What is the closed form solution for $a_n$?
+\end{example}
+\begin{sol}
+  Recall that rational functions yield recurrence relations
+  because we defined division of power series using recurrently-defined inverses.
+  This procedure is reversible to return recurrence relations to rational functions.
+
+  To find $A(x) = \sum a_i x^i$, write out $a_0x^0 = 1$, $a_1x^1 = x$,
+  $a_2x^2 = (a_1 + a_0)x^2$, etc. Then,
+  \begin{align*}
+    A(x) & = 1 + x + a_0x^2 + a_1x^3 + a_1x^2 + a_2x^3 + \dotsb \\
+         & = 1 + x + x^2 A(x) + (x A(x) - a_0x)                 \\
+         & = 1 + x + x^2 A(x) + x A(x) - x                      \\
+         & = 1 + (x+x^2)A(x)
+  \end{align*}
+  Solving, $A(x) = \frac{1}{1-x-x^2}$.
+\end{sol}
+
+
+\section{(10/17)}
+
+\begin{theorem}[Case 1]\label{thm:main1}
+  \TFAE: (1) $A(x) = \frac{P(x)}{Q(x)}$ is a rational function (i.e.,
+  $P$ and $Q$ are polynomials and $\deg P < \deg Q$).
+
+  (2) The coefficients $a_n$ of $A(n) = \sum_{n \geq 0} a_n x^n$
+  satisfy initial conditions $a_0,\dotsc,a_k$ and recurrence relation
+  $a_n = \sum_{i=1}^{k-1} c_i a_{n-i}$ for all $n \geq k+1$ where $k = \deg Q - 1$.
+
+  (3) The coefficients $a_n$ have a closed form solution
+  $a_n = \sum_{\text{roots $r_i$}} p_i(n)-(r_i)^n$
+  where $p_i(n)$ is a polynomial of degree equal to the multiplicity of $r_i$ minus 1.
+\end{theorem}
+\begin{prf}
+  (1) implies (2) by extracting the infinitely many equations of coefficients.
+
+  (2) implies (1) by reversing the extraction process (multiply recurrence equation by $x^n$ and sum).
+
+  (1) implies (3) by method of partial fractions.
+
+  (3) implies (1) by reversing partial fractions (i.e., use the negative binomial series).
+\end{prf}
+
+\begin{theorem}[Case 2]\label{thm:main2}
+  \TFAE: (1) $A(x) = \frac{P(x)}{Q(x)}$ (with no conditions on $\deg P$, $\deg Q$)
+
+  (2) Any number of initial conditions $a_0,\dotsc,a_r$
+  and recurrence $\sum_{i=1}^{k+1}c_i a_{n-i}$ for all $n > r$ where $k = \deg Q -1$.
+
+  (3) $a_n = C_n + \sum_{\text{roots $r_i$}}p_i(n)(r_i)^n$
+  with extra constants $C_n$ (for $n > r$, $C_n = 0$).
+\end{theorem}
+
+\begin{defn}[auxiliary (characteristic) polynomial]
+  Given $a_n = \sum_{i=1}^{k+1}c_i a_{n-i}$ is a recurrence relation,
+  replace $a_n$ by $x^{k+1}$, $a_{n-1}$ by $x^k$, ..., down to $a_{n-(k+1)}$ by $1$.
+\end{defn}
+
+\begin{example}
+  Fibonacci: $a_0=1$, $a_1=1$, $a_n = a_{n-1} + a_{n-2}$ for all $n \geq 2$.
+
+  Find the coefficients directly (without using partial fractions).
+\end{example}
+\begin{sol}
+  We apply \nameref{thm:main1} and know that $a_n = \sum_{r_i} p_i(n) r_i^n$.
+
+  The characteristic polynomial is $x^2 = x + 1$, i.e, $0 = x^2 - x - 1$.
+  This is $Q(\frac{1}{x})\cdot x^{\deg Q}$, i.e.,
+  keep the coefficients but reverse the order.
+
+  The $r_i$ in \nameref{thm:main1} are \emph{not} the roots of $Q(x)$,
+  but the roots of the characteristic polynomial (the ``inverse roots'' of $Q$).
+  In fact, $r_i^{-1}$ is a root of $Q$.
+
+  The roots here are $r_1 = \frac{1 - \sqrt 5}{2}$ and $r_2 = \frac{1 + \sqrt 5}{2}$.
+
+  So $a_n = p_1(n) r_1^n + p_2(n) r_2^n$ where $p_1$ and $p_2$ have degree 0.
+  That is, $a_n = c_1 r_1^n + c_2 r_2^n$.
+
+  Use our initial conditions to solve:
+  \begin{align*}
+    a_0 = 1 & = c_1 r_1^0 + c_2 r_2^0 = c_1 + c_2 \\
+    a_1 = 1 & = c_1 r_1 + c_2 r_2
+  \end{align*}
+  Then, $c_1 = 1-c_2$, so $1 = (1-c_2)r_1 + c_2 r_2  = r_1 + c_2(r_2-r_1)
+    \implies r_2 = \sqrt{5}c_2 \implies c_2 = \frac{1+\sqrt{5}}{2\sqrt{5}}$
+  and $c_1 = \frac{\sqrt{5}-1}{2\sqrt{5}}$.
+  Finally, $a_n = \frac{\sqrt{5}-1}{2\sqrt{5}}\qty(\frac{1-\sqrt{5}}{2})^n
+    + \frac{1-\sqrt{5}}{2\sqrt{5}}\qty(\frac{1+\sqrt{5}}{2})^n$.
+
+  Notice also that $\abs{r_1}<1$ so $r_1^n \to 0$
+  and $a_n$ is the closest integer to $\frac{1+\sqrt{5}}{2\sqrt{5}}\qty(\frac{1+\sqrt{5}}{2})^n$.
+\end{sol}
+
+\begin{example}
+  $a_n = 3a_{n-1} - 3a_{n-2} + a_{n-3}$, $a_0 = 1$, $a_1 = 2$, $a_2 = 3$.
+\end{example}
+\begin{sol}
+  The characteristic polynomial is $x^3 - 3x^2 + 3x - 1$.
+  It factors as $(x-1)^3$ so it has one root $r_1 = 1$ with multiplicity 3.
+
+  So $a_n = p_1(n) r_1^n$ where $p_1$ has degree $3-1=2$,
+  so $a_n = (c_1 n^2 + c_2 n + c_3)(1)^n = c_1 n^2 + c_2 n + c_3$.
+
+  By the initial conditions, $c_3 = 1$.
+
+  Then, $2 = a_1 = c_1 + c_2 + c_3 = c_1 + c_2 + 1 \implies c_1 + c_2 = 1$.
+
+  Also, $3 = a_2 = 4c_1 + 2c_2 + c_3 = 4c_1 + 2c_2 + 1 = 2c_1 + 3 \implies c_1 = 0$
+  and $c_2 = 1$.
+
+  Finally, we have $a_n = n + 1$.
+\end{sol}
+
+\section{(10/19)}
+
+Recall: if $W(x) = \frac{P(x)}{Q(x)}$ is a rational function,
+then the coefficients $w_i$ satisfy a linear recurrence relation
+$w_n = \sum_{i=1}^{k+1}c_iw_{n-i}$.
+
+We can write rational functions as $Q(x)W(x) - P(x) = 0$
+as a linear equation over the field of polynomials.
+This is why linear recurrence relations relate to rational functions.
+
+\begin{defn}[quadratic recurrence]
+  $A(x)W(x)^2 + B(x)W(x) + C(x) = 0$
+  for polynomials $A$, $B$, and $C$.
+\end{defn}
+
+We can in fact apply the quadratic formula
+and say $W(x) = \frac{-B(x)\pm\sqrt{B(x)^2-4A(x)C(x)}}{2A(x)}$.
+
+To do this, we must calculate the square roots of polynomials.
+
+\begin{defn}[complex binomial coefficients]
+  For $\alpha \in \C$, define $\binom{\alpha}{k} = \frac{1}{k!}(\alpha)(\alpha-1)\dotsb(\alpha-k+1)$
+\end{defn}
+
+\begin{theorem}[General Binomial Theorem]\label{thm:genbin}
+  For all $\alpha \in \C$,
+  $(1+x)^\alpha = \sum\limits_{k=0}^\infty \binom{\alpha}{k}x^k$
+\end{theorem}
+
+\begin{corollary}
+  $\sqrt{1-4x} = 1-2\sum_{k\geq 1}\frac{1}{k}\binom{2k-2}{k-1}x^k
+    = 1-2\sum_{k\geq0}\frac{1}{k+1}\binom{2k}{k}x^{k+1}$
+\end{corollary}
+\begin{prf}
+  Use the \nameref{thm:genbin} with $\alpha = \frac12$
+  so $(1-4x)^{1/2} = \sum_{k \geq 0}\binom{1/2}{k}(-4)^k x^k$.
+  Algebra bashing gives the result we want.
+\end{prf}
+
+\begin{defn}[Catalan numbers]
+  $C_n = \frac{1}{n+1}\binom{2n}{n}$
+\end{defn}
+
+\begin{example}
+  Calculate the first 5 Catalan numbers.
+\end{example}
+\begin{sol}
+  $C_0 = \frac{1}{1}\binom{0}{0} = 1$,
+  $C_1 = \frac{1}{2}\binom{2}{1} = 1$,
+  $C_2 = \frac{1}{3}\binom{4}{2} = 2$,
+  $C_3 = \frac{1}{4}\binom{6}{3} = 5$,
+  $C_4 = 14$, $C_5 = 42$.
+\end{sol}
+
+The Catalan numbers are interesting because they count many different objects:
+the number of full binary trees with $n+1$ leaves,
+the number of triangulations of $(n+2)$-gons,
+the number of well-formed parenthesizations,
+etc.
+
+\begin{prop}
+  $\sum_{k \geq 0} C_k x^k = \frac{1-\sqrt{1-4x}}{2x}$
+\end{prop}
+\begin{prf}
+  Apply the corollary above and isolate the power series.
+\end{prf}
+
+Since this is not a rational function, the Catalan numbers do not form a rational language.
+
+\begin{defn}[Well-formed Parenthesization]
+  A sequence of $n$ opening and closing parentheses that ``match''.
+  That is, for any starting subsequence, the number of opens
+  is at least the number of closes.
+\end{defn}
+\begin{example}
+  List all WFPs when $n=3$.
+\end{example}
+\begin{sol}
+  ()()(), (())(), ()(()), ((())), (()()).
+  Notice there are 5, which is exactly $C_3$.
+\end{sol}
+
+\begin{theorem}
+  The number of WFPs with size $n$ is $C_n$.
+  Equivalently, the generating series
+  for WFPs with respect to size is
+  $W(x) = \sum w_n x^n = \frac{1-\sqrt{1-4x}}{2x}$.
+\end{theorem}
+\begin{prf}
+  We find a recursive unambiguous expression for the set of WFPs $\rl W$.
+  Let $\varepsilon$ be the ``empty'' WFP, then write
+  \[ \rx W = \varepsilon \smile (\rx W)\rx W \]
+  This is unambiguous because we are always decomposing using the first open parenthesis.
+  This expression leads to the equation
+  \begin{align*}
+    W(x) & = 1 + x W(x)^2                               \\
+    0    & = 1 - W(x) + x W(x)^2                        \\
+    W(x) & = \frac{1 \pm \sqrt{(-1)^2 - 4(x)(1)}}{2(x)} \\
+         & = \frac{1 \pm \sqrt{1-4x}}{2x}
+  \end{align*}
+  by the quadratic equation.
+  We must take the negative solution because in the positive solution,
+  \[
+    W(x) = \frac{1}{2x} + \frac{1}{2x}\qty(1+2\sum_{k\geq 0}C_kx^{k+1})
+    = \frac{1}{x} - \sum_{k\geq 0}C_k x^k
+  \]
+  which is not well-defined because $\frac1x$ has no power series.
+  But the negative solution is exactly the generating series for Catalan numbers.
+\end{prf}
+
+\begin{theorem}
+  bradley was bored in class out of his mind today and wanted to say hi to the readers :)
+\end{theorem}
