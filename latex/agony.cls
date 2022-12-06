@@ -67,9 +67,9 @@
 }{}
 
 % See https://tex.stackexchange.com/questions/510506/conflict-between-flexisym-and-polynom-packages
-\catcode`^=12 \catcode`_=12
+% \catcode`^=12 \catcode`_=12
 \usepackage{polynom}
-\catcode`^=7 \catcode`_=8
+% \catcode`^=7 \catcode`_=8
 
 % Figures
 \ifagony@tikz
