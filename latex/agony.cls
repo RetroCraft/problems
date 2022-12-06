@@ -64,6 +64,11 @@
 \@ifpackageloaded{unicode-math}{
   \let\underbrace\LaTeXunderbrace
   \let\overbrace\LaTeXoverbrace
+  \AtBeginDocument{
+    % See https://github.com/wspr/unicode-math/issues/457
+    \renewcommand{\Re}{\operatorname{Re}}
+    \renewcommand{\Im}{\operatorname{Im}}
+  }
 }{}
 
 % See https://tex.stackexchange.com/questions/510506/conflict-between-flexisym-and-polynom-packages
