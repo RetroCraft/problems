@@ -248,7 +248,8 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 26. **MATH135/FE2021W/Q08** 7 - 1 = 8 (Dan)
 27. **MATH135/FE2021W/Q010** Found counterexample (part a) and RHS is not the set of integers (part b) (Dan)
 28. **MATH135/EP04/RP01(b)** Another 0 = 1 typo (Evelina)
-29. **MATH135/RP06/EP06** Factoring typo (Prasana)
+29. **MATH135/EP06/RP06** Factoring typo (Prasana)
+30. **MATH135/EP11/RP03(e)** ...another factoring typo (Linda)
 
 ## Contact
 
