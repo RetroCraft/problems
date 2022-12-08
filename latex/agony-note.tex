@@ -7,7 +7,9 @@
 \setlength\topsep{6pt}
 \declaretheorem[style=definition,name=Definition,
   thmbox={M,leftmargin=1.5em,rightmargin=1.5em,nocut,headstyle=\textbf{Definition},bodystyle=\noindent},
-  refname={definition,definitions},Refname={Definition,Definitions}]{defn}
+  refname={definition,definitions},Refname={Definition,Definitions}]{definition}
+\NewDocumentEnvironment{defn}{o}{\IfNoValueTF{#1}{\definition}{\definition[#1]\index{#1}}}{\enddefinition}
+\NewDocumentEnvironment{defn*}{o}{\IfNoValueTF{#1}{\definition}{\definition[#1]}}{\enddefinition}
 \declaretheorem[name=Theorem,
   thmbox={L,leftmargin=1.5em,rightmargin=1.5em,nocut,headstyle=\textbf{Theorem},bodystyle=\noindent},
   refname={theorem,theorems},Refname={Theorem,Theorems}]{theorem}
@@ -27,7 +29,8 @@
 \RequirePackage[hybrid,underscores=false]{markdown}
 
 % Use inside of definitions: "a \term{thing} is a whatever"
-\newcommand{\term}{\underline}
+\makeindex[columns=3, title=Index of Defined Terms, intoc]
+\NewDocumentCommand\term{O{#2}m}{\underline{#2}\index{#1}}
 
 % For thmbox (see tex.se/41100)
 \RequirePackage{tablefootnote}
