@@ -94,3 +94,19 @@ tr {
 h1 {
   page-break-after: avoid;
 }
+
+.alert {
+  border-radius: 0.3rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+
+  border: 1px solid scale-color(#159957, $lightness: 50%);
+  background-color: scale-color(#159957, $lightness: 92%);
+  strong { color: #159957; }
+  &.danger {
+    border: 1px solid scale-color(#991557, $lightness: 50%);
+    background-color: scale-color(#991557, $lightness: 92%);
+    strong { color: #991557; }
+  }
+  p:last-child { margin-bottom: 0; }
+}

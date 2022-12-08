@@ -12,25 +12,43 @@ Minus Stripe/PayPal's 30¢ transaction fee, of course.
 ## About
 {:.no_toc}
 
-I make no guarantees that my work is remotely close to correct.
-Frankly, it's more likely that it's not.
-Please [let me know](#contact) if you find a [mistake](#mistakes) though!
-Or, in the spirit of open source, make a [pull request](https://github.com/RetroCraft/problems/pulls) fixing it.
-
-If you want to use my `agony` document class for $$\LaTeX$$,
-feel free to [download it](./latex/agony.cls) and look through the macros.
-The reference sheets on this site use an [adapted config]({{ page.gh }}/assets/js/mathjax.js) for MathJax.
+<div class="alert danger">
+  All contributors to this archive are students.
+  **Nothing here is official. There are no guarantees that content is remotely close to correct.**
+  Frankly, it's more likely that it's not.
+  Please [let me know](#contact) if you find a [mistake](#mistakes) though!
+  Or, in the spirit of open source, make a [pull request](https://github.com/RetroCraft/problems/pulls) fixing it.
+</div>
 
 Everything here is published under information and belief that it is permitted by relevant faculty;
-please [contact me](#contact) if anything is not and I will take them down.
+please [contact me](#contact) if anything is not and I will take it down.
+
+### Contribution, Sharing, and Re-Use
+{:.no_toc}
+
+<div class="alert">
+  **If you would like to add your own work to the site, please make a
+  [pull request](https://github.com/RetroCraft/problems/pulls).**
+  If you're not familiar with Git,
+  [contact me](#contact) and I'm happy to help.
+
+  Anything that helps future students
+  (lecture/textbook notes, exercises, etc.) is acceptable,
+  provided that you are happy to release it freely.
+</div>
 
 Unless otherwise specified, all content here is licensed under a
 Creative Commons Attribution ShareAlike 4.0 International License
 ([CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)).
-This means you can do whatever you want with it,
+**This means you can do whatever you want with it,
 provided you (1) give credit and (2) also release your work openly.
 Non-free study resources behind hard paywalls suck.
-Learning is painful and agonizing enough as it is.
+Learning is painful and agonizing enough as it is.**
+
+If you want to use my `agony` document class for $$\LaTeX$$,
+feel free to [download it](./latex/agony.cls) and look through the macros.
+The reference sheets on this site use an [adapted config]({{ page.gh }}/assets/js/mathjax.js) for MathJax.
+The `agony` class is documented [here](https://github.com/RetroCraft/problems#using-the-agony-class).
 
 ### Table of Contents
 {:.no_toc}
@@ -129,6 +147,21 @@ Might also be helpful: Will put together a compilation of sample
 ## Math
 
 ### MATH 135 (F2020) <small>Algebra for Honours Mathematics</small>
+
+<div class="alert danger">
+  [Do not take for gospel these solutions](https://piazza.com/class/l7jprtno1ka1q/post/1755).
+  Most of them were written with not much sleep.
+  There have been [a lot of mistakes](#errata-corrige).
+  Contribute your own, better solutions if you can.
+
+  For those of you who came to my review session,
+  remember that you should be *doing your own solutions* to learn
+  and comparing with others (including mine) only after you have tried the problems yourselves.
+  This resource was created during the pandemic,
+  when it was hard to find others to work alongside
+  and to benefit those who had a hard time finding friends.
+  It is not a replacement for studying.
+</div>
 
 | File                                         |      Complete?       | Notes                              |
 | -------------------------------------------- | :------------------: | ---------------------------------- |
@@ -256,7 +289,7 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 ## Contact
 
 Did you find a mistake?
-Reach out by filing an [issue on GitHub](https://github.com/RetroCraft/problems/issues)
+Reach out by opening a [discussion on GitHub](https://github.com/RetroCraft/problems/discussions)
 or by one of [email](mailto:jahyong@uwaterloo.ca),
 [Facebook](https://facebook.com/james.ahyong),
 [Instagram](https://instagram.com/james.ahyong),
