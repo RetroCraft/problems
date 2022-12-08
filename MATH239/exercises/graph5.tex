@@ -1,0 +1,202 @@
+\section{Trees}
+
+\subsection{Trees}
+
+\begin{xca}
+  \begin{enumerate}
+    \item Draw one tree from each isomorphism class of trees on six or fewer vertices.
+    \item For each tree in (a), exhibit a bipartition $(X,Y)$ by coloring the vertices
+          in $X$ with one colour and the vertices in $Y$ with another.
+  \end{enumerate}
+\end{xca}
+\begin{sol}
+  Draw the trees:
+  \begin{center}
+    \tikz\graph[dots tree]{6[red]--1[blue]--{2[red]--3[blue], 4[red]--5[blue]}}; \qquad
+    \tikz\graph[dots tree]{1[red]--{2[blue]--3[red], 4[blue]--5[red]--6[blue]}}; \qquad
+    \tikz\graph[dots tree]{3[red]--{1[blue]--2[red], 4[blue]--{5[red],6[red]}}}; \qquad
+    \tikz\graph[dots tree]{1[red]--{2[blue]--{3[red],4[red]}, 5[blue], 6[blue]}}; \qquad
+    \tikz\graph[dots tree]{2[red]--{1[blue], 3[blue]--{4[red],5[red],6[red]}}}; \qquad
+    \tikz\graph[dots tree]{1[red]--{2[blue],3[blue],4[blue],5[blue],6[blue]}}; \qquad
+  \end{center}
+  where we colour the vertices an even distance away from the root
+  in \textcolor{red}{red} and those an odd distance away in \textcolor{blue}{blue}.
+\end{sol}
+
+\begin{xca}
+  Prove that every tree is bipartite.
+\end{xca}
+\begin{prf}
+  Let $T$ be a non-empty tree and $r \in V(T)$.
+
+  Then, by Lemma 5.1.3, for all vertices $u \in V(T)$,
+  there exists a unique path $P_u$ from $u$ to $r$.
+  Define $P_r = \varnothing$.
+  Claim that $X = \{ u \in V(T) : \text{length of $P_u$ even} \}$
+  and $Y = \{ u \in V(T) : \text{length of $P_u$ odd} \}$
+  are a bipartition of $T$.
+
+  Let $uv \in E(T)$.
+  Then, either $P_v = P_u + uv$ or $P_u = P_v + uv$
+  because if $uv$ is in both paths, then there exists a cycle
+  based on the walk $(r,P_u,u,v,P_v,r)$.
+  \WLOG, suppose $P_v = P_u + uv$.
+  Then, the length of $P_v$ is exactly one more than the length of $P_u$.
+  That is, the parity is different.
+  Therefore, $u$ and $v$ are partitioned by $(X,Y)$.
+
+  It follows that $T$ is bipartite.
+\end{prf}
+
+\begin{xca}\label{xca:leaf-from-deg}
+  What is the smallest number of vertices of degree 1 in a tree
+  with 3 vertices of degree 4 and 2 vertices of degree 5?
+  Justify your answer by proving that this is the smallest possible number
+  and by giving a tree with this many vertices of degree 1.
+\end{xca}
+\begin{sol}
+  Let $n_r$ be the number of vertices with degree $r$ in such a tree.
+  By the alternate proof of Theorem 5.1.8,
+  $n_1 = 2 + \sum_{r \geq 3}(n-2)n_r = 2 + n_3 + 2n_4 + 3n_5 + \sum_{r \geq 6}(n-2)n_r$.
+  If $n_4 = 3$ and $n_5 = 2$, then $n_1 \geq 2 + 6 + 6 = 14$.
+
+  Construct the tree:
+  \begin{center}
+    \begin{tikzpicture}
+      \graph[dots nodes, layered layout, grow down, sibling distance=0.5cm] {
+        4a--{4b--{a,b,c},4c--{e,f,g},5a--{i,j,k,l},5b--{n,o,p,q}}
+        };
+    \end{tikzpicture}
+  \end{center}
+  which has 14 leaves.
+\end{sol}
+
+\begin{xca}
+  Find the smallest number $r$ of vertices in a tree having
+  two vertices of degree 3, one vertex of degree 4, and two vertices of degree 6.
+  Justify your answer by proving that any such tree has at least $r$ vertices,
+  and by giving an example of such a tree with exactly $r$ vertices.
+\end{xca}
+\begin{sol}
+  As in \cref{xca:leaf-from-deg}, write $n_1 = 2 + n_3 + 2n_4 + 3n_5 + 4n_6 + \sum_{r \geq 7}(n-2)n_r$
+  and notice that if $n_3 = 2$, $n_4 = 1$, and $n_6 = 2$,
+  then $n_1 \geq 2 + 2 + 2 + 8 = 14$.
+  Draw the tree:
+  \begin{center}
+    \begin{tikzpicture}
+      \graph[dots nodes, layered layout, grow down, sibling distance=0.5cm] {
+        4a--{3a--{1,2},3b--{4,5},6a--{6,7,8,9,10},6b--{11,12,13,14,15}}
+        };
+    \end{tikzpicture}
+  \end{center}
+  which has 14 leaves.
+\end{sol}
+
+\begin{xca}
+  A cubic tree is a tree whose vertices have degree either 3 or 1.
+  Prove that a cubic tree with exactly $k$ vertices of degree 1
+  has $2(k - 1)$ vertices.
+\end{xca}
+\begin{prf}
+  As in \cref{xca:leaf-from-deg}, $k =: n_1 = 2 + n_3$ so $n_3 = k - 2$.
+  Then, there are $n_1 + n_3 = k + k - 2 = 2(k-1)$ vertices in total.
+\end{prf}
+
+\begin{xca}
+  Prove that a forest with $p$ vertices and $q$ edges has $p - q$ components.
+\end{xca}
+\begin{prf}
+  Let $G$ be such a forest and $T_1,\dotsc,T_k$ be its $k$ components,
+  which are all trees because they are connected and have no cycles.
+  By Theorem 5.1.5, $\abs{E(T_i)} = \abs{V(T_i)} - 1$, so
+  \[
+    q = E(G) = \sum_{i=1}^k \abs{E(T_i)}
+    = \sum_{i=1}^k  (\abs{V(T_i) - 1})
+    = \qty(\sum_{i=1}^k \abs{V(T_i)}) - k
+    = p - k
+  \]
+  so $k = p - q$, as desired.
+\end{prf}
+
+\begin{xca}
+  Let $p \geq 2$. Show that a sequence of $(d_1,\dotsc,d_p)$ of positive integers
+  is the degree sequence of a tree on $p$ vertices if and only if
+  $\sum_{i=1}^p d_i = 2p-2$.
+\end{xca}
+\begin{prf}
+  Suppose that $T$ is a tree with $V(T) = \{v_1,\dotsc,v_p\}$.
+  Let $d_i = \deg(v_i)$. Then, apply Theorem 5.1.5 ($\abs{E(T)} = p-1$)
+  and the Handshaking Lemma ($\sum d_i = 2\abs{E(T)} = 2p - 2$), as desired.
+
+  Suppose that $\delta = (d_1,\dotsc,d_p)$ is a sequence with sum $2p-2$.
+  We induct on $p$.
+
+  If $p=2$, then $2p-2 = 2$.
+  There is only one composition of 2, $\delta = (1,1)$.
+  Draw the tree \tikz\graph[dots tree]{1--2}; with two vertices of degree 1.
+
+  Let $p \geq 3$.
+  Since all the $p$ parts of the sequence are positive, i.e., $d_i \geq 1$,
+  we have $\sum d_i \geq p$.
+  Then, by the pigeonhole principle, since there remains $p-2$ weight to distribute
+  into $p$ parts of the sequence, there exists $d_i = 1$ and $d_j > 1$ for distinct $i,j$.
+  Let $\delta'$ be $\delta$ with $d_j \mapsto d_j-1$ and skipping $d_i$.
+  This is a sequence of $p-1$ elements that sums to $(2p-2)-2 = 2(p-1)-2$.
+
+  Inductively, a tree $T'$ of $p-1$ vertices exists with degree sequence $\delta'$.
+  Then, add a leaf to $v_j \in V(T)$, i.e., a vertex of degree 1,
+  and increase the degree of $v_j$ by 1.
+  This is a tree of $p$ vertices with degree sequence $\delta$.
+
+  Therefore, by induction, $\delta$ is the degree sequence of a tree of $p$ vertices.
+\end{prf}
+
+\setcounter{subsection}{2}
+\subsection{Spanning Trees, Characterizing Bipartite Graphs}
+
+\begin{xca}
+  Let $r$ be a fixed vertex of a tree $T$.
+  For each vertex $v$ of $T$, let $d(v)$ be
+  the length of the path from $v$ to $r$ in $T$. Prove that
+\end{xca}
+\begin{enumerate}
+  \item for each edge $uv$ of $T$, $d(u) \neq d(v)$, and
+        \begin{prf}
+          Let $P_u$ and $P_v$ be the paths from $u$ and $v$ to $r$, respectively.
+
+          Suppose $uv \not\in P_u$ and $uv \not\in P_v$.
+          Then, $(u,P_u,r,P_v,v)$ is a $(u,v)$-walk in $T-uv$,
+          meaning a $(u,v)$-path exists in $T-uv$.
+          But then $T$ has two $(u,v)$-paths because $(u,uv,v)$ is a path,
+          contradicting Lemma 5.1.3.
+          Therefore, $uv \in P_u$ or $uv \in P_v$.
+
+          \WLOG, suppose $uv \in P_u$.
+          That is, $P_u = (u,uv,v,\dotsc,r) = u + P_v$
+          because $P_v$ is the unique path from $v$ to $r$ in $T$.
+          Therefore, $d(u) = \abs{E(P_u)} \neq \abs{E(P_v)} + 1 = d(v)$.
+        \end{prf}
+  \item for each vertex $x$ of $T$ other than $r$,
+        there exists a unique vertex $y$
+        such that $y$ is adjacent to $x$ and $d(y) < d(x)$.
+        \begin{prf}
+          Let $P_x = (x,y,\dotsc,r)$ be the unique $(x,r)$-path (note that $y$ could be $r$).
+          Clearly, $\delta(y) < \delta(x)$ since the unique $(y,r)$-path
+          is contained inside $P_x$.
+
+          Let $z \in N_T(x)$, $z \neq y$.
+          Suppose $P_z$ does not contain $P_x$.
+          Then, $(z,P_z,r,P_x,x,xz,z)$ is a cycle in $T$.
+          By contradiction, $P_z$ contains $P_x$ and $d(z) > d(x)$.
+
+          Therefore, $y$ is unique.
+        \end{prf}
+\end{enumerate}
+
+\subsection{Breadth-First Search}
+
+Not covered in Fall 2022 offering.
+
+\subsection{Applications of Breadth-First Search}
+
+Not covered in Fall 2022 offering.

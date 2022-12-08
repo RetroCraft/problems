@@ -1,0 +1,469 @@
+\section{Binary Strings}
+
+\begin{xca}
+  Prove Lemma 3.9 (Unambiguous Expressions)
+\end{xca}
+\begin{prf}
+  Let $\rx R$ and $\rx S$ be regular expressions producing $\rl R$ and $\rl S$.
+  Proceed by cases.
+
+  If $\rx R = \varepsilon$, 0, or 1, then $\rl R = \{\varepsilon\}$, $\{0\}$, or $\{1\}$.
+  Notice each is produced exactly once, so $\rx R$ is unambiguous.
+
+  Now, suppose $\rx R$ and $\rx S$ are unambiguous.
+  We proceed by contrapositives.
+
+  Suppose $\rx R \smile \rx S$ which produces $\rl R \cup \rl S$ is ambiguous.
+  Then, since $\rx R$ and $\rx S$ are unambiguous,
+  the union operation must produce a duplicate.
+  That is, $\rl R \cap \rl S \neq \varnothing$.
+  Conversely, if $\rl R \cap \rl S$ is non-empty,
+  then whatever expressions are in the intersection are produced twice by $\rx R \smile \rx S$.
+  Therefore, $\rx R \smile \rx S$ is ambiguous if and only if $\rl R \cap \rl S \neq \varnothing$.
+
+  Suppose $\rx R\rx S$ is ambiguous.
+  Then, $\rl R \rl S = \{\rho\sigma : \rho \in \rl R, \sigma \in \rl S\}$
+  produces some element $\rho\sigma = \rho'\sigma'$ twice.
+  Notice that for all $(\rho,\sigma) \in \rl R \times \rl S$, $f(\rho,\sigma) = \rho\sigma \in \rl R \rl S$.
+  That is, $\abs{\rl R \times \rl S} \geq \abs{\rl R \rl S}$.
+  However, since $\rho\sigma = \rho'\sigma'$, $f$ is not injective.
+  Therefore, $\abs{\rl R \times \rl S} \neq \abs{\rl R \rl S}$.
+  This means $\rl R\times\rl S \mathrel{\not\bijects} \rl R\rl S$.
+
+  Conversely, suppose $\rl R\times\rl S \mathrel{\not\bijects} \rl R\rl S$.
+  Then, $\abs{\rl R \times \rl S} > \abs{\rl R \rl S}$.
+  This means that under $f$, multiple pairs must be sent to one string,
+  which is exactly what it means for $\rl R\rl S$ to be ambiguous.
+
+  Finally, consider $\rx R^*$ is ambiguous.
+  Then, since $\rx R$ is unambiguous, the ambiguity must be introduced
+  by either a single $\rx R^k$ being ambiguous or the union.
+  By induction on the second point, the union is unambiguous if and only if
+  $\bigcup_{k=0}^\infty \rl R^k$ is a disjoint union.
+  Therefore, $\rx R^*$ is ambiguous if and only if all the $\rx R^k$ are unambiguous
+  and the union of the $\rl R^k$ is disjoint.
+\end{prf}
+
+\begin{xca}
+  Let $\rx A = (10 \smile 101)$ and $\rx B = (001 \smile 100 \smile 1001)$.
+  For each of $\rx{AB}$ and $\rx{BA}$, is the expression unambiguous?
+  What is the generating series (by length) of the set it produces?
+\end{xca}
+\begin{sol}
+  Write out $\rl{AB} = \{10001, 10100, 101001, 101001, 101100, 1011001\}$.
+  Notice $101001$ appears twice, so $\rx{AB}$ is ambiguous.
+  The (meaningless) generating series is $2x^5 + 2x^6 + x^7$.
+
+  Write out $\rl{BA} = \{00110, 001101, 10010, 100101, 100110, 1001101\}$.
+  No element appeared twice, so $\rx{BA}$ is unambiguous.
+  The generating series is $2x^5 + 3x^6 + x^7$.
+\end{sol}
+
+\begin{xca}
+  Let $\rx A = (00 \smile 101 \smile 11)$ and $\rx B = (00 \smile 001 \smile 10 \smile 110)$.
+  Prove that $\rx A^*$ is unambiguous and $\rx B^*$ is ambiguous.
+  Find the generating series (by length) for the set $\rl A^*$ produced by $\rx A^*$.
+\end{xca}
+\begin{sol}
+  Notice that $\rx A$ is unambiguous.
+  There is no way to combine any two of the three strings to create the other one:
+  creating 00 from 101 and 11 is clearly impossible;
+  11 from 00 and 101 can only be made by 101101 but 10 and 01 cannot be made by 00;
+  101 cannot be made from 00 and 11 since there is no single 0.
+  Therefore, $\rx A^*$ is unambiguous.
+
+  For $\rx B$, notice that $00110 = (001)(10) = (00)(110)$, so it is ambiguous.
+
+  By Theorem 3.13, $\Phi_{\rl A^*} = (A^*)(x) = \frac{1}{1-A(x)} = \frac{1}{1-2x^2-x^3}$.
+\end{sol}
+
+\begin{xca}
+  For each of the following sets of binary strings,
+  write an unambiguous expression which produces that set.
+\end{xca}
+\begin{enumerate}
+  \item Binary strings that have no block of 0's of size 3,
+        and no block of 1's of size 2.
+        \begin{sol}
+          A valid block of 0's is matched by $0 \smile 00 \smile 00000^*$.
+          Likewise, a valid block of 1's is $1 \smile 1111^*$.
+          Then, the block decomposition is
+          \[
+            \rx R = (\varepsilon \smile 0 \smile 0^2 \smile 0^40^*)
+            ((1\smile 1^31^*)(0 \smile 0^2 \smile 0^40^*))^*
+            (\varepsilon \smile 1 \smile 1^31^*)
+          \]
+          which is, as a block decomposition, unambiguous.
+        \end{sol}
+  \item Binary strings that have no substring of 0's of length 3,
+        and no substring of 1's of length 2.
+        \begin{sol}
+          This means blocks of 0's have length 1 or 2, i.e., $(0 \smile 00)$
+          and blocks of 1's have length 1, i.e., $(1)$.
+          Then, the block decomposition is
+          \[
+            \rx R = (\varepsilon \smile 0 \smile 00)(1(0 \smile 00))^*(\varepsilon \smile 1)
+          \]
+          which an unambiguous block decomposition.
+        \end{sol}
+  \item Binary strings in which the substring 011 does not occur.
+        \begin{sol}
+          There are no ways that 011 overlaps itself.
+          Therefore, we need only force blocks of 1's after a 0 to have length 1.
+          Using a block decomposition depending if we start with 1 or 0,
+          \[
+            \rx R = \varepsilon \smile (1 1^*)(0 0^* 1)^*0^* \smile (00^*)(1 00^*)^*(\varepsilon \smile 1)
+          \]
+          which is unambiguous.
+        \end{sol}
+  \item Binary strings in which the blocks of 0's have even length and
+        the blocks of 1's have odd length.
+        \begin{sol}
+          Blocks of 0's are matched by $00(00)^*$ and 1's by $1(11)^*$. Then,
+          \[
+            (00)^*(1(11)^*00(00)^*)^*(\varepsilon \smile 1(11)^*)
+          \]
+          is an unambiguous block decomposition.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  Let $\rx G = 0^*((11)^*1(00)^*00 \smile (11)^*11(00)^*0)^*$,
+  and let $\rl G$ be the set of binary strings produced by $\rx G$.
+\end{xca}
+\begin{enumerate}
+  \item Give a verbal description of the strings in the set $\rl G$.
+        \begin{sol}
+          The set of binary strings where blocks of 0's
+          have the opposite parity of the preceding block of 1's.
+        \end{sol}
+  \item Find the generating series (by length) of $\rl G$.
+        \begin{sol}
+          We know by Theorem 3.13 $\Phi_{\rl G}(x) = G(x)$, so
+          \begin{align*}
+            \Phi_{\rl G}(x)
+             & = \frac{1}{1-x}\cdot\frac{1}{1-\qty(\frac{x}{1-x^2}\cdot\frac{x^2}{1-x^2} + \frac{x^2}{1-x^2}\cdot\frac{x}{1-x^2})} \\
+             & = \frac{1}{1-x}\cdot\frac{1}{1-\frac{2x^3}{(1-x^2)^2}}                                                              \\
+             & = \frac{1}{1-x}\cdot\frac{(1-x^2)^2}{(1-x^2)^2-2x^3}                                                                \\
+             & = \frac{(1+x)(1-x^2)}{1-2x^2-2x^3+x^4}                                                                              \\
+             & = \frac{1+x-x^2-x^3}{1-2x^2-2x^3+x^4}
+          \end{align*}
+          as desired.
+        \end{sol}
+  \item For $n \in \N$, let $g_n$ be the number of strings in $\rl G$ of length $n$.
+        Give a recurrence relation and enough initial conditions
+        to uniquely determine $g_n$ for all $n \in \N$.
+        \begin{sol}
+          Apply Theorem 4.8 and read off the linear recurrence relation:
+          \[
+            g_n - 2g_{n-2} - 2g_{n-3} + g_{n-4} = \begin{cases}
+              1  & n = 0    \\
+              1  & n = 1    \\
+              -1 & n = 2    \\
+              -1 & n = 3    \\
+              0  & n \geq 4
+            \end{cases}
+          \]
+          from which we calculate initial conditions $g_0 = 1$,
+          $g_1 = 1$, $g_2 = 2g_0 - 1 = 1$, $g_3 = 2g_1 + 2g_0 - 1 = 3$.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}\end{xca}
+\begin{enumerate}
+  \item Show that the generating series (by length) for binary strings
+        in which every block of 0's has length at least 2
+        and every block of 1's has length at least 3 is $\frac{(1-x+x^3)(1-x+x^2)}{1-2x+x^2-x^5}$.
+        \begin{sol}
+          This set of strings is produced by
+          $\rx R = (\varepsilon \smile 000^*)(1111^*000^*)^*(\varepsilon \smile 1111^*)$.
+          This leads to the rational function
+          \begin{align*}
+            R(x)
+             & = \qty(1 + \frac{x^2}{1-x})\frac{1}{1-(\frac{x^3}{1-x}\cdot\frac{x^2}{1-x})}\qty(1 + \frac{x^3}{1-x}) \\
+             & = \frac{1-x+x^2}{1-x}\cdot\frac{1}{1-\frac{x^5}{(1-x)^2}}\cdot\frac{1-x+x^3}{1-x}                     \\
+             & = \frac{(1-x+x^2)(1-x+x^3)}{(1-x)^2}\cdot\frac{(1-x)^2}{(1-x)^2-x^5}                                  \\
+             & = \frac{(1-x+x^2)(1-x+x^3)}{1-2x+x^2-x^5}
+          \end{align*}
+          which is equal to the generating series by Theorem 3.13.
+        \end{sol}
+  \item Give a recurrence relation and enough initial conditions to
+        determine the coefficients of this power series.
+        \begin{sol}
+          Expand the numerator to get $\Phi_{\rl R}(x) = \frac{1-2x+2x^2-x^4+x^5}{1-2x+x^2-x^5}$.
+          Then, apply Theorem 4.8 to read off the linear recurrence relation:
+          \[
+            r_n - 2r_{n-1} + r_{n-2} - r_{n-5} = \begin{cases}
+              1  & n = 0    \\
+              -2 & n = 1    \\
+              2  & n = 2    \\
+              0  & n = 3    \\
+              -1 & n = 4    \\
+              1  & n = 5    \\
+              0  & n \geq 6
+            \end{cases}
+          \]
+          and calculate $r_0 = 1$, $r_1 = -2 + 2r_0 = 0$,
+          $r_2 = 2 + 2r_1 - r_0 = 1$, $r_3 = 0 + 2r_2 - r_1 = 2$,
+          $r_4 = -1 + 2r_3 - r_2 = 2$, and $r_5 = 1 + 2r_4 - r_3 + r_0 = 4$.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}\end{xca}
+\begin{enumerate}
+  \item For $n \in \N$, let $h_n$ be the number of binary strings of length $n$
+        such that each even-length block of 0's is followed by a block of exactly one 1
+        and each odd-length block of 0's is followed by a block of exactly two 1's.
+        Show that $h_n = [x^n]\frac{1+x}{1-x^2-2x^3}$.
+        \begin{sol}
+          Let $\rl H$ be the relevant set and notice it is produced by
+          the block decomposition $\rx H = 1^*(00(00)^*1 \smile 0(00)^*11)$.
+          Note that since a block of 0's is followed by a block of 1's, we must end on a block of 1's.
+          By Theorem 3.11, $\Phi_{\rl H}(x) = H(x)$ which is
+          \begin{align*}
+            H(x)
+             & = \frac{1}{1-x}\cdot\frac{1}{1-(\frac{x^3}{1-x^2} + \frac{x^3}{1-x^2})} \\
+             & = \frac{1}{1-x}\cdot\frac{1-x^2}{1-x^2-2x^3}                            \\
+             & = \frac{1+x}{1-x^2-2x^3}
+          \end{align*}
+          and $h_n = [x^n]H(x)$ by Proposition 2.7, as desired.
+        \end{sol}
+  \item Give a recurrence relation and enough initial conditions to
+        determine $h_n$ for all $n \in \N$.
+        \begin{sol}
+          Again, read off a recurrence relation from $H(x)$ by Theorem 4.8:
+          \[
+            h_n - h_{n-2} - 2h_{n-3} = \begin{cases}
+              1 & n = 0    \\
+              1 & n = 1    \\
+              0 & n \geq 2
+            \end{cases}
+          \]
+          and calculate $h_0 = 1$, $h_1 = 1$, $h_2 = 0 + h_0 = 1$,
+          and $h_3 = 0 + h_1 + 2h_0 = 3$.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  Let $\rl K$ be the set of binary strings in which any block of 1's
+  which immediately follows a block of 0's must have length at least
+  as great as the length of that block of 0's.
+\end{xca}
+\begin{enumerate}
+  \item Derive a formula for $K(x) = \sum_{\kappa \in \rl K} x^{\ell(\kappa)}$.
+        \begin{sol}
+          First, we recursively define $\rx L = 11^* \smile 0\rx L 1$
+          so that $\rl L = 0^i 1^j$ where $j \geq i \geq 1$ which is unambiguous.
+          Now, define $\rx K = 1^*\rx L^* 0^*$ as a block decomposition.
+
+          We can now calculate $L(x) = \frac{x}{1-x} + x^2L(x)$
+          so $L(x) = \frac{x}{(1-x)(1-x^2)}$. Then,
+          \begin{align*}
+            K(x)
+             & = \frac{1}{1-x}\cdot\frac{1}{1-\frac{x}{(1-x)(1-x^2)}}\cdot\frac{1}{1-x} \\
+             & = \frac{1}{(1-x)^2}\cdot\frac{(1-x)(1-x^2)}{(1-x)(1-x^2)-x}              \\
+             & = \frac{1+x}{1-2x-x^2+x^3}
+          \end{align*}
+          which is the generating series $\Phi_{\rl K}(x)$ by Theorem 3.11.
+        \end{sol}
+  \item Give a recurrence relation and enough initial conditions to
+        determine the coefficients $[x^n]K(x)$ for all $n \in \N$.
+        \begin{sol}
+          Let $k_n = [x^n]K(x)$. By Theorem 4.8, we have the recurrence relation
+          \[
+            k_n - 2k_{n-1} - k_{n-2} + k_{n-3} = \begin{cases}
+              1 & n = 0    \\
+              1 & n = 1    \\
+              0 & n \geq 2
+            \end{cases}
+          \]
+          and calculate $k_0 = 1$, $k_1 = 1 + 2k_0 = 3$,
+          and $k_2 = 0 + 2k_1 + k_0 = 7$.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}\end{xca}
+\begin{enumerate}
+  \item Fix an integer $m \geq 1$.
+        Find the generating series (by length) of the set of binary strings
+        in which no block has length greater than $m$.
+        \begin{sol}
+          Blocks of 0's and 1's become $\smilesum_{i=1}^m 0^i$
+          and $\smilesum_{i=1}^m 1^i$.
+          Then, the block decomposition
+          \[
+            \rx R = (\smilesum_{i=0}^m 0^i)
+            (\smilesum_{i=1}^m 1^i\smilesum_{i=1}^m 0^i)^*
+            (\smilesum_{i=0}^m 1^i)
+          \]
+          produces our desired set.
+          By Theorem 3.11, the generating series $\Phi_{\rl R}(x) = R(x)$ which is
+          \begin{align*}
+            R(x)
+             & = \qty(\sum_{i=0}^m x^i)\qty(\frac{1}{1-(\sum_{i=1}^m x^i)^2})\qty(\sum_{i=0}^m x^i) \\
+             & = \qty(\frac{1-x^{m+1}}{1-x})^2\qty(\frac{1}{1-(\frac{x-x^{m+1}}{1-x})^2})           \\
+             & = \frac{(1-x^{m+1})^2}{(1-x)^2}\cdot\frac{(1-x)^2}{(1-x)^2-(x-x^{m+1})^2}            \\
+             & = \frac{(1-x^{m+1})^2}{(1-x)^2-(x-x^{m+1})^2}
+          \end{align*}
+          which I'm sure simplifies further.
+        \end{sol}
+  \item Fix integers $m, k \geq 1$.
+        Find the generating series (by length) of the set of binary strings
+        in which no block of 0's has length greater than $m$
+        and no block of 1's has length greater than $k$.
+        \begin{sol}
+          Proceed as above: we instead get the block decomposition
+          \[
+            \rx R = (\smilesum_{i=0}^m 0^i)
+            (\smilesum_{i=1}^k 1^i\smilesum_{i=1}^m 0^i)^*
+            (\smilesum_{i=0}^k 1^i)
+          \]
+          which produces the set we want. By Theorem 3.11,
+          \begin{align*}
+            \Phi_{\rl R}(x)
+             & = R(x)                                                                                                                   \\
+             & = \qty(\sum_{i=0}^m x^i)\qty(\frac{1}{1-(\sum_{i=1}^k x^i)(\sum_{i=1}^m x^i)})\qty(\sum_{i=0}^k x^i)                     \\
+             & = \qty(\frac{1-x^{m+1}}{1-x})\qty(\frac{1}{1-(\frac{x-x^{k+1}}{1-x})(\frac{x-x^{m+1}}{1-x})})\qty(\frac{1-x^{k+1}}{1-x}) \\
+             & = \frac{(1-x^{m+1})(1-x^{k+1})}{(1-x)^2}\cdot\frac{(1-x)^2}{(1-x)^2 - (x-x^{k+1})(x-x^{m+1})}                            \\
+             & = \frac{(1-x^{m+1})(1-x^{k+1})}{(1-x)^2 - (x-x^{k+1})(x-x^{m+1})}                                                        \\
+          \end{align*}
+          as desired.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  Let $\rl L$ be the set of binary strings in which
+  each block of 1's has odd length, and which do not contain the substring 0001.
+  Let $\rl L_n$ be the set of strings in $\rl L$ of length $n$
+  and let $L(x) = \sum_{n=0}^\infty \abs{\rl L_n}x^n$.
+\end{xca}
+\begin{enumerate}
+  \item Give an expression that produces the set $\rl L$ unambiguously,
+        and explain briefly why it is unambiguous and produces $\rl L$.
+        \begin{sol}
+          Notice that 0001 does not overlap itself.
+          Then, we need only prevent a non-terminal block of 3 or more 0's.
+          Also, blocks of 1's must be odd.
+          Write $\rx L = (\varepsilon \smile 1(11)^*)((0 \smile 00)1(11)^*)^*0^*$
+          and notice it is unambiguous as a block decomposition.
+        \end{sol}
+  \item Use your expression from part (a) to show that
+        $L(x) = \frac{1+x-x^2}{1-x-x^2+x^3+x^4}$.
+        \begin{sol}
+          By Theorem 3.11, the generating series $L(x)$ is
+          \begin{align*}
+            L(x)
+             & = (1+\frac{x}{1-x^2})\frac{1}{1-\frac{(x+x^2)x}{1-x^2}}\frac{1}{1-x} \\
+             & = \frac{1+x-x^2}{(1-x^2)(1-x)}\cdot\frac{1-x^2}{1-x^2-(x+x^2)x}      \\
+             & = \frac{1+x-x^2}{(1-x)(1-2x^2-x^3)}                                  \\
+             & = \frac{1+x-x^2}{1-x-x^2+x^3+x^4}
+          \end{align*}
+          as desired.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  Let $\rl M$ be the set of binary strings in which
+  each block of 0's has length at most two
+  and which do not contain 00111 as a substring.
+  Let $\rl M_n$ be the set of strings in $\rl M$ of length $n$
+  and let $M(x) = \sum_{n=0}^\infty \abs{\rl M_n}x^n$.
+\end{xca}
+\begin{enumerate}
+  \item Give an expression that produces the set $\rl M$ unambiguously,
+        and explain briefly why it is unambiguous and produces $\rl M$.
+        \begin{sol}
+          Write $\rx M = 1^*(011^* \smile (001 \smile 0011))^*(\varepsilon \smile 0 \smile 00)$.
+          We split the middle blocks by whether there are one or two zeroes.
+          If there are two zeroes, then we can only have two ones to avoid 00111.
+          This is unambiguous as it is an (albeit weird-looking) block decomposition.
+        \end{sol}
+  \item Use your expression from part (a) to show that $M(x) = \frac{1+x+x^2}{1-x-x^2-x^3+x^5}$.
+        \begin{sol}
+          Write by Theorem 3.11 that
+          \begin{align*}
+            M(x)
+             & = \frac{1}{1-x}\cdot\frac{1}{1-(\frac{x^2}{1-x}+x^3+x^4)}\cdot(1+x+x^2) \\
+             & = \frac{1+x+x^2}{1-x}\cdot\frac{1-x}{(1-x^3-x^4)(1-x)-x^2}              \\
+             & = \frac{1+x+x^2}{1-x-x^2-x^3+x^5}
+          \end{align*}
+          as desired.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  Let $\rl N$ be the set of binary strings in which
+  each block of 0's has odd length
+  and each block of 1's has length 1 or 2.
+  Let $\rl N_n$ be the set of strings in $\rl N$ of length $n$
+  and let $N(x) = \sum_{n=0}^\infty \abs{\rl N_n}x^n$.
+\end{xca}
+\begin{enumerate}
+  \item Show that $N(x) = \frac{1+2x+x^2-x^4}{1-2x^2-x^3} = -2+x+\frac{3+x-3x^2}{1-2x^2-x^3}$.
+        \begin{sol}
+          Write $\rx N = (\varepsilon \smile 0(00)^*)((1\smile 11)0(00)^*)^*(\varepsilon\smile 1\smile 11)$.
+          By Theorem 3.11,
+          \begin{align*}
+            N(x)
+             & = \qty(1+\frac{x}{1-x^2})\cdot\frac{1}{1-\frac{(x+x^2)x}{1-x^2}}\cdot(1+x+x^2) \\
+             & = \frac{(1+x-x^2)(1+x+x^2)}{1-x^2}\cdot\frac{1-x^2}{(1-x^2)-(x^2+x^3)}         \\
+             & = \frac{(1+x-x^2)(1+x+x^2)}{1-2x^2-x^3}                                        \\
+             & = \frac{1+2x+x^2-x^4}{1-2x^2-x^3}
+          \end{align*}
+          as desired.
+        \end{sol}
+  \item Derive an exact formula for $\abs{\rl N_n}$ as a function of $n$.
+        \begin{sol}
+          Apply partial fractions on $\frac{3+x-3x^2}{1-2x^2-x^3} = \frac{A}{1+x} + \frac{B+Cx}{1-x-x^2}$.
+          Equate numerators to get $3+x-3x^2 = A(1-x-x^2) + (B+Cx)(1+x) = (A+B) + (-A+B+C)x + (-C)x^2$.
+
+          This gives the system
+          \[ \systeme[ABC]{A+B=3,-A+B+C=1,-A+C=-3} \]
+          which solves to $A=-1$, $B=-4$, $C=4$.
+          Finally, we have that
+          \begin{align*}
+            [x^n]\frac{3+x-3x^2}{1-2x^2-x^3}
+             & = -[x^n]\frac{1}{1+x}-4[x^n]\frac{1}{1-x-x^2}+4[x^n]\frac{x}{1-x-x^2} \\
+             & = -(-1)^n - 4f_n + 4f_{n-1}                                           \\
+             & = (-1)^{n+1} - 4(f_n - f_{n-1})                                       \\
+             & = 4f_{n-2} - (-1)^n
+          \end{align*}
+          where $f_n$ is the $n$th Fibonacci number.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  For $n \in N$, let $p_n$ be the number of binary strings of length $n$
+  in which every block of 0's is followed by a block of 1's with the same parity of length.
+\end{xca}
+\begin{enumerate}
+  \item Determine the generating series $P(x) = \sum_{n=0}^\infty p_n x^n$
+        \begin{sol}
+          Write $\rx P = 1^*(00(00)^*11(11)^* \smile 0(00)^*1(11)^*)0^*$.
+          Then, by Theorem 3.11,
+          \begin{align*}
+            P(x)
+             & = \frac{1}{1-x}\cdot\frac{1}{1-(\frac{x^4}{(1-x^2)^2} + \frac{x^2}{(1-x^2)^2})}\cdot\frac{1}{1-x} \\
+             & = \frac{1}{(1-x)^2}\cdot\frac{1}{1-\frac{x^4+x^2}{(1-x^2)^2}}                                     \\
+             & = \frac{1}{(1-x)^2}\cdot\frac{(1-x^2)^2}{(1-x^2)^2-x^2-x^4}                                       \\
+             & = \frac{1+2x+x^2}{1-3x^2}
+          \end{align*}
+          as desired.
+        \end{sol}
+  \item Show that if $n \geq 2$, then $p_n = 2\cdot 3^{\floor{n/2}-1}$.
+        \begin{sol}
+          By part (a), we have that
+          \begin{align*}
+            p_n
+             & = [x^n] \frac{1+2x+x^2}{1-3x^2}                                              \\
+             & = [x^n] \frac{1}{1-3x^2} + 2[x^n] \frac{x}{1-3x^2} + [x^n]\frac{x^2}{1-3x^2} \\
+             & = a_n + 2a_{n-1} + a_{n-2}
+          \end{align*}
+          where $\sum a_n x^n = \frac{1}{1-3x^2}$ which is valid because $n \geq 2$.
+          Notice that $\frac{1}{1-3x^2} = \sum 3^n x^{2n}$.
+          If $n$ is even, then we have $3^{n/2}+ 2(0) + 3^{n/2-1} = 6\cdot 3^{\floor{n/2}-1}$.
+          If $n$ is odd, then we have $0 + 2\cdot 3^{(n-1)/2} + 0 = 2\cdot 3^{\floor{n/2}-1}$.
+
+          Which isn't right???
+        \end{sol}
+\end{enumerate}

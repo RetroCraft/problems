@@ -1,0 +1,496 @@
+\section{Basic Principles}
+
+\begin{xca}
+  Fix integers $n \geq 0$ and $t \geq 1$.
+  Consider a randomly chosen multiset of size $n$ with elements of $t$ types.
+  For each part below, calculate the probability that the multiset has the stated property,
+  and give a brief explanation.
+\end{xca}
+\begin{enumerate}
+  \item Every type of element occurs at most once.
+        \begin{sol}
+          Every element either appears or not.
+          That is, we have $2^t/\binom{n+t-1}{t-1}$
+        \end{sol}
+  \item Every type of element occurs at least once.
+        \begin{sol}
+          This is equivalent to including every element,
+          then creating a multiset of the remaining $n-t$ spots.
+          That gives $\binom{n-1}{t-1}/\binom{n+t-1}{t-1}$.
+        \end{sol}
+  \item Every type of element occurs an even number of times.
+        \begin{sol}
+          Make a multiset of size $\frac{n}{2}$ and then double every item:
+          $\binom{\frac{n}{2}-t-1}{t-1}/\binom{n+t-1}{t-1}$.
+        \end{sol}
+  \item Every type of element occurs an odd number of times.
+        % TODO
+  \item For $k \in \N$, exactly $k$ types of element occur
+        with multiplicity at least one.
+        \begin{sol}
+          Pick $k$ types, then a multiset of size $n-k$:
+          $\binom{t}{k}\binom{n-k+t-1}{t-1}/\binom{n+t-1}{-1}$.
+        \end{sol}
+  \item For $k \in \N$, exactly $k$ types of element occur
+        with multiplicity at least two.
+        \begin{sol}
+          Pick $k$ types, then a multiset of size $n-2k$:
+          $\binom{t}{k}\binom{n-2k+t-1}{t-1}/\binom{n+t-1}{t-1}$.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  Consider rolling six fair 6-sided dice, which are distinguishable,
+  so that there are $6^6 = 46656$ equally likely outcomes.
+  Count how many outcomes are of each of the following types:
+\end{xca}
+\begin{enumerate}
+  \item Six-of-a-kind.
+        \boxed{6}
+  \item Five-of-a-kind and a single.
+        \boxed{(6 \cdot 5) \cdot \binom{6}{1} = 180}
+  \item Four-of-a-kind and a pair.
+        \boxed{(6 \cdot 5) \cdot \binom{6}{4} = 450}
+  \item Four-of-a-kind and two singles.
+        \boxed{(6 \cdot 5 \cdot 4) \cdot \frac{\binom{6}{4}\binom{2}{1}}{2} = 1800}
+  \item Two triples.
+        \boxed{(6 \cdot 5) \cdot \frac{\binom{6}{3}}{2} = 300}
+  \item A triple, a pair, and a single.
+        \boxed{(6 \cdot 5 \cdot 4) \cdot \binom{6}{3}\binom{3}{2} = 7200}
+  \item A triple and three singles.
+        \boxed{(6 \cdot 5 \cdot 4 \cdot 3) \cdot \frac{\binom{6}{3}\binom{3}{1}\binom{2}{1}}{3\cdot2} = 7200}
+  \item Three pairs.
+        \boxed{(6 \cdot 5 \cdot 4) \cdot \frac{\binom{6}{2}\binom{4}{2}}{3\cdot2} = 1800}
+  \item Two pairs and two singles.
+        \boxed{(6 \cdot 5 \cdot 4 \cdot 3) \cdot \frac{\binom{6}{2}\binom{4}{2}}{2\cdot2} = 16200}
+  \item One pair and four singles.
+        \boxed{(6 \cdot 5 \cdot 4 \cdot 3 \cdot 2)\cdot\binom{6}{2} = 10800}
+  \item Six singles. \boxed{6! = 720}
+\end{enumerate}
+
+\begin{xca}
+  Let $m \geq 1$, $d \geq 2$, and $k \geq 0$ be integers.
+  When rolling $m$ fair dice, each of which has $d$ sides,
+  what is the probability of rolling exactly $k$ pairs and $m - 2k$ singles
+\end{xca}
+\begin{sol}
+  There are $k+(m-2k) = m-k$ distinct sides in the roll.
+  There are $\frac{d!}{(d-(m-k))!}$ ways to pick those sides.
+
+  Then, there are $\binom{m}{2}\binom{m-2}{2}\cdots\binom{m-2(k-1)}{2} = \prod_{i=0}^{k-1} \binom{m-2i}{2}$
+  ways to choose the locations of the pairs.
+  Since some of these are duplicates, we divide out $k!$ permutations of pairs.
+
+  Finally, this gives us $\frac{d!}{(d-m+k)!k!}\prod_{i=0}^{k-1}\binom{m-2i}{2}$.
+\end{sol}
+
+\begin{xca}\end{xca}
+\begin{enumerate}
+  \item Prove that $\bijects$ is an equivalence relation.
+        \begin{prf}
+          We must show identity, reflexivity, and transitivity.
+          Let $\rl A$, $\rl B$, and $\rl C$ be sets.
+
+          Notice that $\id : \rl A \to \rl A : a \mapsto a$
+          is both surjective (there always exists $a$ such that $\id(a) = a$, namely $a$)
+          and injective ($\id(a) = \id(b) \implies a = b$).
+          Therefore, $\rl A \bijects \rl A$.
+
+          Suppose $\rl A \bijects \rl B$.
+          Then, there exists a bijection $f : \rl A \to \rl B$.
+          Because $f$ is surjective, a preimage under $f$ exists for all $a \in \rl A$.
+          Since $f$ is a injective, the preimage of $a$ under $f$ is a single element $b$.
+
+          Define $g : \rl B \to \rl A$ by that preimage.
+          This is surjective (for all $a$, there exists $b = f(a)$ such that $g(b) = a$)
+          and injective ($g(b) = g(b') \implies f(g(b)) = f(g(b')) \implies b = b'$).
+          Then, $g$ is a bijection and $\rl B \bijects \rl A$.
+
+          Suppose $\rl A \bijects \rl B \bijects \rl C$.
+          Then, there exist bijections $f : \rl A \to \rl B$ and $g : \rl B \to \rl C$.
+          Define $h = g \circ f : \rl A \to \rl C$.
+          Then, for all $c \in \rl C$, there exists $a \in \rl A$
+          such that $h(a) = g(f(a)) = c$ because of the surjectivity of $g$ and $f$.
+          Also, $h(a) = h(a') \implies g(f(a)) = g(f(a')) \implies f(a) = f(a') \implies a = a'$
+          by the injectivity of $g$ and $f$, so $h$ is injective.
+          Therefore, $h$ is bijective and $\rl A \bijects \rl C$.
+
+          It follows that $\bijects$ is an equivalence relation.
+        \end{prf}
+  \item Prove Proposition 1.11.
+        \begin{prf}
+          Suppose $g(f(a)) = a$ and $f(g(b)) = b$ for all $a \in \rl A$ and $b \in \rl B$.
+
+          \WLOG, consider $f : \rl A \to \rl B$.
+
+          Surjectivity: Let $b \in \rl B$.
+          Since $f(g(b)) = b$ and $g(b)$ exists, $f$ is surjective.
+
+          Injectivity: Let $a, a' \in \rl A$ and suppose $f(a) = f(a')$.
+          Then, $g(f(a)) = g(f(a'))$ which means $a = a'$ by supposition.
+
+          Therefore, $f$ is bijective and likewise for $g$.
+
+          Now, suppose $f(a) = b$. Then, $g(f(a)) = a = g(b)$.
+          Likewise if $g(b) = a$, then $f(g(b)) = b = f(a)$.
+          Therefore, $f(a) = b \iff g(b) = a$, as desired.
+        \end{prf}
+\end{enumerate}
+
+\begin{xca}
+  Define $f : \Z \to \N$ as follows: for $a \in \Z$,
+  $f(a) = \begin{cases}
+      2a    & a \geq 0 \\
+      -1-2a & a < 0
+    \end{cases}$
+
+  Show that $f$ is a bijection by Proposition 1.11.
+\end{xca}
+\begin{prf}
+  We define the function $g : \N \to \Z : b \mapsto \begin{cases}
+      \frac{b}{2}    & b \bmod 2 = 0 \\
+      -\frac{b+1}{2} & b \bmod 2 = 1
+    \end{cases}$
+
+  Then, consider $g(f(a))$.
+  If $a \geq 0$, then $g(f(a)) = g(2a) = \frac{2a}{2} = a$ since $2a$ is even.
+  Otherwise, $g(f(a)) = g(-(1+2a)) = -\frac{-(2a+1)+1}{2} = a$ since $-(2a+1)$ is odd.
+
+  Now, consider $f(g(b))$.
+  If $b = 2k$ is even, then $f(g(2k)) = f(k) = 2k = b$ since $k \geq 0$ (because $b \in \N$).
+  Likewise, if $b = 2k+1$ is odd, then $f(g(2k+1)) = f(-(k+1)) = -1-2(-(k+1)) = 2k+2-1 = 2k+1 = b$.
+
+  Therefore, by Proposition 1.11, $f$ is a bijection.
+\end{prf}
+
+\begin{xca}
+  Complete Example 1.13.
+\end{xca}
+
+\begin{xca}\label{xca:1-7}
+  Give bijective proofs of the following identities:
+\end{xca}
+\begin{enumerate}
+  \item For all $n \in \N$, $\sum_{k=0}^n \binom{n}{k}k = n2^{n-1}$
+        \begin{prf}
+          Consider the set $\rl S$ of subsets of $[n]$ with one ``highlighted'' element.
+          For example, $\{1,2,3,\underline{4},10,12\} \subseteq [12]$.
+
+          We can construct $\rl S = \bigcup \rl S_k$
+          where $\rl S_k := \{S \in \rl S : \abs{S} = k\}$.
+          To construct an element $S$ of $\rl S_k$,
+          create a subset of size $k$, of which there are $\binom{n}{k}$,
+          then select one of those $k$ elements to highlight.
+          This gives $\abs{\rl S_k} = \binom{n}{k}k$.
+          As a disjoint union, $\abs{\rl S} = \sum \binom{n}{k}k$.
+
+          Alternatively, construct $S \in \rl S$ directly.
+          Pick a single element from $[n]$ to highlight,
+          of which there are $n$.
+          Then, fill out the rest of the subset using the remaining $n-1$ items,
+          of which there are $2^{n-1}$.
+          That is, $\abs{\rl S} = n2^{n-1}$.
+
+          Therefore, under the identity bijection,
+          $\sum \binom{n}{k}k = \abs{\rl S} = n2^{n-1}$, as desired.
+        \end{prf}
+  \item For all $n \in \N$, $\sum_{k=0}^n \binom{n}{k}k(k-1) = n(n-1)2^{n-2}$
+        \begin{prf}
+          Proceed analogously to part (a), but with two highlighted entries in the subset,
+          e.g., $\{1,\underline{2},\underline{\overline{4}},6\} \subseteq [10]$.
+          Let this set of subsets be $\rl T$.
+
+          As in (a), consider elements of $\rl T_k$.
+          We select \emph{two} elements to underline from the $k$ elements in the subset,
+          giving us $\binom{n}{k}k(k-1)$.
+          Then, as a disjoint union, $\abs{\rl T} = \sum \abs{\rl T_k} = \sum \binom{n}{k}k(k-1)$.
+
+          Again, considering an element of $\rl T$ directly,
+          pick two elements to highlight from $n$ and the $n-1$ elements remaining,
+          then of the remaining $n-2$ elements construct a subset.
+          This gives $\abs{\rl T} = n(n-1)2^{n-2}$.
+
+          Therefore, $\sum \binom{n}{k}k(k-1) = n(n-1)2^{n-2}$, as desired.
+        \end{prf}
+\end{enumerate}
+
+\begin{xca}
+  For an integer $n \geq 1$, give a bijective proof that
+  $\sum_{2 \mid n} \binom{n}{k} = \sum_{2 \nmid n} \binom{n}{k}$.
+\end{xca}
+\begin{prf}
+  We must establish a bijection between
+  the set of even subsets $\rl E = \{ S \subseteq [n] : 2 \mid \abs{S} \}$
+  and the set of odd subsets $\rl O = \{ S \subseteq [n] : 2 \nmid \abs{S} \}$.
+
+  Define $f : S_n \to S_n : f(S) = \begin{cases}
+      S \cup \{1\}      & 1 \not\in S \\
+      S \setminus \{1\} & 1 \in S
+    \end{cases}$
+
+  Let $f_{\rl E}$ and $f_{\rl O}$ be $f$ restricted to the respective set.
+
+  Notice that $f(S)$ always either increases or decreases the size of a set by 1,
+  meaning that it will send sets in $\rl E$ to $\rl O$ and vice versa.
+
+  Also, it is obvious that $f(f(S)) = S \cup \{1\} \setminus \{1\}$ or $S \setminus \{1\} \cup \{1\} = S$,
+  so $f$ is its own inverse.
+
+  It follows by Proposition 1.11 that $\rl E \bijects \rl O$, as desired.
+\end{prf}
+
+\begin{xca}
+  Let $n$ be a positive integer.
+  Let $\rl S_n$ be the set of ordered pairs of subsets $(A,B)$
+  in which $A \subseteq B \subseteq [n]$.
+  Let $\rl T_n$ be the set of all functions $f : [n] \to [3]$.
+\end{xca}
+\begin{enumerate}
+  \item What is $\abs{\rl T_n}$?
+        \begin{sol}
+          Set-theoretically, a function $f : [n] \to [3]$
+          is a set of ordered pairs for each value
+          $\{(1,f(1)),(2,f(2)),\dotsc,(n,f(n))\}$.
+          We pick $n$ values here for $f(1),\dotsc,f(n) \in [3]$.
+          That is, $3^n$ choices.
+          Therefore, $\abs{\rl T_n} = 3^n$.
+        \end{sol}
+  \item Define a bijection $g : \rl S_n \to \rl T_n$.
+        Explain why $g((A,B)) \in \rl T_n$ for any $(A,B) \in \rl S_n$.
+        \begin{sol}
+          Given $(A,B) \in \rl S_n$, every element $i \in [n]$ is either:
+          (1) not in $A$ or $B$,
+          (2) in $B$ but not in $A$, or
+          (3) in $A$ (and $B$ since $A \subseteq B$).
+
+          Let $f(i)$ be the number of the case listed above.
+          This is a function $[n] \to [3]$, so $f \in \rl T_n$.
+        \end{sol}
+  \item Define the inverse function $g^{-1} : \rl T_n \to \rl S_n$
+        of the bijection $g$ from part (b).
+        \begin{sol}
+          Construct $A$ and $B$ from $f \in \rl T_n$:
+
+          Read the case list in (b) in reverse. For all $i \in [n]$:
+          if $f(i) = 2$, place $i \in B$; if $f(i) = 3$, place $i \in A$.
+
+          Finally, place all elements of $A$ in $B$.
+          Then, we have $(A,B) \in \rl S_n$.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  Fix integers $n \geq 0$ and $k \geq 1$.
+  Let $\rl A(n,k)$ be the set of sequences $(a_i) \in \N^k$
+  such that $\sum a_i = n$ and $j \mid a_j$ for all $j$.
+
+  Let $\rl B(n,k)$ be the set of sequences $(b_i) \in \N^k$
+  such that $\sum b_i = n$ and $b_1 \geq b_2 \geq \dotsb \geq b_k$.
+
+  Construct a pair of mutually inverse bijections
+  between the sets $\rl A(n,k)$ and $\rl B(n,k)$.
+\end{xca}
+\begin{sol}
+  \newcommand{\one}{\mathbb{1}}
+  Fix $n$ and $k$ and imply the parameters on $\rl A$ and $\rl B$.
+  We will treat the sequences as vectors, i.e., $\vb a = (a_1,\dotsc,a_k)$.
+
+  Let $f : \rl A \to \rl B$.
+  We will take the sum of vectors of ones.
+  Let $\one_i = (\underbrace{1,\dotsc,1}_{\text{$i$ ones}}, \underbrace{0,\dotsc,0}_{\text{$k-i$ zeroes}})$.
+
+  Then, define $f(\vb a) = \sum_{i=1}^k \frac{a_i}{i}\one_i$.
+  For example, if $n=7$ and $k=3$,
+  \[ f((2,2,3)) = 2(1,0,0) + \frac{2}{2}(1,1,0) + \frac{3}{3}(1,1,1) = (4,2,1) \]
+  Notice that since the $\one_i$ are non-increasing for all $i$,
+  their linear combination with positive coefficients is also non-increasing.
+  Also, we are ``distributing'' the multiples of $i$ into $i$ ones,
+  meaning that the sum $\sum a_i = n$ does not change.
+
+  That is, for all $\vb a \in \rl A$, $f(\vb a) = \vb b$ for some $\vb b \in \rl B$.
+
+  We can define an inverse $f^{-1}(\vb b)$ by starting at $i=k$
+  and recursively taking out the largest muliple of $i$ from all $k$ entries.
+
+  For the above example, start with $(4,2,1)$ and take out 1 from all 3 entries.
+  This sets $a_3 = 1$ and gives $(3,1,0)$.
+  Then, take out 1 from the first 2 entries, setting $a_2 = 1$ and giving $(2,0,0)$.
+  Finally, take out 2 from the first 1 entry, setting $a_1 = 2$.
+  This gives $\vb a = (2,1,1)$, as expected.
+
+  Formally, we define $\vb a = f^{-1}(\vb b)$ as follows:
+  \begin{align*}
+    a_i'  & = \min\{b_1 - \sum_{j > i} a_i', \dotsc, b_i - \sum_{j > i} a_i'\} \\
+    \vb a & = (a_1', 2a_2', \dotsc, ka_k')
+  \end{align*}
+  which follows the process described above.
+
+  Then, since the processes are inverses, $f$ is a bijection and $\rl A \bijects \rl B$.
+\end{sol}
+
+\begin{xca}
+  For $n \geq 0$ and $t \geq 2$, prove bijectively that
+  $\binom{n+t-1}{t-1} = \sum_{k=0}^n\binom{n-k+t-2}{t-2}$.
+\end{xca}
+\begin{prf}
+  The left-hand side counts the set $\rl S$ of multisets of size $n$ and $t$ types.
+
+  Since there are at least 2 types, partition $\rl S$
+  according to the number of times that 1 appears in the multiset.
+  Let $\rl S_k = \{ S \in \rl S : \abs{\{1 \in S\}} = k \}$.
+
+  Then, we can ignore the 1's.
+  This means to create an element of $\rl S_k$,
+  we must create a multiset of size $n-k$ with $t-1$ types
+  and then add $k$ 1's.
+  This gives us $\abs{\rl S_k} = \binom{(n-k)+(t-1)-1}{(t-1)-1} = \binom{n-k+t-2}{t-2}$.
+
+  Finally, since the number of 1's in a multiset is unique,
+  this is a disjoint union and $\abs{\rl S} = \sum \abs{\rl S_k} = \sum \binom{n-k+t-2}{t-2}$.
+
+  Therefore, $\binom{n+t-1}{t-1} = \abs{\rl S} = \sum\binom{n-k+t-2}{t-2}$, as desired.
+\end{prf}
+
+\begin{xca}
+  For $n \geq 1$ and $t \geq 1$, prove bijectively that
+  $\binom{n+t-1}{t-1} = \sum_{k=0}^t\binom{t}{k}\binom{n-1}{k-1}$.
+\end{xca}
+\begin{prf}
+  Again, the LHS counts the set $\rl S$ of multisets of size $n$ and $t$ types.
+
+  Notice that a multiset need not use all $t$ types.
+  Consider the set $\rl S_k$ of multisets of size $n$ which use $k \leq t$ types.
+  This set will have at least one of each of the $k$ types
+  and the remainder is a multiset of $k$ types and size $n-k$.
+  That is, there are $\binom{n-k+k-1}{k-1} = \binom{n-1}{k-1}$ of these.
+  We also had to pick the $\binom{t}{k}$ types.
+  Therefore, $\abs{\rl S_k} = \binom{t}{k}\binom{n-1}{k-1}$.
+
+  Since the number of types used by a multiset is unique,
+  this is a disjoint union and $\abs{\rl S} = \sum \abs{\rl S_k} = \sum \binom{t}{k}\binom{n-1}{k-1}$.
+
+  Therefore, $\binom{n+t-1}{t-1} = \abs{\rl S} = \sum\binom{t}{k}\binom{n-1}{k-1}$.
+\end{prf}
+
+\begin{xca}
+  Choose a permutation $\sigma$ of $\{1, 2, \dotsc, 7\}$ at random,
+  so that each of the $7! = 5040$ permutations are equally likely.
+  What are the probabilities of the following events?
+\end{xca}
+\begin{enumerate}[1.]
+  \item Numbers 1 and 2 are consecutive
+        \begin{sol}
+          Let $\sigma_i$ be the index of $i$ in $\sigma$.
+          That is, $\sigma_1 = 2$ means 1 is in position 2.
+
+          Consider when 12 appears in the permutation.
+          There are 6 choices to place $\sigma_1 = 1,\dotsc,6$
+          so that $\sigma_2 = 2,\dotsc,7$.
+          There are also 6 choices to place 21.
+          Fill the remaining spots with $5!$.
+          Therefore, the probability is $\frac{(6+6)5!}{5040} = \frac{2}{7}$.
+        \end{sol}
+  \item Number 1 is to the left of 2
+        \begin{sol}
+          There are 7 choices for $\sigma_2$.
+          Then, there are $\sigma_2-1$ choices for $\sigma_1$.
+          That is, there are $\sum_{\sigma_2=1}^7 (\sigma_2 - 1) = \frac{7\cdot 8}{2} - 7 = 21$
+          of these permutations.
+          Fill the remaining 5 spots with $5!$.
+          Therefore, the probability is $\frac{21\cdot 5!}{5040} = \frac{1}{2}$.
+        \end{sol}
+  \item No two odd numbers are consecutive
+        \begin{sol}
+          There are four odd numbers and three evens.
+          This means the only way to separate them is to write OEOEOEO.
+          We can permute the odd numbers in $4!$ ways and evens in $3!$ ways.
+          This gives a probability $\frac{4!\cdot 3!}{5040} = \frac{2}{70}$.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  Let $r \geq 2$ and $s \geq 2$ be integers.
+  Consider a (non-standard) deck of $rs$ cards,
+  divided into $s$ suits each with cards of $r$ different values.
+  The cards in each suit are numbered $A, 2, 3, \dotsc, r$,
+  and $A$ can be either below $2$ or above $r$.
+  Choose five cards from such a deck in one of $\binom{rs}{5}$ ways.
+  How many ways are there to produce each kind of hand for this
+  ``poker in an alternate universe''?
+\end{xca}
+\begin{enumerate}
+  \item Count ``quints'' (five-of-a-kinds).
+        \boxed{r}
+  \item Count straight flushes.
+        \boxed{(r-4)s}
+  \item Count quads.
+        \boxed{r\binom{s}{4}\cdot\binom{(r-1)s}{1}}
+  \item Count full houses.
+        \boxed{r\binom{s}{3}\cdot(r-1)\binom{s}{2}}
+  \item Count flushes.
+        \boxed{s(r! - (r-4))}
+  \item Count straights.
+        \boxed{(r-4)(5^s - 5)}
+  \item Count trips.
+        \boxed{r\binom{s}{3}\cdot\qty(s^2\binom{r-1}{2})}
+  \item Count two-pairs.
+        \boxed{\binom{r}{2}\binom{s}{2}\binom{s}{2}\cdot(s(r-2))}
+  \item Count one-pairs.
+        \boxed{r\binom{s}{2}\cdot\binom{(r-1)s}{3}}
+  \item Count busted hands.
+        \boxed{\qty(\binom{r}{5}-(r-4))\cdot(s^5-s)}
+\end{enumerate}
+
+\begin{xca}
+  The game called ``Crowns and Anchors'' or ``Birdcage''
+  was popular on circus midways early in the 20th century.
+  It is a game between a Player and the House, played as follows.
+  First, the Player wagers $w$ dollars on an integer $p$ from one to six.
+  Next, the House rolls three six-sided dice.
+  For every die that shows $p$ dots on top, the House pays the Player $w$ dollars,
+  but if no dice show $p$ dots on top then the Player's wager is forfeited,
+  and goes to the House. (Assume that the dice are fair, so that every outcome is equally likely.)
+
+  For example, if I wager two dollars on the number five,
+  and the dice show five, five, and three dots, respectively,
+  then the House pays me four dollars for a total of six (a profit of four dollars).
+  However, if in this case the dice show four, three, and two dots, respectively,
+  then the House takes my wager for a total of zero (a loss of two dollars).
+\end{xca}
+\begin{enumerate}
+  \item For every dollar that the Player wagers,
+        how much money should the Player expect to win back in the long run?
+        Would you play this game?
+        \begin{sol}
+          Consider the expected value for each dollar the Player wagers on $k$:
+
+          There are $6^3 = 216$ total outcomes.
+          Of these, there is 1 where $k$ appears 3 times,
+          5 where $k$ appears twice,
+          and $5^2 = 25$ where $k$ appears once.
+
+          This gives an expected value of $\frac{1}{216}(3k + 5(2k) + 25k) = \frac{38}{216}k$.
+
+          The Player will want to maximize payout and always pick $k=6$.
+
+          This gives an expected payout of $\frac{33\cdot6}{216} \approx \$1.06$.
+          This is more than the \$1 wager, so the game is worth playing.
+        \end{sol}
+  \item In a parallel universe there is a game of Crowns and Anchors
+        being played with $m \geq 1$ dice, each of which has $d \geq 2$ sides.
+        (Assume that the dice are fair, so that every outcome is equally likely.)
+        In which universes does the Player win in the long run?
+        In which universes does the House win in the long run?
+        In which universes is the game completely fair?
+        \begin{sol}
+          The Player, as above, will always place a dollar on the highest number $d$.
+
+          Then, there are $d^m$ total outcomes.
+          For each possible payout $1 \leq i\cdot d \leq m\cdot d$,
+          there are $i$ occurrences of $d$
+          and there are $(d-1)^{m-i}$ ways to pick the remaining $m-i$ dice.
+          As above, we sum to calculate the expected value.
+
+          This gives $\frac{1}{d^m}\sum_{i=1}^m i(d-1)^{m-i}$.
+        \end{sol}
+\end{enumerate}

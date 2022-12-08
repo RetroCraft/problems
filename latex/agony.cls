@@ -116,7 +116,7 @@
 \author{James Ah Yong}
 
 % Links
-\usepackage{hyperref,cleveref}
+\usepackage{bookmark,hyperref,cleveref}
 \hypersetup{
   colorlinks,
   linkcolor=RoyalBlue,
