@@ -227,17 +227,17 @@ You might be interested in the [source](./MATH239/notes.tex) if you want to use 
 There are also [exercise solutions](./MATH239/exercises.pdf) for the course notes
 (using the Part I F2020 and Part II S2018 course notes). Progress:
 
-| Chapter                      |      Complete?       | Notes                                          |
-| ---------------------------- | :------------------: | ---------------------------------------------- |
-| Ch. 1 (Basic Principles)     | :black_large_square: | Missing 1.1(d), 1.6                            |
-| Ch. 2 (Generating Series)    | :black_large_square: | Missing 2.8, 2.13(b)-(c), 2.16-21              |
-| Ch. 3 (Binary Strings)       | :black_large_square: | Missing 3.13(b), 3.14-17                       |
-| Ch. 4 (Recurrence Relations) | :black_large_square: | Missing 4.4-12                                 |
-| Ch. 4 (Graph Theory Intro.)  | :black_large_square: | Missing 4.4.9-10, 4.4.12, 4.5, 4.6.2-3, 4.6.10 |
-| Ch. 5 (Trees)                | :black_large_square: | Missing 5.3.2, 5.4, 5.5                        |
-| Ch. 6 (Codes)                |         :x:          |                                                |
-| Ch. 7 (Planar Graphs)        | :black_large_square: | Missing 7.4, 7.6, 7.8                          |
-| Ch. 8 (Matchings)            |         :x:          |                                                |
+| Chapter                                                             |      Complete?       | Notes                                          |
+| ------------------------------------------------------------------- | :------------------: | ---------------------------------------------- |
+| [Ch. 1 (Basic Principles)](./MATH239/exercises.pdf#section.1.1)     | :black_large_square: | Missing 1.1(d), 1.6                            |
+| [Ch. 2 (Generating Series)](./MATH239/exercises.pdf#section.1.2)    | :black_large_square: | Missing 2.8, 2.13(b)-(c), 2.16-21              |
+| [Ch. 3 (Binary Strings)](./MATH239/exercises.pdf#section.1.3)       | :black_large_square: | Missing 3.13(b), 3.14-17                       |
+| [Ch. 4 (Recurrence Relations)](./MATH239/exercises.pdf#section.1.4) | :black_large_square: | Missing 4.4-12                                 |
+| [Ch. 4 (Graph Theory Intro.)](./MATH239/exercises.pdf#section.2.4)  | :black_large_square: | Missing 4.4.9-10, 4.4.12, 4.5, 4.6.2-3, 4.6.10 |
+| [Ch. 5 (Trees)](./MATH239/exercises.pdf#section.2.5)                | :black_large_square: | Missing 5.3.2, 5.4, 5.5                        |
+| [Ch. 6 (Codes)](./MATH239/exercises.pdf#section.2.6)                |         :x:          |                                                |
+| [Ch. 7 (Planar Graphs)](./MATH239/exercises.pdf#section.2.7)        | :black_large_square: | Missing 7.4, 7.6, 7.8                          |
+| [Ch. 8 (Matchings)](./MATH239/exercises.pdf#section.2.8)            |         :x:          |                                                |
 
 ### CO 485/685 (F2022) <small>Mathematics of Public-Key Cryptography</small>
 
