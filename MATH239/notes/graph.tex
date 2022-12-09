@@ -1,4 +1,3 @@
-
 \part{Graph Theory}
 
 \setcounter{chapter}{3}
@@ -11,8 +10,8 @@ This numbering is maintained.
 \section{(10/21; from Bradley)}
 
 \begin{defn}[graph]
-  A graph $G = (V, E)$ is a finite set of \term{vertices} $V$
-  and a set\tablefootnote{if we allow multisets, they are \term{multiple} or \term{parallel} edges}
+  A graph $G = (V, E)$ is a finite set of \term[vertex]{vertices} $V$
+  and a set\tablefootnote{if we allow multisets, they are \term[edge!multiple]{multiple} or \term[edge!parallel]{parallel} edges}
   of unordered\tablefootnote{if ordered, the graph is \term{directed}}
   pairs\tablefootnote{if larger tuples, it is a \term{hypergraph}}
   of distinct\tablefootnote{if not, the edge is a \term{loop}} vertices $E$ called \term{edges}.
@@ -22,7 +21,7 @@ This numbering is maintained.
 
 Note: if the graph includes loops and/or parallel edges, it is a \term{multigraph}.
 
-\begin{defn}[complete graph on $n$ vertices]
+\begin{defn}[complete graph on $n$ vertices][graph!complete]
   The graph $K_n$ given by $V(K_n) = [n]$ and $E(K_n) = \{S \subseteq [n] : \abs{S} = 2\}$.
 \end{defn}
 \begin{example}
@@ -41,11 +40,11 @@ Note: if the graph includes loops and/or parallel edges, it is a \term{multigrap
   as desired.
 \end{sol}
 
-\begin{defn}[path on $n$ vertices]
+\begin{defn}[path on $n$ vertices][path!on $n$ vertices]
   The graph $P_n$ given by $V(P_n) = [n]$ and $E(P_n) = \{ \{i,i+1\} : i \in [n-1] \}$.
 \end{defn}
 
-\begin{defn}[cycle on $n$ vertices]
+\begin{defn}[cycle on $n$ vertices][cycle!on $n$ vertices]
   The graph $C_n$ for $n \geq 3$ given by $V(C_n) = [n]$ and $E(C_n) = E(P_n) \cup \{1,n\}$.
 \end{defn}
 
@@ -66,7 +65,7 @@ Note: if the graph includes loops and/or parallel edges, it is a \term{multigrap
   (under the same bipartition as $P_n$) and not when $n$ is odd.
 \end{sol}
 
-\begin{defn}[complete bipartite graph]
+\begin{defn}[complete bipartite graph][graph!complete bipartite]
   The graph $K_{m,n}$ described by
   $V(K_{m,n}) = \{s_i : i \in [m]\} \cup \{t_j : j \in [n]\}$
   and $E(K_{m,n}) = \{\{s_i, t_j\} : i \in [n], j \in [m]\}$.
@@ -86,7 +85,7 @@ Note: if the graph includes loops and/or parallel edges, it is a \term{multigrap
   Notice that $K_{2,3}$ and $K_{3,2}$ have the same structure.
 \end{sol}
 
-\begin{defn}[planar]
+\begin{defn}[planarity]
   A graph that can be drawn on the plane such that no two edges cross
 \end{defn}
 \begin{example}
@@ -118,9 +117,9 @@ Note: if the graph includes loops and/or parallel edges, it is a \term{multigrap
 \begin{defn}
   Given vertices $u$, $v$ and an edge $e$ in $G$:
   \begin{itemize}[nosep]
-    \item If $uv \in E(G)$, then $u$ and $v$ are \term{adjacent}
-    \item If $e = uv$, then $e$ \term{joins} the \term{endpoints} $u$ and $v$
-    \item If $v \in e$, then $e$ is \term{incident} with $v$
+    \item If $uv \in E(G)$, then $u$ and $v$ are \term[adjacency]{adjacent}
+    \item If $e = uv$, then $e$ \term[joining]{joins} the \term[endpoint]{endpoints} $u$ and $v$
+    \item If $v \in e$, then $e$ is \term[incidence]{incident} with $v$
     \item If $u$ and $v$ are adjacent, $u$ is a \term{neighbour} of $v$
     \item The \term{neighbourhood of $v$} $N_G(v)$ is the set of neighbours of $v$
   \end{itemize}
@@ -216,7 +215,7 @@ Note: if the graph includes loops and/or parallel edges, it is a \term{multigrap
 \end{prf}
 
 \begin{defn}[isomorphism]
-  Graphs $G$ and $H$ are isomorphic if there exists a \term{(graph) isomorphism}
+  Graphs $G$ and $H$ are isomorphic if there exists a \term*{(graph) isomorphism}
   between them, i.e., a bijection $f : V(G) \to V(H)$ such that
   $uv \in E(G)$ if and only if $f(u)f(v) \in E(H)$.
 \end{defn}
@@ -250,17 +249,18 @@ and the edges incident with those vertices and then deleting a subset of remaini
   \tikz[baseline=-30pt]\graph[simple necklace layout]{ "", 2--3, 4--5, 2--5 };
 \end{example}
 
-\begin{defn}[types of subgraphs]
-  A subgraph $H$ of $G$ is \term{spanning} if $V(H) = V(G)$ (only edge deletions),
-  \term{proper} if $H \neq G$,
-  and \term{induced} if $E(H) = \{uv \in E(G) : u,v \in V(H)\}$ (only vertex deletions).
-\end{defn}
+\begin{defn*}[types of subgraphs]
+  A subgraph $H$ of $G$ is
+  \term[subgraph!spanning]{spanning} if $V(H) = V(G)$ (only edge deletions),
+  \term[subgraph!proper]{proper} if $H \neq G$,
+  and \term[subgraph!induced]{induced} if $E(H) = \{uv \in E(G) : u,v \in V(H)\}$ (only vertex deletions).
+\end{defn*}
 
 \begin{defn}[walk]
   A sequence $W = (v_0,e_1,v_1,\dotsc,e_k,v_k)$ where $v_i \in V(G)$
-  and $e_i = v_{i-1}v_i \in E(G)$ is a \term{walk from $v_0$ to $v_k$}.
-  If $v_0 = v_k$, then $W$ is \term{closed}.
-  Call $k$ the \term{length} of the walk.
+  and $e_i = v_{i-1}v_i \in E(G)$ is a \term[walk!from $v_0$ to $v_k$]{walk from $v_0$ to $v_k$}.
+  If $v_0 = v_k$, then $W$ is \term[walk!closed]{closed}.
+  Call $k$ the \term[walk!length]{length} of the walk.
 \end{defn}
 
 \begin{example}\label{exa:bowtie}
@@ -321,10 +321,10 @@ We can abbreviate paths (and walks) as $v_0v_1v_2\dots v_k$ since it is unambigu
 
 \begin{defn}[cycle]
   A subgraph isomorphic to $C_k$ for some $k \geq 3$.
-  The \term{length} of a cycle $k$ is the number of edges in it
-  and the \term{girth} of a graph is the length of its largest cycle.
-  A \term{Hamilton cycle} is a spanning cycle
-  and a \term{Hamiltonian graph} contains one.
+  The \term[cycle!length]{length} of a cycle $k$ is the number of edges in it
+  and the \term[cycle!girth]{girth} of a graph is the length of its largest cycle.
+  A \term[cycle!Hamiltonian]{Hamilton cycle} is a spanning cycle
+  and a \term[graph!Hamiltonian]{Hamiltonian graph} contains one.
 \end{defn}
 
 \begin{theorem}[4.6.4]\label{thm:deg2cycle}
@@ -393,7 +393,7 @@ We can abbreviate paths (and walks) as $v_0v_1v_2\dots v_k$ since it is unambigu
 
 Consider now the question: can we decide efficiently whether a graph $G$ contains a cycle?
 
-\begin{defn}[polynomial time]
+\begin{defn}[polynomial time][$\P$ time]
   A decision problem is in polynomial time if it can be solved in
   $O(\abs{V(G)}^k)$ for some $k \in \N$.
   Denote the set of such problems by $\P$.
@@ -403,7 +403,7 @@ Then, ask if the decision problem ``does $G$ contain a cycle?'' lies in $\P$.
 
 \section{(10/31)}
 
-\begin{defn}[nondeterministic polynomial time]
+\begin{defn}[nondeterministic polynomial time][$\NP$ time]
   A decision problem is in $\NP$ if the problem of verifying
   a certificate of correctness for ``yes'' results is in $\P$.
 
@@ -904,7 +904,7 @@ Notice that induction on this theorem proves equivalence of (1) and (3) above.
 
 This proposition gives another altnernate proof for Theorem~\nameref{thm:2leaves}.
 
-\begin{defn}[spanning tree]
+\begin{defn}[spanning tree][tree!spanning]
   A spanning subgraph of $G$ that is a tree.
 \end{defn}
 
@@ -981,7 +981,7 @@ Consider again the forwards (hard) direction of Theorem~\nameref{thm:conspan}.
 
 \begin{theorem}[5.2.3]
   If $T$ is a spanning tree of $G$ and $e$ is an edge of $G$ not in $T$,
-  then $T + e$ contains exactly one cycle $C$.\tablefootnote{This is the \term{fundamental cycle of $e$ with respect to $T$}}
+  then $T + e$ contains exactly one cycle $C$.\tablefootnote{This is the \term[cycle!fundamental]{fundamental cycle of $e$ with respect to $T$}}
   Also, if $e' \in E(C)$, then $T + e - e'$ is a spanning tree of $G$.
 \end{theorem}\spewnotes
 \begin{prf}
@@ -1007,7 +1007,7 @@ Consider again the forwards (hard) direction of Theorem~\nameref{thm:conspan}.
   The first part is obvious by Lemma~\nameref{lem:bridgecomp}.
 
   Let $X$ and $Y$ be the components of $T-e$.
-  Since $e' \in \delta(X) = \delta(Y)$,\footnote{The \term{fundamental cut of $e$ with respect to $T$}}
+  Since $e' \in \delta(X) = \delta(Y)$,\footnote{The \term[cut!fundamental]{fundamental cut of $e$ with respect to $T$}}
   we have that $X$ and $Y$ are the same component
   in $T-e+e'$, meaning that it is connected.
   As above, by Corollary~\nameref{cor:treenum}, it is a tree.
@@ -1101,7 +1101,7 @@ We can give a polynomial-time algorithm to find the bipartition/odd cycle:
 \setcounter{chapter}{6}
 \chapter{Planar Graphs}
 
-\begin{defn}[planar graph]
+\begin{defn}[planar graph][graph!planar]
   A graph that can be \term{drawn in the plane} without edges crossing,
   i.e., vertices are distinct points and
   edges are continuous, non-interescting curves connecting those points.
@@ -1123,7 +1123,7 @@ We can give a polynomial-time algorithm to find the bipartition/odd cycle:
   Let $F(G)$ be the set of faces of $G$.
 \end{defn}
 
-\begin{defn}[boundary walk]
+\begin{defn}[boundary walk][walk!boundary walk]
   A sequence $v_0,e_1,v_1,\dotsc,v_0$
   which traverses the edges on the boundary of a face.\tablefootnote{i.e., ``incident'' to the face}
 \end{defn}\spewnotes
@@ -1142,7 +1142,7 @@ Note: a vertex may appear multiple times in a boundary walk.
 
 An edge appears twice if and only if that edge is a bridge.
 
-\begin{defn}[degree (length) of a face]
+\begin{defn}[degree (length) of a face][degree!of a face]
   The length of the boundary walk, counting multiplicity.
 \end{defn}
 
@@ -1304,7 +1304,7 @@ Therefore, planarity is in \NP.
   If $G$ contains $K_5$ or $K_{3,3}$ as a subgraph, then $G$ is not planar.
 \end{corollary}
 
-\begin{defn}[edge subdivision]
+\begin{defn}[edge subdivision][subdivision!edge subdivision]
   Let $e = uv \in E(G)$ and $z \not\in V(G)$.
   Obtain $G'$ as $V(G') = V(G) \cup \{z\}$
   and $E(G') = E(G) \setminus \{e\} \cup \{uz, zv\}$.
@@ -1599,13 +1599,13 @@ If $G$ is connected, then $(G^*)^* = G$.
 \end{example}
 
 \begin{defn}
-  $M$ \term{saturates} $v$ if $v$ is an end of an edge in $M$.
+  $M$ \term[saturation]{saturates} $v$ if $v$ is an end of an edge in $M$.
 
-  $M$ is \term{perfect} if every vertex of $G$ is saturated by $M$.
+  $M$ is \term[matching!perfect]{perfect} if every vertex of $G$ is saturated by $M$.
 
-  The \term{size} of $M$ is the number of edges it contains, i.e., $\abs{M}$.
+  The \term[matching!size]{size} of $M$ is the number of edges it contains, i.e., $\abs{M}$.
 
-  $M$ is a \term{maximum matching} if it has maximum size over all matchings of $G$.
+  $M$ is a \term[matching!maximum]{maximum matching} if it has maximum size over all matchings of $G$.
 \end{defn}
 
 Notice that a perfect matching obviously cannot exist
@@ -1615,19 +1615,19 @@ Finding a perfect matching is in \NP (just give the matching),
 \coNP (since CO 250 expresses this as a linear program),
 and \P (for proof, take CO 342).
 
-\begin{defn}[alternating]
+\begin{defn*}[alternating]
   Given a matching $M$ of $G$,
-  a path $P$ in $G$ is \term{$M$-alternating}
+  a path $P$ in $G$ is \term[path!$M$-alternating]{$M$-alternating}
   if every other edge of $P$ is in $M$.
   Equivalently, all $v \in V(P)$ are saturated by $M$.
-\end{defn}
+\end{defn*}
 
 \begin{example}
   The path \tikz\graph[dots nodes]{0--1--[red, very thick]2--3--[red, very thick]4--5};
   is \textcolor{red}{$M$}-alternating.
 \end{example}
 
-\begin{defn}[augmenting]
+\begin{defn}[augmenting][path!$M$-augmenting]
   A path $P$ which is $M$-alternating and whose ands are not saturated by $M$.
 \end{defn}
 
@@ -1695,7 +1695,7 @@ and \P (for proof, take CO 342).
 
 Every graph has the obvious cover $X = V(G)$.
 
-\begin{defn}[minimum cover]
+\begin{defn}[minimum cover][cover!minimum]
   A cover of minimum size (i.e., $\abs{X}$),
   which exists because $V(G)$ is a cover.
 \end{defn}

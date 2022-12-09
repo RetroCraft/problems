@@ -8,7 +8,7 @@
 \declaretheorem[style=definition,name=Definition,
   thmbox={M,leftmargin=1.5em,rightmargin=1.5em,nocut,headstyle=\textbf{Definition},bodystyle=\noindent},
   refname={definition,definitions},Refname={Definition,Definitions}]{definition}
-\NewDocumentEnvironment{defn}{o}{\IfNoValueTF{#1}{\definition}{\definition[#1]\index{#1}}}{\enddefinition}
+\NewDocumentEnvironment{defn}{oO{#1}}{\IfNoValueTF{#1}{\definition}{\definition[#1]\index{#2}}}{\enddefinition}
 \NewDocumentEnvironment{defn*}{o}{\IfNoValueTF{#1}{\definition}{\definition[#1]}}{\enddefinition}
 \declaretheorem[name=Theorem,
   thmbox={L,leftmargin=1.5em,rightmargin=1.5em,nocut,headstyle=\textbf{Theorem},bodystyle=\noindent},
@@ -30,7 +30,7 @@
 
 % Use inside of definitions: "a \term{thing} is a whatever"
 \makeindex[columns=3, title=Index of Defined Terms, intoc]
-\NewDocumentCommand\term{O{#2}m}{\underline{#2}\index{#1}}
+\NewDocumentCommand\term{sO{#3}m}{\underline{#3}\IfBooleanF#1{\index{#2}}}
 
 % For thmbox (see tex.se/41100)
 \RequirePackage{tablefootnote}

@@ -18,9 +18,10 @@ $\abs{A \cup B} = \abs{A} + \abs{B}$.
 Recall also the Cartesian product $A \times B = \{(a,b) : a \in A, b \in B\}$.
 Again for finite sets, $\abs{A \times B} = \abs{A} \cdot \abs{B}$.
 
-\begin{defn}[bijection]
-  A function $f : A \to B$ such that $f$ is injective (i.e., $f(a) = f(a') \implies a = a'$)
-  and surjective (i.e., $\forall b, \exists a, f(a) = b$).
+\begin{defn}[bijection][bijectivity]
+  A function $f : A \to B$ such that $f$ is
+  \term[injectivity]{injective} (i.e., $f(a) = f(a') \implies a = a'$)
+  and \term[surjectivity]{surjective} (i.e., $\forall b, \exists a, f(a) = b$).
   When $f$ exists, we write $A \bijects B$.
 \end{defn}
 
@@ -157,9 +158,10 @@ In general, to prove that $A$ has some size, we can either
   See Tutorial 1-2.
 \end{prf}
 
-\begin{defn}[multiset of $t$ types]
+\begin{defn}[multiset of $t$ types][multiset]
   Sequence $a_1,\dotsc,a_t$ where each $a_i$ is a non-negative integer.
-  The $a_i$ are the \emph{parts} and the sum $\sum a_i$ is the \emph{size}.
+  The $a_i$ are the \term[multiset!parts]{parts}
+  and the sum $\sum a_i$ is the \term[multiset!size]{size}.
 \end{defn}
 
 Like compositions but permitting zero and restricting $i = 1,\dotsc,t$.
@@ -251,7 +253,6 @@ For example, consider the multiset $(3,2,0,1)$ as being like a ``set'' $\{a_1,a_
 
 \section{(09/16)}
 
-\newcommand{\preim}{\operatorname{preim}}
 \begin{defn}[weight function]
   $w : A \to \N$ such that $\abs{\preim_w(n)}$ is finite for all $n \in \N$.
   Call $w(a)$ the weight of $a$.
@@ -389,7 +390,7 @@ Note: The proof must go in this direction. For weight functions $w_i : A_i \to \
 \begin{corollary}[Cartesian Product Lemma]
   For set $A$ with weight function $w$, $\Phi_{A^k}^{w_k}(x) = (\Phi_A^w(x))^k$ where $w_k((a_i)) = \sum w(a_i)$.
 \end{corollary}
-\begin{defn}[strings]
+\begin{defn}[string]
   $A^* = \bigcup_{i=0}^\infty A^i$ where $A^0 = \{\varepsilon\}$ with the empty string $\varepsilon = \varnothing$.
   That is, $A^*$ is the set of all strings (sequences) with entries from $A$.
 \end{defn}
@@ -465,8 +466,8 @@ Note: The proof must go in this direction. For weight functions $w_i : A_i \to \
 
 \begin{defn}[binary string]
   A sequence of 0's and 1's.
-  The \emph{length} of a binary string is the total number of 0's and 1's.
-  We notate the \emph{empty string} by $\varepsilon = \varnothing$.
+  The \term[binary string!length]{length} of a binary string is the total number of 0's and 1's.
+  We notate the \term[binary string!empty string]{empty string} by $\varepsilon = \varnothing$.
   Formally, it is an element of $\{0,1\}^*$ written without parentheses and commas.
 \end{defn}
 
@@ -1092,7 +1093,7 @@ $n \leq \deg P_1 \leq \deg P - \deg Q$ and 0 otherwise.
   with extra constants $C_n$ (for $n > r$, $C_n = 0$).
 \end{theorem}
 
-\begin{defn}[auxiliary (characteristic) polynomial]
+\begin{defn}[auxiliary (characteristic) polynomial][characteristic polynomial]
   Given $a_n = \sum_{i=1}^{k+1}c_i a_{n-i}$ is a recurrence relation,
   replace $a_n$ by $x^{k+1}$, $a_{n-1}$ by $x^k$, ..., down to $a_{n-(k+1)}$ by $1$.
 \end{defn}
@@ -1173,7 +1174,7 @@ and say $W(x) = \frac{-B(x)\pm\sqrt{B(x)^2-4A(x)C(x)}}{2A(x)}$.
 
 To do this, we must calculate the square roots of polynomials.
 
-\begin{defn}[complex binomial coefficients]
+\begin{defn}[complex binomial coefficients][binomial coefficient!complex]
   For $\alpha \in \C$, define $\binom{\alpha}{k} = \frac{1}{k!}(\alpha)(\alpha-1)\dotsb(\alpha-k+1)$
 \end{defn}
 
@@ -1222,7 +1223,7 @@ etc.
 
 Since this is not a rational function, the Catalan numbers do not form a rational language.
 
-\begin{defn}[Well-formed Parenthesization]
+\begin{defn}[well-formed parenthesization]
   A sequence of $n$ opening and closing parentheses that ``match''.
   That is, for any starting subsequence, the number of opens
   is at least the number of closes.
