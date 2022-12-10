@@ -285,6 +285,11 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 30. **MATH135/EP01/WE1(b)** 28 + 3 = 25 (Imran, [#20](https://github.com/RetroCraft/problems/pull/20))
 31. **MATH135/EP11/RP03(e)** ...another factoring typo (Linda, [#24](https://github.com/RetroCraft/problems/issues/24))
 32. **MATH135/EP10/RP12** Wrong expansion of $$(\cos\theta + i\sin\theta)^4$$ (Jessica and Evelina)
+33. **MATH135/EP10/RP15** Backwards divisibility notation (Linda, [#25](https://github.com/RetroCraft/problems/issues/25))
+34. **MATH135/EP11/RP03** Did not fully factor quadratic (Jessica & Evelina, [#26](https://github.com/RetroCraft/problems/issues/26))
+35. **MATH135/EP10/WE04** 2 × 1 = 1 (Christina, [#27](https://github.com/RetroCraft/problems/issues/27))
+36. **MATH135/EP09/RP01** Flipped digits in final answer (various, [#28](https://github.com/RetroCraft/problems/issues/28))
+37. **MATH135/EP10/RP01** Lost a negative (various, [#29](https://github.com/RetroCraft/problems/pull/29))
 
 ## Contact
 
