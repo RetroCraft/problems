@@ -290,6 +290,7 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 35. **MATH135/EP10/WE04** 2 × 1 = 1 (Christina, [#27](https://github.com/RetroCraft/problems/issues/27))
 36. **MATH135/EP09/RP01** Flipped digits in final answer (various, [#28](https://github.com/RetroCraft/problems/issues/28))
 37. **MATH135/EP10/RP01** Lost a negative (various, [#29](https://github.com/RetroCraft/problems/pull/29))
+38. **MATH135/FE2020W/Q07** Rooted modulus instead of squaring (Max)
 
 ## Contact
 

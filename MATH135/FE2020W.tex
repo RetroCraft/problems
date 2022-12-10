@@ -84,7 +84,7 @@
 \end{prob}
 \begin{sol}
   Let $z = a+bi$ and $w = c+di$ be complex numbers with modulus 2 where $z\overline{w} = 1+i$.
-  Then, by definition, $a^2 + b^2 = c^2 + d^2 = \sqrt{2}$ and $(a+bi)(c-di) = 1+i$.
+  Then, by definition, $a^2 + b^2 = c^2 + d^2 = 2^2 = 4$ and $(a+bi)(c-di) = 1+i$.
   From the second equation, we have $(ac + bd) + (bc - ad)i = 1+i$.
   Equating real parts, $ac + bd = 1$.
   Now, \begin{align*}
@@ -92,8 +92,8 @@
             & = (a-c)^2 + (b-d)^2                      \\
             & = a^2 - 2ac + c^2 + b^2 - 2bc + d^2      \\
             & = (a^2 + b^2) + (c^2 + d^2) - 2(ac + bd) \\
-            & = \sqrt{2} + \sqrt{2} - 2(1)             \\
-            & = 2\sqrt{2} - 2 \qedhere
+            & = 4 + 4 - 2(1)                           \\
+            & = 6 \qedhere
   \end{align*}
 \end{sol}
 
@@ -112,7 +112,7 @@
   Substituting, $2(8k + 5) \equiv 16k + 10 \equiv 7k + 10 \equiv 1 \pmod{9}$.
   Then, $7k \equiv 0 \pmod{9}$ and by inspection $k \equiv 0 \pmod{9}$.
   Finally, $d = 8(9n) + 5 = 72n + 5$ with integer $n$, or, $d \equiv 5 \pmod{72}$. Indeed, $0<d<72$.
-  
+
   Therefore, $d = 5$.
 
   We decode the message knowing $M \equiv C^d \equiv 9^{5} \pmod{91}$.
@@ -131,7 +131,7 @@
             Then, by the Factor Theorem, $(x-3i)(x+3i) = (x^2+9) \mid f(x)$.
             By long division: \[ \polylongdiv{2x^5 - 5x^4 + 18x^3 - 44x^2 + 9}{x^2 + 9} \]
             Inspecting candidates from the Rational Roots Theorem, we find $f(\frac12) = 0$.
-            
+
             We divide by $(2x-1)$:
             \[ \polylongdiv{2x^3 - 5x^2 + 1}{2x-1} \]
             Finally, the quadratic formula gives $f(1\pm\sqrt{2}) = 0$.
