@@ -30,6 +30,7 @@
 
 % Use inside of definitions: "a \term{thing} is a whatever"
 \makeindex[columns=3, title=Index of Defined Terms, intoc]
+\indexsetup{level=\chapter*,toclevel=section}
 \NewDocumentCommand\term{sO{#3}m}{\underline{#3}\IfBooleanF#1{\index{#2}}}
 
 % For thmbox (see tex.se/41100)
