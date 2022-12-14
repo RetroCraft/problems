@@ -3,6 +3,145 @@
 \setcounter{subsection}{1}
 \subsection{Matchings, Covers}
 
+\begin{xca}
+  Show that a tree has at most one perfect matching.
+\end{xca}
+\begin{prf}
+  Consider a tree $T$ with two perfect matchings $M_1$ and $M_2$
+  and the subgraph $D$ induced by the symmetric difference $E(D) = M_1 \sym M_2$.
+
+  Let $v \in V(T)$. Since both matchings are perfect,
+  there exists $xv \in M_1$ and $yv \in M_2$.
+  If $xv = yv$, then $xv \not\in M_1 \sym M_2$ and $\deg_D(v) = 0$.
+  Otherwise, $xv,yv \in M_1 \sym M_2$ and $\deg_D(v) = 2$.
+
+  Therefore, $D$ consists only of isolated vertices with degree 0
+  and cycles with vertices of degree 2.
+  Since $T$ contains no cycles, $D$ contains only isolated vertices.
+  That is, $xv = yv$ for all $v$.
+  Therefore, $M_1 = M_2$.
+\end{prf}
+
+\begin{xca}\label{xca:822}
+  How many perfect matchings are there in $K_n$?
+  How many in $K_{m,n}$?
+\end{xca}
+\begin{sol}
+  By Corollary 8.6.1, there are 0 perfect matchings in $K_{m,n}$ with $m \neq n$.
+
+  For $K_{n,n} = (A, B)$, we can consider ``mapping''
+  each of the $n$ vertices in $A$ to exactly one of the $n$ vertices in $B$.
+  These are the permutations of $[n]$, of which there are $n!$.
+
+  For $K_n$, notice that there cannot be a perfect matching if $2 \nmid n$.
+
+  Othewrise, if $n = 2k$ is even, pick one of the $2k$ vertices $v$.
+  Then, for each of the other $2k-1$ vertices $u$,
+  recursively count the perfect matchings in the graph $K_{2k}-v-u$
+  which is always isomorphic to $K_{2(k-1)}$.
+
+  That is, we have $m_k = (2k-1)m_{k-1}$ perfect matchings,
+  which we can unwrap to get $m_k = (2k-1)(2k-3)\cdots3\cdot1 = (2k-1)!!$.
+\end{sol}
+
+\begin{xca}
+  How many perfect matchings does the graph $L_n$ of Figure 8.3 have?
+\end{xca}
+\begin{sol}
+  Let $a_n$ denote the number of perfect matchings in $L_n$.
+
+  Clearly, $a_1 = 1$. Also, $a_2 = 3$ by \Cref{xca:822} since $L_2 \cong K_4$.
+
+  Consider the end of the graph $L_n$:
+  \begin{center}
+    \begin{tikzpicture}
+      \graph[grow left=1.5cm] {
+        {s_1,t_1} --[complete bipartite] {s_2,t_2} --[dashed] {s_{n-1},t_{n-1}} --[blue] {s_n,t_n};
+        s_1 -- t_1; s_2 -- t_2; s_{n-1} -- t_{n-1}; s_n --[red] t_n;
+        s_{n-1} --[Green] t_n; s_n --[Green] t_{n-1};
+        };
+    \end{tikzpicture}
+  \end{center}
+  To include $s_n$ and $t_n$ in the matching, we can pick one of
+  \textcolor{red}{$\{s_nt_n\}$},
+  \textcolor{blue}{$\{s_ns_{n-1}, t_nt_{n-1}\}$}, or
+  \textcolor{Green}{$\{s_nt_{n-1},t_ns_{n-1}\}$}.
+
+  For the former, we pick a perfect matching in the remaining graph
+  $L_n - \{s_n, t_n\} = L_{n-1}$.
+  Otherwise, we find one in the graph $L_n - \{s_n,t_n,s_{n-1},t_{n-1}\} = L_{n-2}$.
+
+  That is, we have $a_n = a_{n-1} + 2a_{n-2}$.
+
+  We apply the Main Theorem.
+  Factor $2x^2 + x - 1 = (2x-1)(x+1)$ to get inverse roots $2$ and $-1$.
+  Then, $a_n = \lambda_1 2^n + \lambda_2 (-1)^n$.
+  With the initial conditions $a_1 = 1 = 2\lambda_1 - \lambda_2$
+  and $a_2 = 3 = 4\lambda_1 + \lambda_2$
+  which solve to get $\lambda_1 = \frac23$ and $\lambda_2 = \frac13$.
+
+  Therefore, $a_n = \frac23(2)^n + \frac13(-1)^n$.
+\end{sol}
+
+\begin{xca}
+  Show that for $n \geq 1$, the $n$-cube has a perfect matching.
+\end{xca}
+\begin{sol}
+  We can construct a matching $M = \{ \{ \alpha0,\alpha1 \} : \alpha \in \{0,1\}^{n-1} \}$.
+
+  Notice that $\alpha0$ and $\alpha1$ differ by one digit,
+  so they are adjacent in the $n$-cube.
+
+  Also, $\bigcup_{\alpha \in \{0,1\}^{n-1}}\{\alpha0,\alpha1\} = \{0,1\}^n$
+  so we saturate all vertices.
+
+  Therefore, $M$ is a perfect matching for the $n$-cube.
+\end{sol}
+
+\begin{xca}
+  Show that the 64 squares of a chessboard can be covered with 32 dominoes,
+  each of which covers two adjacent squares.
+\end{xca}
+\begin{prf}
+  Notice that this is equivalent to finding a perfect matching for the $8 \times 8$ grid.
+  We can simply match to adjacent squares:
+  \begin{center}
+    \begin{tikzpicture}
+      \graph[dots nodes, grid placement] {
+        subgraph Grid_n [n=64];
+        {[edges={red, very thick}] 1--2, 3--4, 5--6, 7--8, 9--10, 11--12, 13--14, 15--16, 17--18, 19--20, 21--22, 23--24, 25--26, 27--28, 29--30, 31--32, 33--34, 35--36, 37--38, 39--40, 41--42, 43--44, 45--46, 47--48, 49--50, 51--52, 53--54, 55--56, 57--58, 59--60, 61--62, 63--64};
+        };
+    \end{tikzpicture}
+  \end{center}
+\end{prf}
+
+\begin{xca}
+  Show that if two opposite corner squares of a chessboard are removed,
+  then the resulting board cannot be covered with 31 dominoes.
+\end{xca}
+\begin{sol}[sooshi]
+  Consider the cover created by every second diagonal.
+  \begin{center}
+    \begin{tikzpicture}
+      \graph[dots nodes, grid placement, simple, n=64] {
+        1[fill=none], 2, 3[red], 4, 5[red], 6, 7[red], 8,
+        9, 10[red], 11, 12[red], 13, 14[red], 15, 16[red],
+        17[red], 18, 19[red], 20, 21[red], 22, 23[red], 24,
+        25, 26[red], 27, 28[red], 29, 30[red], 31, 32[red],
+        33[red], 34, 35[red], 36, 37[red], 38, 39[red], 40,
+        41, 42[red], 43, 44[red], 45, 46[red], 47, 48[red],
+        49[red], 50, 51[red], 52, 53[red], 54, 55[red], 56,
+        57, 58[red], 59, 60[red], 61, 62[red], 63, 64[fill=none];
+        subgraph Grid_n;
+        1-!-{2,9}; 64-!-{63,56};
+        };
+    \end{tikzpicture}
+  \end{center}
+  This cover has size $2+4+6+6+6+4+2 = 30$.
+  Therefore, by Lemma 8.2.1, any matching has size at most 30
+  and no matching has size 31.
+\end{sol}
+
 \subsection{K\"onig's Theorem}
 
 \setcounter{subsection}{5}

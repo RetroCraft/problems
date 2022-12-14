@@ -80,5 +80,96 @@ Not covered in Fall 2022 offering.
 \setcounter{subsection}{5}
 \subsection{Nonplanar Graphs, Kuratowski's Theorem}
 
+\begin{xca}
+  For each of the graphs in Figure 7.13, determine if it is planar.
+  Prove your conclusion in each case.
+\end{xca}
+
+\begin{xca}
+  Let $G$ be a connected planar graph with $p$ vertices and $q$ edges and girth $k$.
+  Show that $q \leq \frac{k(p-2)}{k-2}$ and if equality holds, all faces of $G$ have degree $k$.
+\end{xca}
+\begin{prf}[sooshi]
+  Assume that $k < \infty$.
+  By Lemma 7.5.1, the boundary walk of every face in $G$ contains a cycle.
+  Therefore, the degree of each face is at least $k$.
+  It follows that by Lemma 7.5.2, $q \leq \frac{k}{k-2}(p-2)$.
+
+  Suppose $q = \frac{k(p-2)}{k-2}$.
+  Then $kq - 2q = kp - k2$ and we have $2 = p - q + \frac{2}{k}q$.
+  But by Euler's Formula, since $G$ is connected, $2 = p - q + \abs{F(G)}$,
+  so we must have $2q = k\abs{F(G)}$.
+  By the Faceshaking Lemma, $2q = \sum \deg(f) \geq k\abs{F(G)}$
+  with equality if and only if $\deg(f) = k$ for all $f \in F(G)$.
+  Therefore, if equality holds on the original inequality,
+  every face has degree $k$.
+\end{prf}
+
+\begin{xca}
+  Prove that the Peterson graph is nonplanar,
+  without using any form of Kuratowski's Theorem.
+\end{xca}
+\begin{prf}
+  Recall the Peterson graph $P$:
+  \begin{center}
+    \tikz\graph[clockwise] {subgraph K_n[name=inner,V={6,7,8,9,10}] -- subgraph C_n[name=outer,n=5]};
+  \end{center}
+  Suppose it is planar.
+  Notice that $\abs{E(P)} = 25$ and $\abs{V(P)} = 10$.
+  By Theorem 7.5.3, since $\abs{V(P)} \geq 3$, we have
+  $25 = \abs{E(P)} \leq 3\abs{V(P)} - 6 = 24$, a contradiction.
+  Therefore, $P$ is nonplanar.
+\end{prf}
+
+\begin{xca}\end{xca}
+\begin{enumerate}
+  \item Prove that the Peterson graph is nonplanar by Kuratowski's Theorem,
+        finding a subgraph that is an edge subdivision of $K_{3,3}$.
+        \begin{prf}
+          Highlight the edge subdivision of $K_{3,3} = (\textcolor{red}{A},\textcolor{blue}{B})$.
+          \begin{center}
+            \tikz\graph[clockwise=5] {
+            {[clique] 6[red], 7[blue], 8, 9, 10[blue]} -- {1[blue], 2[red], 3, 4, 5[red]};
+            1--2--3--4--5--1;
+            1--[ultra thick]{5,6,2};
+            10--[ultra thick]{5,6,8};
+            7--[ultra thick]{6,2,9};
+            4--[ultra thick]{9,5};
+            3--[ultra thick]{8,2};
+            };
+          \end{center}
+          Therefore, since such an edge subdivision exists, by Kuratowski's Theorem,
+          the Peterson graph is nonplanar.
+        \end{prf}
+  \item Show that there exist two edges of the Peterson graph whose deletion leaves a planar graph.
+        \begin{prf}
+          Recall from Figure 4.8 that this is an isomorphic representation of the Peterson graph:
+          \begin{center}
+            \tikz\graph[clockwise=9] {j[y=-1] -!- {a,b,c,d,e,f,g,h,i};
+            a--b--c--d--e--f--g--h--i--a; j--{a,d,g}; b--[red]f; c--[bend right,looseness=1.5,out=-100,in=-80,dashed]h; c--h; e--[red]i};
+          \end{center}
+          If we delete the edges in \textcolor{red}{red},
+          then we have a planar graph (bend the edge $ch$ above the rest of the graph).
+        \end{prf}
+\end{enumerate}
+
+\begin{xca}
+  Prove that the $n$-cube is not planar when $n \geq 4$,
+  without using any form of Kuratowski's Theorem.
+\end{xca}
+\begin{prf}
+  Recall from Problem 4.4.2 that there are $2^n$ vertices and $n2^{n-1}$
+  edges in the $n$-cube for $n \geq 0$.
+  Also recall from Problem 4.4.3 that the $n$-cube is bipartite.
+
+  Suppose that the $n$-cube is planar for some $n \geq 4$.
+  Then, by Theorem 7.5.6, since $2^n \geq 3$,
+  we have $n2^{n-1} \leq 2(2^n) - 4 = 4(2^{n-1}) - 4$
+  which implies $4 \leq 2^{n-1}(4-n)$.
+  But $4-n \leq 0$ and $2^{n-1} > 0$, so we have $4 \leq 0$, a contradiction.
+
+  Therefore, the $n$-cube is nonplanar for $n \geq 4$.
+\end{prf}
+
 \setcounter{subsection}{7}
 \subsection{Colouring and Planar Graphs, Dual Planar Maps}

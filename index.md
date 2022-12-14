@@ -236,8 +236,8 @@ There are also [exercise solutions](./MATH239/exercises.pdf) for the course note
 | [Ch. 4 (Graph Theory Intro.)](./MATH239/exercises.pdf#section.2.4)  | :black_large_square: | Missing 4.4.9-10, 4.4.12, 4.5, 4.6.2-3, 4.6.10 |
 | [Ch. 5 (Trees)](./MATH239/exercises.pdf#section.2.5)                | :black_large_square: | Missing 5.3.2, 5.4, 5.5                        |
 | [Ch. 6 (Codes)](./MATH239/exercises.pdf#section.2.6)                |         :x:          |                                                |
-| [Ch. 7 (Planar Graphs)](./MATH239/exercises.pdf#section.2.7)        | :black_large_square: | Missing 7.4, 7.6, 7.8                          |
-| [Ch. 8 (Matchings)](./MATH239/exercises.pdf#section.2.8)            |         :x:          |                                                |
+| [Ch. 7 (Planar Graphs)](./MATH239/exercises.pdf#section.2.7)        | :black_large_square: | Missing 7.4, 7.6.1, 7.6.6-13, 7.8              |
+| [Ch. 8 (Matchings)](./MATH239/exercises.pdf#section.2.8)            | :black_large_square: | Missing 8.2.7-17, 8.3, 8.6, 8.8                |
 
 ### CO 485/685 (F2022) <small>Mathematics of Public-Key Cryptography</small>
 
