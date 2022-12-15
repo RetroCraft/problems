@@ -217,7 +217,7 @@ There are also [exercise solutions](./MATH239/exercises.pdf) for the course note
 | [Ch. 1 (Basic Principles)](./MATH239/exercises.pdf#section.1.1)     |  :white_check_mark:  |                                                |
 | [Ch. 2 (Generating Series)](./MATH239/exercises.pdf#section.1.2)    | :black_large_square: | Missing 2.8, 2.13(b)-(c), 2.16-21              |
 | [Ch. 3 (Binary Strings)](./MATH239/exercises.pdf#section.1.3)       | :black_large_square: | Missing 3.13(b), 3.14-17                       |
-| [Ch. 4 (Recurrence Relations)](./MATH239/exercises.pdf#section.1.4) | :black_large_square: | Missing 4.4-12                                 |
+| [Ch. 4 (Recurrence Relations)](./MATH239/exercises.pdf#section.1.4) | :black_large_square: | Missing 4.10-12                                |
 | [Ch. 4 (Graph Theory Intro.)](./MATH239/exercises.pdf#section.2.4)  | :black_large_square: | Missing 4.4.9-10, 4.4.12, 4.5, 4.6.2-3, 4.6.10 |
 | [Ch. 5 (Trees)](./MATH239/exercises.pdf#section.2.5)                | :black_large_square: | Missing 5.3.2, 5.4, 5.5                        |
 | [Ch. 6 (Codes)](./MATH239/exercises.pdf#section.2.6)                |         :x:          |                                                |

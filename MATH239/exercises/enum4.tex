@@ -160,7 +160,7 @@
 \begin{enumerate}
   \item Give a linear recurrence relation that
         (together with the initial conditions above)
-        determines the sequence of coefficients
+        determines the sequence of coefficients $(c_n : n \geq 0)$ uniquely.
         \begin{sol}
           Apply Theorem 4.8:
           \[
@@ -180,5 +180,231 @@
           Then, partial fractions gives $\frac{-1}{1-x} + \frac{1}{1-2x} + \frac{1}{(1-2x)^2}$.
 
           Extracting coefficients gives $c_n = -1 + 2^n + (n+1)2^n = (n+2)2^n - 1$.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  Consider the power series
+  $A(x) = \sum_{n=0}^\infty a_nx^n = \frac{x+7x^2}{1-3x^2-2x^3}$
+\end{xca}
+\begin{enumerate}
+  \item Write down a linear recurrence relation and enough initial conditions
+        to determine the sequence $(a_n : n \in \N)$ uniquely.
+        \begin{sol}
+          Apply Theorem 4.8 to get $a_n - 3a_{n-2} - 2a_{n-3} = \begin{cases}
+              0 & n = 0    \\
+              1 & n = 1    \\
+              7 & n = 2    \\
+              0 & n \geq 3
+            \end{cases}$
+        \end{sol}
+  \item Given that $1 - 3x^2 - 2x^3 = (1-2x)(1+x)^2$,
+        obtain a formula for $a_n$ as a function of $n \in \N$.
+        \begin{sol}
+          The inverse roots are 2 (multiplicity 1) and $-1$ (multiplicity 2).
+          By the Main Theorem, $a_n = A2^n + (Bn+C)(-1)^n$ for some coefficients $A$, $B$, and $C$.
+
+          The initial conditions are $a_0 = 0$, $a_1 = 1$,
+          and $a_2 = 3a_0 + 7 = 7$.
+
+          Using the initial conditions, we have the system
+          \[ \systeme[ABC]{A+C=0,2A-B-C=1,4A+2B+C=7} \]
+          which solves to $A=1$, $B=2$, $C=-1$.
+
+          Therefore, $a_n = 2^n + (2n-1)(-1)^n$ for all $n$.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  Consider the power series $\sum_{n=0}^\infty c_nx^n = \frac{3-11x+11x^2}{1-4x+5x^2-2x^3} = 3 + x + x^3 + 6x^4 + 19x^5 + \dotsb$
+\end{xca}
+\begin{enumerate}
+  \item Give a linear recurrence relation that
+        (together with the initial conditions above)
+        determines the sequence of coefficients $(c_n : n \geq 0)$ uniquely.
+        \begin{sol}
+          Apply Theorem 4.8: $c_n - 4c_{n-1} + 5c_{n-2} - 2c_{n-3} = \begin{cases}
+              3   & n=0      \\
+              -11 & n=1      \\
+              11  & n=2      \\
+              0   & n \geq 3
+            \end{cases}$
+        \end{sol}
+  \item Derive a formula $c_n$ as a function of $n \geq 0$.
+        \begin{sol}
+          Observe that the denominator factors as $-(x-1)^2(2x-1)$.
+          The inverse roots are 2 (multiplicity 1) and 1 (multiplicity 2).
+          By the Main Theorem, we have $c_n = A(2)^n + (Bn+C)1^n = A(2)^n + Bn + C$.
+
+          The initial conditions give us:
+          \[ \systeme[ABC]{A + C = {c_0=3}, 2A + B + C = {c_1=1}, 4A + 2B + C = {c_2=0}} \]
+          which solves to $A = 1$, $B = -3$, and $C = 2$.
+
+          Therefore, $c_n = 2^n - 3n + 2$ for all $n \geq 0$.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  A sequence of integers is determined by the initial conditions
+  $g_0 = 1$, $g_1 = 2$, $g_2 = 3$, and $g_n = 2g_{n-1} - g_{n-2} + 2g_{n-3}$ for $n \geq 3$.
+\end{xca}
+\begin{enumerate}
+  \item Obtain a rational function formula for the generating series
+        $G(x) = \sum_{n=0}^\infty g_n x^n = 1 + 2x + 3x^2 + 6x^3 + 13x^4 + 26x^5 + 51x^6 + \dotsb$
+        \begin{sol}
+          The denominator will be $1 - 2x + x^2 - 2x^3$ (based on the recurrence).
+          Using the initial conditions, we can find the numerator coefficients:
+          \begin{align*}
+            g_0 - 2g_{-1} + g_{-2} - 2g_{-3} & = g_0              & = 1 \\
+            g_1 - 2g_{0} + g_{-1} - 2g_{-2}  & = g_1 - 2g_0       & = 0 \\
+            g_2 - 2g_{1} + g_{0} - 2g_{-1}   & = g_2 - 2g_1 + g_0 & = 0
+          \end{align*}
+          and notice the numerator is just 1.
+
+          Therefore, $G(x) = \frac{1}{1-2x+x^2-2x^3}$.
+        \end{sol}
+  \item Obtain a formula for the coefficient $g_n$ as a function of $n \in \N$.
+        \begin{sol}
+          Notice that the denominator factors as $-(2x-1)(x^2+1)$.
+          The inverse roots are 2, $i^{-1} = -i$, and $(-i)^{-1} = i$ (all multiplicity 1).
+          By the Main Theorem, we can write $g_n = \alpha(2)^n + \beta(-i)^n + \gamma(i)^n$
+          for complex coefficients $\alpha$, $\beta$, and $\gamma$.
+
+          The initial conditions give us:
+          \[
+            \systeme[\alpha\beta\gamma]{
+              1\alpha + \beta + \gamma = 1,
+              2\alpha - i\beta + i\gamma = 2,
+              4\alpha - \beta - \gamma = 3
+            }
+          \]
+          which solves to $\alpha = \frac45$, $\beta = \frac{1}{10} + \frac{1}{5}i$,
+          and $\gamma = \bar\beta$.
+
+          Therefore, $g_n = \frac{1}{10}\qty[8(2)^n + (1+2i)(-i)^n + (1-2i)(i)^n]$.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  Define a sequence of numbers $(c_n : n \in \N)$ by
+  $c_0 = 1$, $c_1 = 2$, $c_2 = 3$, and the recurrence relation
+  $c_n = -c_{n-1} + 2c_{n-2} + 2c_{n-3}$ for all $n \geq 3$.
+\end{xca}
+\begin{enumerate}
+  \item Obtain an algebraic formula for the rational function
+        $C(x) = \sum_{n=0}^\infty c_n x^n = 1 + 2x + 3x^2 + 3x^3 + 7x^4 + 5x^5 + \dotsb$
+        \begin{sol}
+          Based on the recurrence, the denominator will be $1 + x - 2x^2 - 2x^3$.
+          The numerator will have coefficients:
+          \begin{align*}
+            c_0 + c_{-1} - 2c_{-2} - 2c_{-3} & = c_0              & = 1 \\
+            c_1 + c_{0} - 2c_{-1} - 2c_{-2}  & = c_1 + c_0        & = 3 \\
+            c_2 + c_{1} - 2c_{0} - 2c_{-1}   & = c_2 + c_1 - 2c_0 & = 3
+          \end{align*}
+          That is, it will be $1 + 3x + 3x^2$.
+
+          Therefore, $C(x) = \frac{1+3x+3x^2}{1+x-2x^2-2x^3}$.
+        \end{sol}
+  \item Obtain a formula for $c_n$ as a function of $n \in \N$.
+        \begin{sol}
+          Factor the denominator as $-(x+1)(2x^2-1) = -(x+1)(\sqrt{2}x-1)(\sqrt{2}x+1)$.
+          This has inverse roots $-1$, $\sqrt{2}$ and $-\sqrt{2}$ (all multiplicity 1).
+          Therefore, by the Main Theorem, $c_n = A(-1)^n + B(\sqrt{2})^n + C(-\sqrt{2})^n$.
+
+          The initial conditions give us:
+          \[
+            \systeme[ABC]{A+B+C = 1, -A + {\sqrt{2}}B - {\sqrt{2}}C = 2, A + 2B + 2C = 3}
+          \]
+          which solves to $A = -1$, $B = 1 + \frac{\sqrt{2}}{4}$, and $C = 1 - \frac{\sqrt{2}}{4}$.
+
+          Therefore, $c_n = (-1)^{n+1} + (1+\frac{\sqrt{2}}{4})(\sqrt{2})^n + (1-\frac{\sqrt{2}}{4})(-\sqrt{2})^n$.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}\end{xca}
+\begin{enumerate}
+  \item Obtain a formula for the coefficients of the rational function
+        $B(x) = \sum_{n=0}^\infty b_n x^n = \frac{1+3x-x^2}{1-3x^2-2x^3}$.
+        \begin{sol}
+          Since the denominator factors as $-(2x-1)(x+1)^2$,
+          we can write as a partial fraction
+          $B(x) = - \frac{A}{2x-1} - \frac{B}{(x+1)^2} - \frac{C}{(x+1)}$.
+          Then, multiplying by the denominator,
+          we have $1+3x-x^2 = A(x+1)^2 + B(2x-1) + C(x+1)(2x-1)$.
+
+          When $x=-1$, we have $-3 = -3B$, i.e., $B=1$.
+
+          When $x=\frac12$, we have $\frac94 = \frac{9}{4}A$, i.e., $A=1$.
+
+          When $x=0$, we have $1 = A - B - C$, i.e., $C = -1$.
+
+          Therefore, we can write
+          \begin{align*}
+            B(x) & = \frac{1}{2x-1} + \frac{1}{(x+1)^2} - \frac{1}{x+1}                                          \\
+                 & = \sum_{n=0}^\infty (2x)^n + \sum_{n=0}^\infty\binom{n+1}{1}(-x)^n - \sum_{n=0}^\infty (-x)^n \\
+                 & = \sum_{n=0}^\infty (2^n - (n+1)(-1)^n + (-1)^n)x^n                                           \\
+                 & = \sum_{n=0}^\infty (2^n - n(-1)^n)x^n
+          \end{align*}
+          and conclude that $b_n = 2^n - n(-1)^n$.
+        \end{sol}
+  \item Derive a recurrence relation and use it to check your answer.
+        \begin{sol}
+          Read off the recurrence relation $b_n - 3b_{n-2} - 2b_{n-3} = \begin{cases}
+              1  & n = 0 \\
+              3  & n = 1 \\
+              -1 & n = 2
+            \end{cases}$
+
+          We get initial conditions $b_0 = 1$, $b_1 = 3$, $b_2 = -1 + 3(1) = 2$.
+
+          Generating some coefficients by both methods yields
+          1, 3, 2, 11, 12, 37, 58, 135.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  Define a sequence $(h_n : n \in \N)$ by
+  $h_0 = 1$, $h_1 = 2$, $h_2 = 0$, $h_3 = 5$,
+  and the recurrence relation $h_n = -2h_{n-1} + h_{n-2} + 4h_{n-3} + 2h_{n-4}$
+  for all $n \geq 4$.
+\end{xca}
+\begin{enumerate}
+  \item Obtain an algebraic formula for the rational function
+        $H(x) = \sum_{n=0}^\infty h_n x^n = 1 + 2x + 0x^2 + 5x^3 + 0x^4 + 9x^5 + \dotsb$
+        \begin{sol}
+          Reading the recurrence relation, by the Main Theorem,
+          the denominator will be $1 + 2x - x^2 - 4x^3 - 2x^4$.
+          The coefficients of the numerator will be:
+          \begin{align*}
+            h_0 + 2h_{-1} - h_{-2} - 4h_{-3} - 2h_{-4} & = 1  \\
+            h_1 + 2h_{0} - h_{-1} - 4h_{-2} - 2h_{-3}  & = 4  \\
+            h_2 + 2h_{1} - h_{0} - 4h_{-1} - 2h_{-2}   & = 3  \\
+            h_3 + 2h_{2} - h_{1} - 4h_{0} - 2h_{-1}    & = -1
+          \end{align*}
+          so we have $H(x) = \frac{1 + 4x + 3x^2 - x^3}{1 + x - x^2 - 4x^3 - 2x^4}$.
+        \end{sol}
+  \item Obtain a formula for $h_n$ as a function of $n \in \N$.
+        \begin{sol}
+          The denominator factors as $(1+x)^2(1-2x^2)$.
+          This has inverse roots $-1$ (multiplicity 2)
+          and $\pm\sqrt{2}$ (multiplicity 1).
+          Therefore, by the Main Theorem,
+          $h_n = (An+B)(-1)^n + C(\sqrt2)^n + D(-\sqrt2)^n$.
+
+          Construct the linear system for $n=0,1,2,3$:
+          \[
+            \systeme[ABCD]{
+            B+C+D = 1,
+            -A-B+{\sqrt2}C-{\sqrt2}D = 2,
+            2A + B + 2C + 2D = 0,
+            -3A - B + {2\sqrt2}C - {2\sqrt2}D = 5
+            }
+          \]
+          and solve with a computer to get
+          $A = -1$, $B = 0$, $C = \frac12 + \frac{\sqrt{2}}{4}$,
+          $D = \frac12 - \frac{\sqrt{2}}{4}$.
+
+          Therefore, $h_n = (-1)^{n+1} + (\frac12 + \frac{\sqrt{2}}{4})(\sqrt{2})^n
+            + (\frac12 - \frac{\sqrt{2}}{4})(-\sqrt{2})^n$.
         \end{sol}
 \end{enumerate}
