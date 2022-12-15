@@ -21,15 +21,20 @@
   \item Every type of element occurs an even number of times.
         \begin{sol}
           Make a multiset of size $\frac{n}{2}$ and then double every item:
-          $\binom{\frac{n}{2}-t-1}{t-1}/\binom{n+t-1}{t-1}$.
+          $\binom{\frac{n}{2}+t-1}{t-1}/\binom{n+t-1}{t-1}$.
+          Note that 0 is even, so we don't require all types appearing.
         \end{sol}
   \item Every type of element occurs an odd number of times.
-        % TODO
+        \begin{sol}
+          Include every element, then create an even multiset
+          with the remaining $n-t$ spots:
+          $\binom{\frac{n-t}{2}+t-1}{t-1}/\binom{n+t-1}{t-1}$.
+        \end{sol}
   \item For $k \in \N$, exactly $k$ types of element occur
         with multiplicity at least one.
         \begin{sol}
           Pick $k$ types, then a multiset of size $n-k$:
-          $\binom{t}{k}\binom{n-k+t-1}{t-1}/\binom{n+t-1}{-1}$.
+          $\binom{t}{k}\binom{n-k+t-1}{t-1}/\binom{n+t-1}{t-1}$.
         \end{sol}
   \item For $k \in \N$, exactly $k$ types of element occur
         with multiplicity at least two.
@@ -166,6 +171,49 @@
 \begin{xca}
   Complete Example 1.13.
 \end{xca}
+\begin{prf}
+  We must show that $f$ is a bijection from
+  the set of subsets of $[n+t-1]$ of size $t-1$
+  to set of all multisets of size $n$ with $t$ types $\rl M(n,t)$:
+  \begin{quote}
+    Given a subset $S \subseteq [n+t-1]$,
+    sort it in increasing order $s_1 < \dotsb < s_{t-1}$.
+    Then, define $m_i = s_i - s_{i-1} - 1$.
+    For convenience, define $s_0 = 0$ and $s_t = n+t$.
+
+    Define $f(S) = (m_1,\dotsc,m_t)$.
+  \end{quote}
+  The inverse is also given:
+  \begin{quote}
+    Given a multiset $\mu = (m_1,\dotsc,m_t)$ of size $n$,
+    let $s_i = m_1 + \dotsb + m_i + i$.
+
+    Define $f^{-1}(\mu) = \{s_1,\dotsc,s_{t-1}\}$.
+  \end{quote}
+  Consider $f(f^{-1}(\mu)) = f(f^{-1}(m_1,\dotsc,m_t)) = f(\{s_1,\dotsc,s_{t-1}\})$.
+  Notice that the $s_i$ are already in increasing order
+  because we add on the $m_i$ terms. Then,
+  \begin{align*}
+    m'_i & = s_i - s_{i-1} - 1                                                 \\
+         & = \qty(\sum_{j=1}^i m_j + i) - \qty(\sum_{j=1}^{i-1} m_j + i-1) - 1 \\
+         & = m_i + \sum_{j=1}^{i-1}(m_j - m_j) + (i - i + 1 - 1)               \\
+         & = m_i
+  \end{align*}
+  and we have that $f(f^{-1}(\mu)) = (m'_1,\dotsc,m'_t) = (m_1,\dotsc,m_t) = \mu$.
+
+  Conversely, consider $f^{-1}(f(S)) = f^{-1}(f(\{s_1,\dotsc,s_{t-1}\})) = f^{-1}(m_1,\dotsc,m_t)$.
+  \WLOG, suppose that the $s_i$ are already in increasing order. Then,
+  \begin{align*}
+    s'_i & = i + \sum_{j=0}^i m_j                            \\
+         & = \sum_{j=0}^i (m_j + 1)                          \\
+         & = \sum_{j=0}^i ((s_j - s_{j-1} - 1) + 1)          \\
+         & = (s_1 + \dotsb + s_i) - (s_1 + \dotsb + s_{i-1}) \\
+         & = s_i
+  \end{align*}
+  and it follows that $f^{-1}(f(S)) = \{s'_1,\dotsc,s'_{t-1}\} = \{s_1,\dotsc,s_{t-1}\} = S$.
+
+  Therefore, by Proposition 1.11, $f$ is a bijection, completing Example 1.13.
+\end{prf}
 
 \begin{xca}\label{xca:1-7}
   Give bijective proofs of the following identities:

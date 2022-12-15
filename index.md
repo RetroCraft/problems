@@ -148,21 +148,6 @@ Might also be helpful: Will put together a compilation of sample
 
 ### MATH 135 (F2020) <small>Algebra for Honours Mathematics</small>
 
-<div class="alert danger">
-  [Do not take for gospel these solutions](https://piazza.com/class/l7jprtno1ka1q/post/1755).
-  Most of them were written with not much sleep.
-  There have been [a lot of mistakes](#errata-corrige).
-  Contribute your own, better solutions if you can.
-
-  For those of you who came to my review session,
-  remember that you should be *doing your own solutions* to learn
-  and comparing with others (including mine) only after you have tried the problems yourselves.
-  This resource was created during the pandemic,
-  when it was hard to find others to work alongside
-  and to benefit those who had a hard time finding friends.
-  It is not a replacement for studying.
-</div>
-
 | File                                         |      Complete?       | Notes                              |
 | -------------------------------------------- | :------------------: | ---------------------------------- |
 | [Extra Practice 1](./MATH135/EP01.pdf)       |  :white_check_mark:  |                                    |
@@ -229,7 +214,7 @@ There are also [exercise solutions](./MATH239/exercises.pdf) for the course note
 
 | Chapter                                                             |      Complete?       | Notes                                          |
 | ------------------------------------------------------------------- | :------------------: | ---------------------------------------------- |
-| [Ch. 1 (Basic Principles)](./MATH239/exercises.pdf#section.1.1)     | :black_large_square: | Missing 1.1(d), 1.6                            |
+| [Ch. 1 (Basic Principles)](./MATH239/exercises.pdf#section.1.1)     |  :white_check_mark:  |                                                |
 | [Ch. 2 (Generating Series)](./MATH239/exercises.pdf#section.1.2)    | :black_large_square: | Missing 2.8, 2.13(b)-(c), 2.16-21              |
 | [Ch. 3 (Binary Strings)](./MATH239/exercises.pdf#section.1.3)       | :black_large_square: | Missing 3.13(b), 3.14-17                       |
 | [Ch. 4 (Recurrence Relations)](./MATH239/exercises.pdf#section.1.4) | :black_large_square: | Missing 4.4-12                                 |
