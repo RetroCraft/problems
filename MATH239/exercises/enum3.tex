@@ -461,9 +461,111 @@
           \end{align*}
           where $\sum a_n x^n = \frac{1}{1-3x^2}$ which is valid because $n \geq 2$.
           Notice that $\frac{1}{1-3x^2} = \sum 3^n x^{2n}$.
-          If $n$ is even, then we have $3^{n/2}+ 2(0) + 3^{n/2-1} = 6\cdot 3^{\floor{n/2}-1}$.
+          If $n$ is even, then we have $3^{n/2}+ 2(0) + 3^{n/2-1} = 4\cdot 3^{\floor{n/2}-1}$.
           If $n$ is odd, then we have $0 + 2\cdot 3^{(n-1)/2} + 0 = 2\cdot 3^{\floor{n/2}-1}$.
 
           Which isn't right???
         \end{sol}
 \end{enumerate}
+
+\begin{xca}\end{xca}
+\begin{enumerate}
+  \item Let $\rl Q$ be the set of binary strings that do not contain 11000 as a substring.
+        For $n \in \N$, let $\rl Q_n$ be the set of strings in $\rl Q$ with length $n$.
+        Obtain a formula for the generating series $Q(x) = \sum \abs{\rl Q_n}x^n$.
+        \begin{sol}
+          Notice that 11000 cannot overlap itself.
+          Therefore, the generating series $Q(x) = \frac{1+0}{(1-2x)(1+0)+x^5} = \frac{1}{1-2x+x^5}$
+          by Theorem 3.26.
+        \end{sol}
+  \item Let $\rl R$ be the set of compositions, of any length,
+        in which each part is at most $4$.
+        For $n \in \N$, let $\rl R_n$
+        be the set of compositions in $\rl R$ of size $n$.
+        Obtain a formula for the generating series $R(x) = \sum \abs{\rl R_n}x^n$.
+        \begin{sol}
+          The parts are $\rl P = \{1,2,3,4\}$ with generating series
+          $P(x) = x + x^2 + x^3 + x^4 = \frac{x-x^5}{1-x}$.
+          Then, by the String Lemma, we have that the generating series for $\rl R = \rl P^*$
+          is $R(x) = \frac{1}{1-\frac{x-x^5}{1-x}} = \frac{1-x}{1-2x+x^5}$
+        \end{sol}
+  \item Deduce that for all integers $n \geq 1$, $\abs{\rl R_n} = \abs{\rl Q_n} - \abs{\rl Q_{n-1}}$.
+        \begin{prf}
+          By (a) and (b), we have that:
+          \begin{align*}
+            \abs{\rl Q_n} - \abs{\rl Q_{n-1}}
+             & = [x^n]\frac{1}{1-2x+x^5} - [x^{n-1}]\frac{1}{1-2x+x^5} \\
+             & = [x^n]\frac{1}{1-2x+x^5} - [x^n]\frac{x}{1-2x+x^5}     \\
+             & = [x^n]\frac{1-x}{1-2x+x^5}                             \\
+             & = \abs{\rl R_n}
+          \end{align*}
+          as desired.
+        \end{prf}
+  \item Part (c) implies that for every integer $n \geq 1$,
+        there exists a bijection $\rl R_n \bijects \rl Q_n \cup \rl Q_{n-1}$.
+        Can you determine such a bijection precisely?
+\end{enumerate}
+
+\begin{xca}
+  Let $\rl V$ be the set of binary strings that do not contain 0110 as a substring.
+  Find the generating series for $\rl V$.
+\end{xca}
+\begin{sol}
+  Notice that 0110 can only overlap itself as $(0110)(110)$,
+  so we consider the set of suffixes $\{110\}$
+  Therefore, if we let $C(x) = x^3$, we have by Theorem 3.26 that
+  $\Phi_{\rl V}(x) = \frac{1+x^3}{(1-2x)(1+x^3)+x^4} = \frac{1+x^3}{1-2x+x^3-x^4}$.
+\end{sol}
+
+\begin{xca}\end{xca}
+\begin{enumerate}
+  \item Let $\rl W$ be the set of binary strings that do not contain 0101 as a substring.
+        Obtain a formula for the generating series (by length) of $\rl W$.
+        \begin{sol}
+          Observe that 0101 only overlaps itself as $(0101)(01)$.
+          The set of suffixes to consider is $\{01\}$
+          with generating series $C(x) = x^2$.
+          Therefore, by Theorem 3.26,
+          $\Phi_{\rl W}(x) = \frac{1+x^2}{(1-2x)(1+x^2)+x^4} = \frac{1+x^2}{1-2x+x^2-2x^3+x^4}$.
+        \end{sol}
+  \item Fix a positive integer $r \geq 1$ and consider the binary string $(01)^r$.
+        Obtain a formula for the generating series
+        of the set of binary strings that do not contain $(01)^r$.
+        \begin{sol}
+          The set of suffixes to consider will be $\{(01)^1,(01)^2,\dotsc,(01)^{r-1}\}$.
+          This has generating series $C(x) = x^2 + x^4 + \dotsb + x^{2(r-1)}
+            = x^2(1+x^2+\dotsb+x^{2(r-2)}) = \frac{x^2-x^{2r}}{1-x^2}$.
+          Notice that $1+C(x) = \frac{1-x^{2r}}{1-x^2}$.
+          Now, by Theorem 3.26,
+          \begin{align*}
+            \Phi(x) & = \frac{\frac{1-x^{2r}}{1-x^2}}{(1-2x)(\frac{1-x^{2r}}{1-x^2})+x^{2r}} \\
+                    & = \frac{1-x^{2r}}{(1-2x)(1-x^{2r})+x^{2r}(1-x^2)}                      \\
+                    & = \frac{1-x^{2r}}{1-2x+2x^{2r+1}-x^{2r+2}}
+          \end{align*}
+          as desired.
+        \end{sol}
+\end{enumerate}
+
+\begin{xca}
+  Let $\rx S = \rx A^* \rx B$ be an unambiguous prefix decomposition
+  producing some set of strings $\rl S \subseteq \{0,1\}^*$.
+  Show that the recursion $\rx{R = B \smile A R}$ defines an expression $\rx R$
+  that produces the same set of strings $\rl S \subseteq \{0,1\}^*$.
+  Also check that both $\rx S$ and $\rx R$ lead to the rational function $B(x)/(1 - A(x))$
+\end{xca}
+\begin{prf}
+  Let $\rl S_n = \rl A^n \rl B$.
+  By definition, $\rl S = \bigcup_{n\geq 0} \rl S_n$
+  and because of unambiguity, this is a disjoint union.
+
+  Now, consider the set produced by $\rx R$.
+  Produce a disjoint union based on the number of times $m$ we choose to recurse
+  (i.e., choose $\rx{AR}$) before terminating (i.e., choosing $\rx{B}$).
+  Then, $\rl R_m = \rl A^m \rl B = \rl S_m$.
+  Therefore, the set produced is $\bigcup_{n\geq 0} \rl R_n = \bigcup_{n\geq 0} \rl S_n = \rl S$.
+
+  For the generating series, notice that we can write $S(x) = \frac{1}{1-A(x)}\cdot B(x)
+    = \frac{B(x)}{1-A(x)}$ and $R(x) = B(x) + A(x)R(x)
+    \implies R(x)(1-A(x)) = B(x) \implies R(x) = \frac{B(x)}{1-A(x)}$
+  as desired.
+\end{prf}

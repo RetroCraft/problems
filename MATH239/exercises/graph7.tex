@@ -171,5 +171,55 @@ Not covered in Fall 2022 offering.
   Therefore, the $n$-cube is nonplanar for $n \geq 4$.
 \end{prf}
 
+\begin{xca}\end{xca}
+\begin{enumerate}
+  \item Prove that the 4-cube is nonplanar by Kuratowski's Theorem,
+        finding a subgraph that is an edge subdivision of $K_{3,3}$.
+        \begin{prf}
+          Consider the sets of vertices
+          $(\{0000, 0101, 0110\}, \{0001, 0010, 0100\})$.
+          Namely:
+          \begin{itemize}
+            \item 0000 is adjacent to 0001, 0010, and 0100
+            \item 0101 is adjacent to 0001 and 0100. Take $0101 \to 0111 \to 0011 \to 0010$.
+            \item 0110 is adjacent to 0010 and 0100. Take $0110 \to 1110 \to 1010 \to 1011 \to 1001 \to 0001$.
+          \end{itemize}
+          since no vertices appear twice in any of these paths,
+          this is an edge subdivision of $K_{3,3}$.
+          Therefore, the 4-cube is nonplanar by Kuratowski's Theorem.
+        \end{prf}
+  \item Show that there exist four edges of the 4-cube
+        whose deletion leaves a planar graph.
+        \begin{prf}
+          Consider the standard planar embedding of the 3-cube.
+          Connect two to create a 4-cube.
+          Delete the four edges between the two ``inner'' 2-cubes.
+          Then, we can draw the planar embedding:
+          \begin{center}
+            \begin{tikzpicture}
+              \graph [dots nodes, grow right=0.5] {
+                {1,2}--{3[y=-.25],4[y=.25]}--{5[y=-.25],6[y=.25]}--{7,8}--{9,10}--{11[y=-.25],12[y=.25]}--{13[y=-.25],14[y=.25]}--{15,16};
+                {1,3,5,7,9,11,13,15}--{2,4,6,8,10,12,14,16};
+                {1,2,9,10}--{7,8,15,16};
+                1--[bend left]15;
+                2--[bend right]16;
+                };
+            \end{tikzpicture}
+          \end{center}
+          as desired.
+        \end{prf}
+  \item Show that no matter which 3 edges are deleted from a 4-cube,
+        the resulting graph is not planar.
+        \begin{prf}
+          Such a subgraph would have 16 vertices and 29 edges.
+          As a subgraph of a bipartite graph, it is bipartite.
+          Suppose that it is planar.
+
+          Then, by Theorem 7.5.6, since $16 > 3$,
+          we have $29 \leq 2(16)-4 = 28$, a contradiction.
+          Therefore, this graph is nonplanar.
+        \end{prf}
+\end{enumerate}
+
 \setcounter{subsection}{7}
 \subsection{Colouring and Planar Graphs, Dual Planar Maps}
