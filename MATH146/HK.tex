@@ -1,15 +1,16 @@
-\documentclass{agony}
-\title{MATH 146 Fall 1989: Hoffman--Kunze \emph{Linear Algebra}, 2nd ed.}
+\documentclass[notes]{agony}
+\title{MATH 146 Fall 1989: Hoffman \& Kunze Exercises}
 
 \begin{document}
 \thispagestyle{firstpage}
+\renewcommand{\contentsname}{MATH 146 Fall 1989:\\{\huge Exercises from Hoffman \& Kunze, \emph{Linear Algebra}, 2nd ed.}}
 \tableofcontents
 
-\section{Linear Equations}
-\subsection{Fields}\label{sec:fields}
+\chapter{Linear Equations}
+\section{Fields}\label{sec:fields}
 Notational note: Hoffman \& Kunze prefer italic $F$ to blackboard $\F$.
 
-\subsection{Systems of Linear Equations}
+\section{Systems of Linear Equations}
 
 \xca{Verify that the set of complex numbers described in Example 1.2.4 is a subfield of $C$.}
 \begin{prf}
@@ -211,7 +212,7 @@ Notational note: Hoffman \& Kunze prefer italic $F$ to blackboard $\F$.
   we may write $r \mapsto r_F$ where $r_F = p_F q_F^{-1}$, embedding $Q$ in $F$.
 \end{prf}
 
-\subsection{Matrices and Row Operations}
+\section{Matrices and Row Operations}
 
 \begin{xca}
   Find all solutions to the system of equations
@@ -615,7 +616,7 @@ Notational note: Hoffman \& Kunze prefer italic $F$ to blackboard $\F$.
 \end{xca}
 % TODO: 1.4.10
 
-\subsection{Matrix Multiplication}
+\section{Matrix Multiplication}
 
 Even though Hoffman \& Kunze define matrix multiplication in summation notation,
 I use the ``column vector'' (loosly, since vectors are not introduced until Chapter 2) definition
@@ -742,7 +743,7 @@ These are shown to be equivalent in \Cref{xca:vecmult} anyways.
 % \end{xca}
 % TODO: 1.5.8
 
-\subsection{Invertible Matrices}
+\section{Invertible Matrices}
 
 \begin{xca}\label{xca:rpa}
   Let $A = \mqty[1&1&1&0 \\ -1&0&3&5 \\ 1&-2&1&1]$.
@@ -835,9 +836,9 @@ These are shown to be equivalent in \Cref{xca:vecmult} anyways.
   Therefore, $X = (0,0,z)$ for any $z$.
 \end{sol}
 
-\section{Vector Spaces}
+\chapter{Vector Spaces}
 
-\subsection{Vector Spaces}
+\section{Vector Spaces}
 
 \begin{xca}
   If $F$ is a field, verify that $F^n$ is a vector space over $F$.
@@ -889,10 +890,10 @@ These are shown to be equivalent in \Cref{xca:vecmult} anyways.
 \end{sol}
 
 
-\setcounter{section}{7}
-\section{Inner Product Spaces}
+\setcounter{chapter}{7}
+\chapter{Inner Product Spaces}
 
-\subsection{Inner Products}
+\section{Inner Products}
 
 Notational note: Hoffman \& Kunze use the notation $\ip{\alpha}{\beta}$ for the inner product of vectors $\alpha$ and $\beta$,
 whereas Wolczuk would prefer $\ev{\vb{a}, \vb{b}}$ for vectors $\vb a$ and $\vb b$.

@@ -43,8 +43,10 @@
 
 % Shamelessly stolen from Arthur
 \newcounter{deduction}
+\numberwithin{equation}{deduction}
+\renewcommand{\theequation}{\arabic{equation}}
 \NewDocumentEnvironment{deduction}{s}
-  {\refstepcounter{deduction}\IfBooleanTF{#1}{}{\proof}\setcounter{equation}{0}\align}
+  {\refstepcounter{deduction}\IfBooleanTF{#1}{}{\proof}\align}
   {\endalign\IfBooleanTF{#1}{}{\endproof}}
 \newcommand{\linternal}[2]{\label{proof:#1:eqn:#2}}
 \newcommand{\rinternal}[2]{\ref{proof:#1:eqn:#2}}
@@ -73,20 +75,21 @@
   \tl_use:N \l__agony_deduce_tl
   }
   {}
-\newenvironment{deduce}{\refstepcounter{deduction}\setcounter{equation}{0}\deduceinternal\align}{\endalign\enddeduceinternal}
-\newenvironment{deduce*}{\refstepcounter{deduction}\setcounter{equation}{0}\deduceinternal\start@align\@ne\st@rredtrue\m@ne}{\endalign\enddeduceinternal}
+\newenvironment{deduce}{\refstepcounter{deduction}\deduceinternal\align}{\endalign\enddeduceinternal}
+\newenvironment{deduce*}{\refstepcounter{deduction}\deduceinternal\start@align\@ne\st@rredtrue\m@ne}{\endalign\enddeduceinternal}
 \newcommand{\@resolvent}[1]{\ifthenelse{\equal{#1}{Prem}}{Premise}{\ifthenelse{\equal{#1}{NegCon}}{Negation\ of\ conclusion}{Resolvent\ of\ #1}}}
 \newcommand{\@resolve}[1]{\expandafter\ifx\expandafter\##1\else\@resolvent{#1}\fi}
-\newenvironment{resolution}{\refstepcounter{deduction}\setcounter{equation}{0}\center\deduceinternal\tabular{>{\refstepcounter{equation}\theequation.}r>{\collectcell\logic}l<{\endcollectcell}>{\collectcell\@resolve}l<{\endcollectcell}}}{\endtabular\enddeduceinternal\endcenter}
-\newenvironment{setofsupport}{\refstepcounter{deduction}\setcounter{equation}{0}\center\deduceinternal\tabular{>{\refstepcounter{equation}\theequation.}r>{\collectcell\logic}l<{\endcollectcell}>{\collectcell\@resolvent}l<{\endcollectcell}>{$\S=\{}r<{\}$}}}{\endtabular\enddeduceinternal\endcenter}
+\newenvironment{resolution}{\refstepcounter{deduction}\center\deduceinternal\tabular{>{\refstepcounter{equation}\theequation.}r>{\collectcell\logic}l<{\endcollectcell}>{\collectcell\@resolve}l<{\endcollectcell}}}{\endtabular\enddeduceinternal\endcenter}
+\newenvironment{setofsupport}{\refstepcounter{deduction}\center\deduceinternal\tabular{>{\refstepcounter{equation}\theequation.}r>{\collectcell\logic}l<{\endcollectcell}>{\collectcell\@resolvent}l<{\endcollectcell}>{$\S=\{}r<{\}$}}}{\endtabular\enddeduceinternal\endcenter}
 \ExplSyntaxOff
 \newcommand{\logic}[1]{\ensuremath{\begin{deduceinternal}#1\end{deduceinternal}}}
 \newcolumntype{L}{>{\collectcell\logic}c<{\endcollectcell}}
 
 % Hoare triples
-\usepackage{stmaryrd}
+\RequirePackage{stmaryrd}
 \DeclarePairedDelimiter\hoare{{\,\llparenthesis\,}}{{\,\rrparenthesis\,}}
 \newcommand{\Hoare}[1]{\logic{\hoare{#1}}}
+\let\leftbar\@undefined\let\endleftbar\@undefined % conflicts with thmbox
 \RequirePackage{minted}
 \usemintedstyle{tango}
 \newminted{c}{autogobble,mathescape,escapeinside=@@}

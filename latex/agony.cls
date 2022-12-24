@@ -144,8 +144,6 @@
   qed=\qedsymbol]{proof}
 \declaretheorem[sibling=question,style=definition,name=,
   refname={problem,problems},Refname={Problem,Problems}]{prob}
-\declaretheorem[numberwithin=subsection,style=definition,name=Exercise,
-  refname={exercise,exercises},Refname={Exercise,Exercises}]{xca}
 \declaretheorem[name=Proof,style=proof,unnumbered]{prf}
 \declaretheorem[name=Solution,style=proof,unnumbered]{sol}
 

@@ -1,13 +1,13 @@
-\documentclass[class=cs245,leqno]{agony}
-\title{Useful Proofs/Exercises}
+\documentclass[class=cs245,notes,leqno]{agony}
+\title{CS 245 Fall 2021: Useful Proofs/Exercises}
 
-\declaretheorem{theorem}[unnumbered]
 \begin{document}
 \thispagestyle{firstpage}
+\renewcommand{\contentsname}{CS 245 Fall 2021:\\{\huge Useful Proofs/Exercises}}
 \tableofcontents
 
-\section{Logic06}
-\subsection{Theorems}
+\chapter{Logic06}
+\section{Theorems}
 \begin{theorem}[Double Negation]
   \logic{A |-| !!A}
 \end{theorem}
@@ -217,7 +217,7 @@
   \end{deduce}
 \end{prf}
 
-\subsection{Exercises}
+\section{Exercises}
 \begin{xca}
   \logic{A -> (B or C), A -> !B, C -> !D |- A -> !D}
 \end{xca}
@@ -315,9 +315,9 @@
 \end{prf}
 
 
-\section{Logic14}
+\chapter{Logic14}
 
-\subsection{Exercises}
+\section{Exercises}
 
 \begin{xca}
   \logic{\A[x]\A[y] P(x,y) |- \A[y]\A[x] P(x,y)}

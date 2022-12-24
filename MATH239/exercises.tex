@@ -1,8 +1,6 @@
 \documentclass[class=math239,notes,tikz]{agony}
-\renewcommand{\thechapter}{\Roman{chapter}}
-\titleformat{\section}{\pagebreak\normalfont\large\bfseries}{\thesection}{1em}{}
-\settowidth{\cftsecnumwidth}{00~}
-\renewcommand\cftsecpresnum{}
+\counterwithout{section}{chapter}
+\numberwithin{xca}{subsection}
 \setlist[enumerate,1]{label={(\alph*)}}
 
 \title{MATH 239 Fall 2022: Exercises}
