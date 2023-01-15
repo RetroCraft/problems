@@ -60,10 +60,11 @@ The `agony` class is documented [here](https://github.com/RetroCraft/problems#us
 
 Quizlet flashcards are not mine: thank Imaad for them.
 
-### BU 111 (F2020) <small>Introduction to the Business Environment</small>
+### BU 111 (F2020 + F2022) <small>Introduction to the Business Environment</small>
 
 Flashcards available for [PEST factors](https://quizlet.com/ca/553312795/bu111-final-review-f2020-all-pest-factors-flash-cards/)
 and [strategic expansion](https://quizlet.com/ca/553644800/bu111-final-review-f2020-intl-business-strategic-expansion-flash-cards/).
+Complete notes for F2022 [Midterm](https://docs.google.com/document/d/1LcJJwRRkSb64HsP4X-sOGEsH88taibLOtuMiVI-641A/edit?usp=sharing) and [Final](https://docs.google.com/document/d/1OmAY4RFbbq6bb3P44r9N21mXg4YgeageJ0Qsx3ZSWYE/edit?usp=sharing) by Sophia.
 
 ### BU 121 (W2021) <small>Functional Areas of the Organization</small>
 
