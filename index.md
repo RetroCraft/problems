@@ -112,6 +112,15 @@ I don't implement the full design recipe in exercises, for obvious reasons (I'm 
 
 My own version of the [reference sheet](./CS245/ref.pdf) is a bit more compact.
 
+### CS 341 (S2023) <small>Algorithms</small>
+
+My [lecture notes](./CS341/notes.pdf) are available, taken live during lecture.
+I will try and format for publishing weekly.
+
+### CS 350 (S2023) <small>Operating Systems</small>
+
+[Lecture notes](./CS350/notes.pdf).
+
 ## Economics
 
 ### ECON 120 (F2020) <small>Introduction to Microeconomics</small>

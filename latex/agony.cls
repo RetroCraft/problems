@@ -8,6 +8,7 @@
 \RequirePackage{kvoptions}
 \DeclareStringOption{class}
 \DeclareBoolOption{tikz}
+\DeclareBoolOption{minted}
 \DeclareBoolOption{nogeometry}
 \DeclareBoolOption{notes}
 \DeclareDefaultOption{\PassOptionsToClass{\CurrentOption}{article}}
@@ -82,6 +83,14 @@
   \pgfplotsset{compat=1.15}
   \usepgfplotslibrary{fillbetween}
   \usetikzlibrary{patterns,positioning,shapes,calc,chains}
+\fi
+
+\ifagony@minted
+  \@namedef{ver@framed.sty}{9999/12/31} % see gpoore/minted#181
+  \@namedef{opt@framed.sty}{}
+  \RequirePackage{minted}
+  \usemintedstyle{tango}
+  \newminted{pseudo}{autogobble,mathescape,escapeinside=@@,linenos}
 \fi
 
 %
@@ -170,6 +179,7 @@
 \newcommand{\WLOG}{\textsc{Wlog}\xspace}
 \newcommand{\Tfae}{\textsc{tfae}\xspace}
 \newcommand{\TFAE}{\textsc{Tfae}\xspace}
+\newcommand{\xth}{\textsuperscript{th}\xspace}
 
 % Typesetting
 \newcolumntype{C}{>{$}c<{$}} % math version of "C" column type

@@ -1,0 +1,136 @@
+\chapter{Operating Systems Introduction}
+
+\section{(05/09)}
+
+Generally, an \term{operating system} acts partially as a cop (e.g., watching for unplugged USB drives)
+and as a facilitator (e.g., allowing you to interface with any storage device with \verb|fopen|).
+It is responsible for:
+\begin{itemize}[nosep]
+  \item managing resources;
+  \item creating execution environments;
+  \item loading programs; and
+  \item providing common services and utilities
+\end{itemize}
+We will consider an OS from three views:
+\begin{enumerate}[1.,nosep]
+  \item Application: what does an OS provide?
+        Provides an \term{execution environment}
+        which provides resources, interfaces, and isolation.
+  \item System: what problems does an OS solve?
+        Manages hardware resources, allocates them to programs,
+        and controls access to shared resources between programs.
+  \item Implementation: how is an OS built?
+        It must be \term[concurrency]{concurrent} (allow multiple things to run at once)
+        and \term{real-time} (respond to events in a set time).
+\end{enumerate}
+
+\begin{defn}[kernel]
+  The part of the operating system that responds to system calls,
+  interrupts, and exceptions.
+\end{defn}
+\begin{defn}[operating system]
+  Includes the kernel, but also other related programs that provide services
+  for applications. For example, utility programs, command interpreters, and programming libraries.
+\end{defn}
+
+The kernel protects from bad \term{user programs} by isolating
+them in \term{user space} (resp. \term{kernel space})
+and allowing them only to interact with hardware using system calls.
+
+\begin{defn}[system call]
+  A user interaction with the OS.
+  For example, the C function \verb|fopen| makes the Linux syscall
+  \verb|sys_open|.
+  They are much slower than calling a user function.
+\end{defn}
+
+\begin{defn*}[types of kernels]
+  \begin{itemize}[nosep]
+    \item \term[kernel!monolithic kernel]{Monolithic}:
+          when the entire OS is the kernel (e.g. Linux)
+    \item \term[kernel!microkernel]{Microkernel}:
+          when only absolutely necessary parts are in the kernel
+    \item \term[kernel!hybrid kernel]{Hybrid}:
+          somewhere between monolithic kernels and microkernels (e.g. Windows, macOS)
+    \item \term[real-time operating system]{Real-time}:
+          with stringent event response time, guarantees, and scheduling
+  \end{itemize}
+\end{defn*}
+
+A monolithic kernel is faster, since we avoid slower system calls.
+However, they are less secure since third-party drivers must be trusted and included in the kernel.
+
+\section{(05/11)}
+
+Provided by the execution environment are abstract entities
+that a program is able to manipulate:
+\begin{itemize}[nosep]
+  \item files and file systems (secondary storage; e.g. HDDs)
+  \item address spaces (primary memory; RAM)
+  \item processes, threads (program execution)
+  \item sockets, pipes (message channels)
+\end{itemize}
+
+\chapter{Threads}
+
+\begin{defn}[thread]
+  Sequence of instructions
+\end{defn}
+
+An ordinary \term{sequential program} has only a single thread.
+Analogous to how DFAs have a single state and NFAs can follow multiple paths,
+a program can have multiple threads of execution.
+The threads can be for the same role (e.g. one per server visitor)
+or for different roles (e.g. Chrome's JavaScript and graphics engines).
+
+Threads allow for:
+\begin{itemize}[nosep]
+  \item \term{concurrency}: allow multiple tasks to occur at once
+  \item \term{parallelism}: different threads on different processors to increase throughput
+  \item \term{responsiveness}: allow blocking tasks to not block the whole system
+  \item \term{priority}: do things that are more important first
+  \item \term{modularity}: separate out tasks into threads that can't crash each other
+\end{itemize}
+A thread will pause execution when it is \term[blocking]{blocked}.
+
+Consider for example the traffic simulation for Assignment 1.
+Each thread represents a vehicle passing through an intersection,
+and we are trying to prevent collisions.
+
+A thread can create a new thread using \verb|thread_fork|.
+The original and new threads share global data and the heap.
+However, the new thread has a separate, private stack.
+
+For example, in \texttt{/kern/synchprobs/traffic.c}:
+\begin{minted}{c}
+  for (i = 0; i < NumThreads; i++) {
+    error = thread_fork("vehicle_simulation thread", NULL, vehicle_simulation,
+                        NULL, i);
+    if (error) {
+      panic("traffic_simulation: thread_fork failed: %s\n", strerror(error));
+    }
+  }
+\end{minted}
+we start a thread running \mintinline{c}{vehicle_simulation(NULL, i)}.
+
+In OS/161, we create a thread with
+\begin{minted}{c}
+  int thread_fork(
+    const char *name,
+    struct proc *proc,
+    void (*func)(void *, unsigned long),
+    void *data1,
+    unsigned long data2
+  );
+\end{minted}
+and can terminate with \mintinline{c}{void thread_exit(void)}
+and yield with \mintinline{c}{void thread_yield(void)}.
+However, we cannot control the order that threads run in.
+
+Recall from CS 241 how to execute a single thread:
+fetch--execute cycle.
+In CS 241, we called all the registers $\$0,\dotsc,\$31$.
+In real life, they have names like a0 and s8.
+
+CS 241 passed all arguments via the stack.
+We will pass the first three as a0, a1, a2 and the rest on the stack.

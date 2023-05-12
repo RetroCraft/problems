@@ -1,0 +1,245 @@
+\chapter{Introduction}
+\section{(05/09)}
+
+Recall from CS 240, that given a problem with instances $I$ of size $n$:
+
+\begin{defn*}[runtime]
+  The \term[runtime!of an instance]{runtime of an instance $I$} is $T(I)$.
+
+  The \term[runtime!worst-case]{worst-case runtime} is $T(n) = \max_{\{I : \abs{I} = n\}} T(I)$.
+
+  The \term[runtime!average]{average runtime} is $T_{\avg}(n) = \frac{\sum_{\{I : \abs{I} = n\}} T(I)}{\abs{\{I : \abs{I} = n\}}}$
+\end{defn*}
+
+Recall also the asymptotic comparison of functions $f(n)$ and $g(n)$
+with values in $\R_{>0}$:
+
+\begin{defn}[big-$O$]
+  $f(n) \in O(g(n))$ if there exists $C > 0$ and $n_0$
+  such that $n \geq n_0 \implies f(n) \leq Cg(n)$.
+\end{defn}
+
+\begin{defn}[big-$\Omega$]
+  $f(n) \in \Omega(g(n))$ if there exists $C > 0$ and $n_0$
+  such that $n \geq n_0 \implies f(n) \geq Cg(n)$.
+  Equivalently, $g(n) \in O(f(n))$.
+\end{defn}
+
+\begin{defn}[big-$\Theta$]
+  $f(n) \in \Theta(g(n))$ if there exists $C, C' > 0$ and $n_0$
+  with $n \geq n_0 \implies Cg(n) \leq f(n) \leq C'g(n)$.
+  Equivalently, $f(n) \in O(g(n)) \cap \Omega(g(n))$.
+
+  Recall also that if $\dilim{n}\frac{f(n)}{g(n)}$ is finite,
+  then $f(n) \in \Theta(g(n))$.
+\end{defn}
+
+\begin{defn}[little-$o$]
+  $f(n) \in o(g(n))$ if for all $C > 0$, there exists $n_0$
+  such that $n \geq n_0 \implies f(n) \leq Cg(n)$.
+
+  Equivalently, $\dilim{n}\frac{f(n)}{g(n)} = 0$.
+\end{defn}
+
+\begin{defn}[little-$\omega$]
+  $f(n) \in \omega(g(n))$ if for all $C > 0$, there exists $n_0$
+  such that $n \geq n_0 \implies f(n) > Cg(n)$.
+
+  Equivalently, $\dilim{n}\frac{f(n)}{g(n)} = \infty$ or $g(n) \in o(f(n))$.
+\end{defn}
+
+Also, recall that any polynomial of degree $k$ is in $\Theta(n^k)$.\footnote{As long as $n$ is eventually increasing, i.e., the $n^k$ term dominates.}
+
+We write $n^{O(1)}$ to mean at most polynomial (i.e., $O(n^k(n))$ where $k \in O(1)$)
+
+\begin{xca}
+  Is $2^{n-1}$ in $\Theta(2^n)$?
+\end{xca}
+\begin{prf}
+  Notice that $2^{n-1} = \frac12 2^n$.
+  If we let $C = \frac12 = C'$, $n_0 = 1$, notice that for $n \geq n_0$,
+  we have $C 2^n = 2^{n-1} \leq 2^{n-1} \leq 2^{n-1} = C'2^n$.
+  That is, $2^{n-1} \in \Theta(2^n)$.
+\end{prf}
+
+\begin{xca}
+  Is $(n-1)!$ in $\Theta(n!)$?
+\end{xca}
+\begin{sol}
+  No. Notice that $\dilim{n} \frac{(n-1)!}{n!} = \dilim{n} \frac1n = 0$.
+  Therefore, $(n-1)! \in o(n!)$, which contradicts $(n-1)! \in \Theta(n!)$.
+\end{sol}
+
+Consider now multivariate functions $f(n,m)$ and $g(n,m)$
+with values in $\R_{>0}$. Then,
+
+\begin{defn*}[multivariate big-$O$]
+  $f(n,m)$ is in $O(g(n,m))$ if there exist $C$, $n_0$, $m_0$
+  such that $f(n,m) \leq C g(n,m)$ for $n \geq n_0$ \textbf{or} $m \geq m_0$.
+\end{defn*}
+
+We similarly define the other asymptotic analysis functions.
+We could alternatively define using $n \geq n_0$ \textbf{and} $m \geq m_0$
+but they both give the same results.
+
+\section{(05/11)}
+
+Notice that all basic operations are not equal.
+For example, multiplication may take $O(b)$ time for a $b$-bit word.
+
+Warning: big-$O$ is only an upper bound, so $1 \in O(n^2)$ and $n \in O(n)$, but we know that $1 << n$.
+
+Asymptotic notation hides constants.
+Any $\Theta(n^2)$ algorithm will beat a $\Theta(n^3)$ algorithm eventually.
+A \term{galactic algorithm} is practically irrelevant because the crossing point is stupidly large.
+
+\begin{xca}
+  Given an array $A[1..n]$, find a contiguous subarray $A[i..j]$ that maximizes the sum $A[i] + \dotsb + A[j]$.
+\end{xca}
+
+Consider the brute-force attempt
+\begin{algorithm}[H]
+  \caption{\Call{BruteForce}{$A$}}
+  \begin{algorithmic}[1]
+    \State $opt \gets 0$
+    \For{$i \gets 1,\dotsc,n$}
+    \For{$j \gets i,\dotsc,n$}
+    \State $sum \gets 0$
+    \For{$k \gets i,\dotsc,j$}
+    \State $sum \gets sum + A[k]$
+    \EndFor
+    \If{$sum > opt$} \State $opt \gets sum$ \EndIf
+    \EndFor
+    \EndFor
+    \State \Return $opt$
+  \end{algorithmic}
+\end{algorithm}
+which has a runtime $\Theta(n^3)$.
+This is inefficient.
+We are recomputing the same sum in the $j$ loop,
+so if we instead keep the running sum:
+\begin{algorithm}[H]
+  \caption{\Call{BetterBruteForce}{$A$}}
+  \begin{algorithmic}[1]
+    \State $opt \gets 0$
+    \For{$i \gets 1,\dotsc,n$}
+    \State $sum \gets 0$
+    \For{$j \gets i,\dotsc,n$}
+    \State $sum \gets sum + A[j]$
+    \If{$sum > opt$} \State $opt \gets sum$ \EndIf
+    \EndFor
+    \EndFor
+    \State \Return $opt$
+  \end{algorithmic}
+\end{algorithm}
+we get $\Theta(n^2)$.
+
+We can develop a divide-and-conquer algorithm by noticing that
+the optimal subarray (if not empty) is either
+(1) completely in $A[1..n/2]$,
+(2) completely in $A[n/2+1..n]$,
+or (3) contains $A[n/2]$ and $A[n/2+1]$.
+
+\begin{algorithm}
+  \caption{\Call{DivideAndConquer}{$A$}}
+  \begin{algorithmic}[1]
+    \If{$n=1$} \Return $\max(A[1],0)$ \EndIf
+    \State $opt_{lo} \gets \Call{DivideAndConquer}{A[1..n/2]}$
+    \State $opt_{hi} \gets \Call{DivideAndConquer}{A[n/2+1..n]}$
+    \Function{MaximizeLowerHalf}{\null}
+    \State $opt \gets A[n/2]$
+    \State $sum \gets A[n/2]$
+    \For{$i \gets n/2-1,\dotsc,1$}
+    \State $sum \gets sum + A[i]$
+    \If{$sum > opt$} $opt \gets sum$ \EndIf
+    \EndFor
+    \State \Return $opt$
+    \EndFunction
+    \Function{MaximizeUpperHalf}{\null}
+    \State $\dots$
+    \EndFunction
+    \State $opt_{mid} \gets \Call{MaximizeLowerHalf}{\null} + \Call{MaximizeUpperHalf}{\null}$
+    \State \Return $\max(opt_{lo},opt_{hi},opt_{mid})$.
+  \end{algorithmic}
+\end{algorithm}
+
+Each of \Call{MaximizeUpperHalf}{} and \Call{MaximizeLowerHalf}{} have runtime $\Theta(n)$,
+so \Call{DivideAndConquer}{} has runtime $2T(n/2) + \Theta(n) \in \Theta(n\log n)$.
+
+Finally, notice that we can instead solve the problem in nested subarrays $A[1..j]$ of sizes $1,\dotsc,n$.
+The optimal subarray is either a subarray of $A[1..n-1]$ or contains $A[n]$.
+
+Write $M(j)$ for the maximum sum for subarrays of $A[1..j]$. Then,
+\[ M(n) = \max(M(n-1), \bar M(n)) = A[n] + \max(\bar M(n-1), 0) \]
+where $\bar M(j)$ is the maximum sum for subarrays of $A[1..j]$ that include $j$.
+Notice that the optimal subarray containing $A[n]$ is either $A[i..n]$ for $i \leq n-1$
+or exactly $[A[n]]$.
+
+\begin{algorithm}[H]
+  \caption{\Call{DynamicProgramming}{$A$}}
+  \begin{algorithmic}[1]
+    \State $\bar M \gets A[1]$
+    \State $M \gets \max(\bar M, 0)$
+    \For{$i=2,\dotsc,n$}
+    \State $\bar M \gets A[i] + \max(\bar M, 0)$
+    \State $M \gets \max(M, \bar M)$
+    \EndFor
+    \State \Return $M$
+  \end{algorithmic}
+\end{algorithm}
+
+which has runtime $\Theta(n)$.
+We cannot do better than this (proof beyond the scope of the course,
+but intuitively notice that we cannot find a max without knowing the entire array).
+
+\chapter{Solving Recurrences}
+
+Recall merge sort.
+
+The recurrence relation is $T(n) = \begin{cases}
+    T(\ceil{\frac{n}{2}}) + T(\floor{\frac{n}{2}}) + \Theta(n) & n > 1 \\
+    \Theta(1)                                                  & n = 1
+  \end{cases}$
+
+If we let $c$ and $d$ be the constants, we get $T(n) = \begin{cases}
+    T(\ceil{\frac{n}{2}}) + T(\floor{\frac{n}{2}}) + cn & n > 1 \\
+    d                                                   & n = 1
+  \end{cases}$
+
+Equivalently, we can \term[sloppy recurrence]{sloppily} remove floors and ceilings to get $T(n) = \begin{cases}
+    2T(\frac{n}{2}) + cn & n > 1 \\
+    d                    & n = 1
+  \end{cases}$
+
+Construct now a recursion tree, assuming $n = 2^j$.
+Notice that we will end up with $j$ layers where layer $i$ has $2^i$ nodes
+where each node takes $cn$ time (the last layer nodes take $d$ time).
+
+% todo: finish
+
+\begin{theorem}[master theorem]
+  Suppose $a \geq 1$ and $b > 1$. Consider the recurrence
+  \[ T(n) = a T\qty(\frac{n}{b}) + \Theta(n^y) \]
+  in sloppy or exact form. Let $x = \log_b(a)$. Then,
+  \[
+    T(n) = \begin{cases}
+      \Theta(n^x)       & y < x \\
+      \Theta(n^y\log n) & y = x \\
+      \Theta(n^y)       & y > x
+    \end{cases}
+  \]
+\end{theorem}
+\begin{prf}
+  Let $a \geq 1$ and $b \geq 2$.
+  Then, let $T(n) = aT(\frac{n}{b}) + cn^y$ and $T(1) = d$.
+  Also, write for convenience $n = b^j$.
+  We can now consider the recurrence tree.
+
+  The $i$\xth row in the tree (except the bottom) will have $a^i$ subproblems
+  of size $n/b^i$ which each have cost $c(n/b^i)^y = c n^y b^{-iy}$.
+  The $j$\xth row will have $a^j$ nodes with cost $d$.
+  Then,
+  \[
+    T(n) = d a^j + c n^y \sum_{i=0}^{j-1} \qty(\frac{a}{b^y})^i
+  \]
+\end{prf}
