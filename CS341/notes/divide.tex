@@ -1,0 +1,179 @@
+\chapter{Divide and Conquer}
+In general, we want to:
+\begin{itemize}[nosep]
+  \item divide: split a problem into subproblems;
+  \item conquer: solve the subproblems recursively; and
+  \item combine: use subproblem results to derive problem result
+\end{itemize}
+This is possible when:
+\begin{itemize}[nosep]
+  \item the original problem is easily decomposable into subproblems;
+  \item combining solutions is not costly; and
+  \item subproblems are not overly unbalanced
+\end{itemize}
+\begin{problem}[counting inversions]
+Given an unsorted array $A[1..n]$, find the number of \term[inversion]{inversions} in it,
+i.e., pairs $(i,j)$ such that $A[i] > A[j]$.
+\end{problem}
+\begin{example}
+  Given $A = [1,5,2,6,3,8,7,4]$,
+  we get (2,3), (2,5), (2,8), (4,5), (4,8), (6,7), (6,8), and (7,8).
+\end{example}
+The naive algorithm checks all pairs and takes $\Theta(n^2)$ time.
+We can do better.
+
+Let $c_\ell$ be the number of inversions in $A[1..n/2]$,
+$c_r$ be the number of inversions in $A[n/2+1..n]$,
+and $c_t$ be the number of transverse inversions, i.e.,
+inversions where $i$ is on the left and $j$ is on the right.
+
+We can find $c_\ell$ and $c_r$ by recursion.
+
+To find $c_t$, we must count the number of left indices
+greater than each right index.
+This can be done by sorting and then binary searching,
+since the binary search result index gives exactly what we want.
+The sort takes $O(n\log n)$ and each of the $n$ binary searches takes $O(\log n)$.
+
+This gives us $T(n) \leq 2T(n/2) + O(n\log n) = O(n\log^2 n)$.
+
+We can instead modify \Call{MergeSort}{} and find $c_t$ using a modified \Call{Merge}{}:
+\begin{algorithm}[H]
+  \caption{Modified \Call{Merge}{$A[1..n]$} (additions in \textcolor{Green}{green})}
+  \begin{algorithmic}[1]
+    \Require{both halves of $A$ are sorted}
+    \State \textcolor{Green}{copy $A$ into a new array $S$; $c = 0$}
+    \State $i \gets 1$; $j \gets n/2+1$
+    \For{$k \gets 1,\dotsc,n$}
+    \If{$i > n/2$} $A[k] \gets S[j++]$
+    \ElsIf{$j > n$}
+    \State $A[k] \gets S[i++]$
+    \State \textcolor{Green}{$c \gets c + \frac{n}{2}$}
+    \ElsIf{$S[i] < S[j]$}
+    \State $A[k] \gets S[i++]$
+    \State \textcolor{Green}{$c \gets c + j - (\frac{n}{2}+1)$}
+    \Else{} $A[k] \gets S[j++]$
+    \EndIf
+    \EndFor
+  \end{algorithmic}
+\end{algorithm}
+which will run in $\Theta(n\log n)$ time because the modified \Call{Merge}{} is still $\Theta(n)$.
+
+\begin{problem}[polynomial multiplication]
+Given $F = f_0 + \dotsb + f_{n-1}x^{n-1}$
+and $G = g_0 + \dotsb + g_{n-1}x^{n-1}$,
+calculate $H = FG$.
+\end{problem}
+
+The naive algorithm takes $\Theta(n^2)$ time to expand.
+
+Notice that we can split $F = F_0 + F_1x^{n/2}$ and $G = G_0 + G_1x^{n/2}$.
+Then, we have $H = F_0G_0 + (F_0G_1+F_1G_0)x^{n/2} + F_1G_1x^n$.
+If we divide and conquer, we make 4 recursive calls with size $n/2$
+and $\Theta(n)$ extra work for the additions.
+
+However, $T(n) = 4T(n/2)+\Theta(n) \in \Theta(n^2)$ which is not an improvement.
+
+\begin{lemma}[Karatsuba's identity]
+  $(x+y)(a+b) - xa - yb = xb + ya$
+\end{lemma}
+
+\lecture{(05/18)}
+But if we already have $F_0G_0$ and $F_1G_1$,
+we can use Karatsuba's identity to instead calculate
+$(F_0 + F_1)(G_0 + G_1) - F_0G_0 - F_1G_1 = F_0G_1 + F_1G_0$.
+That is, we will calculate:
+\begin{align*}
+  H & = (F_0 + F_1x^{n/2})(G_0 + G_1x^{n/2})                           \\
+    & = F_0G_0 + ((F_0+F_1)(G_0+G_1)-F_0G_0-F_1G_1)x^{n/2} + F_1G_1x^n
+\end{align*}
+This means we only need to make 3 recursive calls instead of 4.
+
+Then, $T(n) = 3T(n/2) + \Theta(n) \in \Theta(n^{\lg 3})$ which is an improvement.
+
+Based on this observation, Toom--Cook created a family of algorithms
+that for $k \geq 2$ make $2k-1$ recursive calls in size $n/k$,
+i.e., $T(n) \in \Theta(n^{\log_k(2k-1)})$ which gets arbitrarily close to linear
+(but with increasingly massive constants).
+
+If $F,G \in \C[x]$, then we can use FFT to get $T(n) = 2T(n/2)+\Theta(n) \in \Theta(n\log n)$ time.
+
+\begin{problem}[matrix multiplication]
+Given $A = [a_{i,j}] \in M_{n\times n}$ and $B = [b_{j,k}] \in M_{n \times n}$,
+calculate $C = AB$.
+\end{problem}
+
+The naive algorithm takes inputs of size $\Theta(n^2)$ in $\Theta(n^3)$ time.
+
+Consider instead breaking into block matrices:
+$A = \pmqty[c|c]{A_{1,1}&A_{2,2}\\\hline A_{2,1}&A_{2,2}}$ and
+$B = \pmqty[c|c]{B_{1,1}&B_{2,2}\\\hline B_{2,1}&B_{2,2}}$.
+
+Then, $C = \begin{pmatrix}[c|c]
+    A_{1,1}B_{1,1} + A_{1,2}B_{2,1} & A_{1,1}B_{1,2} + A_{1,2}B_{2,2} \\ \hline
+    A_{2,1}B_{1,1} + A_{2,2}B_{2,1} & A_{2,1}B_{1,2} + A_{2,2}B_{2,2}
+  \end{pmatrix}$
+
+This makes 8 recursive calls of size $n/2$ and $\Theta(n^2)$ additions,
+which resolves to $\Theta(n^3)$ (no improvement).
+However, due to Strassen, we can reduce this to 7, giving $\Theta(n^{\lg 7})$ time.
+
+We can generalize to do $k$ multiplications of $\ell\times\ell$ matrices in $\Theta(n^{\log_\ell k})$ time
+and $k$ multiplications of $\ell\times m$ by $m\times p$ in $\Theta(n^{3\log_{\ell m p}k})$ time.
+
+\begin{problem}[closest pairs]
+Given $n$ distinct points $(x_i, y_i)$,
+find a pair $(i,j)$ that minimizes the distance $d_{i,j} = \sqrt{(x_i-x_j)^2+(y_i-y_j)^2}$.
+Equivalently, minimize $d^2_{i,j} = (x_i-x_j)^2+(y_i-y_j)^2$.
+\end{problem}
+
+Separate the space of points into $L$ and $R$ halfspaces based on the median $x$ value.
+The closest pair is either entirely in $L$, entirely in $R$, or transverse.
+
+We can recursively find minimum distances $\delta_L$ and $\delta_R$.
+Then, if we let $\delta = \min\{\delta_L,\delta_R\}$,
+any closer transverse points must be within $\delta$ units of the median $x$ value.
+
+Now, if we start from the bottom point $P \in L$ by $y$-value in that band,
+we only have to compare $P$ with points $Q \in R$ with $y_P \leq y_Q < y_P + \delta$.
+
+We can only have a maximum of 8 points inside the $2\delta \times \delta$
+rectangle of possible $Q$ points, because the points must be at least $\delta$ apart.
+
+Therefore, we are doing $\Theta(1)$ work for each $P$, so we do $\Theta(n)$
+work to find transverse pairs.
+
+For this to work, we must first sort the points by $x$ and by $y$ (in $O(n\log n)$ time).
+We can find the median in $O(1)$ time.
+We split the sorted points in $O(n)$ time for the two recursive calls
+and find the $\delta$ band in $O(n)$ time.
+Again, it takes $O(n)$ time to find transverse pairs.
+Therefore, $T(n) = 2T(n/2) + O(n) = O(n\log n)$.
+
+\begin{problem}[selection]
+  Given $A[0..n-1]$, find the entry that would be at index $k$ if $A$ were sorted.
+\end{problem}
+
+Recall from CS 240 that selection by sorting takes $O(n\log n)$ time
+or $O(n)$ randomized expected time using \Call{QuickSelect}{$A$, $k$}:
+
+\begin{algorithm}[H]
+  \caption{\Call{QuickSelect}{$A$, $k$}}
+  \begin{algorithmic}[1]
+    \State $p \gets \Call{ChoosePivot}{A}$
+    \State $i \gets \Call{Partition}{A, p}$ \Comment{$i$ is the correct index of $p$}
+    \If{$i = k$} \Return $A[i]$
+    \ElsIf{$i > k$} \Return \Call{QuickSelect}{$A[0:i-1]$, $k$}
+    \Else{} \Return \Call{QuickSelect}{$A[i+1:n-1]$, $k-i-1$}
+    \EndIf
+  \end{algorithmic}
+\end{algorithm}
+
+Consider splitting $A$ into $n/5$ groups $G_i$ of size 5.
+Then, find the medians $m_i$ of each group.
+We can choose the pivot $p$ as the median all the $m_i$ medians.
+
+Then, we can show that there are at least $3n/10$ elements below and above $p$,
+so we can cap the recursive calls at $7n/10$ size.
+
+Therefore, $T(n) \leq T(n/5) + T(7n/10) + O(n)$ which is in $O(n)$.

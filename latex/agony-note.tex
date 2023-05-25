@@ -28,6 +28,10 @@
 \declaretheorem[style=remark,unnumbered]{remark}
 \declaretheorem[style=remark,unnumbered]{corollary}
 
+\declaretheorem[name=Problem,
+  thmbox={L,leftmargin=1.5em,rightmargin=1.5em,nocut,bodystyle=\noindent},
+  style=definition,name=Problem,numberwithin=section,
+  refname={problem,problems},Refname={Problem,Problems}]{problem}
 \declaretheorem[style=definition,name=Example,numberwithin=section,
   refname={example,examples},Refname={Example,Examples}]{example}
 \declaretheorem[numberwithin=section,style=definition,name=Exercise,
@@ -43,3 +47,14 @@
 % For thmbox (see tex.se/41100)
 \RequirePackage{tablefootnote}
 \newcommand{\spewnotes}{\tfn@tablefootnoteprintout\global\let\tfn@tablefootnoteprintout\relax\gdef\tfn@fnt{0}}
+
+% List of lectures (marked in margin)
+\RequirePackage{multicol,xpatch}
+\RequirePackage{marginnote}
+\newlistof{lecture}{lec.toc}{Lectures}
+\xpatchcmd{\listoflecture}{\chapter*}{\section*}{}{}
+\settowidth{\cftlecturenumwidth}{Lecture~0000~}
+\newcommand{\lecture}[1]{%
+  \refstepcounter{lecture}%
+  \addcontentsline{lec.toc}{lecture}{\protect\numberline{Lecture~\thelecture}#1}%
+  \marginnote{\textit{Lecture \thelecture\\#1}}}

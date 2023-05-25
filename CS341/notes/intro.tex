@@ -1,5 +1,6 @@
 \chapter{Introduction}
-\section{(05/09)}
+\section{Asymptotic Review}
+\lecture{(05/09)}
 
 Recall from CS 240, that given a problem with instances $I$ of size $n$:
 
@@ -82,7 +83,7 @@ We similarly define the other asymptotic analysis functions.
 We could alternatively define using $n \geq n_0$ \textbf{and} $m \geq m_0$
 but they both give the same results.
 
-\section{(05/11)}
+\lecture{(05/11)}
 
 Notice that all basic operations are not equal.
 For example, multiplication may take $O(b)$ time for a $b$-bit word.
@@ -93,9 +94,11 @@ Asymptotic notation hides constants.
 Any $\Theta(n^2)$ algorithm will beat a $\Theta(n^3)$ algorithm eventually.
 A \term{galactic algorithm} is practically irrelevant because the crossing point is stupidly large.
 
-\begin{xca}
-  Given an array $A[1..n]$, find a contiguous subarray $A[i..j]$ that maximizes the sum $A[i] + \dotsb + A[j]$.
-\end{xca}
+\section{Types of Algorithms}
+
+\begin{problem}[contiguous subarrays]
+Given an array $A[1..n]$, find a contiguous subarray $A[i..j]$ that maximizes the sum $A[i] + \dotsb + A[j]$.
+\end{problem}
 
 Consider the brute-force attempt
 \begin{algorithm}[H]
@@ -192,7 +195,7 @@ which has runtime $\Theta(n)$.
 We cannot do better than this (proof beyond the scope of the course,
 but intuitively notice that we cannot find a max without knowing the entire array).
 
-\chapter{Solving Recurrences}
+\section{Recurrence Relations}
 
 Recall merge sort.
 
@@ -242,4 +245,28 @@ where each node takes $cn$ time (the last layer nodes take $d$ time).
   \[
     T(n) = d a^j + c n^y \sum_{i=0}^{j-1} \qty(\frac{a}{b^y})^i
   \]
+  \lecture{(05/16)}
+  We know that $x = \log_b a$ which gives $b^x = a$.
+  Assume $r = \frac{a}{b^y} = \frac{b^x}{b^y} = b^{x-y}$.
+  Then, we have
+  \begin{align*}
+    d a^{\log_b n} + c n^y \sum_{i=0}^{j-1}r^i
+     & = d n^{\log_b a} + c n^y \sum_{i=0}^{j-1} r^i             \\
+     & = d n^x + c n^y \begin{cases}
+                         j                                 & r = 1 \\
+                         \Theta(1)                         & r < 1 \\
+                         \frac{r^j-1}{r-1} \in \Theta(r^j) & r > 1
+                       \end{cases} \\
+     & = \begin{cases}
+           d n^x + cn^y \log_b n \in \Theta(n^y\log n) & x = y \\
+           d n^x + c'n^y         \in \Theta(n^y)       & x < y \\
+           d n^x + c''n^x        \in \Theta(n^x)       & x > y
+         \end{cases}
+  \end{align*}
+  noting that $r^j = r^{\log_b n} = n^{\log_b r} = n^{x-y}$,
+  so in the latter case $c n^y \Theta(r^j) \in \Theta(n^x)$.
 \end{prf}
+
+When $n^x$ dominates, we call it ``heavy leaves''.
+When $n^y$ dominates, we call it ``heavy top''.
+Otherwise, we call it ``balanced''.

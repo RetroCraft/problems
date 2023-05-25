@@ -1,6 +1,5 @@
 \documentclass[notes,minted,class=cs341]{agony}
-\setsectiontitle{Lecture}
-\counterwithout{section}{chapter}
+\counterwithin{algorithm}{problem}
 
 \title{CS 341 Spring 2023: Lecture Notes}
 \begin{document}
@@ -12,7 +11,22 @@ Lecture notes taken, unless otherwise specified,
 by myself during section 001 of the Spring 2023 offering of CS 350,
 taught by Armin Jamshidpey.
 
+\begin{multicols*}{2}
+  \listoflecture
+\end{multicols*}
+
 \include{notes/intro}
+\include{notes/divide}
+
+\phantomsection\addcontentsline{toc}{chapter}{Back Matter}
+
+\renewcommand{\listtheoremname}{List of Problems}
+\phantomsection\addcontentsline{toc}{section}{\listtheoremname}
+\listoftheorems[ignoreall,onlynamed={problem}]
+
+\renewcommand{\listtheoremname}{List of Named Results}
+\phantomsection\addcontentsline{toc}{section}{\listtheoremname}
+\listoftheorems[ignoreall,onlynamed={theorem,lemma,corollary}]
 
 \printindex
 

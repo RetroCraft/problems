@@ -1,7 +1,6 @@
 \chapter{Operating Systems Introduction}
 
-\section{(05/09)}
-
+\lecture{(05/09)}
 Generally, an \term{operating system} acts partially as a cop (e.g., watching for unplugged USB drives)
 and as a facilitator (e.g., allowing you to interface with any storage device with \verb|fopen|).
 It is responsible for:
@@ -60,8 +59,7 @@ and allowing them only to interact with hardware using system calls.
 A monolithic kernel is faster, since we avoid slower system calls.
 However, they are less secure since third-party drivers must be trusted and included in the kernel.
 
-\section{(05/11)}
-
+\lecture{(05/11)}
 Provided by the execution environment are abstract entities
 that a program is able to manipulate:
 \begin{itemize}[nosep]
@@ -133,4 +131,53 @@ In CS 241, we called all the registers $\$0,\dotsc,\$31$.
 In real life, they have names like a0 and s8.
 
 CS 241 passed all arguments via the stack.
-We will pass the first three as a0, a1, a2 and the rest on the stack.
+We will pass the first four as a0 to a3 and the rest on the stack.
+
+\lecture{(05/16)}
+Recall: functions push arguments (not a0-a3),
+return address, local variables, and temporary-use registers onto the stack.
+
+With multiple threads, we need multiple stacks.
+When swapping threads, save the value of registers to the stack
+and then load from the other stack.
+
+The threads share the same code, global read-only data, global data, and heap.
+They have their own stacks and program counters.
+Since we might have lots of threads, each stack has a fixed size (e.g. 2 MB).
+
+We can \term{multithread} a core by having multiple sets of registers
+but share an ALU, control unit, etc. by using the hardware when waiting for LW and SW instructions.
+Therefore, given $P$ processors, each with $C$ cores and $M$ multithreads per core (almost always 2),
+we can execute $PCM$ threads (truly) simultaneously.
+
+\begin{defn}[timeshare]
+  Switching rapidly from one thread to another.
+  During a \term{context switch}, we schedule which thread runs next,
+  save the register contents of the current thread, 
+  and load the register contents of the next thread.
+  The saved/restored contents are also called the \term{thread context}.
+\end{defn}
+
+The C function \mintinline{c}{thread_switch} saves and restores caller-save registers,
+and calls the assembly language subroutine \mintinline{asm}{switchframe_switch}
+which saves and restores callee-save registers.
+
+\lecture{(05/18)}
+There are four ways a context switch can be triggered:
+\begin{enumerate}[1.,nosep]
+  \item voluntarily, via \mintinline{c}{thread_switch};
+  \item by termination, via \mintinline{c}{thread_exit};
+  \item when a thread is blocked, via \mintinline{c}{wchan_sleep};\footnote{where \texttt{wchan} stands for ``wait channel''} or
+  \item by \term{preemption}, when the thread schedule involuntarily stops it.
+\end{enumerate}
+
+A thread can be either:
+\begin{itemize}[nosep]
+  \item \term[thread!running]{running}, currently executing on the processor;
+  \item \term[thread!ready]{ready}, waiting in a ready pool; or
+  \item \term[thread!blocked]{blocked}, waiting for something to happen and not ready to execute
+\end{itemize}
+Running to blocked via \mintinline{c}{wchan_sleep},
+blocked to ready via \mintinline{c}{wake_one} or \mintinline{c}{wake_all},
+and ready to running via \mintinline{c}{dispatch}.
+A running thread can become ready by preemption or via \mintinline{c}{thread_yield}.
