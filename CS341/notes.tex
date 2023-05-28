@@ -1,4 +1,7 @@
-\documentclass[notes,minted,class=cs341]{agony}
+\documentclass[notes,tikz,minted,class=cs341]{agony}
+\graphicspath{{figures/}}
+\usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes,matrix}
+\usegdlibrary{circular,force,trees,layered}
 \counterwithin{algorithm}{problem}
 
 \title{CS 341 Spring 2023: Lecture Notes}
@@ -15,8 +18,9 @@ taught by Armin Jamshidpey.
   \listoflecture
 \end{multicols*}
 
-\include{notes/intro}
-\include{notes/divide}
+\include{notes/01intro}
+\include{notes/02divide}
+\include{notes/03bfs}
 
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
 

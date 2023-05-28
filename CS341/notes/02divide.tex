@@ -11,6 +11,8 @@ This is possible when:
   \item combining solutions is not costly; and
   \item subproblems are not overly unbalanced
 \end{itemize}
+
+\section{Examples}
 \begin{problem}[counting inversions]
 Given an unsorted array $A[1..n]$, find the number of \term[inversion]{inversions} in it,
 i.e., pairs $(i,j)$ such that $A[i] > A[j]$.
@@ -45,19 +47,21 @@ We can instead modify \Call{MergeSort}{} and find $c_t$ using a modified \Call{M
     \State \textcolor{Green}{copy $A$ into a new array $S$; $c = 0$}
     \State $i \gets 1$; $j \gets n/2+1$
     \For{$k \gets 1,\dotsc,n$}
-    \If{$i > n/2$} $A[k] \gets S[j++]$
+    \If{$i > n/2$} $A[k] \gets S[j\pp]$
     \ElsIf{$j > n$}
-    \State $A[k] \gets S[i++]$
+    \State $A[k] \gets S[i\pp]$
     \State \textcolor{Green}{$c \gets c + \frac{n}{2}$}
     \ElsIf{$S[i] < S[j]$}
-    \State $A[k] \gets S[i++]$
+    \State $A[k] \gets S[i\pp]$
     \State \textcolor{Green}{$c \gets c + j - (\frac{n}{2}+1)$}
-    \Else{} $A[k] \gets S[j++]$
+    \Else{} $A[k] \gets S[j\pp]$
     \EndIf
     \EndFor
   \end{algorithmic}
 \end{algorithm}
-which will run in $\Theta(n\log n)$ time because the modified \Call{Merge}{} is still $\Theta(n)$.
+Here, every time we merge in an element from the left,
+we add to $c$ the number of elements on the right which are greater than it.
+This will run in $\Theta(n\log n)$ time because the modified \Call{Merge}{} is still $\Theta(n)$.
 
 \begin{problem}[polynomial multiplication]
 Given $F = f_0 + \dotsb + f_{n-1}x^{n-1}$
@@ -151,7 +155,7 @@ Again, it takes $O(n)$ time to find transverse pairs.
 Therefore, $T(n) = 2T(n/2) + O(n) = O(n\log n)$.
 
 \begin{problem}[selection]
-  Given $A[0..n-1]$, find the entry that would be at index $k$ if $A$ were sorted.
+Given $A[0..n-1]$, find the entry that would be at index $k$ if $A$ were sorted.
 \end{problem}
 
 Recall from CS 240 that selection by sorting takes $O(n\log n)$ time
@@ -163,17 +167,84 @@ or $O(n)$ randomized expected time using \Call{QuickSelect}{$A$, $k$}:
     \State $p \gets \Call{ChoosePivot}{A}$
     \State $i \gets \Call{Partition}{A, p}$ \Comment{$i$ is the correct index of $p$}
     \If{$i = k$} \Return $A[i]$
-    \ElsIf{$i > k$} \Return \Call{QuickSelect}{$A[0:i-1]$, $k$}
-    \Else{} \Return \Call{QuickSelect}{$A[i+1:n-1]$, $k-i-1$}
+    \ElsIf{$i > k$} \Return \Call{QuickSelect}{$A[0..i-1]$, $k$}
+    \Else{} \Return \Call{QuickSelect}{$A[i+1..n-1]$, $k-i-1$}
     \EndIf
   \end{algorithmic}
 \end{algorithm}
 
-Consider splitting $A$ into $n/5$ groups $G_i$ of size 5.
+Consider splitting $A$ into groups $G_i$ of size 5.
 Then, find the medians $m_i$ of each group.
-We can choose the pivot $p$ as the median all the $m_i$ medians.
+We can choose the pivot $p$ as the median of medians:
+\begin{center}
+  \begin{tikzpicture}
+    \newcommand{\Geq}{\rotatebox{270}{$\geq$}}
+    \matrix(M)[matrix of math nodes]{
+           &      &      &      &        &      & n/2  &      &        &      &           &      & n       \\
+      *    &      & *    &      & \dotsb &      & *    &      & \dotsb &      & *         &      & *       \\
+      \Geq &      & \Geq &      & \Geq   &      & \Geq &      & \Geq   &      & \Geq      &      & \Geq    \\
+      *    &      & *    &      & \dotsb &      & *    &      & \dotsb &      & *         &      & *       \\
+      \Geq &      & \Geq &      & \Geq   &      & \Geq &      & \Geq   &      & \Geq      &      & \Geq    \\
+      m_1  & \geq & m_2  & \geq & \dotsb & \geq & p    & \geq & \dotsb & \geq & m_{n/5-1} & \geq & m_{n/5} \\
+      \Geq &      & \Geq &      & \Geq   &      & \Geq &      & \Geq   &      & \Geq      &      & \Geq    \\
+      *    &      & *    &      & \dotsb &      & *    &      & \dotsb &      & *         &      & *       \\
+      \Geq &      & \Geq &      & \Geq   &      & \Geq &      & \Geq   &      & \Geq      &      & \Geq    \\
+      *    &      & *    &      & \dotsb &      & *    &      & \dotsb &      & *         &      & *       \\
+    };
+    \draw[red,ultra thick,rounded corners] (M-2-1.north west) -- (M-2-7.north east) -- (M-5-7.south east) -- (M-5-7.south west) -- (M-6-6.north east) -- (M-6-6.south east) -- (M-6-1.south west) -- cycle;
+    \draw[Green,ultra thick,rounded corners] (M-10-13.south east) -- (M-10-7.south west) -- (M-7-7.north west) -- (M-7-7.north east) -- (M-6-8.south west) -- (M-6-8.north west) -- (M-6-13.north east) -- cycle;
+  \end{tikzpicture}
+\end{center}
+Then, we are guaranteed to have $3n/10$ elements
+\textcolor{Red}{above} and \textcolor{Green}{below} $p = A[i]$,
+so the recursive calls to $A[0..i-1]$ and $A[i+1 .. n-1]$ have size at most $7n/10$
+(with equality when $i$ is exactly $3n/10$ or $7n/10$).
 
-Then, we can show that there are at least $3n/10$ elements below and above $p$,
-so we can cap the recursive calls at $7n/10$ size.
+Therefore, $T(n) \leq T(n/5) + T(7n/10) + O(n)$.
 
-Therefore, $T(n) \leq T(n/5) + T(7n/10) + O(n)$ which is in $O(n)$.
+\lecture{(05/25)}
+
+\begin{claim}
+  $T(n/5) + T(7n/10) + O(n) \in O(n)$
+\end{claim}
+\begin{prf}
+  Proceed by induction. Note that $T(n) \leq \begin{cases}
+      O(1)                                       & n < 120    \\
+      T(\frac{n}{5}) + T(\frac{7}{10}n+6) + O(n) & n \geq 120
+    \end{cases}$
+
+  We will show that $T(n) \leq cn$ for large enough $c$ and all $n > 0$.
+  We know that there exists a sufficiently large $c$ such that
+  $T(n) \leq cn$ for $n < 120$ because $T(n)$ is just $O(1) \subsetneq O(n)$.
+
+  Choose a constant $a$ to write $O(n)$ as $an$.
+
+  Suppose $T(m) \in O(m)$ for all $0 < m < n$. Then,
+  \begin{align*}
+    T(n) & \leq \frac{cn}{5} + c\qty(\frac{7n}{10} + 6) + an \\
+         & \leq c\frac{n}{5} + c\frac{7n}{10} + 6c + an      \\
+         & = 9c\frac{n}{10} + 6c + an                        \\
+         & = cn + \qty(-c\frac{n}{10} + 6c + an)
+  \end{align*}
+  We can show that the latter term is non-positive:
+  \begin{align*}
+    -c\frac{n}{10} + 6c + an \leq 0
+     & \iff c\qty(6-\frac{n}{10}) + an \leq 0 \\
+     & \iff c\qty(6-\frac{n}{10}) \leq -an    \\
+     & \iff c\qty(\frac{n}{10}-6) \geq an     \\
+     & \iff c \geq 10a\frac{n}{n-60}
+  \end{align*}
+  Now, if $\frac{n}{n-60} \leq 2$, i.e., $n \geq 120$,
+  then we can say that $c \geq 20a$.
+
+  Therefore, we can say that $T(n) \leq cn$, i.e., $T(n) \in O(n)$.
+\end{prf}
+
+\begin{example}
+  What does $T(n) = T(\frac23n) + T(\frac{n}{3}) + n$ resolve to?
+\end{example}
+\begin{sol}
+  Notice that if we draw a tree, each layer sums to $n$
+  (this makes sense inductively since we pass $\frac23$ of $n$ to the left and $\frac13$ of $n$ to the right).
+  There will be $O(\log_{3/2}n)$ layers in the tree, so it should resolve to $O(n\log n)$.
+\end{sol}

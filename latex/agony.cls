@@ -79,7 +79,7 @@
 
 % Figures
 \ifagony@tikz
-  \RequirePackage{tikz,pgfplots}
+  \RequirePackage{tikz,pgfplots,transparent}
   \pgfplotsset{compat=1.15}
   \usepgfplotslibrary{fillbetween}
   \usetikzlibrary{patterns,positioning,shapes,calc,chains}
