@@ -39,6 +39,15 @@
   \usepackage[T1]{fontenc}
   \usepackage{lmodern}
 \fi
+\usepackage{contour}
+\usepackage[normalem]{ulem}
+\renewcommand{\ULdepth}{1.8pt}
+\contourlength{0.8pt}
+\newcommand{\myuline}[1]{%
+  \uline{\phantom{#1}}%
+  \llap{\contour{white}{#1}}%
+}
+\NewDocumentCommand\term{sO{#3}m}{\myuline{#3}\IfBooleanF#1{\index{#2}}}
 
 % Formatting
 \usepackage[titles]{tocloft}
