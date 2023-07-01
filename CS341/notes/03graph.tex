@@ -351,7 +351,7 @@ The runtime is still $O(n+m)$.
   Equivalent statement of the \ref{lem:dfs:key-prop}.
 \end{prf}
 
-We can extend BFS with $\vv{start}$ and $\vv{finish}$ arrays:
+We can extend DFS with $\vv{start}$ and $\vv{finish}$ arrays:
 
 \begin{algorithm}[H]
   \caption{\Call{DFS}{$G$} with timing}
@@ -368,7 +368,7 @@ We can extend BFS with $\vv{start}$ and $\vv{finish}$ arrays:
     \State \Call{explore}{$v$}
     \EndIf
     \EndFor
-    \State \textcolor{Green}{$\vv{start}[v] \gets t$; $t\pp$}
+    \State \textcolor{Green}{$\vv{finish}[v] \gets t$; $t\pp$}
     \EndProcedure
     \For{$v \in G$}
     \If{$\vv{visited}[v] = \bot$}
@@ -394,7 +394,7 @@ Notice that the intervals shrink with depth and follow a structure
 similar to the well-formed parenthesis problem.
 We can in fact prove:
 
-\begin{lemma}[parentheses theorem]
+\begin{lemma}[parentheses theorem]\label{lem:dfs:paren}
   If $\vv{start}[u] < \vv{start}[v]$, then either $\vv{finish}[u] < \vv{start}[v]$
   or $\vv{finish}[u] < \vv{finish}[v]$.
 \end{lemma}
@@ -577,4 +577,87 @@ Paths and cycles have the ordinary meaning.
   so this algorithm runs in $O(n+m)$ time.
 \end{sol}
 
-Notice that any directed graph is a DAG of its strongly connected components.
+\begin{prop}
+  Contracting the strongly connected components of a directed graph
+  forms a DAG.
+\end{prop}
+\begin{prf}
+  Suppose not. Then there exists a cycle of strongly connected components.
+  However, this means that any vertex from any of these can be reached from any other.
+  Therefore, the strongly connected component is not maximal.
+\end{prf}
+
+\lecture{(06/13)}
+\begin{problem}
+  What are the strongly connected components and their respective DAG?
+\end{problem}
+\begin{algorithm}
+  \caption{Kosaraju's algorithm for strongly connected components}
+  \begin{algorithmic}[1]
+    \Procedure{SCC}{$G$}
+    \State run \Call{DFS}{$G$} augmented with finish times
+    \State sort the vertices by decreasing finish time
+    \State run \Call{DFS}{$G\trans$}
+    \State \Return{the trees in the DFS forest of $G\trans$}
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+This has time complexity $O(n+m)$.
+
+\begin{prop}
+  For any vertices $v$ and $w$, \Tfae:
+  $v$ and $w$ are in the same SCC; and
+  $v$ and $w$ are in the same DFS tree of $G\trans$ (sorted by decreasing finish time).
+\end{prop}
+\begin{prf}
+  Suppose $v, w \in C \in SCC(G)$ and let $s$ be the first vertex visited in $C$.
+  Then, $s \leadsto v$ within $C$ and the path is white when visiting $s$ by supposition.
+  By the \nameref{lem:dfs:white-path}, $v$ will be in the DFS tree.
+  Likewise for $w$.
+
+  Suppose $v$ and $w$ are in a DFS tree $T$ for $G\trans$ rooted at $s$.
+  That is, among the vertices in $T$, $s$ has the highest finish time.
+  Let $t \in T$.
+  As a descendent, $s \leadsto_{G\trans} t$, so $t \leadsto_G s$.
+
+  Claim that $t$ descends from $s$ in $G$, so we get a path $s \leadsto_G t$.
+
+  Proceed by structural induction on $t$ and its children.
+  Let $u$ be a child of $t$ in $T$.
+  Suppose $\vv{start}[s] \leq \vv{start}[t] < \vv{finish}[t] \leq \vv{finish}[s]$.
+  Since $\vv{finish}[u] < \vv{finish}[s]$, we have by the \nameref{lem:dfs:paren}
+  that either $[s\ (u)]$ or $(u)\ [s]$.
+  But the second option is impossible because if $tu \in E(T) \subseteq E(G\trans)$,
+  then $ut \in E(G)$, which means that $u \leadsto t$ and by the \nameref{lem:dfs:white-path},
+  $t$ should be a descendant of $u$, not $s$.
+  Therefore, $u$ is a descendant of $s$, as desired.
+
+  Finally, because $s \leadsto_G t$ and $t \leadsto_G s$,
+  $t$ is in the strongly connected component of $s$.
+\end{prf}
+
+\begin{problem}
+  Does a graph $G$ contain a Hamiltonian path (i.e., a path $P$ with $P(V) = V$)?
+\end{problem}
+
+For an undirected graph $G$, this is one of the canonical NP-complete problems.
+
+For a DAG $G$, we can do this in linear time with a topological ordering.
+
+\begin{prop}
+  A DAG $G$ has a Hamiltonian path if and only if it has a topological ordering
+  $v_1 < \dotsb < v_k$ such that $v_iv_{i+1} \in E(G)$ for all $i$.
+\end{prop}
+\begin{prf}
+  Let $G$ have a Hamiltonian path $P = v_1\dotsb v_k$.
+  Define an ordering $v_1 < \dotsb < v_k$.
+  Suppose $v_i v_j \in E(G)$.
+  If $i > j$, then $v_i v_j v_{j+1} \dotsb v_i$ is a cycle.
+  However, $G$ is a DAG, so we must have $i < j$.
+  Therefore, $<$ is a topological ordering as desired.
+
+  Suppose $G$ has a topological ordering $v_1 < \dotsb < v_k$
+  with $v_iv_{i+1} \in E(G)$ for all $i$.
+  Then, we immediately get a Hamiltonian path given by $v_1 \dotsb v_k$.
+\end{prf}

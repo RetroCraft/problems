@@ -1,0 +1,92 @@
+\chapter{Greedy Algorithms}
+
+\section{Introduction}
+\lecture{(06/15)}
+
+Suppose we are solving a \term{combinatorial optimization} problem,
+i.e., a problem with a large (but finite) domain $\mathcal D$
+such that we are trying to find an optimal solution $E \in \mathcal D$
+that maximizes/minimizes some sort of cost function.
+
+We will build $E$ step-by-step by taking the locally best solution.
+Usually, it is very hard to prove correctness/optimality
+but easy to find a counterexample.
+
+For example, recall the Huffman encoding from CS 240.
+We build the binary code tree by joining trees with the least frequencies.
+This actually minimizes the length of the encoding.
+
+\section{Interval Scheduling}
+
+\begin{problem}
+  Suppose we have $n$ intervals $[s_i, f_i]$.
+  What is the subset of disjoint intervals with maximum length?
+\end{problem}
+
+We can show that a few naive greedy algorithms are wrong by drawing counterexamples:
+\begin{itemize}
+  \item Choose $\min_i s_i$: \tikz[yscale=0.25]{\draw (1,1) -- (10,1); \draw (2,2) -- (3,2); \draw (4,2) -- (5,2); \draw (6,2) -- (7,2); \draw (8,2)--(9,2);}
+  \item Choose $\min_i\{f_i - s_i\}$: \tikz[yscale=0.25]{\draw (1,1) -- (4,1); \draw (3.5,2) -- (5.5,2); \draw (5,1) -- (8,1);}
+  \item Choose minimum conflicts:
+        \begin{tikzpicture}[yscale=-0.25]
+          \draw (2.75,1) -- (4.25,1); \draw (2.75,0) -- (4.25,0); \draw (2.75,-1) -- (4.25,-1);
+          \draw (6.75,1) -- (8.25,1); \draw (6.75,0) -- (8.25,0); \draw (6.75,-1) -- (8.25,-1);
+          \draw (4.75,1) -- (6.25,1);
+          \draw (2,2) -- (3,2); \draw (4,2) -- (5,2); \draw (6,2) -- (7,2); \draw (8,2)--(9,2);
+        \end{tikzpicture}
+\end{itemize}
+
+However, we can prove that the greedy algorithm taking the earliest finish time is optimal.
+
+\begin{algorithm}[H]
+  \caption{\Call{IntervalScheduling}{$I = [[s_1,f_1],\dotsc,[s_n,f_n]]$}}
+  \begin{algorithmic}[1]
+    \State $S \gets \varnothing$
+    \State $I \gets$ sort $I$ by finish time
+    \For{$[s_i,f_i] \in I$}
+    \If{$[s_i,f_i]$ has no conflicts in $S$}
+    \State $S \gets S \cup \{[s_i,f_i]\}$
+    \EndIf
+    \EndFor
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{prf}
+  Suppose $O$ is optimal. We must show $\abs{S} = \abs{O}$.
+
+  Let $i_1,\dotsc,i_k$ be the intervals in $S$ ordered by their addition
+  and likewise $j_1,\dotsc,j_m$ be the intervals in $O$ ordered by increasing finish time.
+
+  We prove the claim that for all $r \leq k$, $f_{i_r} \leq f_{j_r}$.
+  Proceed by induction on $r$.
+
+  For $r=1$ this is true since $i_1$ is the interval with the earliest finish time.
+
+  Suppose $r > 1$ and it is true for $r-1$.
+  Then, $f_{i_{r-1}} \leq f_{j_{r-1}}$ by assumption and $f_{j_{r-1}} < s_{j_r}$
+  by the order we set on $O$.
+  Therefore, $f_{i_{r-1}} < s_{j_r}$.
+
+  That is, at the time the greedy algorithm chose $i_{r-1}$, $j_r$ was an option.
+  Since the greedy algorithm picks the earliest finish time, $f_{i_r} \leq f_{j_r}$.
+
+  Now, suppose for a contradiction that $S$ is not optimal, i.e., $\abs{S} < \abs{O}$.
+  Then, there must be a $j_{k+1}$.
+  But by the above claim, $f_{i_k} \leq f_{j_k} < s_{j_{k+1}}$.
+  This means $j_{k+1}$ was an option for the greedy algorithm,
+  so it would not have stopped at $i_k$ and instead added $j_{k+1}$.
+
+  Therefore, $S$ must be optimal.
+\end{prf}
+
+We call proofs of this kind, i.e., contradicting that greedy could not have
+chosen an optimal solution, \term{greedy stays ahead}.
+
+\section{Interval Colouring}\lecture{(06/20)}
+\begin{problem}
+  Suppose we have $n$ intervals $[s_i, f_i]$.
+  Use the minimum number of colours to colour the intervals,
+  so that each interval gets one colour
+  and any overlapping intervals get different colours.
+\end{problem}
+
