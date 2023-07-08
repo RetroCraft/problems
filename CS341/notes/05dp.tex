@@ -1,0 +1,286 @@
+\chapter{Dynamic Programming}
+\section{Introduction}
+\lecture{(07/04)}
+
+Recall the \term{Fibonacci numbers} $F_n$ defined by
+$F_0 = 0$, $F_1 = 1$, $F_n = F_{n-1} + F_{n-2}$ with the naive algorithm
+\begin{algorithm}[H]
+  \caption{\Call{Fib}{$n$}}
+  \begin{algorithmic}[1]
+    \If{$n=0$} \Return{0}
+    \ElsIf{$n=1$} \Return{1}
+    \Else \Return{$\Call{Fib}{n-1} + \Call{Fib}{n-2}$}
+    \EndIf
+  \end{algorithmic}
+\end{algorithm}
+Assuming we count additions as unit cost,
+the runtime is $T(n) = F_{n+1} + 1 \in \Theta(\varphi^n)$ which is bad.
+
+Notice that we are recomputing small $F_n$ a bunch of times,
+but we actually only need each one once.
+We can instead cache:
+\begin{algorithm}[H]
+  \caption{\Call{FibCached}{$n$}}
+  \begin{algorithmic}[1]
+    \Require $T \gets [0,1,\bot,\dotsc,\bot]$ global array of size $n$
+    \If{$T[n] = \bot$} \State $T[n] \gets \Call{FibCached}{n-1} + \Call{FibCached}{n-2}$ \EndIf
+    \State \Return{$T[n]$}
+  \end{algorithmic}
+\end{algorithm}
+Also, notice that the dependency graph of which subproblems require each other is a DAG.
+Therefore, we can take an order on the dependencies and iterate:
+\begin{algorithm}
+  \caption{\Call{FibIterative}{$n$}}
+  \begin{algorithmic}[1]
+    \State $T \gets [0,1,\bot,\dotsc,\bot]$ 0-indexed array of size $n$
+    \For{$i = 2,\dotsc,n$}
+    \State $T[i] \gets T[i-1] + T[i-2]$
+    \EndFor
+    \State \Return{$T[n]$}
+  \end{algorithmic}
+\end{algorithm}
+This is our dynamic programming algorithm.
+In fact, we can optimize even more by noticing that we can discard
+all but the last two elements of the array,
+giving a constant-space algorithm:
+\begin{algorithm}[H]
+  \caption{\Call{FibOptimal}{$n$}}
+  \begin{algorithmic}[1]
+    \State $(u,v) \gets (0,1)$
+    \For{$i = 2,\dotsc,n$}
+    \State $(u,v) \gets (v,u+v)$
+    \EndFor
+    \Return{$v$}
+  \end{algorithmic}
+\end{algorithm}
+All these improved algorithms run in $O(n)$ time, a significant improvement.
+
+We can give a general recipe for dynamic programming algorithms:
+\begin{enumerate}[1.]
+  \item \textbf{Identify the subproblem:}
+        We are retaining solutions in an array.
+        What are the dimensions of the array?
+        What does each entry represent?
+        Where will the final answer be in the array?
+  \item \textbf{Establish DP-recurrence:}
+        How does a subproblem contribute to a larger subproblem?
+        What is the dependency between cells in the array?
+  \item \textbf{Set base cases:}
+        Initialize the array with some non-recursively defined base cases.
+  \item \textbf{Specify the order of computation:}
+        Clarify the DAG of subproblem dependencies.
+        How does the algorithm maintain this order?
+  \item \textbf{Recover the solution (if needed):}
+        What subproblem answers provide the problem solution?
+        How, if necessary, do we traceback the solution from the subproblems?
+\end{enumerate}
+
+We can often convert a DP algorithm into iterative loop(s).
+Distinguish divide and conquer algorithms which do not always solve subproblems
+and are not easily rewritten iteratively.
+
+\section{Interval Scheduling}
+
+\begin{problem}[weighted interval scheduling]
+  Recall \Cref{prob:g:intsched}.
+  Now, add a weight $w_i$ to each interval.
+  We choose a subset $T \subseteq [n]$ which maximizes $W = \sum_{i \in T} w_i$.
+\end{problem}
+
+\begin{example}
+  Let $I = [[2,8], [2,4], [5,6], [7,9]]$ with weights $[6,2,1,2]$.
+\end{example}
+\begin{sol}
+  By inspection, since the weight $w_1 = 6 > 5 = w_2 + w_3 + w_4$,
+  the solution is $T = [1]$ with $W = 6$.
+\end{sol}
+
+Notice that we can split on whether we accept the last interval $I_n$
+and write for example that the optimal weight
+\[
+  W(I_1,\dotsc,I_n) = \begin{cases*}
+    w_n + W(I_{m_1},\dotsc,I_{m_s}) & if we choose $I_n$ \\
+    W(I_1,\dotsc,I_{n-1})           & if we do not
+  \end{cases*}
+\]
+where $I_{m_1},\dotsc,I_{m_s}$ are the $s < n$ intervals not intersecting $I_n$.
+
+Suppose we sort the intervals by finish time, i.e., $f_i \leq f_{i+1}$ for all $i$.
+Then, we have $m_1,\dotsc,m_s = 1,\dotsc,j$ where $j = \max\{ i : f_i < s_n \}$
+because $I_n$ is the last interval with the latest finish time,
+so we only need to compare its start time with earlier intervals' finish times.
+(If $j$ does not exist just return $w_n + 0$.)
+
+We need to calculate the $j$-values for every $i$:
+\begin{algorithm}[H]
+  \caption{\Call{FindJs}{$A,s_1,\dotsc,s_n,f_1,\dotsc,f_n$}}
+  \begin{algorithmic}[1]
+    \State $j \gets$ array of size $n$
+    \State $f_0 \gets \infty$
+    \State $i \gets 1$
+    \For{$k=0,\dotsc,n$}
+    \While{$i \leq n$ and $f_k \leq s_{A[i]} < f_{k+1}$}
+    \State $j[i] \gets k$
+    \State $i\pp$
+    \EndWhile
+    \EndFor
+    \State \Return{$j$}
+  \end{algorithmic}
+\end{algorithm}
+where $A$ is a sorting permutation such that $(s_{A[i]})$ is non-decreasing.
+This runs in $O(n\log n) + O(n) = O(n\log n)$ time.
+
+Now, for the main procedure, we define $W[i]$ as the maximal weight
+possible with the intervals $I_1,\dotsc,I_i$.
+
+Then, for $W[0] = 0$ and $i \geq 1$, $W[i] = \max\{W[i-1], w_i + W[j[i]]\}$.
+
+Since $W[i]$ depends only on entries in $W$ before it,
+we can just iterate on $i = 1,\dotsc,n$ in $O(n)$ time.
+
+\begin{algorithm}[H]
+  \caption{\Call{IntervalScheduling}{$s_1,\dotsc,s_n,f_1,\dotsc,f_n,w_1,\dotsc,w_n$}}
+  \begin{algorithmic}[1]
+    \Require intervals are sorted by finish time
+    \State $A \gets$ sorting permutation of $s_1,\dotsc,s_n$
+    \State $j \gets \Call{FindJs}{A,s_1,\dotsc,s_n,f_1,\dotsc,f_n}$
+    \State $W \gets$ 0-indexed array of size $n$
+    \State $W[0] \gets 0$
+    \For{$i = 1,\dotsc,n$}
+    \State $W[i] \gets \max\{W[i-1], w_i + W[j[i]]\}$
+    \EndFor
+    \State \Return{$W[n]$}
+  \end{algorithmic}
+\end{algorithm}
+
+This gives a total time for the algorithm of $O(n\log n) + O(n) = O(n\log n)$.
+
+\section{Knapsack Problem}
+
+\begin{problem}[0/1 knapsack]\label{prob:dp:k}
+  Suppose we have items with weights $w_1,\dotsc,w_n$
+  and values $v_1,\dotsc,v_n$ but our knapsack has capacity $W$.
+  We want to select items $S \subseteq \{1,\dotsc,n\}$
+  satisfying $\sum_{i \in S} w_i \leq W$
+  and maximizes $\sum_{i \in S} v_i$.
+\end{problem}
+
+\begin{example}
+  $\vb w = [3,4,6,5]$, $\vb v = [2,3,1,5]$, $W = 8$.
+\end{example}
+\begin{sol}
+  The optimal $S = \{1,4\}$ with weight $3+5 = 8$ and value $2+5 = 7$.
+\end{sol}
+
+\lecture{(07/06)}
+For each item $n$, we can either choose it or we can not.
+Let $O[W,n]$ be best value for a knapsack of capacity $W$
+and considering only the items $1,\dotsc,n$.
+Then, $O[W,n]$ is either $v_n + O[W - w_n, n - 1]$ or $O[W, n - 1]$.
+
+We can initialize $O[0, i] = 0$ for all $i$ and $O[w, 0] = 0$ for all $w$.
+To be able to calculate $O[W,n]$, we must have already calculated
+$O[W - w_n .. W, n-1]$.
+In particular, if we iterate on $n$ first, we can guarantee that
+the entire row $O[,n-1]$ exists before considering $O[W,n]$:
+
+\begin{algorithm}[H]
+  \caption{\Call{01KnapSack}{$v_1,\dotsc,v_n,w_1,\dotsc,w_n,W$}}
+  \begin{algorithmic}[1]
+    \State $O \gets$ 0-indexed array of size $(n+1) \times (W+1)$
+    \State $O[0,] \gets \vb{0}$; $O[,0] \gets \vb{0}\trans$
+    \For{$i = 1,\dotsc,n$}
+    \For{$w = 1,\dotsc,W$}
+    \If{$w_i > w$}
+    \State $O[w,i] \gets O[w,i-1]$
+    \Else
+    \State $O[w,i] \gets \max\{v_n + O[W - w_n, n - 1], O[W, n - 1]\}$
+    \EndIf\EndFor\EndFor
+    \State \Return{$O[W,n]$}
+  \end{algorithmic}
+\end{algorithm}
+
+The runtime here is obviously $\Theta(nW)$.
+We call this \term{pseudo-polynomial} because it is polynomial in
+$n$ (the size of the input) but also in $W$ (the \emph{value} of an input).
+It is not polynomial because the size parameters are $n$ and $\lg W$,
+but we have $n2^{\lg W}$.
+
+\section{Subsequence Problems}
+
+\begin{problem}[longest increasing subsequence]
+  Find the longest (potentially discontinuous)
+  increasing subsequence of an array $A[1..n]$ of integers.
+\end{problem}
+\begin{example}
+  Given $A = [7,1,3,10,11,5,19]$, the longest increasing subsequence is
+  $[1,3,10,11,19]$.
+\end{example}
+
+Notice that there are $\Theta(2^n)$ subsequences, so brute force is very bad here.
+
+Suppose we try doing DP and storing $\ell[i]$ as the longest increasing subsequence of $A[1..i]$.
+This doesn't work, since we can't immediately deduce $\ell[i+1]$ from just $\ell[i]$ and $A$.
+
+We could instead store into $L[i]$ a pair of the length and the last entry $(\ell, c)$.
+Then, we can add on the next element $L[i] \gets (\ell + 1, A[i])$,
+but what is $L[i]$ if we do not select $A[i]$?
+
+Alternatively, let $L[i]$ be the length of the longest increasing subsequence
+of $A[1..i]$ that ends with $A[i]$. Then, $L[1] = 1$.
+The longest increasing subsequence $S_i$ ending at $A[i]$
+either looks like $[\dotsc,A[j],A[i]] = [\dots S_j, A[i]]$ for some $j$
+or just $[A[i]]$.
+
+\begin{algorithm}[H]
+  \caption{\Call{LongestIncreasingSubsequence}{$A[1..n]$}}
+  \begin{algorithmic}[1]
+    \State $L \gets$ array of size $n$
+    \State $L[1] \gets 1$
+    \For{$i = 2,\dotsc,n$}
+    \State $L[i] \gets 1$ \Comment{$S_i = [A[i]]$}
+    \For{$j = 1,\dotsc,i-1$} \Comment{$S_i = [\dots S_j, A[i]]$}
+    \If{$A[j] < A[i]$} 
+    \State $L[i] \gets \max\{L[i], L[j] + 1\}$
+    \EndIf
+    \EndFor
+    \EndFor
+    \State \Return{$\max L$}
+  \end{algorithmic}
+\end{algorithm}
+
+This algorithm runs in $\Theta(n^2)$ time which is much faster than $\Theta(2^n)$.
+Note that we don't return the actual sequence here, only its length,
+but it is trivial to find the sequence from the array $L$.
+
+\begin{problem}[longest common subsequence]
+  Given two arrays of characters (strings) $A[1..n]$ and $B[1..m]$,
+  find the maximum length of a (potentially discontinuous) subsequence
+  common to both $A$ and $B$.
+\end{problem}
+\begin{example}
+  For $A = \vv{blurry}$ and $B = \vv{burger}$, we should return $\vv{burr}$ for $k=4$.
+\end{example}
+
+As with \Cref{prob:dp:k}, we have to work in a 2D problem space.
+Let $M[i,j]$ be the longest subsequence length between $A[1..i]$ and $B[1..j]$.
+Zero out $M[0,]$ and $M[,0]$.
+Then, $M[i,j]$ will be the greatest of either 
+(1) ignoring $B[j]$, (2) ignoring $A[i]$, or (3) adding $A[i] = B[j]$:
+
+\begin{algorithm}
+  \caption{\Call{LongestCommonSubsequence}{$A[1..n],B[1..m]$}}
+  \begin{algorithmic}[1]
+    \State $M \gets$ 0-indexed array of size $n+1 \times m+1$
+    \State $M[0,] \gets \vb{0}$; $M[,0] \gets \vb{0}\trans$
+    \For{$i = 1,\dotsc,n$}\For{$j = 1,\dotsc,m$}
+    \State $M[i,j] \gets \max\{M[i,j-1], M[i-1,j]\}$
+    \If{$A[i] = B[j]$} \State $M[i,j] \gets \max\{M[i,j], 1 + M[i-1,j-1]\}$ \EndIf
+    \EndFor\EndFor
+    \State \Return{$M[n,m]$}
+  \end{algorithmic}
+\end{algorithm}
+
+Notice that because we iterate by $i$ first, $M[i-1,0..m]$ will have values.
+Also, since we are iterating by increasing $j$, $M[i,1..j-1]$ will be calculated.
+Therefore, this algorithm works and runs in $\Theta(nm)$ time.
