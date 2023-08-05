@@ -1,0 +1,300 @@
+\chapter{Complexity Theory}
+
+\section{Introduction}
+\lecture{(07/20)}
+
+We consider in general decision problems.
+
+\begin{defn}[decision problem]
+  A map that takes a \term{problem instance}
+  and returns a truth value.
+  In general, a map $\vv{A} : \I(\vv{A}) \to \{0,1\}$.
+  We call an instance where $\vv{A}(I) = 1$ a \term{yes-instance}
+  (otherwise a \term{no-instance}).
+\end{defn}
+
+Note that we can consider a problem instance $I \in \I(\vv{A})$
+as a natural number (formally) since we typically
+represent them as some sort of binary string.
+
+\begin{prop}
+  Almost all decision problems are undecidable.
+\end{prop}
+\begin{prf}
+  Notice that we can represent the map $\vv{A} : \N \to \{0,1\}$
+  as a binary string $\vv{A}(0)\vv{A}(1)\cdots$.
+  Then, assuming there is no structure here,
+  we can perform a diagonal argument to show that
+  the problem is uncountably infinite.
+
+  However, solutions are a finite bit string,
+  which are only countably infinite.
+\end{prf}
+
+\begin{defn}[\P]
+  The class of decision problems that can be solved in polynomial time,
+  i.e., in $O(n^p)$ time for $p > 0$.
+\end{defn}
+
+\begin{defn}[polynomial reduction]
+  A problem $\vv A$ is reducible to a problem $\vv B$
+  if there exists a function $f : \I(\vv A) \to \I(\vv B)$
+  such that yes-instances are mapped to yes-instances
+  (no-instances to no-instances)
+  and $f$ is computable in $O(n^p)$ for some $p$.
+  We write $\vv A \pleq \vv B$.
+\end{defn}
+
+As with normal orders, we say that
+$\vv A \pequiv \vv B \iff \vv A \pleq \vv B \land \vv B \pleq \vv A$.
+
+Suppose that $\vv A \pleq \vv B$ and $\vv B \in \vv P$.
+Then, given an instance $I \in \mathcal I(\vv A)$,
+we can solve it by solving $f(I)$ (which is computed in polynomial time)
+as an instance of $\vv B$ (which is polynomial).
+
+\begin{lemma}[transitivity of polynomial reduction]
+  If $\vv A \pleq \vv B$ and $\vv B \pleq \vv C$,
+  then $\vv A \pleq \vv C$.
+\end{lemma}
+\begin{prf}
+  By definition, there exists $f : \I(\vv A) \to \I(\vv B)$
+  and $g : \I(\vv B) \to \I(\vv C)$.
+  Then, $g \circ f : \I(\vv A) \to \I(\vv C)$ and preserves yes-no.
+\end{prf}
+
+\begin{lemma}[proving hardness]
+  Suppose $\vv A \pleq \vv B$ and we know that $\vv A \not\in \vv P$.
+  Then, $\vv B \not\in \vv P$.
+\end{lemma}
+\begin{prf}
+  By contradiction.
+  If $\vv B \in \vv P$, then we could solve $\vv A$ in polynomial time.
+\end{prf}
+
+\section{Sample Reductions}
+
+Recall from graph theory that a \term{clique} is a set of vertices $S \subseteq V(G)$
+such that for all $u, v \in S$, $uv \in E(G)$.
+Similarly, an \term{independent set} is a set $S$ of vertices such that
+for all $u, v \in S$, $uv \not\in E(G)$.
+
+\begin{prop}
+  Consider the problems $\vv{Clique}$ (does a graph $G$ have a clique of size $k$?)\@
+  and $\vv{IS}$ (does a graph $G$ have an independent set of size $k$?).
+  Then, $\vv{Clique} \pequiv \vv{IS}$.
+\end{prop}
+\begin{prf}
+
+\end{prf}
+
+\lecture{(07/25)}
+
+\begin{prop}
+  Consider the problems $\vv{HC}$ (does a graph $G$ have a Hamiltonian cycle?)\@
+  and $\vv{HP}$ (does a graph $G$ contain a Hamiltonian path?).
+  Then, $\vv{HC} \pequiv \vv{HP}$.
+\end{prop}
+\begin{prf}
+  Consider first the Hamiltonian $s,t$-path problem
+  (does $G$ contain a Hamiltonian path $s \leadsto t$?)
+  and that we are given an instance $(G, s, t)$.
+  Then, $(G, s, t)$ is a yes-instance if and only if
+  $G+x+sx+tx$ is a yes-instance of $\vv{HC}$.
+
+  Likewise, a Hamiltonian cycle $s \leadsto ts$
+  exists if and only if $(G - st)$ is a yes-instance
+  of the Hamiltonian $s,t$-path problem.
+
+  Since both of those operations are polynomial time
+  removals/additions of vertices/edges,
+  we have that the Hamiltonian $s,t$-path problem $\pequiv \vv{HC}$.
+
+  Now, consider the actual problem $\vv{HP}$.
+  We can show $\vv{HP} \pleq \vv{HC}$ in the same way.
+  Consider a graph $G$ and add a vertex $x$ adjacent to all vertices.
+  Then, this new graph $G'$ has a Hamiltonian cycle
+  if and only if $G$ has a Hamiltonian path.
+
+  Finally, to show $\vv{HC} \pleq \vv{HP}$,
+  consider a graph $G$ with a Hamiltonian cycle
+  $s \leadsto t \leadsto s$.
+  Create $G'$ by splitting an arbitrary vertex $t$
+  into two vertices $t$ and $t'$ such that $s \leadsto t$ and $t' \leadsto s$.
+  \marginnote{how do we divide the edges of $t$?}
+  Then, because of the way we divided the edges of $t$,
+  a Hamiltonian path in $G'$ must start at $t$ and end at $t'$.
+  It follows that $G$ has a Hamiltonian cycle if and only if
+  $G'$ has a Hamiltonian path.
+
+  Therefore, $\vv{HC} = \vv{HP}$.
+\end{prf}
+
+Recall from CS 245 that a binary function of $n$ variables is \term{satisfiable}
+if there exists an assignment of truth values to variables that makes the expression true.
+Recall also that we may write any binary function
+in \term{conjunctive normal form}, i.e., as a conjunction
+of a finite set of $m$ disjunctions of \term{literals} (either variables or their negations).
+
+\begin{prop}
+  Consider the problem $\vv{3SAT}$ (is a CNF formula of at most 3 literals per clause satisfiable?).
+  Then, $\vv{3SAT} \pleq \vv{IS}$.
+\end{prop}
+\begin{prf}
+  The reduction will take advantage of the fact that to make the whole formula true,
+  we must select at least one literal from each disjunction to make true.
+
+  Construct a graph of all the literals.
+  Attach each literal in the same clause.
+  Attach any two complementary literals.
+
+  Then, ask if there is an independent set of size at least $m$.
+
+  For correctness, suppose that $G$ has an independent set $S$ of size at least $m$.
+  Assign each variable $x = \top$ if $\exists x \in S$ and $x = \bot$ if $\exists \bar x \in S$.
+  Since literals are adjacent to their complements, $x$ will either be set to true or false
+  (or neither, in which case we just assign $\top$ arbitrarily).
+  Also, since literals are adjacent in $G$ if they are from the same clause,
+  the $m$ elements of the independent set must come from each of the $m$ clauses
+  by the pigeonhole principle.
+  Therefore, this assignment satisfies $G$.
+
+  Conversely, suppose there exists a satisfying assignment.
+  Then, simply construct the according independent set.
+  Because edges exist only between contradictory literals
+  or between clauses, the set will indeed be independent.
+  \marginnote{this feels wrong}
+
+  Therefore, $\vv{3SAT} \pleq \vv{IS}$.
+\end{prf}
+
+\section{\NP-completeness}
+
+Consider the \textsf{SubsetSum} problem,
+where we are given a set of integers $S$
+and must find a subset $T \subseteq S$ such that $\sum_{x \in T}x = 0$.
+This problem is hard.
+
+However, suppose an oracle gives us $T$ and claims it has sum 0.
+We can write a helper function \Call{Verify}{$I,C$}
+which returns $\vv{yes}$ if $I$ is a yes-instance
+and $C$ is a valid \term{certificate} that proves $I$ is a yes-instance.
+In our example, \Call{VerifySubsetSum}{$S, T$} checks that indeed
+every element in $T$ is also in $S$ and also that they sum to 0.
+
+\begin{defn}[\NP]
+  The class of decision problems with yes-instances
+  that can be verified in polynomial time.
+  Equivalently, the class of decision problems that can be solved
+  by a non-deterministic algorithm in polynomial time.
+\end{defn}
+
+\lecture{(07/27)}
+For example, $\vv{3SAT}$ is in \NP because evaluating the clauses
+given a valid variable truth-value assignment can be done in polynomial time.
+
+Not all decision problems are in \NP:
+for example, consider whether a graph is non-Hamiltonian.
+The no-instances are easily verifiable, but the yes-instances are hard.
+
+\begin{defn}[\coNP]
+  The class of decision problems with no-instances
+  that can be verified in polynomial time.
+\end{defn}
+
+Clearly, all problems in \P are also in \NP and \coNP:
+simply solve the problem in polynomial time.
+Therefore, $\P \subseteq \NP$ and $\P \subseteq \coNP$.
+This leads to the most famous problem in computer science.
+
+\begin{conjecture}
+  $\P \stackrel{?}{=} \NP$
+\end{conjecture}
+
+To make deciding whether $\NP \subseteq \P$ easier,
+we create a notion of the ``hardest'' problems in \NP.
+
+\begin{defn}[\NP-complete]
+  A problem $\vv{X} \in \NP$ is \NP-complete if for all $\vv{Y} \in \NP$,
+  we have $\vv{Y} \pleq \vv{X}$.
+  Then, we write $\vv{X} \in \NPC$.
+\end{defn}
+
+Then, it immediately follows that $\P = \NP \iff \exists\vv{X} \in \NPC, \vv{X} \in \P$.
+
+\begin{theorem}[Cook--Levin]
+  $\vv{3SAT} \in \NPC$
+\end{theorem}
+
+This is a useful theorem, since once we have on \NP-complete problem,
+we can just show that any other problem, for example $\vv{IS}$,
+is \NP-complete because $\vv{3SAT} \pleq \vv{IS}$.
+
+\begin{prf}[sketch]
+  Consider the $\vv{CircuitSAT}$ problem.
+  We are given a DAG with labelled vertices.
+  Inputs are marked with $x_1,\dotsc,x_n$.
+  Internal vertices are marked by Boolean operators $\vv{and}$, $\vv{or}$, and $\vv{not}$.
+  For example,
+  \begin{center}
+    \tikz{\graph[layered layout,math nodes,nodes={circle,draw}]{A/{\vv{and}}["$v$" below]<-{B/{\vv{and}}<-{x_1,x_2},C/{\vv{or}}<-{x_2,x_3}}};}
+  \end{center}
+  For a vertex $v$, is there some truth-value assignment to the $x_i$'s that makes $v$ true?
+
+  We will show that $\vv{CircuitSAT}$ is \NP-complete,
+  and then that $\vv{CircuitSAT} \pleq\vv{3SAT}$.
+
+  Let $\vv{A} \in \NP$ and $S$ be a yes-instance of $\vv{A}$.
+  We want to find an algorithm that checks of a certificate $t$
+  can prove that $S$ is indeed a yes-instance.
+
+  This verification algorithm is a Boolean function (i.e., it takes in $t$
+  as input and outputs a Boolean value), so we can write it as a circuit
+  (recall from CS 245 that $\land$, $\lor$, and $\lnot$ are sufficient
+  to write any Boolean function).
+  Therefore, we can just call $\vv{CircuitSAT}$ to find $t$,
+  which is as good as solving $S$.
+
+  Therefore, $\vv{A} \pleq \vv{CircuitSAT}$, and $\vv{CircuitSAT} \in \NPC$.
+
+  Now, notice that we can transform the $\vv{CircuitSAT}$ DAG into
+  a set of conjunctive clauses with at most three literals:
+  \begin{center}
+    \begin{tabular}{c|c|c}
+      \tikz{\graph[layered layout,math nodes,nodes={circle,draw}]{B/{\vv{and}}["$v_i$" below]<-{v_j,v_k}};}
+       & \tikz{\graph[layered layout,math nodes,nodes={circle,draw}]{B/{\vv{or}}["$v_i$" below]<-{v_j,v_k}};}
+       & \tikz{\graph[layered layout,math nodes,nodes={circle,draw}]{B/{\vv{not}}["$v_i$" below]<-{v_j}};}    \\
+      $(\bar v_i \lor v_j)$, $(\bar v_i \lor v_k)$, $(v_i \lor \bar v_j \lor \bar v_k)$
+       & $(v_i \lor \bar v_j)$, $(v_i \lor \bar v_k)$, $(\bar v_i \lor v_j \lor v_k)$
+       & $(v_i \lor v_j), (\bar v_i \lor \bar v_j)$
+    \end{tabular}
+  \end{center}
+  Therefore, $\vv{CircuitSAT} \pleq \vv{3SAT}$,
+  which means that $\vv{3SAT} \in \NPC$.
+\end{prf}
+
+For reference, a list of \NP-complete problems:
+\begin{itemize}[nosep]
+  \item 3SAT, SAT
+  \item independent set, vertex cover, clique
+  \item (directed) Hamiltonian cycle, Hamiltonian path
+  \item travelling salesman
+  \item subset sum
+  \item 0/1 knapsack
+\end{itemize}
+
+We will show \NP-completeness for Hamiltonian cycles and paths.
+
+\begin{theorem}
+  $\vv{3SAT} \pleq \vv{DirectedHamiltonianCycle} \pleq \vv{HamiltonianCycle}$
+\end{theorem}
+\begin{prf}
+  We begin by showing $\vv{3SAT} \pleq \vv{DirectedHamiltonianCycle}$.
+  That is, given a formula, we must create a directed graph
+  such that the formula is satisfiable if and only if the graph is Hamiltonian.
+
+  To do this, we will first create a graph with $2^n$ Hamiltonian cycles
+  corresponding to each possible truth value assignment.
+  Then, we will add vertices to constrain the valid cycles to those
+  consistent with the given clauses.
+\end{prf}

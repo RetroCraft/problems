@@ -1,0 +1,134 @@
+\chapter{Synchronization}
+\lecture{(05/25)}
+todo: slides 90 to 99
+
+\lecture{(05/30)}
+\begin{defn}[race condition]
+  A program where the order of execution affects the program result.
+  The pieces of code that can create a race condition
+  by accessing a shared variable are called \term[critical section]{critical sections}.
+\end{defn}
+
+We can use a \term{lock} to provide \term{mutual exclusion}
+(when exactly one of the code chunks runs in its entirety):
+
+\begin{minted}{c}
+  int volatile total = 0;
+  bool volatile total_lock = false; // false means unlocked
+                                    // true means locked
+  void add() {                void sub() {
+    int i;                      int i;
+    for (i=0; i<N; i++) {       for (i=0; i<N; i++) {
+      Acquire(&total_lock);       Acquire(&total_lock);
+      total++;                    total--;
+      Release(&total_lock);       Release(&total_lock);
+    }                           }
+  }                           }
+\end{minted}
+
+We can imagine implementing \mintinline{c}{Acquire} and \mintinline{c}{Release}
+by spinning until we can proceed (this is a \term{spinlock}):
+
+\begin{minted}{c}
+  Acquire(bool *lock) {
+    while (*lock == true) {} // spin until the lock is free
+    *lock = true;            // grab the lock
+  }
+
+  Release(bool *lock) {
+    *lock = false;           // give up the lock
+  }
+\end{minted}
+
+This does not actually work because \mintinline{c}{Acquire}
+could be preempted before grabbing the lock.
+There are special assembly language instructions
+which allow us to make this work and create a spinlock.
+
+Since spinlocks use the processor while they wait,
+they should not be used for long waiting times.
+While a spinlock is spinning, we must also disable interrupts.
+
+In OS/161, we can create and manipulate \texttt{spinlock} structs
+using the methods \mintinline{c}{spinlock_init},
+\mintinline{c}{spinlock_acquire}, and \mintinline{c}{spinlock_release}.
+
+We can instead block the thread instead of eating up CPU time.
+The OS/161 methods \mintinline{c}{lock_create},
+\mintinline{c}{lock_acquire}, and \mintinline{c}{lock_release}
+are analogous to the \mintinline{c}{spinlock} methods.
+A lock is owned by a thread (since it only blocks a single thread)
+and not a CPU (since a spinlock takes up an entire CPU while spinning).
+
+While a thread is blocked by a lock,
+it goes on a \term{wait channel} for that lock, i.e.,
+a queue of threads that will be awoken when the lock is released.
+In OS/161, we can use \mintinline{c}{wchan_lock}, \mintinline{c}{wchan_sleep},
+\mintinline{c}{wchan_wakeall}, and \mintinline{c}{wchan_wakeone}.
+
+If we need something more complex than a boolean lock,
+we can use a \term{semaphore}, which holds an integer.
+We can either call \texttt{P}(roberen) (lit.\ ``try'', waits until able to decrement)
+or \texttt{V}(erhogen) (lit.\ ``increase'', increments).
+
+There are three kinds of semaphore:
+\begin{itemize}[nosep]
+  \item \term[semaphore!binary]{binary}: 0 or 1, behaves like a lock
+  \item \term[semaphore!counting]{counting}: an arbitrary number of resources
+  \item \term[semaphore!barrier]{barrier}: force one thread to wait for others to complete, start count at 0
+\end{itemize}
+We do not need to call \texttt{V} after \texttt{P}.
+We can also start at whatever initial value we want.
+Semaphores also do not have owners.
+
+\lecture{(06/01)}
+In summary:
+\begin{center}
+  \begin{tabular}{c|c|c}
+    Spinlocks              & Locks             & Sempahores           \\ \hline
+    Consumes a CPU         & Owned by a thread & No ownership         \\
+    Spins (no interrupts)  & Blocks            & Blocks               \\
+    Binary (held/not held) & Binary            & Non-negative integer
+  \end{tabular}
+\end{center}
+We implement semaphores and locks using spinlocks and wait channels
+because we do not want a race condition on \mintinline{c}{sem->sem_lock}.
+Simplified:
+\begin{minted}{c}
+  void P(struct semaphore *sem) {
+    spinlock_acquire(&sem->sem_lock);     // lock the semaphore
+    while (sem->sem_count == 0) {         // check if resources available
+      wchan_lock(sem->sem_wchan);         // lock wait channel's queue
+      spinlock_release(&sem->sem_lock);   // unlock the semaphore
+      wchan_sleep(sem->sem_wchan);        // context switch (unlocks queue)
+      spinlock_acquire(&sem->sem_lock);   // relock the semaphore
+    }
+    sem->sem_count--;                     // use a resource
+    spinlock_release(&sem->sem_lock);     // unlock the semaphore
+  }
+\end{minted}
+and
+\begin{minted}{c}
+  void V(struct semaphore *sem) {
+    spinlock_acquire(&sem->sem_lock);     // lock the semaphore
+    sem->sem_count++;                     // add a resource
+    wchan_wakeone(sem->sem_wchan);        // unblock a thread on the queue
+    spinlock_release(&sem->sem_lock);     // unlock the semaphore
+  }
+\end{minted}
+We can abstract away from integers entirely and have a \term{condition variable}.
+When a condition is true, the thread can run;
+when it is not true, the thread waits until it becomes true.
+If a thread sets the condition to true, it can \texttt{signal} one
+or \texttt{broadcast} all blocked threads.
+
+Two threads can \term{deadlock} if they are trying to acquire locks held by each other.
+To avoid this, either have a standard order of acquisition or do retries (No Hold and Wait):
+\begin{minted}{c}
+  lock_acquire(lock1);
+  while (!try_acquire(lock2)) {
+    lock_release(lock1);
+    lock_acquire(lock1);
+  }
+\end{minted}
+but OS/161 does not have \mintinline{c}{bool try_acquire(struct lock *)}.

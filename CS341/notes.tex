@@ -1,5 +1,5 @@
 \documentclass[notes,tikz,minted,class=cs341]{agony}
-% \includeonly{notes/04greedy,notes/05dp}
+% \includeonly{}
 \graphicspath{{figures/}}
 \usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes,matrix}
 \usegdlibrary{circular,force,trees,layered}
@@ -24,6 +24,98 @@ taught by Armin Jamshidpey.
 \include{notes/03graph}
 \include{notes/04greedy}
 \include{notes/05dp}
+\include{notes/06complexity}
+
+\chapter{Final Review}
+\lecture{(08/01)}
+
+\begin{example}
+  Suppose we want to schedule people be on call between time $S$ and $T$.
+  If each of the $n$ people are available from $s_i$ to $t_i$,
+  give a greedy algorithm to assign the minimum number of people.
+
+  Assume that the input is already sorted by start time $S \leq s_1 \leq \dotsb \leq s_n \leq T$.
+\end{example}
+\begin{sol}
+  Since we know we must start at $S$,
+  consider all the intervals that start at $S$.
+  Then, pick the one with the latest end time.
+
+  For each subsequent selection, consider all the intervals with start times
+  before the last chosen end time and then select the one with the latest end time.
+
+  \begin{algorithm}[H]
+    \caption{\Call{GreedyScheduleAssign}{$S,T,[s_1,t_1],\dotsc,[s_n,t_n]$}}
+    \begin{algorithmic}[1]
+      \State $O \gets \varnothing$
+      \State $s \gets S$, $o \gets 1$
+      \For{$i = 1,\dotsc,n$}
+      \If{$s_i \leq s$}
+      \If{$t_i \geq t_o$}
+      \State $o \gets i$
+      \EndIf
+      \Else
+      \State $O \gets O \cup \{o\}$
+      \State $s \gets t_o$
+      \State $o \gets i$
+      \EndIf
+      \EndFor
+    \end{algorithmic}
+  \end{algorithm}
+
+  This runs in $O(n)$ time.
+\end{sol}
+
+\begin{example}
+  An $i \times j$ rectangle is worth $P[i,j]$.
+  Given an $n \times m$ rectangle, give a dynamic programming algorithm
+  to find the optimal way to cut the rectangle into smaller rectangles.
+\end{example}
+\begin{sol}
+  Let $M[i,j]$ be the optimal value of a rectangle after considering subdivisions.
+  Then, $M[i,j]$ is either:
+  \begin{itemize}
+    \item $P[i,j]$, the value without cutting;
+    \item $\displaystyle M_V(i,j) = \max\bigcup_{\mathclap{1 \leq k \leq i}}\{ M[k,j], M[i-k,j] \}$, the maximum value of a vertical cut; or
+    \item $\displaystyle M_H(i,j) = \max\bigcup_{\mathclap{1 \leq k \leq j}}\{ M[i,k], M[i,j-k] \}$, the maximum value of a horizontal cut.
+  \end{itemize}
+  Finally, we just iterate.
+  Each of the $O(nm)$ iterations takes $O(n+m)$ time, 
+  so we have $O(n^2m + nm^2)$.
+\end{sol}
+
+\begin{example}
+  Consider the problem $\vv{ModifiedSTPath}$:
+  given an edge-weighted directed graph, is there a simple $s,t$-path
+  (i.e., with no repeated vertices) with total weight at most $k$.
+  What complexity class is $\vv{ModifiedSTPath}$ in?
+\end{example}
+\begin{sol}
+  We can find shortest paths in polynomial time,
+  so find a shortest path via Dijkstra and check if its weight is at most $k$.
+  This means $\vv{ModifiedSTPath} \in \P$.
+  Therefore, it is also in \NP and \coNP.
+\end{sol}
+
+\begin{example}
+  Show that $\vv{ModifiedSTPath}$ is \NP-complete.
+\end{example}
+\begin{prf}
+  We will show that $\vv{DirectedHamiltonianPath} \pleq \vv{ModifiedSTPath}$.
+
+  Suppose we have a directed graph $G = (V,E)$ as input to $\vv{DirectedHamiltonianPath}$.
+  Notice that a Hamiltonian path is just a simple path with $\abs{V}-1$ edges.
+
+  If we give every edge in $G$ a weight of $-1$,
+  then we can just count the edges that a path traverses.
+  Let $G' = (V \cup \{s,t\}, E \cup \{sv, tv : v \in V\})$ and $w(e) = -1$.
+  Then, we can call \Call{ModifiedSTPath}{$G', w, s, t, -(\abs{V}+1)$}
+  which will respond ``yes'' exactly when there is a path of maximum length
+  $\abs{V}+1$ and ``no'' otherwise.
+
+  Therefore, $\vv{DirectedHamiltonianPath} \pleq \vv{ModifiedSTPath}$,
+  which means $\vv{ModifiedSTPath}$ is \NP-complete, as desired.
+\end{prf}
 
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
 

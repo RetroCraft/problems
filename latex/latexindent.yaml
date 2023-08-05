@@ -17,6 +17,8 @@ verbatimEnvironments:
     ccode: 1
     pseudocode: 1
     markdown: 1
+    pycode: 1
+    pyverbatim: 1
 indentAfterItems:
    tikzpicture: 1
 itemNames:
