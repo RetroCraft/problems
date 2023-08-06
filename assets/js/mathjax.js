@@ -110,8 +110,29 @@ window.MathJax = {
     },
   },
   loader: { load: ['[tex]/ams', '[tex]/mhchem', '[tex]/physics'] },
+  removeCode(math, doc) {
+    const code = math.start.node.parentNode;
+    if (code.nodeName === 'CODE' && code.childNodes.length === 1) {
+      const span = document.createElement('mjx-span');
+      code.parentNode.replaceChild(span, code);
+      span.appendChild(code.firstChild);
+    }
+  },
+  options: {
+    skipHtmlTags: {'[-]': ['code', 'pre']},
+    renderActions: {
+      removeCode: [
+        11,
+        (doc) => {for (const math of MathJax.startup.document.math) MathJax.config.removeCode(math, doc)},
+        (math, doc) => MathJax.config.removeCode(math, doc),
+        false
+      ]
+    }
+  },
   tex: {
     packages: { '[+]': ['pairedDelimiters', 'ams', 'mhchem', 'physics'] },
+    inlineMath: [['$', '$'], ['`$', '$`'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['`$$', '$$`'], ['\\[', '\\]']],
     macros: {
       sym: '\\mathbin{\\triangle}',
       // sets

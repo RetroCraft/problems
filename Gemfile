@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
-gem 'github-pages'
-gem 'gemoji', '~> 3.0'
+gem 'github-pages', '>= 208'
+gem 'gemoji'
 
 gem 'wdm', '>= 0.1.0' if Gem.win_platform?
+
+gem "webrick", "~> 1.8"

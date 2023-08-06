@@ -56,27 +56,29 @@ The `agony` class is documented [here](https://github.com/RetroCraft/problems#us
 - TOC
 {:toc}
 
-## Business
+## Lazaridis School of Business and Economics
+
+### Business
 
 Quizlet flashcards are not mine: thank Imaad for them.
 
-### BU 111 (F2020 + F2022) <small>Introduction to the Business Environment</small>
+#### BU 111 (F2020 + F2022) <small>Introduction to the Business Environment</small>
 
 Flashcards available for [PEST factors](https://quizlet.com/ca/553312795/bu111-final-review-f2020-all-pest-factors-flash-cards/)
 and [strategic expansion](https://quizlet.com/ca/553644800/bu111-final-review-f2020-intl-business-strategic-expansion-flash-cards/).
 Complete notes for F2022 [Midterm](https://docs.google.com/document/d/1LcJJwRRkSb64HsP4X-sOGEsH88taibLOtuMiVI-641A/edit?usp=sharing) and [Final](https://docs.google.com/document/d/1OmAY4RFbbq6bb3P44r9N21mXg4YgeageJ0Qsx3ZSWYE/edit?usp=sharing) by Sophia.
 
-### BU 121 (W2021) <small>Functional Areas of the Organization</small>
+#### BU 121 (W2021) <small>Functional Areas of the Organization</small>
 
 [Flashcard sets](https://quizlet.com/mian8680/folders/bu121-winter-2021/sets) for the whole course so far.
 
 Study materials by [Ace](https://ko-fi.com/augustace) are also published before each assessment.
 
-### BU 288 (F2021) <small>Organizational Behaviour</small>
+#### BU 288 (F2021) <small>Organizational Behaviour</small>
 
 Another [flashcard set](https://quizlet.com/mian8680/folders/bu288-f2021/sets) for the two midterms and final exam.
 
-### BU 231 (S2022) <small>Business Law</small>
+#### BU 231 (S2022) <small>Business Law</small>
 
 Yet more [Quizlet cards](https://quizlet.com/ca/703888580/bu231-midterm-flash-cards/) by Imaad for the midterm.
 
@@ -84,46 +86,18 @@ A review casebook using real life fact patterns is available [here](https://retr
 
 For post-midterm content, Imaad made a summary in [flowchart format](./BU231/flowchart.html).
 
-### BU 352 (F2022) <small>Introduction to Marketing</small>
+#### BU 352 (F2022) <small>Introduction to Marketing</small>
 
 Work in progress [flashcard set](https://quizlet.com/ca/723976718/bu352-f22-flash-cards/)
 by Imaad which will be updated throughout the term.
 
-### BU 354 (F2022) <small>Human Resources Management</small>
+#### BU 354 (F2022) <small>Human Resources Management</small>
 
 Likewise, a continuously-updated [flashcard set](https://quizlet.com/ca/726181837/bu354-f22-flash-cards/) by Imaad.
 
-## Computer Science
+### Economics
 
-### CS 135 (F2020) <small>Designing Functional Programs</small>
-
-I don't implement the full design recipe in exercises, for obvious reasons (I'm lazy).
-
-| File                                               |     Complete?      | Notes |
-| -------------------------------------------------- | :----------------: | ----- |
-| [Module 11 Exercises]({{ page.gh }}/CS135/E11.rkt) | :white_check_mark: |       |
-| [Module 12 Exercises]({{ page.gh }}/CS135/E12.rkt) | :white_check_mark: |       |
-| [Module 13 Exercises]({{ page.gh }}/CS135/E13.rkt) | :white_check_mark: |       |
-| [Module 14 Exercises]({{ page.gh }}/CS135/E14.rkt) | :white_check_mark: |       |
-| [Module 15 Exercises]({{ page.gh }}/CS135/E15.rkt) | :white_check_mark: |       |
-| [Module 16 Exercises]({{ page.gh }}/CS135/E16.rkt) | :white_check_mark: |       |
-
-### CS 245 (F2021) <small>Logic and Computation</small>
-
-My own version of the [reference sheet](./CS245/ref.pdf) is a bit more compact.
-
-### CS 341 (S2023) <small>Algorithms</small>
-
-My [lecture notes](./CS341/notes.pdf) are available, taken live during lecture.
-I will try and format for publishing weekly.
-
-### CS 350 (S2023) <small>Operating Systems</small>
-
-[Lecture notes](./CS350/notes.pdf).
-
-## Economics
-
-### ECON 120 (F2020) <small>Introduction to Microeconomics</small>
+#### ECON 120 (F2020) <small>Introduction to Microeconomics</small>
 
 No "practice", but figured this is a nice place to host my cheat sheets.
 They are created on Figma, and the source files are available
@@ -134,7 +108,7 @@ If you just want the sheets, you can get them all at my
 (which is, as always, pay-what-you-want).
 They remain on this [GitHub repository]({{ page.gh }}/ECON120) too.
 
-### ECON 140 (W2021) <small>Introduction to Macroeconomics</small>
+#### ECON 140 (W2021) <small>Introduction to Macroeconomics</small>
 
 I hastily put together an [equation sheet](./ECON140/ref.html) after lecture on the 4th.
 Let me know if there's mistakes.
@@ -154,9 +128,39 @@ aesthetic changes bump the minor version.
 Might also be helpful: Will put together a compilation of sample
 [algebraic solution processes](https://cdn.discordapp.com/attachments/755580436398473226/809696310043213835/NuMbEr_1_iN_StUdEnt_SaTisFactiOn.pdf).
 
-## Math
+## Waterloo Faculty of Mathematics
 
-### MATH 135 (F2020) <small>Algebra for Honours Mathematics</small>
+### Computer Science
+
+#### CS 135 (F2020) <small>Designing Functional Programs</small>
+
+I don't implement the full design recipe in exercises, for obvious reasons (I'm lazy).
+
+| File                                               |     Complete?      | Notes |
+| -------------------------------------------------- | :----------------: | ----- |
+| [Module 11 Exercises]({{ page.gh }}/CS135/E11.rkt) | :white_check_mark: |       |
+| [Module 12 Exercises]({{ page.gh }}/CS135/E12.rkt) | :white_check_mark: |       |
+| [Module 13 Exercises]({{ page.gh }}/CS135/E13.rkt) | :white_check_mark: |       |
+| [Module 14 Exercises]({{ page.gh }}/CS135/E14.rkt) | :white_check_mark: |       |
+| [Module 15 Exercises]({{ page.gh }}/CS135/E15.rkt) | :white_check_mark: |       |
+| [Module 16 Exercises]({{ page.gh }}/CS135/E16.rkt) | :white_check_mark: |       |
+
+#### CS 245 (F2021) <small>Logic and Computation</small>
+
+My own version of the [reference sheet](./CS245/ref.pdf) is a bit more compact.
+
+#### CS 341 (S2023) <small>Algorithms</small>
+
+My [lecture notes](./CS341/notes.pdf) are available, taken live during lecture.
+I will try and format for publishing weekly.
+
+#### CS 350 (S2023) <small>Operating Systems</small>
+
+[Lecture notes](./CS350/notes.pdf).
+
+### Math
+
+#### MATH 135 (F2020) <small>Algebra for Honours Mathematics</small>
 
 | File                                         |      Complete?       | Notes                              |
 | -------------------------------------------- | :------------------: | ---------------------------------- |
@@ -176,12 +180,12 @@ Might also be helpful: Will put together a compilation of sample
 | [Winter 2020 Midterm](./MATH135/MT2020W.pdf) |  :white_check_mark:  |                                    |
 | [Winter 2020 Final](./MATH135/FE2020W.pdf)   |  :white_check_mark:  |                                    |
 
-### MATH 136 (W2021) <small>Linear Algebra I for Honours Mathematics</small>
+#### MATH 136 (W2021) <small>Linear Algebra I for Honours Mathematics</small>
 
 A collection of theorems can be found [here](./MATH136/ref.html)
 and practice problems [here](./MATH136/practice.pdf).
 
-### MATH 137 (F2020) <small>Calculus I for Honours Mathematics</small>
+#### MATH 137 (F2020) <small>Calculus I for Honours Mathematics</small>
 
 | File                                          |     Complete?      | Notes                                  |
 | --------------------------------------------- | :----------------: | -------------------------------------- |
@@ -200,13 +204,13 @@ and practice problems [here](./MATH136/practice.pdf).
 | [Practice Midterm 1](./MATH137/PM01.pdf)      | :white_check_mark: | Posted as `midterm_practice` on LEARN  |
 | [Practice Final F2019](./MATH137/PF2019F.pdf) | :white_check_mark: |                                        |
 
-### MATH 138 (W2021) <small>Calculus II for Honours Mathematics</small>
+#### MATH 138 (W2021) <small>Calculus II for Honours Mathematics</small>
 
 A collection of theorems can be found [here](./MATH138/ref.html).
 
 Jimmy has notes for [series](./MATH138/Jimmy05.pdf) and [Taylor series](./MATH138/Jimmy06.pdf).
 
-### MATH 146 (W1989) <small>Linear Algebra I (Advanced)</small>
+#### MATH 146 (W1989) <small>Linear Algebra I (Advanced)</small>
 
 I found an old copy of my father's _Linear Algebra, 2nd edition_ by Hoffman and Kunze
 from when he was at Waterloo (and had the guts to take 14x courses).
@@ -214,7 +218,7 @@ I have no idea if anyone at all would find these useful, but here are
 [my solutions so far](./MATH146/HK.pdf).
 Note that I use the notation from the book, which might hurt when MATH 136 starts.
 
-### MATH 239 (F2022) <small>Introduction to Combinatorics</small>
+#### MATH 239 (F2022) <small>Introduction to Combinatorics</small>
 
 My [lecture notes](./MATH239/notes.pdf) (incomplete and somewhat experimental) are available.
 You might be interested in the [source](./MATH239/notes.tex) if you want to use TIKZ for graph theory.
@@ -234,7 +238,17 @@ There are also [exercise solutions](./MATH239/exercises.pdf) for the course note
 | [Ch. 7 (Planar Graphs)](./MATH239/exercises.pdf#section.2.7)        | :black_large_square: | Missing 7.4, 7.6.1, 7.6.7-13, 7.8              |
 | [Ch. 8 (Matchings)](./MATH239/exercises.pdf#section.2.8)            | :black_large_square: | Missing 8.2.7-17, 8.3, 8.6, 8.8                |
 
-### CO 485/685 (F2022) <small>Mathematics of Public-Key Cryptography</small>
+### Pure Math
+
+#### PMATH 348 (S2023) <small>Fields and Galois Theory</small>
+
+[Lecture notes](./PMATH348/notes.html) by Imaad.
+They were originally written in Obsidian (which uses a different Markdown parser),
+so they look a little funny after spamming regexes to try and make it GFM-friendly.
+
+### Combinatorics and Optimization
+
+#### CO 485/685 (F2022) <small>Mathematics of Public-Key Cryptography</small>
 
 More [lecture notes](./CO485/notes.pdf) with the caveat that
 (1) I am not actually enrolled in the course and just sit in it for fun
@@ -294,4 +308,4 @@ Reach out by opening a [discussion on GitHub](https://github.com/RetroCraft/prob
 or by one of [email](mailto:jahyong@uwaterloo.ca),
 [Facebook](https://facebook.com/james.ahyong),
 [Instagram](https://instagram.com/james.ahyong),
-and Discord (`@retrocraft#6259`).
+and Discord (`@retrocraft`).
