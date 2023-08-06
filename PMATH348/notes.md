@@ -30,7 +30,7 @@ $$
 $$
 </span>
 The following is a cleaned up version of an exported Obsidian file.
-The original Markdown is available [here](./PMATH348_Lecture_Notes.md).
+The original Markdown is available [here](https://github.com/RetroCraft/problems/blob/master/PMATH348/PMATH348_Lecture_Notes.md?plain=1).
 It will look better in Obsidian.
 
 - TOC

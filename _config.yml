@@ -4,6 +4,8 @@ description: A hopefully legal archive of study material and practice work
 theme: jekyll-theme-cayman
 kramdown:
   parse_block_html: true
+exclude:
+  - PMATH348/PMATH348_Lecture_Notes*
 plugins:
   - jemoji
 defaults:
