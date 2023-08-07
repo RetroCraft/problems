@@ -220,7 +220,7 @@ Then `$f(x)$` is irreducible `$\iff$` `$f(x)$` has no roots.
 `$f(x) \text{ reducible} \iff \text{linear factor } \iff \text{root}$`
 
 **Theorem [Gauss's Lemma]**  
-`$R$` UFD, `$\F = \frac{R}$`, let `$f(x) \in R[x]$`  
+`$R$` UFD, `$\F = \operatorname{Frac}(R)$`, let `$f(x) \in R[x]$`  
 If `$f(x) = A(x)B(x)$` where `$A(x), B(x) \in \F[x]$` are non-constant then `$\exists$` `$a(x)b(x) \in R[x]$` such that   
 `$$a(x) = rA(x),b(x) = sB(x)$$`
 with `$r, s \in \F^\times$` and `$f(x) = a(x)b(x)$`  

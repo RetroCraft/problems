@@ -4,7 +4,8 @@ gh: https://github.com/RetroCraft/problems/blob/master
 home: yes
 ---
 
-This is an open archive from my being a Waterloo and Laurier CS/BBA student.
+This is an open archive from my time (and my friends' times)
+as Waterloo and Laurier CS/BBA and MATH/BBA students.
 If you find it useful and want me to endure more pain,
 consider sending me a <s>coffee</s> bubble tea.
 Minus Stripe/PayPal's 30¢ transaction fee, of course.
@@ -66,6 +67,7 @@ Quizlet flashcards are not mine: thank Imaad for them.
 
 Flashcards available for [PEST factors](https://quizlet.com/ca/553312795/bu111-final-review-f2020-all-pest-factors-flash-cards/)
 and [strategic expansion](https://quizlet.com/ca/553644800/bu111-final-review-f2020-intl-business-strategic-expansion-flash-cards/).
+
 Complete notes for F2022 [Midterm](https://docs.google.com/document/d/1LcJJwRRkSb64HsP4X-sOGEsH88taibLOtuMiVI-641A/edit?usp=sharing) and [Final](https://docs.google.com/document/d/1OmAY4RFbbq6bb3P44r9N21mXg4YgeageJ0Qsx3ZSWYE/edit?usp=sharing) by Sophia.
 
 #### BU 121 (W2021) <small>Functional Areas of the Organization</small>
