@@ -14,8 +14,8 @@ This is possible when:
 
 \section{Examples}
 \begin{problem}[counting inversions]
-Given an unsorted array $A[1..n]$, find the number of \term[inversion]{inversions} in it,
-i.e., pairs $(i,j)$ such that $A[i] > A[j]$.
+  Given an unsorted array $A[1..n]$, find the number of \term[inversion]{inversions} in it,
+  i.e., pairs $(i,j)$ such that $A[i] > A[j]$.
 \end{problem}
 \begin{example}
   Given $A = [1,5,2,6,3,8,7,4]$,
@@ -64,9 +64,9 @@ we add to $c$ the number of elements on the right which are greater than it.
 This will run in $\Theta(n\log n)$ time because the modified \Call{Merge}{} is still $\Theta(n)$.
 
 \begin{problem}[polynomial multiplication]
-Given $F = f_0 + \dotsb + f_{n-1}x^{n-1}$
-and $G = g_0 + \dotsb + g_{n-1}x^{n-1}$,
-calculate $H = FG$.
+  Given $F = f_0 + \dotsb + f_{n-1}x^{n-1}$
+  and $G = g_0 + \dotsb + g_{n-1}x^{n-1}$,
+  calculate $H = FG$.
 \end{problem}
 
 The naive algorithm takes $\Theta(n^2)$ time to expand.
@@ -103,8 +103,8 @@ i.e., $T(n) \in \Theta(n^{\log_k(2k-1)})$ which gets arbitrarily close to linear
 If $F,G \in \C[x]$, then we can use FFT to get $T(n) = 2T(n/2)+\Theta(n) \in \Theta(n\log n)$ time.
 
 \begin{problem}[matrix multiplication]
-Given $A = [a_{i,j}] \in M_{n\times n}$ and $B = [b_{j,k}] \in M_{n \times n}$,
-calculate $C = AB$.
+  Given $A = [a_{i,j}] \in M_{n\times n}$ and $B = [b_{j,k}] \in M_{n \times n}$,
+  calculate $C = AB$.
 \end{problem}
 
 The naive algorithm takes inputs of size $\Theta(n^2)$ in $\Theta(n^3)$ time.
@@ -126,9 +126,10 @@ We can generalize to do $k$ multiplications of $\ell\times\ell$ matrices in $\Th
 and $k$ multiplications of $\ell\times m$ by $m\times p$ in $\Theta(n^{3\log_{\ell m p}k})$ time.
 
 \begin{problem}[closest pairs]
-Given $n$ distinct points $(x_i, y_i)$,
-find a pair $(i,j)$ that minimizes the distance $d_{i,j} = \sqrt{(x_i-x_j)^2+(y_i-y_j)^2}$.
-Equivalently, minimize $d^2_{i,j} = (x_i-x_j)^2+(y_i-y_j)^2$.
+  Given $n$ distinct points $(x_i, y_i)$,
+  find a pair $(i,j)$ that minimizes the distance
+  \[ d_{i,j} = \sqrt{(x_i-x_j)^2+(y_i-y_j)^2} \]
+  Equivalently, minimize $d^2_{i,j} = (x_i-x_j)^2+(y_i-y_j)^2$.
 \end{problem}
 
 Separate the space of points into $L$ and $R$ halfspaces based on the median $x$ value.
@@ -155,7 +156,7 @@ Again, it takes $O(n)$ time to find transverse pairs.
 Therefore, $T(n) = 2T(n/2) + O(n) = O(n\log n)$.
 
 \begin{problem}[selection]
-Given $A[0..n-1]$, find the entry that would be at index $k$ if $A$ were sorted.
+  Given $A[0..n-1]$, find the entry that would be at index $k$ if $A$ were sorted.
 \end{problem}
 
 Recall from CS 240 that selection by sorting takes $O(n\log n)$ time

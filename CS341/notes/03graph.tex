@@ -26,11 +26,9 @@ Now, we can define some structures on a graph:
 \end{defn}
 
 \begin{example}
-  Write the adjacency list and matrix for
-  \tikz[baseline=-17pt]\graph{{1,5}--{2,4}--3[y=-0.5];1--5,2--4,2--5};
-\end{example}
-\begin{sol}
-  The adjacency list is:
+  Given the graph
+  \tikz[baseline=-17pt]\graph{{1,5}--{2,4}--3[y=-0.5];1--5,2--4,2--5};,
+  the adjacency list is:
   \begin{enumerate}[1,nosep]
     \item $\to 2 \to 5$
     \item $\to 1 \to 3 \to 4 \to 5$
@@ -38,14 +36,17 @@ Now, we can define some structures on a graph:
     \item $\to 2 \to 3 \to 5$
     \item $\to 1 \to 2 \to 4$
   \end{enumerate}
-  and the matrix is $M = \begin{bmatrix}
+  and the adjacency matrix is
+  \[
+    M = \begin{bmatrix}
       0 & 1 & 0 & 0 & 1 \\
       1 & 0 & 1 & 1 & 1 \\
       0 & 1 & 0 & 1 & 0 \\
       0 & 1 & 1 & 0 & 1 \\
       1 & 1 & 0 & 1 & 0
-    \end{bmatrix}$
-\end{sol}
+    \end{bmatrix}
+  \]
+\end{example}
 
 \begin{defn*}[graph terminology]
   We also recall some terms from MATH 239:
@@ -68,8 +69,8 @@ Now, we can define some structures on a graph:
 \section{Breadth-First Search}
 
 \begin{problem}
-Search a graph $G$ starting from a vertex $s$
-in order of distance from $s$.
+  Search a graph $G$ starting from a vertex $s$
+  in order of distance from $s$.
 \end{problem}
 
 \begin{algorithm}
@@ -381,7 +382,7 @@ We can extend DFS with $\vv{start}$ and $\vv{finish}$ arrays:
 For example, we can draw a graph with $[\vv{start}[v],\vv{finish}[v]]$ labelled:
 \begin{center}
   \tikz\graph[simple, math nodes, nodes={circle, draw}]{
-    u[y=-0.5,"[2,7]" {left,orange}]--{s["[1,8]" {red}],v["[3,4]" {blue, below}]}--w["[5,6]" {color=Green, right},y=-0.5]; u--w; v-!-w;};
+  u[y=-0.5,"[2,7]" {left,orange}]--{s["[1,8]" {red}],v["[3,4]" {blue, below}]}--w["[5,6]" {color=Green, right},y=-0.5]; u--w; v-!-w;};
   \begin{tikzpicture}
     \draw[ultra thick,red] (1,1) --node[above]{$s$ [1,8]} (8,1);
     \draw[ultra thick,orange] (2,2) --node[above]{$u$ [2,7]} (7,2);
@@ -415,9 +416,9 @@ We define a cut vertex analogous to a bridge edge from MATH 239.
 \end{defn*}
 
 \begin{example}
-  \tikz\graph[empty nodes, nodes={circle, draw, fill, inner sep=2pt}]{
-    1--{2,3[red]}-!-{4,5}--{6,7};
-    2--3--{4,5}; 4--5--6--7;
+  \tikz[baseline=-17pt]\graph[empty nodes, nodes={circle, draw, fill, inner sep=2pt}]{
+  1--{2,3[red]}-!-{4,5}--{6,7};
+  2--3--{4,5}; 4--5--6--7;
   };
   has a cut vertex in \textcolor{red}{red}.
 \end{example}
@@ -435,7 +436,7 @@ Consider a rooted DFS tree $T$ with known $\vv{parent}$ and $\vv{level}$.
   Suppose $s$ has one child $v$.
   Then, $T-s$ is a rooted DFS tree with root $v$ (i.e., it remains connected).
 
-  Suppose $s$ has subtrees $S_1,\dotsc,S_k$. 
+  Suppose $s$ has subtrees $S_1,\dotsc,S_k$.
   Let $u \in S_i$ and $v \in S_j$ for $i \neq j$.
   Then, there does not exist a path $u \leadsto v$ in $T - s$
   by the \nameref{lem:dfs:key-prop} since it would involve a non-tree, non-back cross edge.
@@ -508,6 +509,7 @@ We can define a directed graph similar to an ordinary graph:
 
 \begin{defn}[directed graph]
   A graph $G = (V, E)$ where edges are \emph{ordered} pairs $(u, v)$.
+
   If $G$ has no cycles, it is a \term{directed acyclic graph} (DAG).
 \end{defn}
 
@@ -535,7 +537,7 @@ Paths and cycles have the ordinary meaning.
   then we can show that $<$ is a topological order.
 
   Suppose that $(v, w) \in E$.
-  
+
   If we discover $v$ before $w$, then $w$ is a descendant of $v$
   by the \nameref{lem:dfs:white-path} so we must finish exploring it before we finish $v$.
 

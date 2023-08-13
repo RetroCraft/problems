@@ -1,5 +1,4 @@
 \documentclass[notes,tikz,class=cs341]{agony}
-% \includeonly{}
 \graphicspath{{figures/}}
 \usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes,matrix}
 \usegdlibrary{circular,force,trees,layered}
@@ -32,13 +31,13 @@ taught by Armin Jamshidpey.
 \chapter{Final Review}
 \lecture{(08/01)}
 
-\begin{example}
+\begin{xca}
   Suppose we want to schedule people be on call between time $S$ and $T$.
   If each of the $n$ people are available from $s_i$ to $t_i$,
   give a greedy algorithm to assign the minimum number of people.
 
   Assume that the input is already sorted by start time $S \leq s_1 \leq \dotsb \leq s_n \leq T$.
-\end{example}
+\end{xca}
 \begin{sol}
   Since we know we must start at $S$,
   consider all the intervals that start at $S$.
@@ -69,11 +68,11 @@ taught by Armin Jamshidpey.
   This runs in $O(n)$ time.
 \end{sol}
 
-\begin{example}
+\begin{xca}
   An $i \times j$ rectangle is worth $P[i,j]$.
   Given an $n \times m$ rectangle, give a dynamic programming algorithm
   to find the optimal way to cut the rectangle into smaller rectangles.
-\end{example}
+\end{xca}
 \begin{sol}
   Let $M[i,j]$ be the optimal value of a rectangle after considering subdivisions.
   Then, $M[i,j]$ is either:
@@ -87,12 +86,12 @@ taught by Armin Jamshidpey.
   so we have $O(n^2m + nm^2)$.
 \end{sol}
 
-\begin{example}
+\begin{xca}
   Consider the problem $\vv{ModifiedSTPath}$:
   given an edge-weighted directed graph, is there a simple $s,t$-path
   (i.e., with no repeated vertices) with total weight at most $k$.
   What complexity class is $\vv{ModifiedSTPath}$ in?
-\end{example}
+\end{xca}
 \begin{sol}
   We can find shortest paths in polynomial time,
   so find a shortest path via Dijkstra and check if its weight is at most $k$.
@@ -100,9 +99,9 @@ taught by Armin Jamshidpey.
   Therefore, it is also in \NP and \coNP.
 \end{sol}
 
-\begin{example}
+\begin{xca}
   Show that $\vv{ModifiedSTPath}$ is \NP-complete.
-\end{example}
+\end{xca}
 \begin{prf}
   We will show that $\vv{DirectedHamiltonianPath} \pleq \vv{ModifiedSTPath}$.
 

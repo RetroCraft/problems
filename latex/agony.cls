@@ -109,6 +109,10 @@
 \ifagony@nogeometry\else
   \usepackage{geometry}
   \geometry{letterpaper,margin=1in}
+  % increase header for fancyhdr
+  \setlength{\headheight}{15pt}
+  \setlength{\topmargin}{-20pt}
+  \setlength{\headsep}{1.5ex}
   
   \RequirePackage{fancyhdr}
   \pagestyle{fancy}

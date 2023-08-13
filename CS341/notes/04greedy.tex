@@ -134,11 +134,8 @@ The setup is a bit weird, so we can construct an example.
 
 \begin{example}
   For $n=5$ and $\vb p = [2,8,1,10,5]$,
-  what is the total processing time if we do not order the jobs
-  and if we order the jobs by increasing processing time?
-\end{example}
-\begin{sol}
-  Construct tables:
+  we can construct tables to find the total processing time
+  if we do not order the jobs and if we order the jobs by increasing processing time:
   \begin{center}
     \begin{tabular}{CCCCC|C}
       2 & 8  & 1  & 10 & 5  & \Sigma \\ \hline
@@ -161,7 +158,7 @@ The setup is a bit weird, so we can construct an example.
     \end{tabular}
   \end{center}
   to find that the total processing times are 70 and 54, respectively.
-\end{sol}
+\end{example}
 
 \begin{prop}
   The total processing time is minimized when
@@ -191,9 +188,288 @@ The setup is a bit weird, so we can construct an example.
 \end{prf}
 
 \section{Shortest Paths: Dijkstra's Algorithm}
+
+Recall that we can define a weight function on a graph.
 \lecture{(06/22)}
 
+\begin{defn}[weight function]
+  Given a graph $G = (V, E)$, a function $w : E \to \R$.
+  We call $(G, w)$ a \term{weighted graph}.
+
+  Then, we define the weight for a path $P = v_0\cdots v_k$
+  by $w(P) = \sum_{i=1}^k w(v_{i-1}v_i)$.
+\end{defn}
+
+\begin{remark}
+  A shortest path exists in any directed weighted graph
+  with no negative-weight cycles.
+\end{remark}
+
+\begin{problem}[single-source shortest path]
+  Given $G = (V, E)$ with weight $w : E \to \R_{\geq 0}$ and a source $s \in V$,
+  find a shortest path from $s$ to each $v \in V$.
+\end{problem}
+
+We denote the length of the shortest path $s \leadsto v$ by $\delta(s,v)$.
+
+\begin{remark}\label{rem:greedy:path}
+  If $v_0\cdots v_k$ is a shortest path from $v_0$ to $v_k$,
+  then $v_0\cdots v_i$ is a shortest path from $v_0$ to $v_i$
+  for all $0 \leq i \leq k$.
+\end{remark}
+\begin{prf}
+  Suppose not.
+  Then, use the shorter path to get to $v_i$ and continue onward to $v_k$
+  to get a shorter path to $v_k$.
+\end{prf}
+
+Dijkstra's algorithm is built on this observation.
+
+For each vertex, we maintain an estimate of the distance $d[v]$
+and a predecessor in that path estimate $\pi[v]$.
+We start with all vertices in a set $Q$
+and pop vertices one at a time in order of $d$,
+adding them to a set $C$.
+When a vertex moves from $Q$ to $C$,
+update the distance estimates and predecessors of its neighbours.
+
+\begin{algorithm}[H]
+  \caption{\Call{Dijkstra}{$G,w,s$}}
+  \begin{algorithmic}[1]
+    \For{each vertex $v \in V$}
+    \State $d[v] \gets \infty$
+    \State $\pi[v] \gets \bot$
+    \EndFor
+    \State $d[s] \gets 0$
+    \State $C \gets \varnothing$
+    \State $Q \gets V$
+    \While{$Q \neq \varnothing$}
+    \State $u \gets \Call{ExtractMin}{Q}$
+    \State $C \gets C \cup \{u\}$
+    \For{neighbours $v \in \vv{Adj}[u]$}
+    \If{$d[v] > d[u] + w(uv)$}
+    \State $d[v] = d[u] + w(uv)$
+    \State $\pi[v] = u$
+    \EndIf
+    \EndFor
+    \EndWhile
+  \end{algorithmic}
+\end{algorithm}
+
+Notice that we implement $Q$ and $C$ as heaps since then
+we get time complexity $O(\abs{V}\log\abs{V} + \abs{E}\log\abs{V})$
+(for the extractions and the updates, respectively)
+instead of $O(\abs{V}^2+\abs{E})$ with arrays.
+
 \lecture{(06/27)}
+Claim now that Dijkstra's is correct.
+Proceed by a greedy stays ahead proof.
+
+\begin{prop}
+  For each vertex $v \in V$, $d[v] = \delta(s,v)$ at the time $v$ is added to $C$.
+\end{prop}
+\begin{prf}
+  Suppose for a contradiction that $u \in V$
+  is the first vertex for which $d[u] \neq \delta(s,u)$ when it is added to $C$.
+  Denote the iteration when $u$ is added to $C$ as time $t$.
+
+  Let $P$ be a shortest path $s \leadsto u$.
+  Since $s \in C$ and $P \in V-C$,
+  there exists a pair of vertices $x \in C$ and $y \in V-C$ with $xy \in P$.
+  We claim that at time $t$, $d[y] = \delta(s,y)$.
+
+  Since $u$ is the first vertex with $d[u] \neq \delta(s,u)$,
+  for all vertices $w$ in $C$ at time $t$, $d[w] = \delta(s,w)$.
+  In particular, $d[x] = \delta(s,x)$.
+  When $x$ was added to $C$, the edge $xy$ was considered.
+  By \Cref{rem:greedy:path}, since $P$ is a shortest path,
+  the parts from $s$ to $x$ and $y$ are also shortest paths.
+  Therefore, $\delta(s,y) = d[x] + w(x,y)$ which is exactly what
+  $d[y]$ is set to during that iteration.
+
+  However, we can also say that $d[y] = \delta(s,y) \leq \delta(s,u) \leq d[u]$.
+  But at time $t$, Dijkstra's chose $u$ from the min-heap,
+  so we must have $d[u] \leq d[y]$.
+
+  Therefore, $d[y] = d[u]$ so we must have tight $d[y] = \delta(s,y) = \delta(s,u) = d[u]$,
+  which is our contradiction.
+\end{prf}
 
 \section{Minimum Spanning Trees: Kruskal's Algorithm}
+
+Recall again some MATH 239 content:
 \lecture{(06/29)}
+
+\begin{defn}[spanning tree in $G$]
+  Given a connected graph $G = (V,E)$,
+  a tree $T = (V,A)$ where $A \subseteq E$.
+\end{defn}
+
+Suppose we have a weighted graph. Then,
+
+\begin{problem}[minimal spanning tree]
+  Given a connected graph $G$ with edge weights $w$,
+  what is the spanning tree with minimal weight $w(T) = \sum_{e \in A}w(e)$?
+\end{problem}
+
+Recall that a tree is a graph with no cycles.
+Kruskal's algorithm greedily selects the lowest-weight edge available
+that does not create a cycle:
+
+\begin{algorithm}[H]
+  \caption{\Call{GreedyMST}{$G$}\label{alg:g:mst1}}
+  \begin{algorithmic}[1]
+    \State $A \gets $ empty graph
+    \State sort edges by increasing weight
+    \For{$e \in E$}
+    \If{$e$ does not create a cycle in $A$}
+    \State append $e$ to $A$
+    \EndIf
+    \EndFor
+  \end{algorithmic}
+\end{algorithm}
+
+Now, we prove that this indeed works.
+
+\begin{claim}
+  Let $G = (V,E)$ be a connected graph and $A \subseteq E$.
+  If $(V,A)$ has no cycles and $\abs{A} < n-1$,
+  then there is always an edge $e \in E-A$ such that $(V,A \cup \{e\})$
+  still has no cycles.
+\end{claim}
+\begin{prf}
+  In any graph, $\abs{V} - c \leq \abs{E}$
+  where $c$ is the number of components $C_i = (V_i,E_i)$ in $(V,E)$.
+  Since each component is connected, $\abs{E_i} \geq \abs{V_i} - 1$. Then,
+  \[
+    \abs{V} - c
+    = \sum_{i=1}^c \abs{V_i} - \sum_{i=1}^c 1
+    = \sum_{i=1}^c (\abs{V_i} - 1)
+    \leq \sum_{i=1}^c \abs{E_i} = \abs{E}
+  \]
+  In particular, for $(V,A)$, we have $n - c < n-1 \implies c > 1$.
+  This means there exists an edge $e$ that connects two components of $(V,A)$.
+
+  Since $e$ is a bridge of $(V, A\cup \{e\})$, it does not add a cycle.
+\end{prf}
+
+\begin{claim}\label{claim:g:2}
+  If the output of \Cref{alg:g:mst1} is $A = [e_1,\dotsc,e_r]$,
+  then $(V,A)$ is a spanning tree and $r = n-1$.
+\end{claim}
+\begin{prf}
+  By construction, $(V,A)$ has no cycles (i.e., it is a tree).
+  Suppose $(V,A)$ is not spanning.
+  Then, it has at least two components and there exists an edge $e \not\in A$
+  such that $(V,A\cup\{e\})$ has no cycles because $G$ is connected.
+  Now, either:
+  \begin{itemize}
+    \item $w(e) < w(e_1)$. This cannot happen because $e_1$ is the edge with the smallest weight.
+    \item $w(e_i) < w(e) < w(e_{i+1})$ for some $i$.
+          This also does not work because if $e$ was considered after inserting $e_i$
+          and rejected, then that means that $e$ creates a cycle in $(V,\{e_1,\dotsc,e_i\})$.
+          But by construction, $e$ does not create a cycle in $V(,A)$.
+    \item $w(e) > w(e_r)$. This also does not make sense, because the algorithm
+          would have included it in $A$ after selecting $e_r$.
+  \end{itemize}
+  Therefore, no such $e$ exists, which means that $(V,A)$ is spanning.
+  Since $(V,A)$ is a spanning tree, we also get that $r = n-1$.
+\end{prf}
+
+\begin{claim}\label{claim:g:3}
+  Let $(V, A)$ and $(V, T)$ be two spanning trees,
+  and let $e$ be an edge in $T$ but not in $A$.
+  
+  Then, there exists an edge $e'$ in $A - T$ such that
+  $(V, T + e' - e)$ is still a spanning tree.
+  Also, $e'$ is on the cycle that $e$ creates in $A$.
+
+  (This is Theorem 5.2.4 from MATH 239)
+\end{claim}
+\begin{prf}
+  Let $e = uv$. Then, $(V,A+e)$ contains a cycle $C = vw\cdots v$.
+
+  Since $T$ is a tree, $(V,T-e)$ has two connected components $T_1$ and $T_2$.
+  \WLOG, suppose $v \in T_1$.
+  Then, $C$ starts in $V(T_1)$, immediately crosses to $V(T_2)$,
+  and at some point later crosses back into $V(T_1)$.
+  Therefore, there exists an edge $e' \in E(C) \subseteq A+e$ connecting $T_1$ and $T_2$
+  that is in $A$ but not in $T$.
+
+  It follows that $(V,T+e'-e)$ is a spanning tree by reconnecting those components.
+\end{prf}
+
+Now, proceed by an exchange argument.
+
+\begin{prop}
+  Let $A$ be the output of \Cref{alg:g:mst1} and $(V,T)$ be any spanning tree.
+  Then, $(V,A)$ is a spanning tree with $w(A) \leq w(T)$.
+\end{prop}
+\begin{prf}
+  We know that $(V,A)$ is a spanning tree from \Cref{claim:g:2}.
+
+  Claim that $w(A) \leq w(T)$. We induct on the size of $T - A$.
+  If $T - A = \varnothing$, then $A = T$ and naturally $w(A) = w(T)$.
+
+  Suppose $A \neq T$. Then, let $e \in T - A$.
+  By \Cref{claim:g:3}, there exists an edge $e' \in A - T$
+  such that $(V, T+e'-e)$ is a spanning tree and $e'$ is on the cycle that $e$ creates in $A$.
+
+  Since we rejected $e$, it must have created a cycle in $A$.
+  Therefore, it appeared in the sorted list after all elements in its induced cycle,
+  in particular, $w(e') \leq w(e)$.
+
+  Then, if we let $T' = T + e' - e$,
+  we have $w(T') = w(T) + w(e) - w(e') \leq w(T)$.
+
+  Also, since $T'$ has one more edge in common with $A$,
+  $\abs{T' - A} < \abs{T - A}$.
+  By the inductive hypothesis, $w(A) \leq w(T') \leq w(T)$.
+
+  Therefore, $A$ is optimal.
+\end{prf}
+
+Now, consider how we can implement this optimally.
+Every vertex is initially in a component of just itself.
+Then, as edges are added, the components grow.
+To check if a cycle is formed, check if both ends of an edge are in the same component.
+
+We need a data structure that allows us to quickly identify
+a set given an element belongs to (\Call{Find}{$e$}) and also join two sets (\Call{Union}{$S_1,S_2$}).
+With these operations, we can rewrite Kruskal's as:
+
+\begin{algorithm}[H]
+  \caption{\Call{GreedyMSTUnionFind}{$G$}}
+  \begin{algorithmic}[1]
+    \State $T \gets [\ ]$
+    \State $U \gets \{\{v_1\},\dotsc,\{v_n\}\}$
+    \State sort edges by increasing weight
+    \For{$e \in E(G)$ sorted}
+    \If{$U.\Call{Find}{e_k.1} \neq U.\Call{Find}{e_k.2}$}
+    \State $U.\Call{Union}{U.\Call{Find}{e_k.1}, U.\Call{Find}{e_k.2}}$
+    \State $T.\Call{Append}{e_k}$
+    \EndIf
+    \EndFor
+  \end{algorithmic}
+\end{algorithm}
+
+We can implement this with $U$ as an array of linked lists
+paired with an array of indices $X$ such that $e \in U[X[e]]$.
+Then, we can run \Call{Find}{} in $O(1)$ time and \Call{Union}{} in $O(n)$ time.
+
+There will be $O(m)$ \Call{Find}{}'s and $O(n)$ \Call{Union}{}'s.
+The total time complexity is then $O(m \log m + n^2)$.
+
+We can optimize this slightly.
+First, only traverse the smaller list when unioning. 
+Also, have each linked list in $U$ keep track of its size
+and have an optional pointer to a continuation.
+Then, by setting the pointer, we can get concatenation in $O(1)$
+even though the overall union is still $O(n)$ (because of the updates to $X$).
+
+However, for any vertex $v$, the size of the list containing $v$
+at least doubles every time we update $X[v]$.
+That means that $X[v]$ is updated $O(\log n)$ times,
+meaning the overall cost per union per vertex is $O(\log n)$ for $O(n \log n)$ total.
+
+Therefore, we can do Kruskal's in $O(m\log m)$.
