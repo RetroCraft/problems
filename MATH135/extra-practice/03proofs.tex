@@ -1,69 +1,71 @@
-\documentclass{agony}
-\title{MATH 135 Fall 2020: Extra Practice 3}
+\chapter{Proving Mathematical Statements}
 
-\begin{document}
-\thispagestyle{firstpage}
-
-\textbf{\thetitle}
-
-\qsection{Warm-Up Exercises}{WE}
-
-\question Prove the following two quantified statements.
-\begin{enumerate}[(a)]
-  \item $\forall n \in \N, n+1 \geq 2$
-        \begin{proof}
-          Let $n \in \N$.
+\section{Warm-Up Exercises}
+\begin{warmup}
+  Prove the following two quantified statements.
+  \begin{enumerate}
+    \item $\forall n \in \N, n+1 \geq 2$
+    \item $\exists n \in \Z, \frac{5n-6}{3} \in \Z$
+  \end{enumerate}
+\end{warmup}
+\begin{prf}
+  \begin{enumerate}
+    \item Let $n \in \N$.
           Recall that 1 is the smallest natural.
           $n \geq 1 \iff n+1 \geq 2$.
-        \end{proof}
 
-  \item $\exists n \in \Z, \frac{5n-6}{3} \in \Z$
-        \begin{proof}
-          Select $n=3$. Then, $\frac{5n-6}{3}=\frac{15-6}{3}=\frac{9}{3}=3 \in \Z$.
-        \end{proof}
-\end{enumerate}
+    \item Select $n=3$. Then, $\frac{5n-6}{3}=\frac{15-6}{3}=\frac{9}{3}=3 \in \Z$.
+          \qedhere
+  \end{enumerate}
+\end{prf}
 
-
-\question Prove that for all $k \in \Z$, if $k$ is odd, then $4k + 7$ is odd.
-\begin{proof}
+\begin{warmup}
+  Prove that for all $k \in \Z$, if $k$ is odd, then $4k + 7$ is odd.
+\end{warmup}
+\begin{prf}
   Let $k$ be an odd integer.
   Then, it can be written as $2n+1$ for some integer $n$.
 
   Substituting, $4k+7 = 4(2n+1) + 7 = 8n+11 =2(4n+5)+1$.
   By definition, since $4k+7$ can be written as $2m+1$ where $m=4n+5$ is an integer, it is odd.
-\end{proof}
+\end{prf}
+
+\begin{warmup}
+  Consider the following proposition
+  \begin{center}
+    \emph{For all $a,b\in\Z$, if $a^3 \mid b^3$, then $a \mid b$.}
+  \end{center}
+  We now give three erroneous proofs of this proposition.
+  Identify the major error in each proof, and explain why it is an error.
+  \begin{enumerate}
+    \item Consider $a = 2$, $b = 4$. Then $a^3 = 8$ and $b^3 = 64$. We see that $a^3 \mid b^3$ since $8 \mid 64$. Since $2 \mid 4$, we have $a \mid b$.
+    \item Since $a \mid b$, there exists $k\in\Z$ such that $b=ka$. By cubing both sides, we get $b^3 = k^3a^3$. Since $k^3\in\Z$, then $a^3\mid b^3$.
+    \item Since $a^3 \mid b^3$, there exists $k\in\Z$ such that $b^3=ka^3$. Then $b=(ka^2/b^2)a$, hence $a \mid b$.
+  \end{enumerate}
+\end{warmup}
+\begin{sol}
+  \begin{enumerate}
+    \item This proof is erroneous as it only considers one specific case of $a$ and $b$ and not the general case of integer $a$ and $b$.
+    \item This proof supposes the conclusion instead of the hypothesis.
+    \item The proof does not guarantee that $\frac{ka^2}{b^2}$ is an integer.
+          \qedhere
+  \end{enumerate}
+\end{sol}
 
 
-\question Consider the following proposition
-\begin{center}
-  \emph{For all $a,b\in\Z$, if $a^3 \mid b^3$, then $a \mid b$.}
-\end{center}
-We now give three erroneous proofs of this proposition. Identify the major error in each proof, and explain why it is an error.
-\begin{enumerate}[(a)]
-  \item \emph{Consider $a = 2$, $b = 4$. Then $a^3 = 8$ and $b^3 = 64$. We see that $a^3 \mid b^3$ since $8 \mid 64$. Since $2 \mid 4$, we have $a \mid b$.}
-
-        This proof is erroneous as it only considers one specific case of $a$ and $b$ and not the general case of integer $a$ and $b$.
-
-  \item \emph{Since $a \mid b$, there exists $k\in\Z$ such that $b=ka$. By cubing both sides, we get $b^3 = k^3a^3$. Since $k^3\in\Z$, then $a^3\mid b^3$.}
-
-        This proof supposes the conclusion instead of the hypothesis.
-
-  \item \emph{Since $a^3 \mid b^3$, there exists $k\in\Z$ such that $b^3=ka^3$. Then $b=(ka^2/b^2)a$, hence $a \mid b$.}
-
-        The proof does not guarantee that $\frac{ka^2}{b^2}$ is an integer.
-\end{enumerate}
-
-
-\question Let $x$ be a real number. Prove that if $x^3-5x^2+3x \neq 15$, then $x \neq 5$.
-\begin{proof}
+\begin{warmup}
+  Let $x$ be a real number. Prove that if $x^3-5x^2+3x \neq 15$, then $x \neq 5$.
+\end{warmup}
+\begin{prf}
   Suppose for the contrapositive that $x=5$.
   Then, $x^3-5x^2+3x=(5)^3-5(5)^2+3(5)=15$, as required.
   Since the contrapositive is true, the original implication must be true.
-\end{proof}
+\end{prf}
 
-
-\question Prove that there do not exist integers $x$ and $y$ such that $2x + 4y = 3$.
-\begin{proof}
+\begin{warmup}
+  Prove that there do not exist integers $x$ and $y$ such that $2x + 4y = 3$.
+\end{warmup}
+\begin{prf}
   For the sake of contradiction, suppose the negation is true.
 
   Consider the negation of the statement: there exist integers $x$ and $y$ such that $2x + 4y = 3$.
@@ -72,11 +74,13 @@ We now give three erroneous proofs of this proposition. Identify the major error
   Therefore, $2x+4y=2(x+2y)$ is even.
   However, 3 is odd.
   An integer cannot be both even and odd, therefore, the negation is false, and the original statement is true.
-\end{proof}
+\end{prf}
 
 
-\question Prove that an integer is even if and only if its square is an even integer.
-\begin{proof}
+\begin{warmup}
+  Prove that an integer is even if and only if its square is an even integer.
+\end{warmup}
+\begin{prf}
   ($\Rarr$) Let $n$ be an even integer.
   Then, $n=2k$ for some integer $k$.
   $n^2=(2k)^2=4k^2=2(2k^2)$.
@@ -88,25 +92,27 @@ We now give three erroneous proofs of this proposition. Identify the major error
   Therefore, $x=2y$ for some integer $y$, which is the definition of being even.
 
   Since the implication is true in both directions, the biconditional is true.
-\end{proof}
+\end{prf}
 
 
-
-\qsection{Recommended Problems}{RP}
-
-\question Prove that $x^2 + 9 \geq 6x$ for all real numbers $x$.
-\begin{proof}
+\section{Recommended Problems}
+\begin{recommended}
+  Prove that $x^2 + 9 \geq 6x$ for all real numbers $x$.
+\end{recommended}
+\begin{prf}
   Let $x$ be a real number.
   $x^2+9 \geq 6x \iff x^2-6x+9 \geq 0 \iff (x-3)^2 \geq 0$.
   Since the square of a real is always non-negative, the statements are true.
-\end{proof}
+\end{prf}
 
 
-\question Prove that for all $r\in\R$ where $r\neq -1$ and $r\neq -2$,
-\begin{equation*}
-  \frac{2^{r+1}}{r+2}-\frac{2^r}{r+1}=\frac{r(2^r)}{(r+1)(r+2)}
-\end{equation*}
-\begin{proof}
+\begin{recommended}
+  Prove that for all $r\in\R$ where $r\neq -1$ and $r\neq -2$,
+  \begin{equation*}
+    \frac{2^{r+1}}{r+2}-\frac{2^r}{r+1}=\frac{r(2^r)}{(r+1)(r+2)}
+  \end{equation*}
+\end{recommended}
+\begin{prf}
   Let $r$ be a real number that is neither $-1$ nor $-2$.
   Then,
   \begin{align*}
@@ -121,28 +127,38 @@ We now give three erroneous proofs of this proposition. Identify the major error
         & = RHS
   \end{align*}
   Since the left side equals the right side, the equality is true.
-\end{proof}
+\end{prf}
 
 
-\question Prove that there exists a real number $x$ such that $x^2 - 6x + 11 \leq 2$.
-\begin{proof}
+\begin{recommended}
+  Prove that there exists a real number $x$ such that $x^2 - 6x + 11 \leq 2$.
+\end{recommended}
+\begin{prf}
   Let $x=3$.
   $x^2-6x+11=(3)^2-6(3)+11=9-18+11=2 \leq 2$, as required.
   Since 3 is a real number, the statement is true.
-\end{proof}
+\end{prf}
 
 
-\question Prove or disprove each of the following statements.
-\begin{enumerate}[(a)]
-  \item $\forall n\in\Z$, $\frac{5n-6}{3}$ is an integer.
-        \begin{proof}
+\begin{recommended}
+  Prove or disprove each of the following statements.
+  \begin{enumerate}
+    \item $\forall n\in\Z$, $\frac{5n-6}{3}$ is an integer.
+    \item $\forall a\in\Z$, $a^3+a+2$ is even.
+    \item For every prime number $p$, $p + 7$ is composite.
+    \item For all $x \in \R$, $|x-3| + |x-7| \geq 10$.
+    \item There exists a natural number $m < 123456$ such that $123456m$ is a perfect square.
+    \item $\exists k\in\Z, 8\nmid(4k^2+12k+8)$.
+  \end{enumerate}
+\end{recommended}
+\begin{enumerate}
+  \item \begin{prf}
           Let $n=1$ as a counter-example.
           Then, $\frac{5n-6}{3}=\frac{5-6}{3}=-\frac{1}{3}$, which is not an integer.
           Therefore, the statement is false.
-        \end{proof}
+        \end{prf}
 
-  \item $\forall a\in\Z$, $a^3+a+2$ is even.
-        \begin{proof}
+  \item \begin{prf}
           Let $a$ be an integer. Then, $a$ is either even or odd.
           Suppose that $a$ is even and can be written as $a=2k$ for an integer $k$.
           Then, $a^3+a+2=(2k)^3+2k+2=8k^3+2k+2=2(4k^3+k+1)$, an even number.
@@ -151,10 +167,9 @@ We now give three erroneous proofs of this proposition. Identify the major error
           Then, $a^3+a+2 = (2k+1)^3 + (2k+1) + 2 = 8k^3 + 12k^2 + 8k + 4 = 2(4k^3 + 6k^2 + 4k + 2)$, an even number.
 
           Therefore, the statement is true.
-        \end{proof}
+        \end{prf}
 
-  \item For every prime number $p$, $p + 7$ is composite.
-        \begin{proof}
+  \item \begin{prf}
           Let $p$ be a prime number.
 
           If $p$ is even, then $p = 2$, and $p + 7 = 9$ which is composite.
@@ -164,27 +179,24 @@ We now give three erroneous proofs of this proposition. Identify the major error
           The only even prime is 2, but $2k + 8 \geq 8$, so $p + 7$ is composite.
 
           Therefore, since all primes are either even or odd, $p + 7$ is composite for all primes.
-        \end{proof}
+        \end{prf}
 
-  \item For all $x \in \R$, $|x-3| + |x-7| \geq 10$.
-        \begin{proof}
+  \item \begin{prf}
           Let $x=3$ as a counter-example.
           Then, $|x-3|+|x-7|=|(3)-3|+|(3)-7|=0+4=4 \not\geq 10$.
           Therefore, the statement is false.
-        \end{proof}
+        \end{prf}
 
-  \item There exists a natural number $m < 123456$ such that $123456m$ is a perfect square.
-        \begin{proof}
+  \item \begin{prf}
           Let $m=1929$, which is a natural number less than $123456$.
           Then, $123456m=238146624=15432^2$.
           Since $123456m$ can be written as $n^2$ where $n=15432\in\Z$, it is a perfect square, and the statement is true.
-        \end{proof}
+        \end{prf}
         \underline{Note:} To find $m = 1929$, notice that if $123456m = n^2$,
         then $\sqrt{123456m} = 8\sqrt{1929m}$ (after simplifying by prime factorization)
         must be an integer.
 
-  \item $\exists k\in\Z, 8\nmid(4k^2+12k+8)$.
-        \begin{proof}
+  \item \begin{prf}
           Consider the negation, $\forall k\in\Z, 8\mid(4k^2+12k+8)$.
           Notice that the open sentence is logically equivalent to $8 \mid (4k^2+12k)$.
           Let $k$ be a natural number. Then, $k$ is either even or odd.
@@ -198,14 +210,16 @@ We now give three erroneous proofs of this proposition. Identify the major error
           Then, $4k^2+12k = 4(4n^2+2n+1)+12(2n+1) = 16n^2 + 40n + 16 = 8(2n^2+5n+1)$, so $8 \mid (4k^2+12k)$.
 
           Therefore, the negation is true, so the original statement is false.
-        \end{proof}
+        \end{prf}
 \end{enumerate}
 
 
-\question Prove or disprove each of the following statements involving nested quantifiers.
+\begin{recommended}
+  Prove or disprove each of the following statements involving nested quantifiers.
+\end{recommended}
 \begin{enumerate}[(a)]
   \item For all $n \in\Z$, there exists an integer $k > 2$ such that $k \mid (n^3 - n)$.
-        \begin{proof}
+        \begin{prf}
           Let $n$ be an integer. If $n=0$ or $n=\pm1$, $n^3-n=0$ and all integers (including any $k$) divide zero.
 
           If $n > 1$, we select $k=n+1 > 2$.
@@ -217,26 +231,26 @@ We now give three erroneous proofs of this proposition. Identify the major error
           Then, $n^3 - n = -m(m-1)(m+1)$, so $k \mid (n^3-n)$.
 
           Therefore, the statement is true.
-        \end{proof}
+        \end{prf}
 
   \item For every positive integer $a$, there exists an integer $b$ with $|b| < a$ such that $b$ divides $a$.
-        \begin{proof}
+        \begin{prf}
           We disprove by counter-example.
           Let $a = 1$.
           Then, $|b| < 1$, and the only such integer is 0.
           However, $0 \nmid 1$ since there is no integer $k$ where $k \cdot 0 = 1$.
           Therefore, the statement is false.
-        \end{proof}
+        \end{prf}
 
   \item There exists an integer $n$ such that $m(n - 3) < 1$ for every integer $m$.
-        \begin{proof}
+        \begin{prf}
           Choose $n = 3$ and let $m$ be an integer.
           Then, $m(n-3) = m(3-3) = 0 < 1$, as desired.
           Therefore, the statement is true.
-        \end{proof}
+        \end{prf}
 
   \item $\exists n\in\N, \forall m\in\Z, -nm < 0$
-        \begin{proof}
+        \begin{prf}
           Consider the negation $\forall n\in\N, \exists m\in\Z, -nm \geq 0$.
           Let $n$ be a natural number.
 
@@ -244,12 +258,14 @@ We now give three erroneous proofs of this proposition. Identify the major error
           Notice that because $n$ is a natural number, $n > 0 \iff n(-1)(-1) > 0 \iff -nm > 0 \iff -nm \geq 0$.
 
           Because the negation is true, the original statement is false.
-        \end{proof}
+        \end{prf}
 \end{enumerate}
 
 
-\question Prove that for all integers $a$ and $b$, if $a \mid (2b + 3)$ and $a \mid (3b + 5)$, then $a \mid 13$.
-\begin{proof}
+\begin{recommended}
+  Prove that for all integers $a$ and $b$, if $a \mid (2b + 3)$ and $a \mid (3b + 5)$, then $a \mid 13$.
+\end{recommended}
+\begin{prf}
   Let $a$ and $b$ be arbitrary integers, and assume that $a \mid (2b+3)$ and $a \mid (3b+5)$.
 
   Recall the divisibility of integer combinations: since $2b+3$ and $3b+5$ are integers,
@@ -257,12 +273,14 @@ We now give three erroneous proofs of this proposition. Identify the major error
   Specifically, let $n = -39$ and $m = 26$.
   Then, $n(2b+3) + m(3b+5) = -78b - 117 + 78b + 130 = 13$.
   Therefore, $a \mid 13$.
-\end{proof}
+\end{prf}
 
 
-\question Let $a$, $b$, $c$ and $d$ be positive integers.
-Prove that if $\frac a b < \frac c d$, then $\frac a b < \frac{a+c}{b+d} < \frac c d$.
-\begin{proof}
+\begin{recommended}
+  Let $a$, $b$, $c$ and $d$ be positive integers.
+  Prove that if $\frac a b < \frac c d$, then $\frac a b < \frac{a+c}{b+d} < \frac c d$.
+\end{recommended}
+\begin{prf}
   Let $a$, $b$, $c$ and $d$ all be positive integers.
   Suppose $\frac a b < \frac c d$, which means $ad < bc$, because $b$ and $d$ are positive.
   Now, adding $ab$ and $cd$ to both sides, respectively:
@@ -273,22 +291,26 @@ Prove that if $\frac a b < \frac c d$, then $\frac a b < \frac{a+c}{b+d} < \frac
     \frac a b & < \frac{a+c}{b+d} & \hspace{4em} \frac{a+c}{b+d} & < \frac c d
   \end{alignat*}
   Therefore, $\frac a b < \frac{a+c}{b+d} < \frac c d$.
-\end{proof}
+\end{prf}
 
 
-\question Prove that for all integers $n$, if $1-n^2 > 0$, then $3n - 2$ is an even integer.
-\begin{proof}
+\begin{recommended}
+  Prove that for all integers $n$, if $1-n^2 > 0$, then $3n - 2$ is an even integer.
+\end{recommended}
+\begin{prf}
   Let $n$ be an integer where $1-n^2 > 0$.
   Since squares of integers are positive, $1 > n^2$.
   This is only true when $|n| < 1$, but the only such integer is 0.
   $3(0)-2=-2$, which is even.
-\end{proof}
+\end{prf}
 
 
-\question Let $a$ and $b$ be integers. Prove each of the following implications.
+\begin{recommended}
+  Let $a$ and $b$ be integers. Prove each of the following implications.
+\end{recommended}
 \begin{enumerate}[(a)]
   \item If $ab = 4$, then $(a-b)^3 - 9(a-b) = 0$
-        \begin{proof}
+        \begin{prf}
           Let $a$ and $b$ be integers with product 4.
 
           Consider the possible values for $a$ and $b$.
@@ -303,9 +325,9 @@ Prove that if $\frac a b < \frac c d$, then $\frac a b < \frac{a+c}{b+d} < \frac
 
           Notice that the conclusion factors to $(a-b)(a-b-3)(a-b+3)=0$.
           This is true when $a=b$ or $a=b\pm3$, which we just showed.
-        \end{proof}
+        \end{prf}
   \item If $a$ and $b$ are positive, then $a^2(b+1) + b^2(a+1) \geq 4ab$
-        \begin{proof}
+        \begin{prf}
           Let $a$ and $b$ be positive integers, i.e., at least 1.
 
           If $a$ and $b$ are both at least 1, then $a+b \geq 2$, or $a+b-2 \geq 0$.
@@ -321,13 +343,15 @@ Prove that if $\frac a b < \frac c d$, then $\frac a b < \frac{a+c}{b+d} < \frac
             a^2 + a^2b + b^2 + b^2a             & \geq 4ab          \\
             a^2(b+1) + b^2(a+1)                 & \geq 4ab \qedhere
           \end{align*}
-        \end{proof}
+        \end{prf}
 \end{enumerate}
 
 
-\question Let $a$, $b$, $c$ and $d$ be integers.
-Prove that if $a \mid b$ and $b \mid c$ and $c \mid d$, then $a \mid d$.
-\begin{proof}
+\begin{recommended}
+  Let $a$, $b$, $c$ and $d$ be integers.
+  Prove that if $a \mid b$ and $b \mid c$ and $c \mid d$, then $a \mid d$.
+\end{recommended}
+\begin{prf}
   Let $a$, $b$, $c$, and $d$ be integers where $a \mid b$, $b \mid c$, and $c \mid d$.
 
   Recall the transitivity of divisibility:
@@ -335,11 +359,13 @@ Prove that if $a \mid b$ and $b \mid c$ and $c \mid d$, then $a \mid d$.
 
   Then, $a \mid b$ and $b \mid c$ implies $a \mid c$.
   Likewise, $a \mid c$ and $c \mid d$ implies $a \mid d$.
-\end{proof}
+\end{prf}
 
 
-\question Prove that the product of any four consecutive integers is one less than a perfect square.
-\begin{proof}
+\begin{recommended}
+  Prove that the product of any four consecutive integers is one less than a perfect square.
+\end{recommended}
+\begin{prf}
   The statement is equivalently expressed that for any integer $k$,
   $k(k+1)(k+2)(k+3)=r^2-1$ for some positive integer $r$.
 
@@ -361,32 +387,38 @@ Prove that if $a \mid b$ and $b \mid c$ and $c \mid d$, then $a \mid d$.
      & = k(k+1)(k+2)(k+3)
   \end{align*}
   and conclude that the statement is true.
-\end{proof}
+\end{prf}
 
 
-\question Let $x$, $y\in\R$. Prove that if $xy + 2x - 3y - 6 < 0$, then $x < 3$ or $y < -2$.
-\begin{proof}
+\begin{recommended}
+  Let $x$, $y\in\R$. Prove that if $xy + 2x - 3y - 6 < 0$, then $x < 3$ or $y < -2$.
+\end{recommended}
+\begin{prf}
   Let $x$ and $y$ be real solutions to $xy + 2x - 3y - 6 < 0$.
 
   Notice that the inequality factors to $(x-3)(y+2) < 0$.
   This is true when $x$ and $y$ are non-zero and have opposite signs: either $x < 3$ and $y > -2$, or $x > 3$ and $y < -2$.
   Therefore, either $x < 3$ or $y < -2$.
-\end{proof}
+\end{prf}
 
 
-\question Is the following implication true for all integers $a$, $b$ and $c$? Prove that your answer is correct.
-\begin{center}
-  \emph{$a \mid b$ if and only if $ac \mid bc$}
-\end{center}
-\begin{proof}[Solution]
+\begin{recommended}
+  Is the following implication true for all integers $a$, $b$ and $c$? Prove that your answer is correct.
+  \begin{center}
+    \emph{$a \mid b$ if and only if $ac \mid bc$}
+  \end{center}
+\end{recommended}
+\begin{sol}
   The statement is false.
   Consider the counterexample $a=2$, $b=3$, and $c=0$.
   Then, the backwards implication's hypothesis is true ($0 \mid 0$) but the conclusion is false ($2 \nmid 3$).
-\end{proof}
+\end{sol}
 
 
-\question Let $n$ be an integer. Prove that $2 \mid (n^4 - 3)$ if and only if $4 \mid (n^2 + 3)$.
-\begin{proof}
+\begin{recommended}
+  Let $n$ be an integer. Prove that $2 \mid (n^4 - 3)$ if and only if $4 \mid (n^2 + 3)$.
+\end{recommended}
+\begin{prf}
   Consider the two implications of the biconditional statement:
 
   ($\Rarr$) Let $n$ be an integer where 2 divides $n^4 - 3$.
@@ -415,11 +447,13 @@ Prove that if $a \mid b$ and $b \mid c$ and $c \mid d$, then $a \mid d$.
   Because $8k^2 - 12k + 3$ is an integer, $2 \mid (n^4 - 3)$.
 
   Therefore, since both expressions imply the other, $2 \mid (n^4 - 3)$ if and only if $4 \mid (n^2 + 3)$.
-\end{proof}
+\end{prf}
 
 
-\question Let $x$ and $y$ be integers. Prove that if $xy = 0$ then $x = 0$ or $y = 0$.
-\begin{proof}
+\begin{recommended}
+  Let $x$ and $y$ be integers. Prove that if $xy = 0$ then $x = 0$ or $y = 0$.
+\end{recommended}
+\begin{prf}
   Consider the contrapositive, $x \neq 0$ and $y \neq 0$ implies $xy \neq 0$.
 
   Let $x$ and $y$ be non-zero integers.
@@ -433,11 +467,13 @@ Prove that if $a \mid b$ and $b \mid c$ and $c \mid d$, then $a \mid d$.
   \end{itemize}
 
   Since $xy$ can never be 0 for any combination of non-zero integers, the contrapositive, and by extension, the original implication, is true.
-\end{proof}
+\end{prf}
 
 
-\question Prove that $\forall a,b\in\Z,[(a \mid b \land b \mid a) \iff a = \pm b]$.
-\begin{proof}
+\begin{recommended}
+  Prove that $\forall a,b\in\Z,[(a \mid b \land b \mid a) \iff a = \pm b]$.
+\end{recommended}
+\begin{prf}
   Let $a$ and $b$ be integers.
   Suppose $a$ divides $b$ and vice versa.
   Equivalently, integers $p$ and $q$ exist such that $a = pb$ and $b = qa$.
@@ -445,11 +481,13 @@ Prove that if $a \mid b$ and $b \mid c$ and $c \mid d$, then $a \mid d$.
 
   The only integers of the form $\frac{1}{k}$ with integer $k$ are 1 and -1.
   Therefore, $p = \frac{1}{q}$ if and only if $p = \pm1$, i.e., $a = \pm b$.
-\end{proof}
+\end{prf}
 
 
-\question Let $a$ be an integer. Prove that $a^2 + 2a - 3$ is even if and only if $a$ is odd.
-\begin{proof}
+\begin{recommended}
+  Let $a$ be an integer. Prove that $a^2 + 2a - 3$ is even if and only if $a$ is odd.
+\end{recommended}
+\begin{prf}
   Consider the two implications of the biconditional statement:
 
   ($\Rarr$) Let $a$ be an odd integer, or, $a = 2k+1$ for some integer $k$. Then,
@@ -474,14 +512,16 @@ Prove that if $a \mid b$ and $b \mid c$ and $c \mid d$, then $a \mid d$.
   Since the contrapositive is true, the original implication is also true.
 
   Therefore, since both implications hold, the statement is true.
-\end{proof}
+\end{prf}
 
 
-\question Prove or disprove each of the following for any integers $x$ and $y$.
-\begin{enumerate}[(a)]
+\begin{recommended}
+  Prove or disprove each of the following for any integers $x$ and $y$.
+\end{recommended}
+\begin{enumerate}
   \item If $2 \nmid xy$ then $2 \nmid x$ and $2 \nmid y$.
   \item If $2 \nmid y$ and $2 \nmid x$ then $2 \nmid xy$.
-        \begin{proof}
+        \begin{prf}
           First, notice that if $2 \mid n$ for an integer $n$, then $n = 2k$ for some integer $k$.
           This is the definition of saying $n$ is even.
           Therefore, $2 \nmid n$ is the same as saying $n$ is not even, i.e., $n$ is odd.
@@ -492,9 +532,9 @@ Prove that if $a \mid b$ and $b \mid c$ and $c \mid d$, then $a \mid d$.
           By definition, since $pq + p + q$ is an integer, $xy$ is odd.
 
           Therefore, $x$ and $y$ are odd if and only if $xy$ is odd, so (a) and (b) are both true.
-        \end{proof}
+        \end{prf}
   \item If $10 \nmid xy$ then $10 \nmid x$ and $10 \nmid y$.
-        \begin{proof}
+        \begin{prf}
           Consider the contrapositive, ``if $10 \mid x$ and $10 \mid y$ then $10 \mid xy$''.
           Let $x$ and $y$ be integers where 10 divides both.
 
@@ -502,19 +542,21 @@ Prove that if $a \mid b$ and $b \mid c$ and $c \mid d$, then $a \mid d$.
           Then, $xy = (10n)(10m) = 10(10nm)$, and since $10nm$ is an integer, $10 \mid xy$.
 
           Since the contrapositive, the original implication is true.
-        \end{proof}
+        \end{prf}
   \item If $10 \nmid x$ and $10 \nmid y$ then $10 \nmid xy$.
-        \begin{proof}
+        \begin{prf}
           For a counterexample, let $x = 5$ and $y = 2$.
           $10 \nmid x$ and $10 \nmid y$ since $2 < 5 < 10$.
 
           However, $xy = 10$ and $10 \mid 10$, so the statement is false.
-        \end{proof}
+        \end{prf}
 \end{enumerate}
 
 
-\question For every odd integer $n$, prove that there exists a unique integer $m$ such that $n^2 = 8m + 1$.
-\begin{proof}
+\begin{recommended}
+  For every odd integer $n$, prove that there exists a unique integer $m$ such that $n^2 = 8m + 1$.
+\end{recommended}
+\begin{prf}
   Let $n$ be an odd integer, i.e., $n = 2k+1$ for some other integer $k$.
   Then, $n^2 = (2k+1)^2 = 4k^2 + 4k + 1$.
   We must show that $8m = 4k^2 + 4k \iff 2m = k^2 + k$, or, $k^2 + k$ is even.
@@ -539,13 +581,15 @@ Prove that if $a \mid b$ and $b \mid c$ and $c \mid d$, then $a \mid d$.
     = \frac{n^2-1}{8}
   \end{equation*}
   is the same integer, but $m = \frac{n^2-1}{8}$ if and only if $n^2 = 8m + 1$, so the statement is true.
-\end{proof}
+\end{prf}
 
 
-\question Prove the following statements.
-\begin{enumerate}[(a)]
+\begin{recommended}
+  Prove the following statements.
+\end{recommended}
+\begin{enumerate}
   \item There is no smallest positive real number.
-        \begin{proof}
+        \begin{prf}
           Suppose, for a contradiction, that there is a smallest positive real number $n$.
           Now, consider $\frac{n}{2}$.
 
@@ -555,21 +599,21 @@ Prove that if $a \mid b$ and $b \mid c$ and $c \mid d$, then $a \mid d$.
 
           Clearly $\frac{n}{2} < n$, so the supposition must be false.
           Therefore, there is no smallest positive real number.
-        \end{proof}
+        \end{prf}
 
   \item For every even integer $n$, $n$ cannot be expressed as the sum of three odd integers.
-        \begin{proof}
+        \begin{prf}
           We will prove by the contrapositive.
           Let $r$, $s$, and $t$ be arbitrary integers so $2r+1$, $2s+1$, and $2t+1$ are odd.
 
           Then, $r + s + t = 2r + 2s + 2t + 3 = 2(r + s + t + 1) + 1$, so this sum is odd.
 
           Therefore, the sum of three odd integers is always odd, and no even integer may be expressed as such a sum.
-        \end{proof}
+        \end{prf}
 
   \item Let $a,b\in\Z$.
         If $a$ is an even integer and $b$ is an odd integer, then $4 \nmid (a^2 + 2b^2)$.
-        \begin{proof}
+        \begin{prf}
           Let $a$ and $b$ be integers and suppose, for a contradiction, that the negation is true.
           Then, $a$ is even, $b$ is odd, and $4 \mid (a^2 + 2b^2)$.
 
@@ -580,10 +624,10 @@ Prove that if $a \mid b$ and $b \mid c$ and $c \mid d$, then $a \mid d$.
           Then, 4 must divide 2, which is a contradiction.
 
           Therefore, the negation is false, so the original statement is true.
-        \end{proof}
+        \end{prf}
 
   \item For every integer $m$ with $2 \mid m$ and $4 \nmid m$, there are no integers $x$ and $y$ that satisfy $x^2 + 3y^2 = m$.
-        \begin{proof}
+        \begin{prf}
           Those negations are ugly so we can consider the contrapositive:
           \begin{center}
             \emph{If $x^2 + 3y^2 = m$ has integer solutions in $x$ and $y$, $m$ is odd or $4 \mid m$.}
@@ -606,10 +650,10 @@ Prove that if $a \mid b$ and $b \mid c$ and $c \mid d$, then $a \mid d$.
           \end{itemize}
 
           Therefore, either 4 divides $m$ or $m$ is odd, so the contrapositive, and by extension the original statement, is true.
-        \end{proof}
+        \end{prf}
 
   \item The sum of a rational number and an irrational number is irrational.
-        \begin{proof}
+        \begin{prf}
           First, recall that rational numbers are those which can be expressed by $\frac{p}{q}$ for integers $p$ and $q$.
 
           Let $x$ be a rational number and suppose for a contradiction that $y$ is irrational such that $x+y$ is rational.
@@ -626,10 +670,10 @@ Prove that if $a \mid b$ and $b \mid c$ and $c \mid d$, then $a \mid d$.
           but if $y$ equals the ratio of two integers ($qn-mp$ and $qm$), by definition, $y$ is rational.
 
           Therefore, by contradiction, the sum of a rational number and an irrational number is irrational.
-        \end{proof}
+        \end{prf}
 
   \item Let $x$ be a non-zero real number. If $x + \frac{1}{x} < 2$, then $x < 0$.
-        \begin{proof}
+        \begin{prf}
           Let $x$ be a non-zero real such that $x + \frac{1}{x} < 2$. Then,
           \begin{align*}
             x + \frac{1}{x}        & < 2 \\
@@ -638,24 +682,27 @@ Prove that if $a \mid b$ and $b \mid c$ and $c \mid d$, then $a \mid d$.
             \frac{(x-1)^2}{x}      & < 0
           \end{align*}
           Because $(x-1)^2$ is a square, so is always non-negative, $\frac{1}{x} < 0$, which is true if and only if $x < 0$.
-        \end{proof}
+        \end{prf}
 \end{enumerate}
 
 
-\qsection{Challenges}{C}
-
-\question Let $n$ be an integer.
-Prove that if $2 \mid n$ and $3 \mid n$, then $6 \mid n$.
-\begin{proof}
+\section{Challenges}
+\begin{challenge}
+  Let $n$ be an integer.
+  Prove that if $2 \mid n$ and $3 \mid n$, then $6 \mid n$.
+\end{challenge}
+\begin{prf}
   Let $n$ be an integer such that $2 \mid n$ and $3 \mid n$.
   Then, there exist integers $2p = n$ and $3q = n$.
   Equivalently, $6p = 3n$ and $6q = 2n$.
   Subtracting, $n = 6(p-q)$, and since $p-q$ is an integer, $6 \mid n$.
-\end{proof}
+\end{prf}
 
-\question Let $a,b,c\in\R$.
-Prove that if $a^2 + b^2 + c^2 = 1$, then $-1/2 \leq ab+bc+ca \leq 1$.
-\begin{proof}
+\begin{challenge}
+  Let $a,b,c\in\R$.
+  Prove that if $a^2 + b^2 + c^2 = 1$, then $-1/2 \leq ab+bc+ca \leq 1$.
+\end{challenge}
+\begin{prf}
   Let $a$, $b$, and $c$ be real numbers.
   Recall that squares of reals are non-negative.
   Then, notice that we can create $2ab$-type terms in squares of binomials:
@@ -667,23 +714,27 @@ Prove that if $a^2 + b^2 + c^2 = 1$, then $-1/2 \leq ab+bc+ca \leq 1$.
   \end{align*}
   Likewise, we can create these terms in the square of a trinomial:
   \begin{align*}
-    0 & \leq (a+b+c)^2 \\
+    0 & \leq (a+b+c)^2                         \\
     0 & \leq a^2 + b^2 + c^2 + 2ab + 2bc + 2ca \\
-    -(a^2 + b^2 + c^2) \leq 2(ab + bc + ca) \\
+    -(a^2 + b^2 + c^2) \leq 2(ab + bc + ca)    \\
     -\frac{1}{2} \leq ab + bc + ca
   \end{align*}
   Therefore, combining these inequalities, $-\frac{1}{2} \leq ab + bc + ca \leq 1$, as desired.
-\end{proof}
+\end{prf}
 
-\question Show that if $p$ and $p^2+2$ are prime, then $p^3+2$ is also prime.
+\begin{challenge}
+  Show that if $p$ and $p^2+2$ are prime, then $p^3+2$ is also prime.
+\end{challenge}
 
-\question Express the following statement in symbolic form and prove that it is true.
-\begin{quote}
-  There exists a real number $L$ such that for every positive real number $\epsilon$,
-  there exists a positive real number $\delta$ such that for all real numbers $x$,
-  if $\abs{x} < \delta$, then $\abs{3x-L} < \epsilon$.
-\end{quote}
-\begin{proof}
+\begin{challenge}
+  Express the following statement in symbolic form and prove that it is true.
+  \begin{quote}
+    There exists a real number $L$ such that for every positive real number $\epsilon$,
+    there exists a positive real number $\delta$ such that for all real numbers $x$,
+    if $\abs{x} < \delta$, then $\abs{3x-L} < \epsilon$.
+  \end{quote}
+\end{challenge}
+\begin{prf}
   In symbolic form, with $\R^+ = \{ x \in \R : x > 0 \}$:
   \[ \exists L\in\R, \forall \epsilon\in\R^+, \exists \delta\in\R^+, \forall x\in\R, |x|<\delta \implies |3x-L| < \epsilon \]
   We propose $L = 0$.
@@ -691,10 +742,12 @@ Prove that if $a^2 + b^2 + c^2 = 1$, then $-1/2 \leq ab+bc+ca \leq 1$.
   Select $\delta = \frac{\epsilon}{3}$.
   Now, suppose that $|x| < \delta$.
   Then, $|3x - L| = |3x| = 3|x| < 3\delta = 3\frac{\epsilon}{3} = \epsilon$, as desired.
-\end{proof}
+\end{prf}
 
-\question Prove that there are no positive integers $a$ and $b$ such that $b^4+b+1 = a^4$.
-% \begin{proof}
+\begin{challenge}
+  Prove that there are no positive integers $a$ and $b$ such that $b^4+b+1 = a^4$.
+\end{challenge}
+% \begin{prf}
 %   Let $a$ and $b$ be positive integers. We exhaust options for $a$ and $b$.
 
 %   ($2 \mid a$) Suppose that $a$ is even.
@@ -717,8 +770,8 @@ Prove that if $a^2 + b^2 + c^2 = 1$, then $-1/2 \leq ab+bc+ca \leq 1$.
 
 %   From above, $b^4+b+1$ is always odd.
 
-% \end{proof}
+% \end{prf}
 
-\question Prove that the length of at least one side of a right-angled triangle with integer side lengths must be divisible by 3.
-
-\end{document}
+\begin{challenge}
+  Prove that the length of at least one side of a right-angled triangle with integer side lengths must be divisible by 3.
+\end{challenge}

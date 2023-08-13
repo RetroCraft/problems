@@ -1,15 +1,10 @@
-\documentclass{agony}
+\chapter{Polynomials}
 
-\title{MATH 135 Fall 2020: Extra Practice 11}
+\section{Warm-Up Exercises}
 
-\begin{document}
-\thispagestyle{firstpage}
-
-\textbf{\thetitle}
-
-\qsection{Warm-Up Exercises}{WE}
-
-\question Find a real cubic polynomial whose roots include 1 and $i$.
+\begin{warmup}
+  Find a real cubic polynomial whose roots include 1 and $i$.
+\end{warmup}
 \begin{proof}[Solution]
   Apply the Factor Thorem to create $f(x) = (x-1)(x-i)(x-r)$.
   To ensure the polynomial is real, make $(x-r)$ the conjugate of $(x-i)$, i.e., $r=-i$.
@@ -17,8 +12,10 @@
 \end{proof}
 
 
-\question Divide $f(x)=x^3+x^2+x+1$ by $g(x)=x^2+4x+3$ to find the quotient $q(x)$ and remainder $r(x)$
-that satisfy the requirements of the \emph{Division Algorithm for Polynomials} (DAP)
+\begin{warmup}
+  Divide $f(x)=x^3+x^2+x+1$ by $g(x)=x^2+4x+3$ to find the quotient $q(x)$ and remainder $r(x)$
+  that satisfy the requirements of the \emph{Division Algorithm for Polynomials} (DAP)
+\end{warmup}
 \begin{proof}[Solution]
   Perform polynomial long division:
   \[ \polylongdiv{x^3+x^2+x+1}{x^2+4x+3} \]
@@ -26,9 +23,11 @@ that satisfy the requirements of the \emph{Division Algorithm for Polynomials} (
 \end{proof}
 
 
-\qsection{Recommended Problems}{RP}
+\section{Recommended Problems}
 
-\question Let $z\in\C$. Prove that $(x-z)(x-\overline{z}) \in \R[x]$.
+\begin{recommended}
+  Let $z\in\C$. Prove that $(x-z)(x-\overline{z}) \in \R[x]$.
+\end{recommended}
 \begin{proof}
   Let $z$ be a complex number.
   Expand the product to obtain
@@ -44,15 +43,19 @@ that satisfy the requirements of the \emph{Division Algorithm for Polynomials} (
 \end{proof}
 
 
-\question Prove that there exists a polynomial in $\Q[x]$ with the root $2-\sqrt 7$.
+\begin{recommended}
+  Prove that there exists a polynomial in $\Q[x]$ with the root $2-\sqrt 7$.
+\end{recommended}
 \begin{proof}
   We propose $f(x) = x^2 - 4x - 3 \in \Q[x]$.
   \[ f(2-\sqrt{7}) = (2-\sqrt7)^2 - 4(2-\sqrt7) - 3 = 11 - 4\sqrt7 - 8 + 4\sqrt7 - 3 = 0 \qedhere \]
 \end{proof}
 
 
-\question For each of the following polynomials $f(x) \in \F[x]$,
-write $f(x)$ as a product of irreducible polynomials in $\F[x]$.
+\begin{recommended}
+  For each of the following polynomials $f(x) \in \F[x]$,
+  write $f(x)$ as a product of irreducible polynomials in $\F[x]$.
+\end{recommended}
 \begin{enumerate}[(a)]
   \item $x^2 - 2x + 2 \in \C[x]$
         \begin{proof}[Solution]
@@ -95,14 +98,16 @@ write $f(x)$ as a product of irreducible polynomials in $\F[x]$.
 \end{enumerate}
 
 
-\question Let $g(x)=x^3+bx^2+cx+d\in\C[x]$ be a monic cubic polynomial.
-Let $z_1$, $z_2$, and $z_3$ be three roots of $g(x)$ such that
-\[ g(x) = (x-z_1)(x-z_2)(x-z_3) \]
-Prove that \begin{align*}
-  z_1 + z_2 + z_3          & = -b \\
-  z_1z_2 + z_2z_3 + z_3z_1 & = c  \\
-  z_1z_2z_3                & = -d
-\end{align*}
+\begin{recommended}
+  Let $g(x)=x^3+bx^2+cx+d\in\C[x]$ be a monic cubic polynomial.
+  Let $z_1$, $z_2$, and $z_3$ be three roots of $g(x)$ such that
+  \[ g(x) = (x-z_1)(x-z_2)(x-z_3) \]
+  Prove that \begin{align*}
+    z_1 + z_2 + z_3          & = -b \\
+    z_1z_2 + z_2z_3 + z_3z_1 & = c  \\
+    z_1z_2z_3                & = -d
+  \end{align*}
+\end{recommended}
 \begin{proof}
   Let $g$ be a monic cubic polynomial over \C, where $z_1$, $z_2$, and $z_3$ are its roots.
   Then, by CPN, $g(x) = x^3 + bx^2 + cx + d = (x-z_1)(x-z_2)(x-z_3)$ for some coefficients $b,c,d\in\C$.
@@ -119,7 +124,9 @@ Prove that \begin{align*}
 \end{proof}
 
 
-\question Using the Rational Roots Theorem, prove that $\sqrt 3 + \sqrt 7$ is irrational.
+\begin{recommended}
+  Using the Rational Roots Theorem, prove that $\sqrt 3 + \sqrt 7$ is irrational.
+\end{recommended}
 \begin{proof}
   Let $a = \sqrt 3 + \sqrt 7$.
   Then, $a^2 = 10 + 2\sqrt{21}$ and $a^2 - 10 = 2\sqrt{21}$.
@@ -137,7 +144,9 @@ Prove that \begin{align*}
 \end{proof}
 
 
-\question \begin{enumerate}[(a)]
+\begin{recommended}
+\end{recommended}
+\begin{enumerate}[(a)]
   \item Prove that for every prime $p$, there exists a polynomial $f(x)$ over $\Z_p$,
         of degree $p$, such that every element of $\Z_p$ is a root of $f(x)$.
         \begin{proof}
@@ -161,10 +170,13 @@ Prove that \begin{align*}
 \end{enumerate}
 
 
-\question Suppose $f(x) = a_n x^n + a_{n-1} x^{n-1} + \cdots + a_1 x + a_0 \in \C[x]$ with degree $n$.
-We say $f(x)$ is \emph{palindromic} if the coefficients $a_j$ satisfy
-\[ a_{n-j} = a_j \quad \text{for all} \quad 0 \leq j \leq n \]
-Prove that \begin{enumerate}[(a)]
+\begin{recommended}
+  Suppose $f(x) = a_n x^n + a_{n-1} x^{n-1} + \cdots + a_1 x + a_0 \in \C[x]$ with degree $n$.
+  We say $f(x)$ is \emph{palindromic} if the coefficients $a_j$ satisfy
+  \[ a_{n-j} = a_j \quad \text{for all} \quad 0 \leq j \leq n \]
+  Prove that
+\end{recommended}
+\begin{enumerate}[(a)]
   \item If $f(x)$ is a palindromic polynomial and $c \in \C$ is a root of $f(x)$,
         then $c$ must be non-zero, and $\frac{1}{c}$ is also a root of $f(x)$.
         \begin{proof}
@@ -209,9 +221,11 @@ Prove that \begin{enumerate}[(a)]
 \end{enumerate}
 
 
-\qsection{Challenge}{C}
+\section{Challenge}
 
-\question We call a polynomial primitive if the greatest common divisor of all of its coefficients is 1.
-Show that the product of two primitive polynomials is again primitive.
+\begin{challenge}
+  We call a polynomial primitive if the greatest common divisor of all of its coefficients is 1.
+  Show that the product of two primitive polynomials is again primitive.
+\end{challenge}
 
 \end{document}

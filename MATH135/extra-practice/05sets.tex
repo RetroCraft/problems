@@ -1,14 +1,10 @@
-\documentclass{agony}
-\title{MATH 135 Fall 2020: Extra Practice 5}
+\chapter{Sets}
 
-\begin{document}
-\thispagestyle{firstpage}
+\section{Warm-Up Exercises}
 
-\textbf{\thetitle}
-
-\qsection{Warm-Up Exercises}{WE}
-
-\question Let $\U=\{1,2,3,4,5,6,7,8,9\}$, $A=\{2,4,6,9\}$, and $B=\{4,5,6,7\}$.
+\begin{warmup}
+  Let $\U=\{1,2,3,4,5,6,7,8,9\}$, $A=\{2,4,6,9\}$, and $B=\{4,5,6,7\}$.
+\end{warmup}
 \begin{enumerate}[(a)]
   \item Calculate the following:
         \begin{enumerate}[i.]
@@ -24,9 +20,11 @@
   \item Give a set $D$ such that $D \subsetneq A$. \emph{Let $D=\{2\}$.}
 \end{enumerate}
 
-\question Suppose $S$ and $T$ are two sets.
-Prove that if $S \cap T = S$, then $S \subseteq T$.
-Is the converse true?
+\begin{warmup}
+  Suppose $S$ and $T$ are two sets.
+  Prove that if $S \cap T = S$, then $S \subseteq T$.
+  Is the converse true?
+\end{warmup}
 \begin{proof}
   Let $S$ and $T$ be arbitrary sets such that their intersection is $S$.
   We must show that any element of $S$ is an element of $T$.
@@ -42,18 +40,21 @@ Is the converse true?
 \end{proof}
 
 
-\question Give an example of three sets $A$, $B$, and $C$ such that $B \neq C$ and $B-A = C-A$.
+\begin{warmup}
+  Give an example of three sets $A$, $B$, and $C$ such that $B \neq C$ and $B-A = C-A$.
+\end{warmup}
 \begin{proof}[Solution]
   Let $A = \{1\}$, $B=\{2\}$ and $C=\{1,2\}$.
   Then, $B-A=\{2\}$ and $C-A=\{2\}$.
 \end{proof}
 
 
-\qsection{Recommended Problems}{RP}
+\section{Recommended Problems}
 
-\question Let $A$ be a subset of the universe $\U$.
-Prove that $A \cup \overline{A} = \U$.
-
+\begin{recommended}
+  Let $A$ be a subset of the universe $\U$.
+  Prove that $A \cup \overline{A} = \U$.
+\end{recommended}
 \begin{proof}
   Recall that the complement of a set $\overline{S}$ with respect to a universe $\U$
   is defined as the set $\{x\in\U:\lnot(x\in S)\}$.
@@ -66,9 +67,10 @@ Prove that $A \cup \overline{A} = \U$.
 \end{proof}
 
 
-\question\label{distribute} Let $S$ and $T$ be two sets which are subsets of the universe $\U$.
-Prove that \[ (S \cup T) - (S \cap T) = (S - T) \cup (T - S). \]
-
+\begin{recommended}\label{distribute}
+  Let $S$ and $T$ be two sets which are subsets of the universe $\U$.
+  Prove that \[ (S \cup T) - (S \cap T) = (S - T) \cup (T - S). \]
+\end{recommended}
 \begin{proof}
   Let $S$ and $T$ be arbitrary subsets of $\U$, and $x$ be an arbitrary element of $\U$ such that it is an element of the left-hand side.
   We prove by showing that the left and right-hand sides are subsets of another,
@@ -104,9 +106,10 @@ Prove that \[ (S \cup T) - (S \cap T) = (S - T) \cup (T - S). \]
 \end{proof}
 
 
-\question Let $A=\{n\in\Z : 2\mid n\}$ and $B=\{n\in\Z : 4\mid n\}$.
-Let $n \in \Z$. Prove that $n \in (A-B)$ if and only if $n=2k$ for some odd integer $k$.
-
+\begin{recommended}
+  Let $A=\{n\in\Z : 2\mid n\}$ and $B=\{n\in\Z : 4\mid n\}$.
+  Let $n \in \Z$. Prove that $n \in (A-B)$ if and only if $n=2k$ for some odd integer $k$.
+\end{recommended}
 \begin{proof}
   We prove the biconditional by proving both implications.
 
@@ -132,8 +135,9 @@ Let $n \in \Z$. Prove that $n \in (A-B)$ if and only if $n=2k$ for some odd inte
 \end{proof}
 
 
-\question Prove that there exist sets $A$, $B$, and $C$ such that $A \cup B=A \cup C$ and $B \neq C$.
-
+\begin{recommended}
+  Prove that there exist sets $A$, $B$, and $C$ such that $A \cup B=A \cup C$ and $B \neq C$.
+\end{recommended}
 \begin{proof}
   Let $A=\{1,2\}$, $B=\{1\}$, and $C=\{2\}$.
   Clearly, $B \neq C$.
@@ -142,9 +146,10 @@ Let $n \in \Z$. Prove that $n \in (A-B)$ if and only if $n=2k$ for some odd inte
 \end{proof}
 
 
-\question Prove or disprove.
-If $A$, $B$, and $C$ are sets, then $A \cap (B \cup C) = (A \cap B) \cup C$.
-
+\begin{recommended}
+  Prove or disprove.
+  If $A$, $B$, and $C$ are sets, then $A \cap (B \cup C) = (A \cap B) \cup C$.
+\end{recommended}
 \begin{proof}[Solution]
   Let $A$, $B$, and $C$ be arbitrary sets.
   We disprove by showing $(A \cap B) \cup C$ is not a subset of $A \cap (B \cup C)$.
@@ -160,8 +165,9 @@ If $A$, $B$, and $C$ are sets, then $A \cap (B \cup C) = (A \cap B) \cup C$.
 \end{proof}
 
 
-\question Prove there is a unique set $T$ such that for every set $S$, $S \cup T = S$.
-
+\begin{recommended}
+  Prove there is a unique set $T$ such that for every set $S$, $S \cup T = S$.
+\end{recommended}
 \begin{proof}
   We suppose that $T=\emptyset$, that is, $T$ is the set with no elements, and prove it.
 
@@ -183,12 +189,12 @@ If $A$, $B$, and $C$ are sets, then $A \cap (B \cup C) = (A \cap B) \cup C$.
 \end{proof}
 
 
-\qsection{Challenges}{C}
-
-\question The \emph{symmetric difference} of two sets $A$ and $B$, denoted $A \sym B$, is defined as
-\[ A \sym B = (A-B) \cup (B-A). \]
-Prove that $(A \sym B) \sym C = A \sym (B \sym C)$.
-
+\section{Challenges}
+\begin{challenge}
+  The \emph{symmetric difference} of two sets $A$ and $B$, denoted $A \sym B$, is defined as
+  \[ A \sym B = (A-B) \cup (B-A). \]
+  Prove that $(A \sym B) \sym C = A \sym (B \sym C)$.
+\end{challenge}
 \begin{proof}
   We will prove using logical equivalences.
 
@@ -210,7 +216,7 @@ Prove that $(A \sym B) \sym C = A \sym (B \sym C)$.
     \lor (c \land (\lnot a \lor b) \land (\lnot b \lor a))
   \end{align*}
   We now digress from this (also enormous) expression to simplify the last term.
-  Recall in Problem~\ref{distribute}, we proved
+  Recall in \Cref{distribute}, we proved
   $(X \lor Y) \land (\lnot X \lor \lnot Y) \equiv (X \land Y) \lor (\lnot X \land \lnot Y)$.
   We may now apply this equivalence with $X\equiv\lnot a$ and $Y\equiv b$.
   \begin{align*}
@@ -248,5 +254,3 @@ Prove that $(A \sym B) \sym C = A \sym (B \sym C)$.
   but this is exactly $P(x)$.
   Therefore, the right-hand side may be expressed $\{ x : P(x) \}$, which is precisely the left-hand side.
 \end{proof}
-
-\end{document}

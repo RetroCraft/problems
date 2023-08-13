@@ -1,17 +1,11 @@
-\documentclass{agony}
-\usepackage{minted}
+\chapter{The RSA Public-Key Encryption Scheme}
 
-\title{MATH 135 Fall 2020: Extra Practice 9}
+\section{Warm-Up Exercises}
 
-\begin{document}
-\thispagestyle{firstpage}
-
-\textbf{\thetitle}
-
-\qsection{Warm-Up Exercises}{WE}
-
-\question Given the public RSA encryption key $(e, n) = (5, 35)$,
-find the corresponding decryption key $(d, n)$.
+\begin{warmup}
+  Given the public RSA encryption key $(e, n) = (5, 35)$,
+  find the corresponding decryption key $(d, n)$.
+\end{warmup}
 \begin{proof}[Solution]
   We factor $n$ and find that $n = 5 \times 7$.
   Therefore, $p=5$ and $q=7$.
@@ -27,9 +21,11 @@ find the corresponding decryption key $(d, n)$.
 \end{proof}
 
 
-\qsection{Recommended Problems}{RP}
+\section{Recommended Problems}
 
-\question Suppose that in setting up RSA, Alice chooses $p = 47$, $q = 37$, and $e = 25$.
+\begin{recommended}
+  Suppose that in setting up RSA, Alice chooses $p = 47$, $q = 37$, and $e = 25$.
+\end{recommended}
 \begin{enumerate}[(a)]
   \item What is Alice's public key?
         \begin{proof}[Solution]
@@ -78,8 +74,10 @@ find the corresponding decryption key $(d, n)$.
 \end{enumerate}
 
 
-\question Set up an RSA scheme using two-digit prime numbers.
-Select values for the other variables and test encrypting and decrypting messages.
+\begin{recommended}
+  Set up an RSA scheme using two-digit prime numbers.
+  Select values for the other variables and test encrypting and decrypting messages.
+\end{recommended}
 \begin{proof}[Solution]
   Let $p=11$ and $q=13$, the smallest two-digit prime numbers.
   Then, $n=pq=143$.
@@ -115,8 +113,10 @@ Select values for the other variables and test encrypting and decrypting message
 \end{proof}
 
 
-\qsection{Challenge}{C}
-\question Write a computer program to implement RSA encryption and decryption.
+\section{Challenge}
+\begin{challenge}
+  Write a computer program to implement RSA encryption and decryption.
+\end{challenge}
 \begin{proof}[Solution]
   Allow me to demonstrate just how overpowered Wolfram Mathematica is:
   \begin{minted}{mathematica}
@@ -141,5 +141,3 @@ Select values for the other variables and test encrypting and decrypting message
     R = PowerMod[C,d,n];
   \end{minted}
 \end{proof}
-
-\end{document}

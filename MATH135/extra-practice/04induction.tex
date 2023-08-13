@@ -1,14 +1,9 @@
-\documentclass{agony}
-\title{MATH 135 Fall 2020: Extra Practice 4}
+\chapter{Mathematical Induction}
 
-\begin{document}
-\thispagestyle{firstpage}
-
-\textbf{\thetitle}
-
-\qsection{Warm-Up Exercises}{WE}
-
-\question Evaluate $\displaystyle\sum^8_{i=3}2^i$ and $\displaystyle\prod^5_{j=1}\frac{j}{3}$.
+\section{Warm-Up Exercises}
+\begin{warmup}
+  Evaluate $\displaystyle\sum^8_{i=3}2^i$ and $\displaystyle\prod^5_{j=1}\frac{j}{3}$.
+\end{warmup}
 \begin{proof}[Solution]
   Simply expand along the sum/product:
   \[ \sum^8_{i=3}2^i = 2^3 + 2^4 + 2^5 + 2^6 + 2^7 + 2^8 = 8+16+32+64+128+256 = 504 \]
@@ -22,8 +17,10 @@
 \end{proof}
 
 
-\question Let $x$ be a real number.
-Using the Binomial Theorem, expand $\left(x-\frac{1}{x}\right)^7$.
+\begin{warmup}
+  Let $x$ be a real number.
+  Using the Binomial Theorem, expand $\left(x-\frac{1}{x}\right)^7$.
+\end{warmup}
 \begin{proof}[Solution]
   Recall the Binomial Theorem, that $(a+b)^n = \sum_{k=0}^n\binom{n}{k}a^{n-k}b^k$.
   Now, substitute $a = x$ and $b = -\frac{1}{x}$.
@@ -38,10 +35,11 @@ Using the Binomial Theorem, expand $\left(x-\frac{1}{x}\right)^7$.
 \end{proof}
 
 
-\qsection{Recommended Problems}{RP}
-
-\question Prove the following statements by induction.
-\begin{enumerate}[(a)]
+\section{Recommended Problems}
+\begin{recommended}
+  Prove the following statements by induction.
+\end{recommended}
+\begin{enumerate}
   \item For all $n\in\N$, $\displaystyle \sum^n_{i=1} (2i-1) = n^2$.
         \begin{proof}
           We will induct the statement $P(n) \equiv \sum^n_{i=1} (2i-1) = n^2$ on $n$.
@@ -167,8 +165,10 @@ Using the Binomial Theorem, expand $\left(x-\frac{1}{x}\right)^7$.
 \end{enumerate}
 
 
-\question Let $x$ be a real number.
-Find the coefficient of $x^{19}$ in the expansion of $(2x^3-3x)^9$.
+\begin{recommended}
+  Let $x$ be a real number.
+  Find the coefficient of $x^{19}$ in the expansion of $(2x^3-3x)^9$.
+\end{recommended}
 \begin{proof}[Solution]
   Recall the Binomial Theorem, $(a+b)^n = \sum_{k=0}^n\binom{n}{k}a^{n-k}b^k$.
   Let $a = 2x^3$, $b = -3x$, and $n=9$.
@@ -180,8 +180,10 @@ Find the coefficient of $x^{19}$ in the expansion of $(2x^3-3x)^9$.
 \end{proof}
 
 
-\question Let $n$ be a non-negative integer.
-Prove that $\displaystyle \sum_{k=0}^n \binom{n}{k} = 2^n$.
+\begin{recommended}
+  Let $n$ be a non-negative integer.
+  Prove that $\displaystyle \sum_{k=0}^n \binom{n}{k} = 2^n$.
+\end{recommended}
 \begin{proof}
   We will induct the statement $P(n) \equiv \sum_{k=0}^n \binom{n}{k} = 2^n$ on $n \geq 0$.
 
@@ -213,9 +215,11 @@ Prove that $\displaystyle \sum_{k=0}^n \binom{n}{k} = 2^n$.
 \end{proof}
 
 
-\question Let $n$ be a non-negative integer.
-Prove by induction on $k$ that $\sum^k_{j=0}\binom{n+j}{j} = \binom{n+k+1}{k}$
-for all non-negative integers $k$.
+\begin{recommended}
+  Let $n$ be a non-negative integer.
+  Prove by induction on $k$ that $\sum^k_{j=0}\binom{n+j}{j} = \binom{n+k+1}{k}$
+  for all non-negative integers $k$.
+\end{recommended}
 \begin{proof}
   Let $n \geq 0$ be an integer, and let $P(k)$ be the statement $\sum^k_{j=0}\binom{n+j}{j} = \binom{n+k+1}{k}$.
   We will induct $P(k)$ on $k$.
@@ -239,9 +243,11 @@ for all non-negative integers $k$.
 \end{proof}
 
 
-\question The sequence $x_1, x_2, x_3, \dots$ is defined recursively by
-$x_1=8$, $x_2=32$, and $x_i = 2x_{i-1} + 3x_{i-2}$ for all integers $i \geq 3$.
-Prove that for all $n\in\N$, $x_n = 2 \times (-1)^n + 10 \times 3^{n-1}$.
+\begin{recommended}
+  The sequence $x_1, x_2, x_3, \dots$ is defined recursively by
+  $x_1=8$, $x_2=32$, and $x_i = 2x_{i-1} + 3x_{i-2}$ for all integers $i \geq 3$.
+  Prove that for all $n\in\N$, $x_n = 2 \times (-1)^n + 10 \times 3^{n-1}$.
+\end{recommended}
 \begin{proof}
   We will strongly induct the statement $P(n)$, $x_n = 2(-1)^n + 10(3)^{n-1}$, on $n$.
 
@@ -270,9 +276,11 @@ Prove that for all $n\in\N$, $x_n = 2 \times (-1)^n + 10 \times 3^{n-1}$.
 \end{proof}
 
 
-\question The sequence $t_1, t_2, t_3, \dots$ is defined recursively by
-$t_1=2$ and $t_n = 2t_{n-1}+n$ for all integers $n > 1$.
-Prove that for all $n\in\N$, $t_n = 5 \times 2^{n-1} - 2 - n$.
+\begin{recommended}
+  The sequence $t_1, t_2, t_3, \dots$ is defined recursively by
+  $t_1=2$ and $t_n = 2t_{n-1}+n$ for all integers $n > 1$.
+  Prove that for all $n\in\N$, $t_n = 5 \times 2^{n-1} - 2 - n$.
+\end{recommended}
 \begin{proof}
   Let $P(n)$ be the statement $t_n = 5 \times 2^{n-1} - 2 - n$.
   We will induct $P(n)$ on $n$.
@@ -295,10 +303,12 @@ Prove that for all $n\in\N$, $t_n = 5 \times 2^{n-1} - 2 - n$.
 \end{proof}
 
 
-\question The Fibonacci sequence is defined as the sequence $f_1, f_2, f_3, \dots$
-where $f_1=1$, $f_2=1$ and $f_i=f_{i-1}+f_{i-2}$ for $i \geq 3$.
-Use induction to prove the following statements:
-\begin{enumerate}[(a)]
+\begin{recommended}
+  The Fibonacci sequence is defined as the sequence $f_1, f_2, f_3, \dots$
+  where $f_1=1$, $f_2=1$ and $f_i=f_{i-1}+f_{i-2}$ for $i \geq 3$.
+  Use induction to prove the following statements:
+\end{recommended}
+\begin{enumerate}
   \item For $n \geq 2$, $f_1 + f_2 + \cdots + f_{n-1} = f_{n+1} - 1$.
         \begin{proof}
           We will induct the statement $P(n)$, $\sum_{i=1}^{n-1} f_i = f_{n+1}-1$ on $n$.
@@ -350,9 +360,11 @@ Use induction to prove the following statements:
 \end{enumerate}
 
 
-\question Each of the following ``proofs'' by induction incorrectly ``proved'' a statement that is actually false.
-State what is wrong with each proof.
-\begin{enumerate}[(a)]
+\begin{recommended}
+  Each of the following ``proofs'' by induction incorrectly ``proved'' a statement that is actually false.
+  State what is wrong with each proof.
+\end{recommended}
+\begin{enumerate}
   \item The proof does not consider the given definition $x_2=20$, and $3(5)^1 = 15 \neq 20$.
         Note that the recursive definition \emph{only} applies to $x_i$ for $i \geq 3$.
   \item The proof erroneously assumes that $n=2$ always falls within the inductive hypothesis.
@@ -360,8 +372,10 @@ State what is wrong with each proof.
 \end{enumerate}
 
 
-\question In a strange country, there are only 4 cent and 7 cent coins.
-Prove that any integer amount of currency greater than 17 cents can always be formed.
+\begin{recommended}
+  In a strange country, there are only 4 cent and 7 cent coins.
+  Prove that any integer amount of currency greater than 17 cents can always be formed.
+\end{recommended}
 \begin{proof}
   Let $P(x)$ be the statement that there exist non-negative integer $a$ and $b$ where $x=4a+7b$.
   We will strongly induct on $x > 17$.
@@ -383,12 +397,13 @@ Prove that any integer amount of currency greater than 17 cents can always be fo
 \end{proof}
 
 
-\qsection{Challenges}{C}
+\section{Challenges}
 
-\question Prove that for every positive integer,
-there exists a unique way to write the integer as
-the sum of distinct non-consecutive Fibonacci numbers.
-
+\begin{challenge}
+  Prove that for every positive integer,
+  there exists a unique way to write the integer as
+  the sum of distinct non-consecutive Fibonacci numbers.
+\end{challenge}
 \begin{proof}
   Let $f_i$ denote the $i$th Fibonacci number, i.e.,
   $f_1 = 0$, $f_2 = 1$, $f_{n+1} = f_n + f_{n-1}$.
@@ -454,7 +469,7 @@ the sum of distinct non-consecutive Fibonacci numbers.
 \end{proof}
 
 
-\question Find a formula for the minimum steps required to solve the Tower of Hanoi puzzle with three pegs with $n$ rings.
-Prove that your answer is correct.
-
-\end{document}
+\begin{challenge}
+  Find a formula for the minimum steps required to solve the Tower of Hanoi puzzle with three pegs with $n$ rings.
+  Prove that your answer is correct.
+\end{challenge}

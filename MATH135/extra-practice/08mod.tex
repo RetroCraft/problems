@@ -1,14 +1,9 @@
-\documentclass{agony}
-\title{MATH 135 Fall 2020: Extra Practice 8}
+\chapter{Congruence and Modular Arithmetic}
+\section{Warm-Up Exercises}
 
-\begin{document}
-\thispagestyle{firstpage}
-
-\textbf{\thetitle}
-
-\qsection{Warm-Up Exercises}{WE}
-
-\question Is 7386458999999992324343123 divisible by 11?
+\begin{warmup}
+  Is 7386458999999992324343123 divisible by 11?
+\end{warmup}
 \begin{proof}[Solution]
   We may simply apply Proposition 9 from the course notes: an integer is divisible by 11
   if the difference of the sums of the even and odd digits is divisible by 11.
@@ -21,7 +16,9 @@
 \end{proof}
 
 
-\question For each linear congruence, determine the complete solution, if a solution exists.
+\begin{warmup}
+  For each linear congruence, determine the complete solution, if a solution exists.
+\end{warmup}
 \begin{enumerate}[(a)]
   \item $3x \equiv 11 \pmod{18}$
         \begin{proof}[Solution]
@@ -41,7 +38,9 @@
 \end{enumerate}
 
 
-\question Complete the addition and multiplication tables for $\Z_5$.
+\begin{warmup}
+  Complete the addition and multiplication tables for $\Z_5$.
+\end{warmup}
 \begin{proof}[Solution]
   The elements of $\Z_5$ are $\{[0], [1], [2], [3], [4]\}$:
   \begin{center}
@@ -66,7 +65,9 @@
 \end{proof}
 
 
-\question What is the remainder when $14^{43}$ is divided by 41?
+\begin{warmup}
+  What is the remainder when $14^{43}$ is divided by 41?
+\end{warmup}
 \begin{proof}[Solution]
   Since 41 is prime and $41 \nmid 14$, we may apply Fermat's Little Theorem.
   \begin{equation*}
@@ -79,10 +80,12 @@
 \end{proof}
 
 
-\question Solve \begin{align*}
-  x & \equiv 7 \pmod{11} \\
-  x & \equiv 5 \pmod{12}
-\end{align*}
+\begin{warmup}
+  Solve \begin{align*}
+    x & \equiv 7 \pmod{11} \\
+    x & \equiv 5 \pmod{12}
+  \end{align*}
+\end{warmup}
 \begin{proof}[Solution]
   We apply the Chinese Remainder Theorem since $\gcd(11,12)=1$.
   Solutions to the first equation are $x \equiv 7,18,29,40,51,62,73,84,95,106,117,128 \pmod{132}$.
@@ -91,16 +94,20 @@
 \end{proof}
 
 
-\question What is the smallest non-negative integer $x$ such that $2000 \equiv x \pmod{37}$?
+\begin{warmup}
+  What is the smallest non-negative integer $x$ such that $2000 \equiv x \pmod{37}$?
+\end{warmup}
 \begin{proof}[Solution]
   Simply reduce using the division algorithm, which guarantees a minimal non-negative remainder below 37:
   we have $2000 = 37(54) + 2$, so $2000 \equiv 2 \pmod{37}$.
 \end{proof}
 
 
-\qsection{Recommended Problems}{RP}
+\section{Recommended Problems}
 
-\question Is $27^{129}+61^{40}$ divisible by 14? Justify your answer.
+\begin{recommended}
+  Is $27^{129}+61^{40}$ divisible by 14? Justify your answer.
+\end{recommended}
 \begin{proof}[Solution]
   We simplify with $27 \equiv -1 \pmod{14}$ and $61 \equiv 5 \pmod{14}$:
   \begin{align*}
@@ -123,8 +130,10 @@
 \end{proof}
 
 
-\question Prove Congruence Power (CP): For all positive integers $n$ and integers $a$ and $b$,
-if $a \equiv b \pmod m$, then $a^n \equiv b^n \pmod m$.
+\begin{recommended}
+  Prove Congruence Power (CP): For all positive integers $n$ and integers $a$ and $b$,
+  if $a \equiv b \pmod m$, then $a^n \equiv b^n \pmod m$.
+\end{recommended}
 \begin{proof}
   Let $a$ and $b$ be integers congruent mod $m$.
   We prove by induction on $n$.
@@ -149,7 +158,9 @@ if $a \equiv b \pmod m$, then $a^n \equiv b^n \pmod m$.
 \end{proof}
 
 
-\question What is the remainder when $3141^{2001}$ is divided by 17?
+\begin{recommended}
+  What is the remainder when $3141^{2001}$ is divided by 17?
+\end{recommended}
 \begin{proof}[Solution]
   First, notice that $3141 \equiv 13 \pmod{17}$.
   We also have that $3141^2 \equiv 13^2 \equiv -1 \pmod{17}$.
@@ -158,7 +169,9 @@ if $a \equiv b \pmod m$, then $a^n \equiv b^n \pmod m$.
 \end{proof}
 
 
-\question Solve $49x^{177} + 37x^{26} + 3x^2 + x + 1 \equiv 0 \pmod 7$.
+\begin{recommended}
+  Solve $49x^{177} + 37x^{26} + 3x^2 + x + 1 \equiv 0 \pmod 7$.
+\end{recommended}
 \begin{proof}[Solution]
   First, notice that $49x^{177} \equiv 0 \pmod 7$ for any integer $x$ since $7 \mid 49$.
   Also, $37 \equiv 2 \pmod 7$, so $37x^{26} \equiv 2x^{26} \equiv 2(x^2)^{13} \pmod 7$ for any integer $x$.
@@ -177,10 +190,12 @@ if $a \equiv b \pmod m$, then $a^n \equiv b^n \pmod m$.
 \end{proof}
 
 
-\question Solve \begin{align*}
-  3x - 2 & \equiv 7 \pmod{11}     \\
-  5      & \equiv 4x - 1 \pmod{9}
-\end{align*}
+\begin{recommended}
+  Solve \begin{align*}
+    3x - 2 & \equiv 7 \pmod{11}     \\
+    5      & \equiv 4x - 1 \pmod{9}
+  \end{align*}
+\end{recommended}
 \begin{proof}[Solution]
   We can simplify these congruences by CAM to $3x \equiv 9 \pmod{11}$ and $4x \equiv 6 \pmod{9}$.
   Since 11 is prime, we can apply CD to the first congruence to get $x \equiv 3 \pmod{11}$.
@@ -196,8 +211,10 @@ if $a \equiv b \pmod m$, then $a^n \equiv b^n \pmod m$.
 \end{proof}
 
 
-\question The Chinese Remainder Theorem deals with the case where the moduli are coprime.
-We now investigate what happens if the moduli are not coprime.
+\begin{recommended}
+  The Chinese Remainder Theorem deals with the case where the moduli are coprime.
+  We now investigate what happens if the moduli are not coprime.
+\end{recommended}
 \begin{enumerate}[(a)]
   \item Consider the following two systems of linear congruences:
         \begin{align*}
@@ -275,7 +292,9 @@ We now investigate what happens if the moduli are not coprime.
 \end{enumerate}
 
 
-\question Solve $x^3 \equiv 17 \pmod{99}$.
+\begin{recommended}
+  Solve $x^3 \equiv 17 \pmod{99}$.
+\end{recommended}
 \begin{proof}[Solution]
   We can split the modulus to simplify the problem: $99 = 3\times3\times11$.
   By SMT, we can solve three simultaneous congruences.
@@ -314,7 +333,9 @@ We now investigate what happens if the moduli are not coprime.
 \end{proof}
 
 
-\question Solve $x^2 + 25x \equiv 54 \pmod{63}$.
+\begin{recommended}
+  Solve $x^2 + 25x \equiv 54 \pmod{63}$.
+\end{recommended}
 \begin{proof}[Solution]
   First, notice that $x^2+25x-54$ factors as $(x-2)(x+27)$.
   Split the modulus as $63 = 7 \times 9$,
@@ -338,8 +359,10 @@ We now investigate what happens if the moduli are not coprime.
 \end{proof}
 
 
-\question Find the smallest positive integer $a$ such that
-$5n^{13}+13n^5+a(9n) \equiv 0 \pmod{65}$ for all integers $n$.
+\begin{recommended}
+  Find the smallest positive integer $a$ such that
+  $5n^{13}+13n^5+a(9n) \equiv 0 \pmod{65}$ for all integers $n$.
+\end{recommended}
 \begin{proof}[Solution]
   Let $n$ be an integer.
   Since $65 = 5 \times 13$, we split the congruence with SMT:
@@ -364,8 +387,10 @@ $5n^{13}+13n^5+a(9n) \equiv 0 \pmod{65}$ for all integers $n$.
 \end{proof}
 
 
-\question Prove that for distinct primes $p$ and $q$,
-$\left(p^{q-1} + q^{p-1}\right) \equiv 1 \pmod{pq}$.
+\begin{recommended}
+  Prove that for distinct primes $p$ and $q$,
+  $\left(p^{q-1} + q^{p-1}\right) \equiv 1 \pmod{pq}$.
+\end{recommended}
 \begin{proof}
   Let $p$ and $q$ be distinct primes.
   Since $q-1$ and $p-1$ are positive integers, $p^{q-1}$ is a multiple of $p$ and $q^{p-1}$ of $q$.
@@ -382,8 +407,10 @@ $\left(p^{q-1} + q^{p-1}\right) \equiv 1 \pmod{pq}$.
 \end{proof}
 
 
-\question If $a$ and $b$ are integers, $3 \nmid a$, $3 \nmid b$, $5 \nmid a$, and $5 \nmid b$,
-prove that $a^4 \equiv b^4 \pmod{15}$
+\begin{recommended}
+  If $a$ and $b$ are integers, $3 \nmid a$, $3 \nmid b$, $5 \nmid a$, and $5 \nmid b$,
+  prove that $a^4 \equiv b^4 \pmod{15}$
+\end{recommended}
 \begin{proof}
   Let $x$ be an integer where $3 \nmid x$ and $5 \nmid x$.
   We exhaust possibilities for $x \pmod{15}$:
@@ -400,13 +427,15 @@ prove that $a^4 \equiv b^4 \pmod{15}$
 \end{proof}
 
 
-\qsection{Challenge}{C}
+\section{Challenge}
 
-\question A basket contains a number of eggs and when the eggs
-are removed 2, 3, 4, 5 and 6 at a time, there are 1, 2, 3, 4 and 5, respectively, left over.
-When the eggs are removed 7 at a time there are none left over.
-Assuming none of the eggs broke during the preceding operations,
-determine the minimum number of eggs that were in the basket.
+\begin{challenge}
+  A basket contains a number of eggs and when the eggs
+  are removed 2, 3, 4, 5 and 6 at a time, there are 1, 2, 3, 4 and 5, respectively, left over.
+  When the eggs are removed 7 at a time there are none left over.
+  Assuming none of the eggs broke during the preceding operations,
+  determine the minimum number of eggs that were in the basket.
+\end{challenge}
 \begin{proof}[Solution]
   Let $n$ be the number of eggs in the basket.
   Since removing 6 eggs leaves at least 5 eggs, $n \geq 11$.
@@ -440,5 +469,3 @@ determine the minimum number of eggs that were in the basket.
   It follows that $m = 2+3(5+20q) = 17 + 60q$ and that $n = 7(17+60q) = 119 + 420q$.
   Since $119 < 420$, the lowest possible value of $n$ is 119 eggs.
 \end{proof}
-
-\end{document}

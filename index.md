@@ -164,23 +164,26 @@ I will try and format for publishing weekly.
 
 #### MATH 135 (F2020) <small>Algebra for Honours Mathematics</small>
 
-| File                                         |      Complete?       | Notes                              |
-| -------------------------------------------- | :------------------: | ---------------------------------- |
-| [Extra Practice 1](./MATH135/EP01.pdf)       |  :white_check_mark:  |                                    |
-| [Extra Practice 2](./MATH135/EP02.pdf)       |  :white_check_mark:  |                                    |
-| [Extra Practice 3](./MATH135/EP03.pdf)       |  :white_check_mark:  |                                    |
-| [Extra Practice 4](./MATH135/EP04.pdf)       | :black_large_square: | Missing C02.                       |
-| [Extra Practice 5](./MATH135/EP05.pdf)       |  :white_check_mark:  |                                    |
-| [Extra Practice 6](./MATH135/EP06.pdf)       | :black_large_square: | Missing C03/05/06. RP09 by sooshi. |
-| [Extra Practice 7](./MATH135/EP07.pdf)       | :black_large_square: | Missing C01                        |
-| [Extra Practice 8](./MATH135/EP08.pdf)       |  :white_check_mark:  |                                    |
-| [Extra Practice 9](./MATH135/EP09.pdf)       |  :white_check_mark:  |                                    |
-| [Extra Practice 10](./MATH135/EP10.pdf)      | :black_large_square: | Missing C02. RP10 by sooshi.       |
-| [Extra Practice 11](./MATH135/EP11.pdf)      | :black_large_square: | Missing C01                        |
-| [Fall 2018 Midterm](./MATH135/MT2018F.pdf)   |  :white_check_mark:  |                                    |
-| [Fall 2019 Midterm](./MATH135/MT2019F.pdf)   |  :white_check_mark:  |                                    |
-| [Winter 2020 Midterm](./MATH135/MT2020W.pdf) |  :white_check_mark:  |                                    |
-| [Winter 2020 Final](./MATH135/FE2020W.pdf)   |  :white_check_mark:  |                                    |
+Extra Practice files have been collated and reformatted as [one big PDF](./MATH135/extra-practice.pdf).
+Older files can be found in the [Git history](https://github.com/RetroCraft/problems/tree/977583efdb041bbf28b6f11b5b16f642e9010435/MATH135).
+
+| File                                                         |      Complete?       | Notes                              |
+| ------------------------------------------------------------ | :------------------: | ---------------------------------- |
+| [Extra Practice 1](./MATH135/extra-practice.pdf#chapter.1)   |  :white_check_mark:  |                                    |
+| [Extra Practice 2](./MATH135/extra-practice.pdf#chapter.2)   |  :white_check_mark:  |                                    |
+| [Extra Practice 3](./MATH135/extra-practice.pdf#chapter.3)   |  :white_check_mark:  |                                    |
+| [Extra Practice 4](./MATH135/extra-practice.pdf#chapter.4)   | :black_large_square: | Missing C02.                       |
+| [Extra Practice 5](./MATH135/extra-practice.pdf#chapter.5)   |  :white_check_mark:  |                                    |
+| [Extra Practice 6](./MATH135/extra-practice.pdf#chapter.6)   | :black_large_square: | Missing C03/05/06. RP09 by sooshi. |
+| [Extra Practice 7](./MATH135/extra-practice.pdf#chapter.7)   | :black_large_square: | Missing C01                        |
+| [Extra Practice 8](./MATH135/extra-practice.pdf#chapter.8)   |  :white_check_mark:  |                                    |
+| [Extra Practice 9](./MATH135/extra-practice.pdf#chapter.9)   |  :white_check_mark:  |                                    |
+| [Extra Practice 10](./MATH135/extra-practice.pdf#chapter.10) | :black_large_square: | Missing C02. RP10 by sooshi.       |
+| [Extra Practice 11](./MATH135/extra-practice.pdf#chapter.11) | :black_large_square: | Missing C01                        |
+| [Fall 2018 Midterm](./MATH135/MT2018F.pdf)                   |  :white_check_mark:  |                                    |
+| [Fall 2019 Midterm](./MATH135/MT2019F.pdf)                   |  :white_check_mark:  |                                    |
+| [Winter 2020 Midterm](./MATH135/MT2020W.pdf)                 |  :white_check_mark:  |                                    |
+| [Winter 2020 Final](./MATH135/FE2020W.pdf)                   |  :white_check_mark:  |                                    |
 
 #### MATH 136 (W2021) <small>Linear Algebra I for Honours Mathematics</small>
 

@@ -144,22 +144,16 @@
 \usepackage{mdframed}
 \usepackage{amsthm,thmtools}
 
-\newcommand{\QType}{Q}
 \newcounter{question}[subsection]
-\renewcommand{\thequestion}{\QType\ifnum\value{question}<10 0\fi\arabic{question}}
+\renewcommand{\thequestion}{Q\ifnum\value{question}<10 0\fi\arabic{question}}
 \newcommand{\question}{\par\refstepcounter{question}\textbf{\thequestion}.\space}
+\declaretheorem[sibling=question,style=definition,name=,
+  refname={problem,problems},Refname={Problem,Problems}]{prob}
 
-\newcommand{\qsection}[2]{%
-  \renewcommand{\QType}{#2}
-  \section*{#1}
-  \refstepcounter{section}
-}
 \declaretheoremstyle[
   spaceabove=6pt,spacebelow=6pt,
   headfont=\normalfont\itshape,bodyfont=\normalfont,
   qed=\qedsymbol]{proof}
-\declaretheorem[sibling=question,style=definition,name=,
-  refname={problem,problems},Refname={Problem,Problems}]{prob}
 \declaretheorem[name=Proof,style=proof,unnumbered]{prf}
 \declaretheorem[name=Solution,style=proof,unnumbered]{sol}
 

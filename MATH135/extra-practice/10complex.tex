@@ -1,22 +1,19 @@
-\documentclass[tikz]{agony}
+\chapter{Complex Numbers}
 
-\title{MATH 135 Fall 2020: Extra Practice 10}
+\section{Warm-Up Exercises}
 
-\begin{document}
-\thispagestyle{firstpage}
-
-\textbf{\thetitle}
-
-\qsection{Warm-Up Exercises}{WE}
-
-\question Express $\dfrac{2-i}{3+4i}$ in standard form.
+\begin{warmup}
+  Express $\dfrac{2-i}{3+4i}$ in standard form.
+\end{warmup}
 \begin{proof}[Solution]
   Multiply numerator and denominator by the conjugate of the denominator:
   \[ \frac{2-i}{3+4i} = \frac{(2-i)(3-4i)}{9+16} = \frac{2-11i}{25} = \frac{2}{25}-\frac{11}{25}i \qedhere \]
 \end{proof}
 
 
-\question Write $x=\dfrac{9+i}{5-4i}$ in polar form, $r(\cos\theta+i\sin\theta)$, with $0\leq\theta<2\pi$.
+\begin{warmup}
+  Write $x=\dfrac{9+i}{5-4i}$ in polar form, $r(\cos\theta+i\sin\theta)$, with $0\leq\theta<2\pi$.
+\end{warmup}
 \begin{proof}[Solution]
   We express first in standard form by multiplying through the conjugate:
   \[ \frac{9+i}{5-4i} = \frac{(9+i)(5+4i)}{41} = \frac{41+41i}{41} = 1+i \]
@@ -24,7 +21,9 @@
 \end{proof}
 
 
-\question Write $(\sqrt{3}+i)^4$ in standard form.
+\begin{warmup}
+  Write $(\sqrt{3}+i)^4$ in standard form.
+\end{warmup}
 \begin{proof}[Solution]
   We first place the quantity within the brackets in polar form.
   By inspection, this is $2\cis\frac\pi6$.
@@ -35,7 +34,9 @@
 \end{proof}
 
 
-\question Find all $z\in\C$ such that $z^5=1$ and plot the solutions in the complex plane.
+\begin{warmup}
+  Find all $z\in\C$ such that $z^5=1$ and plot the solutions in the complex plane.
+\end{warmup}
 (You may state values in polar form.)
 \begin{proof}[Solution]
   Note that $1 = 1\cis0$.
@@ -46,7 +47,9 @@
 \end{proof}
 
 
-\question Find all $z\in\C$ such that $z^2=\dfrac{1+i}{1-i}$.
+\begin{warmup}
+  Find all $z\in\C$ such that $z^2=\dfrac{1+i}{1-i}$.
+\end{warmup}
 \begin{proof}[Solution]
   Simplifying the fraction on the right-hand side, $\frac{(1+i)(1+i)}{2}=\frac{1+2i-1}{2}=i$.
   On the complex plane, $i=1\cis\frac\pi2$.
@@ -55,9 +58,11 @@
 \end{proof}
 
 
-\qsection{Recommended Problems}{RP}
+\section{Recommended Problems}
 
-\question Express the following complex numbers in standard form.
+\begin{recommended}
+  Express the following complex numbers in standard form.
+\end{recommended}
 \begin{enumerate}[(a)]
   \item $\dfrac{(\sqrt2-i)^2}{(\sqrt2+i)(1-\sqrt2i)}$
         \begin{proof}[Solution]
@@ -65,8 +70,8 @@
           \begin{align*}
             \frac{(\sqrt2-i)^2}{(\sqrt2+i)(1-\sqrt2i)}
              & = \frac{(1-2\sqrt{2}i)(\sqrt{2}-i)(1+\sqrt{2}i)}{(3)(3)} \\
-             & = \frac{(5-\sqrt2i)(\sqrt2-i)}{9}                       \\
-             & = \frac{4\sqrt2-7i}{9}                                  \\
+             & = \frac{(5-\sqrt2i)(\sqrt2-i)}{9}                        \\
+             & = \frac{4\sqrt2-7i}{9}                                   \\
              & = \frac{4\sqrt2}{9}-\frac{7}{9}i \qedhere
           \end{align*}
         \end{proof}
@@ -78,7 +83,9 @@
         \end{proof}
 \end{enumerate}
 
-\question Prove all of the Properties of Complex Arithmetic that were not proved in the notes or in class.
+\begin{recommended}
+  Prove all of the Properties of Complex Arithmetic that were not proved in the notes or in class.
+\end{recommended}
 \begin{proof}
   Let $u=a+bi$, $v=c+di$, and $z=f+gi$ be complex numbers.
   We must show the Properties of Complex Arithmetic, i.e., that
@@ -137,7 +144,9 @@
 \end{proof}
 
 
-\question Let $n \in \N$. Prove that if $n \equiv 1 \pmod 4$, then $i^n = i$.
+\begin{recommended}
+  Let $n \in \N$. Prove that if $n \equiv 1 \pmod 4$, then $i^n = i$.
+\end{recommended}
 \begin{proof}
   Let $n$ be a natural number congruent to 1 modulo 4.
   Then, we may write $n = 4k+1$ for some integer $k$.
@@ -147,11 +156,13 @@
 \end{proof}
 
 
-\question Find all $z \in \C$ which satisfy
+\begin{recommended}
+  Find all $z \in \C$ which satisfy
+\end{recommended}
 \begin{enumerate}[(a)]
   \item $z^2+2z+1=0$
         \begin{proof}[Solution]
-          Factor: $z^2 + 2z + 1 = (z+1)^2$ so $z = -1 + 0i$ (by~\ref{q:fac})
+          Factor: $z^2 + 2z + 1 = (z+1)^2$ so $z = -1 + 0i$ (by~\Cref{q:fac})
         \end{proof}
   \item $z^2+2\bar{z}+1=0$
         \begin{proof}[Solution]
@@ -179,7 +190,9 @@
 \end{enumerate}
 
 
-\question \begin{enumerate}[(a)]
+\begin{recommended}
+\end{recommended}
+\begin{enumerate}[(a)]
   \item Find all $w\in\C$ satisfying $w^2 = -15 + 8i$.
         \begin{proof}[Solution]
           We rewrite $w=a+bi$ for some reals $a$ and $b$.
@@ -206,7 +219,9 @@
 \end{enumerate}
 
 
-\question\label{q:fac} Let $z, w \in \C$. Prove that if $zw = 0$ then $z = 0$ or $w = 0$.
+\begin{recommended}\label{q:fac}
+  Let $z, w \in \C$. Prove that if $zw = 0$ then $z = 0$ or $w = 0$.
+\end{recommended}
 \begin{proof}
   Let $z$ and $w$ be complex numbers such that $zw = 0$.
   Suppose for a contradiction that both $z$ and $w$ are non-zero.
@@ -217,8 +232,10 @@
 \end{proof}
 
 
-\question Let $a,b,c \in \C$. Prove: if $|a|=|b|=|c|=1$,
-then $\overline{a+b+c}=\frac1a+\frac1b+\frac1c$.
+\begin{recommended}
+  Let $a,b,c \in \C$. Prove: if $|a|=|b|=|c|=1$,
+  then $\overline{a+b+c}=\frac1a+\frac1b+\frac1c$.
+\end{recommended}
 \begin{proof}
   First, consider some arbitrary complex number $z=a+bi$ with modulus 1.
   By definition, $a^2 + b^2 = 1^2 = 1$.
@@ -234,7 +251,9 @@ then $\overline{a+b+c}=\frac1a+\frac1b+\frac1c$.
 \end{proof}
 
 
-\question Find all $z\in\C$ satisfying $z^2=|z|^2$.
+\begin{recommended}
+  Find all $z\in\C$ satisfying $z^2=|z|^2$.
+\end{recommended}
 \begin{proof}
   Let $z$ be a complex number.
   Recall that $|z|^2 = \bar{z}z$ by PM3.
@@ -244,7 +263,9 @@ then $\overline{a+b+c}=\frac1a+\frac1b+\frac1c$.
 \end{proof}
 
 
-\question Find all $z\in\C$ satisfying $|z+1|^2 \leq 3$ and shade the corresponding region in the complex plane.
+\begin{recommended}
+  Find all $z\in\C$ satisfying $|z+1|^2 \leq 3$ and shade the corresponding region in the complex plane.
+\end{recommended}
 \begin{proof}[Solution]
   We write $z = a+bi$, so $|z+1|^2 = |(a+1)+bi|^2 = (\sqrt{(a+1)^2+b^2})^2 = (a+1)^2 + b^2$.
   Then, we are shading the inside of the circle defined by $(a+1)^2 + b^2 = 3$.
@@ -261,8 +282,10 @@ then $\overline{a+b+c}=\frac1a+\frac1b+\frac1c$.
 \end{proof}
 
 
-\question Let $z,w\in\C$ such that $\overline{z} w \neq 1$.
-Prove that if $|z|=1$ or $|w|=1$, then $\abs{\dfrac{z-w}{1 - \overline{z} w}}=1$.
+\begin{recommended}
+  Let $z,w\in\C$ such that $\overline{z} w \neq 1$.
+  Prove that if $|z|=1$ or $|w|=1$, then $\abs{\dfrac{z-w}{1 - \overline{z} w}}=1$.
+\end{recommended}
 \begin{prf}[by sooshi]
   Let $z$ and $w$ be complex numbers such that $\overline{z} w \neq 1$.
   Suppose that $|z| = 1$ or $|w| = 1$.
@@ -272,26 +295,28 @@ Prove that if $|z|=1$ or $|w|=1$, then $\abs{\dfrac{z-w}{1 - \overline{z} w}}=1$
   Now, consider the case when $|z| = 1$. Then,
   \begin{equation*}
     \abs{\frac{z-w}{1 - \overline{z} w}}
-      = \frac{|z-w|}{|1 - \overline{z} w|}       
-      = \frac{|z||z-w|}{|z||1 - \overline{z} w|} 
-      = \frac{(1)|z-w|}{|z - z\overline{z}w|}       
-      = \frac{|z-w|}{|z-w|}
-      = 1
+    = \frac{|z-w|}{|1 - \overline{z} w|}
+    = \frac{|z||z-w|}{|z||1 - \overline{z} w|}
+    = \frac{(1)|z-w|}{|z - z\overline{z}w|}
+    = \frac{|z-w|}{|z-w|}
+    = 1
   \end{equation*}
   Likewise, if $|w| = 1$, then
   \begin{equation*}
     \abs{\frac{z-w}{1 - \overline{z} w}}
-     = \frac{|z-w|}{|1 - \overline{z} w|}            
-     = \frac{|z-w|}{|w\overline{w} - \overline{z} w|}
-     = \frac{|z-w|}{|w||\overline{w} - \overline{z}|}
-     = \frac{|z-w|}{|w-z|}                           
-     = 1
+    = \frac{|z-w|}{|1 - \overline{z} w|}
+    = \frac{|z-w|}{|w\overline{w} - \overline{z} w|}
+    = \frac{|z-w|}{|w||\overline{w} - \overline{z}|}
+    = \frac{|z-w|}{|w-z|}
+    = 1
   \end{equation*}
   since $|w-z| = \abs{-(z-w)} = \abs{-1}|z-w| = |z-w|$, completing the proof.
 \end{prf}
 
 
-\question Show that for all complex numbers $z$, $|\Re(z)|+|\Im(z)|\leq\sqrt{2}|z|$.
+\begin{recommended}
+  Show that for all complex numbers $z$, $|\Re(z)|+|\Im(z)|\leq\sqrt{2}|z|$.
+\end{recommended}
 \begin{proof}
   Let $z = r\cis \theta$ be a complex number.
   Then, $|z| = r$, $\Re(z) = r\cos\theta$ and $\Im(z) = r\sin\theta$.
@@ -310,8 +335,10 @@ Prove that if $|z|=1$ or $|w|=1$, then $\abs{\dfrac{z-w}{1 - \overline{z} w}}=1$
 \end{proof}
 
 
-\question Use \emph{De Moivre's Theorem} (DMT) to prove that
-$\sin 4\theta = 4\sin\theta\cos^3\theta - 4\sin^3\theta\cos\theta$ for all $\theta\in\R$.
+\begin{recommended}
+  Use \emph{De Moivre's Theorem} (DMT) to prove that
+  $\sin 4\theta = 4\sin\theta\cos^3\theta - 4\sin^3\theta\cos\theta$ for all $\theta\in\R$.
+\end{recommended}
 \begin{proof}
   Let $\theta \in \R$ and note that by DMT, we have
   \[ (\cos\theta + i\sin\theta)^4 = \cos 4\theta + i\sin 4\theta \]
@@ -329,7 +356,9 @@ $\sin 4\theta = 4\sin\theta\cos^3\theta - 4\sin^3\theta\cos\theta$ for all $\the
 \end{proof}
 
 
-\question Let $n\in\N$ and $a,b\in\R$. Show that $z=(a+bi)^n+(a-bi)^n$ is real.
+\begin{recommended}
+  Let $n\in\N$ and $a,b\in\R$. Show that $z=(a+bi)^n+(a-bi)^n$ is real.
+\end{recommended}
 \begin{proof}
   Let $n$ be a natural number and $u=a+bi$ be a complex number. Then, $\overline{u}=a-bi$.
   It inductively follows from PCJ4 and the associativity of multiplication
@@ -339,8 +368,10 @@ $\sin 4\theta = 4\sin\theta\cos^3\theta - 4\sin^3\theta\cos\theta$ for all $\the
 \end{proof}
 
 
-\question An \emph{$n$-th root of unity} is any complex solution to $z^n=1$.
-Prove that if $w$ is an $n$-th root of unity, $\frac1w$ is also an $n$-th root of unity.
+\begin{recommended}
+  An \emph{$n$-th root of unity} is any complex solution to $z^n=1$.
+  Prove that if $w$ is an $n$-th root of unity, $\frac1w$ is also an $n$-th root of unity.
+\end{recommended}
 \begin{proof}
   Let $n$ be a natural number and $w$ be an $n$-th root of unity, so $w^n = 1$.
   Knowing that $1=\cis0$, the CNRT states that $w = \cis(\frac{2k\pi}{n})$ for some $0 \leq k < n$.
@@ -357,8 +388,10 @@ Prove that if $w$ is an $n$-th root of unity, $\frac1w$ is also an $n$-th root o
 \end{proof}
 
 
-\question A complex number $z$ is called a \emph{primitive} $n$-th root of unity
-if $z^n=1$ and $z^k \neq 1$ for all $1 \leq k \leq n-1$.
+\begin{recommended}
+  A complex number $z$ is called a \emph{primitive} $n$-th root of unity
+  if $z^n=1$ and $z^k \neq 1$ for all $1 \leq k \leq n-1$.
+\end{recommended}
 \begin{enumerate}[(a)]
   \item For each $n=1,3,5,6$ list all the primitive $n$-th roots of unity.
         \begin{proof}[Solution]
@@ -409,7 +442,7 @@ if $z^n=1$ and $z^k \neq 1$ for all $1 \leq k \leq n-1$.
           \item For any $m\in\Z$, if $\gcd(m,n)=1$, then $z^m$ is a primitive $n$-th root of unity.
                 \begin{prf}[new and improved by sooshi]
                   Let $z$ be a primitive $n$-th root of unity and $m$ an integer coprime to $n$.
-                  
+
                   Suppose for a contradiction that $z^m$ is a $k$-th root of unity for some $1 \leq k < n$.
                   Then, $(z^m)^k = z^{mk} = 1$.
                   From above, this implies that $n \mid mk$ and by CAD, $n \mid k$.
@@ -421,9 +454,11 @@ if $z^n=1$ and $z^k \neq 1$ for all $1 \leq k \leq n-1$.
 \end{enumerate}
 
 
-\question Let $u$ and $v$ be fixed complex numbers.
-Let $\omega$ be a non-real cube root of unity.
-For each $k\in\Z$, define $y_k\in\C$ by the formula \[ y_k = \omega^k u + \omega^{-k}v \]
+\begin{recommended}
+  Let $u$ and $v$ be fixed complex numbers.
+  Let $\omega$ be a non-real cube root of unity.
+  For each $k\in\Z$, define $y_k\in\C$ by the formula \[ y_k = \omega^k u + \omega^{-k}v \]
+\end{recommended}
 \begin{enumerate}[(a)]
   \item Compute $y_1$, $y_2$, and $y_3$ in terms of $u$, $v$, and $\omega$.
         \begin{proof}[Solution]
@@ -477,9 +512,11 @@ For each $k\in\Z$, define $y_k\in\C$ by the formula \[ y_k = \omega^k u + \omega
 \end{enumerate}
 
 
-\qsection{Challenges}{C}
+\section{Challenges}
 
-\question Let $z,w\in\C$.
+\begin{challenge}
+  Let $z,w\in\C$.
+\end{challenge}
 \begin{enumerate}[(a)]
   \item Prove that $|z+w| \leq |z| + |w|$.
         \begin{proof}
@@ -512,11 +549,15 @@ For each $k\in\Z$, define $y_k\in\C$ by the formula \[ y_k = \omega^k u + \omega
         \end{proof}
 \end{enumerate}
 
-\question Let $a,b,c\in\C$.
-Show that if $\dfrac{b-a}{a-c} = \dfrac{a-c}{c-b}$ then $|b-a| = |a-c| = |c-b|$.
+\begin{challenge}
+  Let $a,b,c\in\C$.
+  Show that if $\dfrac{b-a}{a-c} = \dfrac{a-c}{c-b}$ then $|b-a| = |a-c| = |c-b|$.
+\end{challenge}
 
-\question Let $n \geq 2$ be an integer. Prove that
-\[ \sum_{k=0}^{n-1}\cos\left(\frac{2k\pi}{n}\right)=0=\sum_{k=0}^{n-1}\sin\left(\frac{2k\pi}{n}\right) \]
+\begin{challenge}
+  Let $n \geq 2$ be an integer. Prove that
+  \[ \sum_{k=0}^{n-1}\cos\left(\frac{2k\pi}{n}\right)=0=\sum_{k=0}^{n-1}\sin\left(\frac{2k\pi}{n}\right) \]
+\end{challenge}
 \begin{prf}[with help from Ainsley, Kenson, Mabel]
   Let $n \neq 1$ be a natural number.
   Then, we have that the $n$-th roots of unity are given by
@@ -535,5 +576,3 @@ Show that if $\dfrac{b-a}{a-c} = \dfrac{a-c}{c-b}$ then $|b-a| = |a-c| = |c-b|$.
   $(a-1)(a^{n-1} + a^{n-2} + \cdots + a^2 + a + 1)$.
   It follows that $a^n - 1 = 1-1 = 0$ and $0 = (a-1)z$ so, from above, $a \neq 1$ so $z = 0$.
 \end{prf}
-
-\end{document}

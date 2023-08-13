@@ -1,14 +1,10 @@
-\documentclass{agony}
-\title{MATH 135 Fall 2020: Extra Practice 7}
+\chapter{Linear Diophantine Equations}
 
-\begin{document}
-\thispagestyle{firstpage}
+\section{Warm-Up Exercises}
 
-\textbf{\thetitle}
-
-\qsection{Warm-Up Exercises}{WE}
-
-\question Find the complete integer solution to $7x+11y=3$.
+\begin{warmup}
+  Find the complete integer solution to $7x+11y=3$.
+\end{warmup}
 \begin{proof}[Solution]
   Begin by applying the EEA to determine one solution for $x$ and $y$:
   \begin{center}
@@ -29,7 +25,9 @@
 \end{proof}
 
 
-\question Find the complete integer solution to $28x+60y=10$.
+\begin{warmup}
+  Find the complete integer solution to $28x+60y=10$.
+\end{warmup}
 \begin{proof}[Solution]
   Begin by applying the EEA to find the GCD\@:
   \begin{center}
@@ -46,9 +44,11 @@
 \end{proof}
 
 
-\qsection{Recommended Problems}{RP}
+\section{Recommended Problems}
 
-\question Find all non-negative integer solutions to $12x+57y=423$.
+\begin{recommended}
+  Find all non-negative integer solutions to $12x+57y=423$.
+\end{recommended}
 \begin{proof}[Solution]
   Since $12 = 3\times4$ and $57=3\times19$, clearly $\gcd(12,57)=3$.
   We also have that $423 \mid 3$, so solutions exist.
@@ -77,7 +77,9 @@
 \end{proof}
 
 
-\question Prove or disprove the following implications:
+\begin{recommended}
+  Prove or disprove the following implications:
+\end{recommended}
 \begin{enumerate}[(a)]
   \item For all integers $a$, $b$, and $c$, if there exists an integer solution to $ax^2+by^2=c$,
         then $\gcd(a,b) \mid c$.
@@ -103,8 +105,10 @@
 \end{enumerate}
 
 
-\question Consider the following statement:
-For all integers $a$, $b$, $c$, and $x_0$, there exists an integer $y_0$ such that $ax_0+by_0=c$.
+\begin{recommended}
+  Consider the following statement:
+  For all integers $a$, $b$, $c$, and $x_0$, there exists an integer $y_0$ such that $ax_0+by_0=c$.
+\end{recommended}
 \begin{enumerate}[(a)]
   \item Carefully write down the negation of this statement and prove that this negation is true.
         \begin{proof}
@@ -178,8 +182,10 @@ For all integers $a$, $b$, $c$, and $x_0$, there exists an integer $y_0$ such th
 \end{enumerate}
 
 
-\question Suppose $a$ and $b$ are integers.
-Prove that $\{ax+by : x,y\in\Z\} = {\{n\gcd(a,b) : n\in\Z\}}$.
+\begin{recommended}
+  Suppose $a$ and $b$ are integers.
+  Prove that $\{ax+by : x,y\in\Z\} = {\{n\gcd(a,b) : n\in\Z\}}$.
+\end{recommended}
 \begin{proof}
   Let $a$ and $b$ be integers with GCD $d$.
   We prove $\{ax+by : x,y\in\Z\}=\{nd : n\in\Z\}$ by mutual containment.
@@ -199,10 +205,9 @@ Prove that $\{ax+by : x,y\in\Z\} = {\{n\gcd(a,b) : n\in\Z\}}$.
 \emph{Note}: This is essentially a restatement of Jerry Wang's GCD derivation by subgroups.
 
 
-\qsection{Challenge}{C}
+\section{Challenge}
 
-\question For how many integer values of $c$ does $8x+5y=c$ have exactly one solution
-where both $x$ and $y$ are strictly positive integers?
-
-
-\end{document}
+\begin{challenge}
+  For how many integer values of $c$ does $8x+5y=c$ have exactly one solution
+  where both $x$ and $y$ are strictly positive integers?
+\end{challenge}

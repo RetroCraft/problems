@@ -1,26 +1,27 @@
-\documentclass{agony}
-\title{MATH 135 Fall 2020: Extra Practice 6}
+\chapter{The Greatest Common Divisor}
 
-\begin{document}
-\thispagestyle{firstpage}
+\section{Warm-Up Exercises}
 
-\textbf{\thetitle}
+\begin{warmup}
+  What is the remainder when $-98$ is divided by 7?
+\end{warmup}
+\begin{sol}
+  $-98 \divisionsymbol 7 = -14$, so the remainder is 0.
+\end{sol}
 
-\qsection{Warm-Up Exercises}{WE}
+\begin{warmup}
+  Calculate $\gcd(10,-65)$.
+\end{warmup}
+\begin{sol}
+  We have $10 = 2 \cdot 5$ and $-65 = -1 \cdot 5 \cdot 13$, so the GCD is 5.
+\end{sol}
 
-\question What is the remainder when $-98$ is divided by 7?
-
-$-98 \divisionsymbol 7 = -14$, so the remainder is 0.
-
-\question Calculate $\gcd(10,-65)$.
-
-We have $10 = 2 \cdot 5$ and $-65 = -1 \cdot 5 \cdot 13$, so the GCD is 5.
-
-\question Let $a,b,c\in\Z$. Consider the implication $S$:
-If $\gcd(a,b)=1$ and $c \mid (a+b)$, then $\gcd(b,c)=1$.
-Fill in the blanks to complete a proof of $S$.
-\begin{enumerate}[(a)]
-  \setlength{\parskip}{0ex}
+\begin{warmup}
+  Let $a,b,c\in\Z$. Consider the implication $S$:
+  If $\gcd(a,b)=1$ and $c \mid (a+b)$, then $\gcd(b,c)=1$.
+  Fill in the blanks to complete a proof of $S$.
+\end{warmup}
+\begin{enumerate}[nosep]
   \item Since $\gcd(a,b)=1$, by \fbox{B\'ezout's Lemma},
         there exist integers $x$ and $y$ such that $ax+by=1$.
   \item Since $c \mid (a+b)$, by \fbox{definition},
@@ -30,7 +31,9 @@ Fill in the blanks to complete a proof of $S$.
         $\gcd(b,c)=1$ by \fbox{the GCD Characterization Theorem}.
 \end{enumerate}
 
-\question Disprove: For all integers $a$, $b$, and $c$, if $a \mid (bc)$, then $a \mid b$ or $a \mid c$.
+\begin{warmup}
+  Disprove: For all integers $a$, $b$, and $c$, if $a \mid (bc)$, then $a \mid b$ or $a \mid c$.
+\end{warmup}
 \begin{proof}
   We prove the negation, there are integers $a$, $b$, and $c$ where
   $a \mid bc$, $a \nmid b$, and $a \nmid c$.
@@ -41,9 +44,11 @@ Fill in the blanks to complete a proof of $S$.
 \end{proof}
 
 
-\qsection{Recommended Problems}{RP}
+\section{Recommended Problems}
 
-\question \begin{enumerate}[(a)]
+\begin{recommended}
+\end{recommended}
+\begin{enumerate}[(a)]
   \item Use the Extended Euclidean Algorithm to find three integers $x$, $y$ and
         $d = \gcd(1112, 768)$ such that $1112x + 768y = d$.
         \begin{proof}[Solution]
@@ -73,7 +78,9 @@ Fill in the blanks to complete a proof of $S$.
 \end{enumerate}
 
 
-\question Prove that for all $a\in\Z$, $\gcd(9a + 4, 2a + 1) = 1$.
+\begin{recommended}
+  Prove that for all $a\in\Z$, $\gcd(9a + 4, 2a + 1) = 1$.
+\end{recommended}
 \begin{proof}
   Let $a$ be an integer.
   We must show that $9a+4$ and $2a+1$ are coprime.
@@ -90,8 +97,10 @@ Fill in the blanks to complete a proof of $S$.
 \end{proof}
 
 
-\question Let $\gcd(x, y) = d$ for integers $x$ and $y$.
-Express $\gcd(18x + 3y, 3x)$ in terms of $d$ and prove that you are correct.
+\begin{recommended}
+  Let $\gcd(x, y) = d$ for integers $x$ and $y$.
+  Express $\gcd(18x + 3y, 3x)$ in terms of $d$ and prove that you are correct.
+\end{recommended}
 \begin{proof}
   Let $x$ and $y$ be integers with GCD $d$.
 
@@ -109,7 +118,9 @@ Express $\gcd(18x + 3y, 3x)$ in terms of $d$ and prove that you are correct.
 \end{proof}
 
 
-\question Let $a,b\in\Z$. Prove that if $\gcd(a, b) = 1$, then $\gcd(2a+b, a+2b) \in \{1,3\}$.
+\begin{recommended}
+  Let $a,b\in\Z$. Prove that if $\gcd(a, b) = 1$, then $\gcd(2a+b, a+2b) \in \{1,3\}$.
+\end{recommended}
 \begin{proof}
   Let $a$ and $b$ be coprime integers.
 
@@ -131,7 +142,9 @@ Express $\gcd(18x + 3y, 3x)$ in terms of $d$ and prove that you are correct.
 \end{proof}
 
 
-\question Prove that for all integers $a$, $b$ and $k$, if $b \neq 0$, then $\gcd(a, b) \leq \gcd(ak, b)$.
+\begin{recommended}
+  Prove that for all integers $a$, $b$ and $k$, if $b \neq 0$, then $\gcd(a, b) \leq \gcd(ak, b)$.
+\end{recommended}
 \begin{proof}
   Let $a$, $b$, and $k$ be integers where $b$ is non-zero.
   Also, let $d=\gcd(a,b)$ and $g=\gcd(ak,b)$. We must show $d \leq g$.
@@ -162,8 +175,10 @@ Express $\gcd(18x + 3y, 3x)$ in terms of $d$ and prove that you are correct.
 \end{proof}
 
 
-\question Prove that for all integers $a$, $b$ and $c$:
-if $a \mid c$ and $b \mid c$ and $\gcd(a, b) = 1$, then $ab \mid c$.
+\begin{recommended}
+  Prove that for all integers $a$, $b$ and $c$:
+  if $a \mid c$ and $b \mid c$ and $\gcd(a, b) = 1$, then $ab \mid c$.
+\end{recommended}
 \begin{proof}
   Let $a$, $b$, and $c$ be integers such that $a$ and $b$ divide $c$, and $a$ and $b$ are coprime.
 
@@ -175,7 +190,9 @@ if $a \mid c$ and $b \mid c$ and $\gcd(a, b) = 1$, then $ab \mid c$.
 \end{proof}
 
 
-\question Let $a,b,c\in\Z$. Prove that if $\gcd(a, b) = 1$ and $c \mid a$, then $\gcd(b, c) = 1$.
+\begin{recommended}
+  Let $a,b,c\in\Z$. Prove that if $\gcd(a, b) = 1$ and $c \mid a$, then $\gcd(b, c) = 1$.
+\end{recommended}
 \begin{proof}
   Let $a$, $b$, and $c$ be integers such that $\gcd(a,b)=1$ and $c \mid a$.
 
@@ -184,9 +201,11 @@ if $a \mid c$ and $b \mid c$ and $\gcd(a, b) = 1$, then $ab \mid c$.
 \end{proof}
 
 
-\question Let $a$ and $b$ be integers.
-Prove that if $\gcd(a, b) = 1$, then $\gcd(a^m, b^n) = 1$ for all $m,n\in\N$.
-You may use the result which is proved in Example 14 in the notes.
+\begin{recommended}
+  Let $a$ and $b$ be integers.
+  Prove that if $\gcd(a, b) = 1$, then $\gcd(a^m, b^n) = 1$ for all $m,n\in\N$.
+  You may use the result which is proved in Example 14 in the notes.
+\end{recommended}
 \begin{proof}
   Recall that Example 14 proved that for all integers $a$, $b$, and natural numbers $n$,
   if $\gcd(a, b)=1$, then $\gcd(a, b^n)=1$.
@@ -204,10 +223,11 @@ You may use the result which is proved in Example 14 in the notes.
 \end{proof}
 
 
-\question Suppose $a$, $b$ and $n$ are integers.
-Prove that $n \mid \gcd(a, n) \cdot \gcd(b, n)$ if and only if $n \mid ab$.
-(sooshi, CS Discord)
-\begin{proof}
+\begin{recommended}
+  Suppose $a$, $b$ and $n$ are integers.
+  Prove that $n \mid \gcd(a, n) \cdot \gcd(b, n)$ if and only if $n \mid ab$.
+\end{recommended}
+\begin{prf}[sooshi, CS Discord]
   Let $a$, $b$, and $n$ be integers.
   Then, let $d=\gcd(a,n)$ and $c=\gcd(b,n)$.
   We prove both implications.
@@ -226,10 +246,12 @@ Prove that $n \mid \gcd(a, n) \cdot \gcd(b, n)$ if and only if $n \mid ab$.
   However, this is just $n \mid dc$.
 
   Therefore, since both implications hold, $n \mid dc$ if and only if $n \mid ab$.
-\end{proof}
+\end{prf}
 
 
-\question How many positive divisors does 33480 have?
+\begin{recommended}
+  How many positive divisors does 33480 have?
+\end{recommended}
 \begin{proof}[Solution]
   We may apply prime factorization to get $33480=2^3\cdot3^3\cdot5\cdot31$.
   Then, by DFPF, we have that any positive divisor $d=2^\alpha\cdot3^\beta\cdot5^\gamma\cdot31^\delta$
@@ -240,8 +262,10 @@ Prove that $n \mid \gcd(a, n) \cdot \gcd(b, n)$ if and only if $n \mid ab$.
 \end{proof}
 
 
-\question Prove that for all integers $a$ and $b$,
-if $9a^2 = b^4$ where $a,b\in\Z$, then 3 is a common divisor of $a$ and $b$.
+\begin{recommended}
+  Prove that for all integers $a$ and $b$,
+  if $9a^2 = b^4$ where $a,b\in\Z$, then 3 is a common divisor of $a$ and $b$.
+\end{recommended}
 \begin{proof}
   Let $a$ and $b$ be integers such that $9a^2=b^4$.
   Without loss of generality, let both $a$ and $b$ be positive
@@ -263,7 +287,9 @@ if $9a^2 = b^4$ where $a,b\in\Z$, then 3 is a common divisor of $a$ and $b$.
 \end{proof}
 
 
-\question Let $n\in\N$. Prove that if $p$ is prime and $p \leq n$, then $p$ does not divide $n! + 1$.
+\begin{recommended}
+  Let $n\in\N$. Prove that if $p$ is prime and $p \leq n$, then $p$ does not divide $n! + 1$.
+\end{recommended}
 \begin{proof}
   Let $n$ be a natural number, and $p$ be a prime number.
 
@@ -278,27 +304,35 @@ if $9a^2 = b^4$ where $a,b\in\Z$, then 3 is a common divisor of $a$ and $b$.
 \end{proof}
 
 
-\qsection{Challenges}{C}
+\section{Challenges}
 
-\question Prove that for any integer $a \neq 1$ and $n\in\N$,
-$\gcd\left( \frac{a^n-1}{a-1}, a-1 \right) = \gcd(n, a-1)$.
+\begin{challenge}
+  Prove that for any integer $a \neq 1$ and $n\in\N$,
+  $\gcd\left( \frac{a^n-1}{a-1}, a-1 \right) = \gcd(n, a-1)$.
+\end{challenge}
 
-\question Let $n$ be a positive integer for which
-$\gcd(n, n + 1) < \gcd(n, n + 2) < \cdots < {\gcd(n, n + 20)}$.
-Prove that $\gcd(n, n + 20) < \gcd(n, n + 21)$.
+\begin{challenge}
+  Let $n$ be a positive integer for which
+  $\gcd(n, n + 1) < \gcd(n, n + 2) < \cdots < {\gcd(n, n + 20)}$.
+  Prove that $\gcd(n, n + 20) < \gcd(n, n + 21)$.
+\end{challenge}
 
-\question Let $a$ and $b$ be nonnegative integers.
-Prove that $\gcd(2^a - 1, 2^b - 1) = 2\gcd(a,b) - 1$.
+\begin{challenge}
+  Let $a$ and $b$ be nonnegative integers.
+  Prove that $\gcd(2^a - 1, 2^b - 1) = 2\gcd(a,b) - 1$.
+\end{challenge}
 
-\question An integer $n$ is \emph{perfect} if the sum of all of its positive divisors
-(including 1 and itself) is $2n$.
-\begin{enumerate}[(a)]
-  \item Is 6 a perfect number? Give reasons for your answer.
-  \item Is 7 a perfect number? Give reasons for your answer.
-  \item Prove the following statement:
-        If $k$ is a positive integer and $2^k-1$ is prime, then $2^{k-1}(2^k-1)$ is perfect.
-\end{enumerate}
+\begin{challenge}
+  An integer $n$ is \emph{perfect} if the sum of all of its positive divisors
+  (including 1 and itself) is $2n$.
+  \begin{enumerate}[(a)]
+    \item Is 6 a perfect number? Give reasons for your answer.
+    \item Is 7 a perfect number? Give reasons for your answer.
+    \item Prove the following statement:
+          If $k$ is a positive integer and $2^k-1$ is prime, then $2^{k-1}(2^k-1)$ is perfect.
+  \end{enumerate}
+\end{challenge}
 
-\question Let $a,b\in\Z$. Prove that $\gcd(a^n, b^n) = \gcd(a, b)^n$ for all $n\in\N$.
-
-\end{document}
+\begin{challenge}
+  Let $a,b\in\Z$. Prove that $\gcd(a^n, b^n) = \gcd(a, b)^n$ for all $n\in\N$.
+\end{challenge}

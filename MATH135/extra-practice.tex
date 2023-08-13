@@ -1,0 +1,49 @@
+\documentclass[notes,tikz,minted]{agony}
+
+\declaretheorem[name=Warm-Up Exercise,refname={WE,WEs},style=thmquoteresult,parent=chapter]{warmup}
+\declaretheoremstyle[
+	headfont=\bfseries\color{OliveGreen},
+  notefont=\mdseries,
+	bodyfont=\normalfont,
+	mdframed={style=mdquote,linecolor=ForestGreen,backgroundcolor=ForestGreen!5},
+]{thmquotegreen}
+\declaretheorem[name=Recommended Problem,refname={RP,RPs},style=thmquotegreen,parent=chapter]{recommended}
+\declaretheorem[name=Challenge,refname={C,Cs},style=thmquotered,parent=chapter]{challenge}
+
+\title{MATH 135 Fall 2020: Extra Practice}
+\author{James Ah Yong and contributors}
+\begin{document}
+\thispagestyle{firstpage}
+
+\chapter*{MATH 135 Fall 2020:\\{\huge Extra Practice}}
+
+\begin{mdframed}[style=mdround,linecolor=red,backgroundcolor=CarnationPink!5]
+  This document was entirely written by then-first year Double Degrees.
+  \textbf{\color{Red}{Nothing here is official. There are no guarantees that content is remotely close to correct.}}
+  If you find a mistake, please either \href{https://agony.retrocraft.ca/#contact}{let me know}
+  or make a \href{https://github.com/RetroCraft/problems/pulls}{pull request} fixing it.
+
+  \textbf{\color{Red}{Try the problems first}} before looking at solutions.
+  You won't learn by reading someone else's work.
+\end{mdframed}
+
+\begin{multicols*}{2}
+  % Print ToC without ToC title
+  \makeatletter
+  \@starttoc{toc}
+  \makeatother
+\end{multicols*}
+
+\include{extra-practice/01intro}
+\include{extra-practice/02logic}
+\include{extra-practice/03proofs}
+\include{extra-practice/04induction}
+\include{extra-practice/05sets}
+\include{extra-practice/06gcd}
+\include{extra-practice/07lde}
+\include{extra-practice/08mod}
+\include{extra-practice/09rsa}
+\include{extra-practice/10complex}
+\include{extra-practice/11polynom}
+
+\end{document}
