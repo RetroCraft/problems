@@ -1,7 +1,10 @@
 \documentclass[notes]{agony}
 \setsectiontitle{Lecture}
+\counterwithout{section}{chapter}
 \usepackage{emoji}
 \newcommand{\xgets}{\xleftarrow}
+\newcommand{\ndgets}{\xgets{\mathdollar}}
+\newcommand{\ndto}{\xto{\mathdollar}}
 \newcommand{\one}{\symbb{1}}
 \newcommand{\ord}{\operatorname{ord}}
 \newcommand{\leg}[2]{\qty(\frac{#1}{#2})}
@@ -98,17 +101,17 @@ I am literally auditing this course two nested prerequisites behind.
 - Easier way to formalize (``Sequences of Games'', Shoup 2004)
     - Two players: challenger $\mathcal C$ and adversary $\mathcal A$
     - Then, OW-CPA is
-        1. $\mathcal C$ runs $KeyGen : \one^\lambda \xto{\$} (pk, sk)$
-        2. $\mathcal C$ chooses $m \xgets{\$} M$
+        1. $\mathcal C$ runs $KeyGen : \one^\lambda \ndto (pk, sk)$
+        2. $\mathcal C$ chooses $m \ndgets M$
         3. $\mathcal C$ computes $c \gets Enc(pk, m)$
-        4. $m' \xgets{\$} \mathcal A(pk, c)$
+        4. $m' \ndgets \mathcal A(pk, c)$
         - with the win condition that $m' = m$, and we say that a cryptosystem is OW-CPA if a probabilistic polynomial time adversary $\mathcal A$ cannot win this game with non-negligible probability
     - IND-CPA (Goldmeier, Micoli 1984): indistinguishability
-        1. $\mathcal C$ runs $(pk, sk) \xgets{\$} KeyGen(\one^\lambda)$
-        2. $(m_0,m_1) \xgets{\$} \mathcal A(\one^\lambda, pk)$
-        3. $\mathcal C$ picks $b \xgets{\$} \{0,1\}$
-        4. $\mathcal C$ computes $c \xgets{\$} Enc(pk, m_b)$
-        5. $b' \xgets{\$} \mathcal A(\one^\lambda, pk, c)$
+        1. $\mathcal C$ runs $(pk, sk) \ndgets KeyGen(\one^\lambda)$
+        2. $(m_0,m_1) \ndgets \mathcal A(\one^\lambda, pk)$
+        3. $\mathcal C$ picks $b \ndgets \{0,1\}$
+        4. $\mathcal C$ computes $c \ndgets Enc(pk, m_b)$
+        5. $b' \ndgets \mathcal A(\one^\lambda, pk, c)$
         - with the win condition $b = b'$, and a cryptosystem is IND-CPA if for all prob.\ poly.\ time $\mathcal A$, $\abs{\frac12 - \Pr[\text{win}]} = O(\frac{1}{\lambda^\varepsilon})$ for all $\varepsilon > 0$
         - Encryption function must be random, otherwise $\mathcal A$ can re-encrypt
 
@@ -117,11 +120,11 @@ I am literally auditing this course two nested prerequisites behind.
 - IND-CPA is the standard security definition for symmetric security
     - Ciphertext contains no information about plaintext (except length)
 - Design a slightly different equivalent IND-CPA game:
-    1. $\mathcal C$ runs $(pk, sk) \xgets{\$} KeyGen(\one^\lambda)$
-    2. $(m_0,m_1) \xgets{\$} \mathcal A(\one^\lambda, pk)$
-    3. $\mathcal C$ picks $b \xgets{\$} \{0,1\}$
-    4. $\mathcal C$ computes $c_1 \xgets{\$} Enc(pk, m_b)$ and $c_2 \xgets{\$} Enc(pk, m_{b-1})$
-    5. $b' \xgets{\$} \mathcal A(\one^\lambda, pk, c_1, c_2)$
+    1. $\mathcal C$ runs $(pk, sk) \ndgets KeyGen(\one^\lambda)$
+    2. $(m_0,m_1) \ndgets \mathcal A(\one^\lambda, pk)$
+    3. $\mathcal C$ picks $b \ndgets \{0,1\}$
+    4. $\mathcal C$ computes $c_1 \ndgets Enc(pk, m_b)$ and $c_2 \ndgets Enc(pk, m_{b-1})$
+    5. $b' \ndgets \mathcal A(\one^\lambda, pk, c_1, c_2)$
 - Consider textbook RSA: $\mathcal A$ can choose $m_0 \neq m_1$ and compute $Enc(pk, m_0)$ and $Enc(pk, m_1)$ which allows it to win
     - In general, this applies to any scheme with deterministic encryption
 - Goldwasser-Micali (``Probabilistic Encryption'' 1982)
@@ -129,7 +132,7 @@ I am literally auditing this course two nested prerequisites behind.
     2. Pick $r \in (\Z/n\Z)^\times$ such that $r \not\equiv x^2 \pmod p$ and $r \not\equiv x^2 \pmod q$
     3. Define $pk = (n, r)$ and $sk = (p, q)$
     4. Select a message bit $b$ from $M = \{0,1\}$
-    5. Encrypt $Enc(b) = r^b y^2$ for some $y \xgets{\$}(\Z/n\Z)^\times$
+    5. Encrypt $Enc(b) = r^b y^2$ for some $y \ndgets(\Z/n\Z)^\times$
     - Then, decrypt by determining ciphertext's squareness mod $n$
         - This is easy with the factorization $n=pq$ by Euler's criterion ($a$ is square mod prime $p$ if and only if $a^{(p-1)/2} \equiv 1 \pmod p$)
         - Determining squareness without factorization of $n$ is hard, apparently
@@ -139,17 +142,17 @@ I am literally auditing this course two nested prerequisites behind.
     - Publickeycryptosystemified Diffie-Hellman
     1. Setup is the same as DH, take some element $g \in G$ of a group
     2. Define $pk = g^x$ and $sk = x$
-    3. Encrypt $Enc(m) = (g^y, g^{xy}\cdot m)$ for $y \xgets{\$} \Z$
+    3. Encrypt $Enc(m) = (g^y, g^{xy}\cdot m)$ for $y \ndgets \Z$
     - Then, decrypt $Dec(c_1, c_2) = \frac{c^2}{c_1^x} = \frac{g^{xy}\cdot m}{(g^y)^x} = m$
     - In general, key sharing schemes can be cryptosystemified like this
     - In an IND-CPA game, given $(g^y, g^{xy}m_b)$
         - Divide out $m_0$ to get either $g^{xy}$ (if $m_b = m_0$) or garbage
         - Real challenge is distinguishing $g^{xy}$ from garbage
     - Decisional Diffie-Hellman assumption: in the following game, $\abs{\Pr[\mathcal A\text{ wins}]-\frac12}$ is negligible in $\lambda$
-        1. $\mathcal C$ chooses $p \xgets{\$} \Z$ prime, $p \approx 2^\lambda$
+        1. $\mathcal C$ chooses $p \ndgets \Z$ prime, $p \approx 2^\lambda$
         2. $\mathcal C$ chooses $g \in (\Z/p\Z)^\times$
-        3. $\mathcal C$ chooses $x,y \xgets{\$} \Z$ and $h \xgets{\$} (\Z/p\Z)^\times$, computes $g_1 = g^x$, $g_2 = g^y$, $g_3 = g^{xy}$
-        4. $\mathcal C$ chooses $b \xgets{\$} \{0,1\}$ and $g_4 = g_3$ if $b=0$ and $h$ if $b=1$
+        3. $\mathcal C$ chooses $x,y \ndgets \Z$ and $h \ndgets (\Z/p\Z)^\times$, computes $g_1 = g^x$, $g_2 = g^y$, $g_3 = g^{xy}$
+        4. $\mathcal C$ chooses $b \ndgets \{0,1\}$ and $g_4 = g_3$ if $b=0$ and $h$ if $b=1$
         5. $b' \gets \mathcal A(\one^\lambda,p,g,g_1,g_2,g_4)$
     - Can prove: if DDH assumption holds, Elgamal is IND-CPA
 - Layers of assumptions here:
@@ -320,8 +323,8 @@ Whether or not a primitive element exists is a non-trivial observation:
 Recall the Decisional Diffie-Hellman problem:
 Given $g$, $g^x$, $g^y$, $g^z$, determine if $z = xy$. Formally, as a game:
 \begin{itemize}[nosep]
-  \item $\mathcal C$ chooses a bit $b \in \{0,1\}$ and $x,y \xgets{\$}\Z$
-  \item $b' \gets \mathcal A(g, g^x, g^y, g^z)$ where $z \gets \begin{cases}xy & b = 0 \\ \xgets{\$}\Z & b = 1\end{cases}$
+  \item $\mathcal C$ chooses a bit $b \in \{0,1\}$ and $x,y \ndgets\Z$
+  \item $b' \gets \mathcal A(g, g^x, g^y, g^z)$ where $z \gets \begin{cases}xy & b = 0 \\ \ndgets\Z & b = 1\end{cases}$
   \item Win condition: $b = b'$ with non-negligible probability
 \end{itemize}
 Notice that if $g$ is a primitive root, then $\abs{\{g^x : x \in \Z\}}=p-1$.
@@ -553,7 +556,7 @@ Publish $x$.
 
 \textbf{Encrypt:} $m \in \{0,1\}$
 
-Choose some $r \xgets{\$} (\Z/n\Z)^\times$.
+Choose some $r \ndgets (\Z/n\Z)^\times$.
 Then, $Enc(m) = x^m r^2 = c$.
 
 \textbf{Decrypt:} Determine whether $c$ is a ``fake'' square using the factorization.
@@ -743,8 +746,8 @@ Using MACs can get around this problem (e.g. AES with GCM or Chacha20 with Poly1
   Given the game NM-CPA:
   \begin{enumerate}[1.,nosep]
     \item $\mathcal C$ generates $(pk,sk)$
-    \item $(m_0, m_1, m_0', m_1') \xgets{\$} \mathcal A(\lambda, pk)$ where $m_0' \neq m_1'$
-    \item $\mathcal C$ chooses $b \xgets{\$} \{0,1\}$
+    \item $(m_0, m_1, m_0', m_1') \ndgets \mathcal A(\lambda, pk)$ where $m_0' \neq m_1'$
+    \item $\mathcal C$ chooses $b \ndgets \{0,1\}$
     \item $\mathcal C$ computes $c = E(m_b)$
     \item $c' \gets \mathcal A(\lambda, pk, c)$
   \end{enumerate}
@@ -794,7 +797,7 @@ How to find $x$ and $y$?
   $n \in \N$ where the largest prime factor is less than $B$
 \end{defn}
 
-Chose $x_i \xgets{\$} \mgrp{n}$.
+Chose $x_i \ndgets \mgrp{n}$.
 For each $x_i$, compute $x_i^2 \pmod n$ and keep the $B$-smooth squares.
 We can tell if a number is $B$-smooth by trial division (since $B$ is small).
 
@@ -826,7 +829,7 @@ the amount of work $t+1$ is proportional to $B$.
 We want to pick $B$ such that the probability of squares being $B$-smooth is $\frac1B$.
 This depends on $n$.
 
-From analytic number theory, the probability that a random $y \xgets{\$} \Z/n\Z$
+From analytic number theory, the probability that a random $y \ndgets \Z/n\Z$
 is $L(\alpha,c)$-smooth is $L(1-\alpha,\frac{1-\alpha}{c})$.\footnote{Where $L_n(\alpha,c) = O(\exp(c(\log n)^\alpha(\log\log n)^{1-\alpha}))$.
   Notably, $L_n(1,1) = n$ and $L_n(1,c) = n^c$. Then, $\sqrt{n} = L_n(1,\frac12)$.
   Also, $L_n(0,c) = (\log n)^c$.
@@ -972,7 +975,7 @@ Again, CO 487 content beyond the scope of this course.
 \end{defn}
 
 Ideally, a hash function is a random oracle, i.e.,
-$H \xgets{\$} \{ f : (f : S \to T) \}$.
+$H \ndgets \{ f : (f : S \to T) \}$.
 This is useful, e.g., for making hashed RSA signatures
 existentially unforgeable under chosen message attack.
 
@@ -1002,7 +1005,7 @@ For example, with collision resistance:
 Suppose we have a family of hash functions $HashGen : \one^\lambda \mapsto H_\lambda$.
 Play the game:
 \begin{enumerate}[1.]
-  \item Pick a hash function $H_\lambda \xgets{\$} HashGen(\one^\lambda)$
+  \item Pick a hash function $H_\lambda \ndgets HashGen(\one^\lambda)$
   \item $(s, s') \gets \mathcal A(\one^\lambda, H_\lambda)$
 \end{enumerate}
 with win condition $H_\lambda(s) = H_\lambda(s')$ and $s \neq s'$.
@@ -1073,8 +1076,8 @@ and $Verify : (m,\sigma) \mapsto \sigma^e \bmod n \stackrel{?}{=} m$.
     \item $Sign : (sk, m) \mapsto \sigma$
     \item $Verify : (pk, m, \sigma) \mapsto \{0,1\}$
   \end{itemize}
-  and we have that if $(pk, sk) \xgets{\$} KG(\one^\lambda)$
-  and $\sigma \xgets{\$} S(sk,m)$, then $V(pk, m, \sigma) = 1$.
+  and we have that if $(pk, sk) \ndgets KG(\one^\lambda)$
+  and $\sigma \ndgets S(sk,m)$, then $V(pk, m, \sigma) = 1$.
 \end{defn}
 
 Under Textbook RSA, it is trivial to forge junk (but valid) signatures,
@@ -1084,12 +1087,12 @@ Example security definition game: EUF-CMA \\
 Existential unforgeability (EUF): adversary produces a valid signature \\
 Chosen-message attack (CMA): adversary can always use a signing oracle
 \begin{enumerate}[1., nosep]
-  \item $(pk, sk) \xgets{\$} KeyGen(\one^\lambda)$
+  \item $(pk, sk) \ndgets KeyGen(\one^\lambda)$
   \item \textbf{for} $i=1\dots q$ \textbf{do:} \\
-        \hspace*{1cm} $m_i \xgets{\$} \mathcal A(\one^\lambda, pk, (m_1,\sigma_1),\dotsc,(m_{i-1},\sigma_{i-1}))$ \\
-        \hspace*{1cm} $\sigma_i \xgets{\$} Sign(sk, m_i)$ \\
+        \hspace*{1cm} $m_i \ndgets \mathcal A(\one^\lambda, pk, (m_1,\sigma_1),\dotsc,(m_{i-1},\sigma_{i-1}))$ \\
+        \hspace*{1cm} $\sigma_i \ndgets Sign(sk, m_i)$ \\
         \textbf{end}
-  \item $(m,\sigma) \xgets{\$} \mathcal A(\one^\lambda, pk, (m_1,\sigma_1),\dotsc,(m_q,\sigma_q))$
+  \item $(m,\sigma) \ndgets \mathcal A(\one^\lambda, pk, (m_1,\sigma_1),\dotsc,(m_q,\sigma_q))$
 \end{enumerate}
 with win condition $Verify(pk,m,\sigma)=1$ and for all $i$, $m \neq m_i$.
 
@@ -1130,7 +1133,7 @@ Recall EUF-CMA and Hashed RSA. We want to prove
   but we still have to respond to signing queries of $\mathcal A$ somehow.
 
   To respond to a query for $m_i$,
-  pick a random $\sigma_i \xgets{\$} \mgrp{n}$
+  pick a random $\sigma_i \ndgets \mgrp{n}$
   and set $H(m_i) = \sigma_i^e$ and respond with $\sigma_i$.
   Note that the challenger must maintain a table of $H(m_i)$ to respond to duplicates.
 
@@ -1165,7 +1168,7 @@ If Alice knows that $x = y^2$ and sends $y$ to Bob,
 that is a full-knowledge proof.
 A zero-knowledge proof would not send $y$.
 
-Instead, Alice chooses a random $r \xgets{\$} \mgrp{n}$
+Instead, Alice chooses a random $r \ndgets \mgrp{n}$
 and computes $xr^2 = y^2r^2 = (yr)^2$.
 If she sends $\beta = xr^2$ and $\alpha = yr$,
 Bob can verify that $\alpha^2 = \beta$.
@@ -1174,8 +1177,8 @@ and cannot prove that $\frac{\beta}{x} = r^2$ without sending $r$.
 
 \paragraph{Protocol} For Alice to prove that she knows $y$ such that $y^2 = x$,
 \begin{enumerate}[1.,nosep]
-  \item Alice picks $r \xgets{\$} \mgrp{n}$ and sends $xr^2$
-  \item Bob picks $b \xgets{\$} \{0,1\}$ and sends $b$
+  \item Alice picks $r \ndgets \mgrp{n}$ and sends $xr^2$
+  \item Bob picks $b \ndgets \{0,1\}$ and sends $b$
   \item Alice sends $\rho = y^b r$ and sends $\rho$
   \item Bob verifies that $\rho^2 = \beta x^{b-1}$
 \end{enumerate}
@@ -1251,7 +1254,7 @@ From the perspective of a signature scheme,
 we generate a private key (statement to be proved)
 and public key $\pi$.
 
-To sign, choose a commitment at random $c \xgets{\$} C$.
+To sign, choose a commitment at random $c \ndgets C$.
 Set the challenge to be a deterministic but random function $b = H(m, c)$.
 Calculate a response for $b$.
 Then, let $\sigma = (c, r)$.
@@ -1301,7 +1304,7 @@ Given a group $G$ and $g \in G$,
 generate keys $(pk, sk) = (g^x, x)$.
 
 A signature of $m$ is a proof of knowledge of $x$.
-First, generate a commitment $r \xgets{\$} \Z$, $c = g^r$.
+First, generate a commitment $r \ndgets \Z$, $c = g^r$.
 Then, calculate a challenge $b \gets H(m,c) = H(m,g^r)$.
 The response is $r+bx$, so return $(c, \sigma) = (g^r, r+bx)$.
 
@@ -1366,9 +1369,9 @@ Let $KeyGen$, $Enc : M \to C$, and $Dec : C \to M$ be a public key cryptosystem.
 Also let $\mathcal{Enc}$ and $\mathcal{Dec}$ be a symmetric key cryptosystem.
 
 Suppose Alice wants to send to Bob.
-Bob generates $(pk, sk) \xgets{\$} KeyGen$ and publishes $pk$.
+Bob generates $(pk, sk) \ndgets KeyGen$ and publishes $pk$.
 
-Alice picks random $\sigma \xgets{\$} M$,
+Alice picks random $\sigma \ndgets M$,
 encrypts both $c = Enc(pk, \sigma)$ and $d = \mathcal{Enc}(\sigma, m)$,
 and sends $(c, d)$.
 Notice that we can reinterpret $\sigma$ as a key for the SKC
@@ -1382,8 +1385,8 @@ Let $KeyGen$, $Enc$, $Dec$ be a PKC.
 Then, make a pseudo-OTP $\mathcal{Enc}(k,m) = m \oplus H_1(k)$
 and add a MAC $H_2(k,m)$.
 
-Generate $(pk, sk) \xgets{\$} KeyGen(\one^\ell)$
-and pick $\sigma \xgets{\$} M$.
+Generate $(pk, sk) \ndgets KeyGen(\one^\ell)$
+and pick $\sigma \ndgets M$.
 
 Then, $E(m) = (Enc(pk, \sigma), m \oplus H_1(\sigma), H_2(\sigma,m))$.
 
@@ -1404,7 +1407,7 @@ $H_1 : M \to \{0,1\}^n$, and
 $H_2 : \{0,1\}^n \times M \to T$.
 
 Then, $\mathcal{Enc}(pk, m) = (Enc(pk, r), m \oplus H_1(\sigma), H_2(m, \sigma))$
-where $m \in \{0,1\}^n$ and $\sigma \xgets{\$} M$.
+where $m \in \{0,1\}^n$ and $\sigma \ndgets M$.
 
 \begin{theorem}
   If the original PKC is OW-CPA and $H_1$, $H_2$ are reandom oracles,
@@ -1472,7 +1475,7 @@ randomize to $Enc(pk, \sigma; r)$.
 For example, in Elgamal, $Enc(g^x, \sigma; r) = (g^r, g^{xr}\sigma)$.
 
 Then, $\mathcal{Enc}(pk,m) = (Enc(pk,\sigma;H_2(m,\sigma)), m \oplus H_1(\sigma))$
-for $\sigma \xgets{\$} M$.
+for $\sigma \ndgets M$.
 That is, we use the tag as the randomness.
 
 Finally, $\mathcal{Dec}(sk, (c_1,c_2)) = \begin{cases}
@@ -1495,7 +1498,7 @@ The $sk = (x_1,x_2,y_1,y_2,z) \in (\Z/q\Z)^5$
 and $pk = (c,d,h) = (g_1^{x_1}g_2^{x_2}, g_1^{y_1}g_2^{y_2}, g_1^z)$.
 
 Encryption is $Enc(pk, m) = (g_1^r, g_2^r, h^r m, c^r d^{rH(g_1^m, g_2^m, h^r m)})$
-for $m \in G$ and $r \xgets{\$} \Z/q\Z$.
+for $m \in G$ and $r \ndgets \Z/q\Z$.
 
 Then, the last part $c^r d^{r\alpha}$ acts as a checksum.
 To generate a valid ciphertext and use the CCA2 oracle,
@@ -2025,13 +2028,13 @@ Any binary string is a valid public key.
 Public parameters: pairing $e : G \times G \to G_T$, element $g \in G$, 
 hash $H : \{0,1\}^* \to G$.
 
-Trusted third-party picks a system private key $\alpha \xgets{\$}\Z$
+Trusted third-party picks a system private key $\alpha \ndgets\Z$
 and generates system pubkey $g^\alpha$.
 
 User $\mathcal A$ has public key $pk_{\mathcal A} \in \{0,1\}^*$.
 TTP generates $sk_{\mathcal A} = h^\alpha$ where $h = H(pk_{\mathcal A})$.
 
-To encrypt, $E(pk_{\mathcal A}, m) = (g^r, e(g^\alpha, h^r) \oplus m)$ with random $r \xgets{\$} \Z$.
+To encrypt, $E(pk_{\mathcal A}, m) = (g^r, e(g^\alpha, h^r) \oplus m)$ with random $r \ndgets \Z$.
 
 To decrypt, $D(sk_{\mathcal A}, (c_1, c_2)) = e(sk_{\mathcal A}, c_1) \oplus c_2 = m$.
 
