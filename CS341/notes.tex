@@ -1,9 +1,12 @@
-\documentclass[notes,tikz,minted,class=cs341]{agony}
+\documentclass[notes,tikz,class=cs341]{agony}
 % \includeonly{}
 \graphicspath{{figures/}}
 \usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes,matrix}
 \usegdlibrary{circular,force,trees,layered}
-\counterwithin{algorithm}{section}
+\makeatletter
+\let\c@algorithm\relax
+\@counteralias{algorithm}{theorem}
+\makeatother
 
 \title{CS 341 Spring 2023: Lecture Notes}
 \begin{document}

@@ -107,13 +107,8 @@
 %
 
 \ifagony@nogeometry\else
-  \headheight 13.6pt
-  \setlength{\headsep}{10pt}
-  \textwidth 15cm
-  \textheight 24.3cm
-  \evensidemargin 6mm
-  \oddsidemargin 6mm
-  \topmargin -1.1cm
+  \usepackage{geometry}
+  \geometry{letterpaper,margin=1in}
   
   \RequirePackage{fancyhdr}
   \pagestyle{fancy}
@@ -142,9 +137,8 @@
 }
 
 % Question/Problem theorem styles
+\usepackage{mdframed}
 \usepackage{amsthm,thmtools}
-\titleformat{\section}{\normalsize\bfseries}{\thesection}{1em}{}
-\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
 
 \newcommand{\QType}{Q}
 \newcounter{question}[subsection]
