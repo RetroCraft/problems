@@ -28,3 +28,30 @@ itemNames:
     graph: 1
 noAdditionalIndent:
     problem: 0
+# https://github.com/cmhughes/latexindent.pl/issues/100
+specialBeginEnd:
+    specialBeforeCommand: 1
+    Procedure:
+        begin: '\\Procedure\{'
+        end: '\\EndProcedure'
+        lookForThis: 1
+    For:
+        begin: '\\For'
+        end: '\\EndFor'
+        lookForThis: 1
+    While:
+        begin: '\\While\{'
+        end: '\\EndWhile'
+        lookForThis: 1
+    If:
+        begin: '\\If\{'
+        middle: 
+          - '\\ElsIf'
+          - '\\Else'
+        end: '\\EndIf'
+        lookForThis: 1
+    For:
+        begin: '\\For'
+        end: '\\EndFor'
+        lookForThis: 1
+

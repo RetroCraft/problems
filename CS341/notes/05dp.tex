@@ -7,9 +7,12 @@ $F_0 = 0$, $F_1 = 1$, $F_n = F_{n-1} + F_{n-2}$ with the naive algorithm
 \begin{algorithm}[H]
   \caption{\Call{Fib}{$n$}}
   \begin{algorithmic}[1]
-    \If{$n=0$} \Return{0}
-    \ElsIf{$n=1$} \Return{1}
-    \Else \Return{$\Call{Fib}{n-1} + \Call{Fib}{n-2}$}
+    \If{$n=0$}
+      \Return{0}
+    \ElsIf{$n=1$}
+      \Return{1}
+    \Else
+      \Return{$\Call{Fib}{n-1} + \Call{Fib}{n-2}$}
     \EndIf
   \end{algorithmic}
 \end{algorithm}
@@ -34,7 +37,7 @@ Therefore, we can take an order on the dependencies and iterate:
   \begin{algorithmic}[1]
     \State $T \gets [0,1,\bot,\dotsc,\bot]$ 0-indexed array of size $n$
     \For{$i = 2,\dotsc,n$}
-    \State $T[i] \gets T[i-1] + T[i-2]$
+      \State $T[i] \gets T[i-1] + T[i-2]$
     \EndFor
     \State \Return{$T[n]$}
   \end{algorithmic}
@@ -48,7 +51,7 @@ giving a constant-space algorithm:
   \begin{algorithmic}[1]
     \State $(u,v) \gets (0,1)$
     \For{$i = 2,\dotsc,n$}
-    \State $(u,v) \gets (v,u+v)$
+      \State $(u,v) \gets (v,u+v)$
     \EndFor
     \Return{$v$}
   \end{algorithmic}
@@ -119,10 +122,10 @@ We need to calculate the $j$-values for every $i$:
     \State $f_0 \gets \infty$
     \State $i \gets 1$
     \For{$k=0,\dotsc,n$}
-    \While{$i \leq n$ and $f_k \leq s_{A[i]} < f_{k+1}$}
-    \State $j[i] \gets k$
-    \State $i\pp$
-    \EndWhile
+      \While{$i \leq n$ and $f_k \leq s_{A[i]} < f_{k+1}$}
+        \State $j[i] \gets k$
+        \State $i\pp$
+      \EndWhile
     \EndFor
     \State \Return{$j$}
   \end{algorithmic}
@@ -147,7 +150,7 @@ we can just iterate on $i = 1,\dotsc,n$ in $O(n)$ time.
     \State $W \gets$ 0-indexed array of size $n$
     \State $W[0] \gets 0$
     \For{$i = 1,\dotsc,n$}
-    \State $W[i] \gets \max\{W[i-1], w_i + W[j[i]]\}$
+      \State $W[i] \gets \max\{W[i-1], w_i + W[j[i]]\}$
     \EndFor
     \State \Return{$W[n]$}
   \end{algorithmic}
@@ -190,12 +193,14 @@ the entire row $O[,n-1]$ exists before considering $O[W,n]$:
     \State $O \gets$ 0-indexed array of size $(n+1) \times (W+1)$
     \State $O[0,] \gets \vb{0}$; $O[,0] \gets \vb{0}\trans$
     \For{$i = 1,\dotsc,n$}
-    \For{$w = 1,\dotsc,W$}
-    \If{$w_i > w$}
-    \State $O[w,i] \gets O[w,i-1]$
-    \Else
-    \State $O[w,i] \gets \max\{v_n + O[W - w_n, n - 1], O[W, n - 1]\}$
-    \EndIf\EndFor\EndFor
+      \For{$w = 1,\dotsc,W$}
+        \If{$w_i > w$}
+          \State $O[w,i] \gets O[w,i-1]$
+        \Else
+          \State $O[w,i] \gets \max\{v_n + O[W - w_n, n - 1], O[W, n - 1]\}$
+        \EndIf
+      \EndFor
+    \EndFor
     \State \Return{$O[W,n]$}
   \end{algorithmic}
 \end{algorithm}
@@ -238,12 +243,12 @@ or just $[A[i]]$.
     \State $L \gets$ array of size $n$
     \State $L[1] \gets 1$
     \For{$i = 2,\dotsc,n$}
-    \State $L[i] \gets 1$ \Comment{$S_i = [A[i]]$}
-    \For{$j = 1,\dotsc,i-1$} \Comment{$S_i = [\dots S_j, A[i]]$}
-    \If{$A[j] < A[i]$} 
-    \State $L[i] \gets \max\{L[i], L[j] + 1\}$
-    \EndIf
-    \EndFor
+      \State $L[i] \gets 1$ \Comment{$S_i = [A[i]]$}
+      \For{$j = 1,\dotsc,i-1$} \Comment{$S_i = [\dots S_j, A[i]]$}
+        \If{$A[j] < A[i]$}
+          \State $L[i] \gets \max\{L[i], L[j] + 1\}$
+        \EndIf
+      \EndFor
     \EndFor
     \State \Return{$\max L$}
   \end{algorithmic}
@@ -265,7 +270,7 @@ but it is trivial to find the sequence from the array $L$.
 As with \Cref{prob:dp:k}, we have to work in a 2D problem space.
 Let $M[i,j]$ be the longest subsequence length between $A[1..i]$ and $B[1..j]$.
 Zero out $M[0,]$ and $M[,0]$.
-Then, $M[i,j]$ will be the greatest of either 
+Then, $M[i,j]$ will be the greatest of either
 (1) ignoring $B[j]$, (2) ignoring $A[i]$, or (3) adding $A[i] = B[j]$:
 
 \begin{algorithm}
@@ -274,9 +279,12 @@ Then, $M[i,j]$ will be the greatest of either
     \State $M \gets$ 0-indexed array of size $n+1 \times m+1$
     \State $M[0,] \gets \vb{0}$; $M[,0] \gets \vb{0}\trans$
     \For{$i = 1,\dotsc,n$}\For{$j = 1,\dotsc,m$}
-    \State $M[i,j] \gets \max\{M[i,j-1], M[i-1,j]\}$
-    \If{$A[i] = B[j]$} \State $M[i,j] \gets \max\{M[i,j], 1 + M[i-1,j-1]\}$ \EndIf
-    \EndFor\EndFor
+        \State $M[i,j] \gets \max\{M[i,j-1], M[i-1,j]\}$
+        \If{$A[i] = B[j]$}
+          \State $M[i,j] \gets \max\{M[i,j], 1 + M[i-1,j-1]\}$
+        \EndIf
+      \EndFor
+    \EndFor
     \State \Return{$M[n,m]$}
   \end{algorithmic}
 \end{algorithm}
@@ -286,5 +294,136 @@ Also, since we are iterating by increasing $j$, $M[i,1..j-1]$ will be calculated
 Therefore, this algorithm works and runs in $\Theta(nm)$ time.
 
 \lecture{(07/11)}
+\begin{problem}[edit distance]
+  Given two arrays of characters $A[1..n]$ and $B[1..m]$,
+  what is the minimum number of
+  \textcolor{Green}{add}, \textcolor{Red}{delete}, or \textcolor{Orange}{change}
+  operations are required to turn $A$ into $B$?
+\end{problem}
+
+\begin{example}
+  For $A = \vv{snowy}$, $B = \vv{sunny}$, the edit distance is 3.
+
+  Both $\vv{s{\color{Orange}now}y} \to \vv{s{\color{Orange}unn}y}$ and
+  $\vv{sn{\color{Orange}o}{\color{Red}w}y} \to \vv{s{\color{Green}u}n{\color{Orange}n}y}$
+  each take 3 operations.
+\end{example}
+
+Let $D[i,j]$ be the edit distance between $A[1..i]$ and $B[1..j]$.
+Then, $D[0,j] = j$ for all $j$ (add $j$ characters to the empty string)
+and $D[i,0] = i$ for all $i$ (add $i$ characters to the empty string).
+Otherwise, the value of $D[i,j]$ is the minimum of:
+\begin{itemize}[nosep]
+  \item Changing the last character: $D[i-1,j-1] + \delta_{A[i]B[j]}$
+  \item Deleting $A[i]$ and matching $A[1..i-1]$ with $B[1..j]$: $D[i-1,j]+1$
+  \item Adding $B[j]$ and matching $A[1..i]$ with $B[1..j-1]$: $D[i,j-1]+1$
+\end{itemize}
+Computing all values of $D$ takes $\Theta(mn)$ time.
+
+\section{Graph Algorithms}
+
+\begin{problem}[optimal BST]
+  Given objects indexed by $1,\dotsc,n$
+  with probabilities of access $p_1,\dotsc,p_n$ (with $\sum p_i = 1$),
+  what is the optimal binary search tree that minimizes the expected access time?
+\end{problem}
+
+This problem is similar to the greedy Huffman tree problem (where frequencies are given instead of probabilities)
+and finding an optimal ordering for a linked list (greedily sort by probability).
+
+The expected access time is $\sum_{i=1}^n p_i(\vv{depth}(i)+1)$.
+
+\begin{example}\label{ex:dp:bst}
+  A possible BST with $n=6$ with the cost of each node:
+  \tikz[vertalign]\graph[math nodes,grow down,tree layout]{
+  p_4 -> {
+  2p_2 -> {3p_1,3p_3},
+  2p_5 -> {,3p_6}
+  }
+  };
+\end{example}
+
+We will split into subproblems based on where we place the root of a subtree.
+Let $M[i,j]$ be the minimal cost for a tree of the items $\{i,\dotsc,j\}$
+and $M[i,j] = 0$ when $j < i$.
+If we select $k$ as the root of the $i,j$-subtree,
+then the cost of the tree is the cost of the $i,k-1$ and $k+1,j$ subtrees plus $p_k$.
+
+When we place a subtree beneath $k$, the depth of every node increases by 1.
+That is, we can take the weight from the $M$ array and add on one more copy of $p_\ell$
+for each node $\ell$ in the subtree:
+\begin{center}
+  \begin{tikzpicture}[vertalign]
+    \graph[math nodes,grow down,tree layout] {
+      p_4[Violet] --[white] {
+      p_2[Red] -> {2p_1[Red],2p_3[Red]},
+      p_5[ForestGreen] -> {,2p_6[ForestGreen]}
+      }
+      };
+  \end{tikzpicture}
+  becomes
+  \begin{tikzpicture}[vertalign]
+    \graph[grow down,tree layout] {
+      "$p_4$"[Violet] -> {
+      "${\color{Red}p_2}+{\color{Violet}p_2}$" -> {"${\color{Red}2p_1}+{\color{Violet}p_1}$","${\color{Red}2p_3}+{\color{Violet}p_3}$"},
+      "${\color{ForestGreen}p_5}+{\color{Violet}p_5}$" -> {,"${\color{ForestGreen}2p_6}+{\color{Violet}p_6}$"}
+      }
+      };
+  \end{tikzpicture}
+  to get \Cref{ex:dp:bst}.
+\end{center}
+Then,
+\begin{align*}
+  M[i,j]
+   & = \min_{i \leq k \leq j}\qty({\color{Red}M[i,k-1]} + {\color{Violet}\sum_{\ell=i}^{k-1}p_\ell} + {\color{Violet}p_k} + {\color{ForestGreen}M[k+1,j]} + {\color{Violet}\sum_{\ell=k+1}^j p_\ell}) \\
+   & = \min_{i \leq k \leq j}({\color{Red}M[i,k-1]} + {\color{ForestGreen}M[k+1,j]}) + \color{Violet}\sum_{\ell=i}^j p_\ell
+\end{align*}
+Notice that $\sum_{\ell=i}^j p_\ell = \sum_{\ell=1}^j p_\ell - \sum_{\ell=1}^{i-1} p_\ell$.
+We can cache these sums in $O(n)$ time.
+We now have our algorithm:
+
+\begin{algorithm}[H]
+  \caption{\Call{OptimalBST}{$p_1,\dotsc,p_n$}}
+  \begin{algorithmic}[1]
+    \State $S[0] \gets 0$
+    \For{$i = 1,\dotsc,n$}
+      \State $S[i] \gets S[i-1] + p_i$
+    \EndFor
+    \For{$i=1,\dotsc,n+1$}
+      \State $M[i,i-1] \gets 0$
+    \EndFor
+    \For{$d = 0,\dotsc,n-1$} \Comment{$d = j-i$}
+      \For{$i = 1,\dotsc,n-d$}
+        \State $j \gets d + i$
+        \State $M[i,j] \gets \min_{i \leq k \leq j}(M[i,k-1]+M[k+1,j] + S[j] - S[i-1])$
+      \EndFor
+    \EndFor
+  \end{algorithmic}
+\end{algorithm}
+which runs in $O(n^3)$ time.
+
+\begin{problem}[largest independent set of a tree]
+  Given a tree $T = (V,E)$, what is the largest \term{independent set}
+  (i.e., a set $S \subseteq V$ such that $S^2 \cap E = \varnothing$)?
+\end{problem}
+
+\begin{example}
+  If $G = \tikz[vertalign]\graph[clockwise]{subgraph C_n[n=4]; 2--4};$,
+  then $S = \{1,3\}$ and we return 2.
+\end{example}
+
+Let $I[v]$ be the size of the largest independent set of the subtree rooted at $v$.
+We can either include $v$ in the independent set or exclude it.
+If we include it, take the sum of the $I[u]$ for each grandchild $u$.
+Otherwise, we take the sum of the $I[u]$ for the children of $u$.
+
+We will have to calculate $I$ bottom-up, but otherwise this gives us an $O(n)$ algorithm.
+
+\section{Shortest Path Revisited: Bellman--Ford}
+
 \lecture{(07/13)}
+Recall \Cref{prob:g:sp} (\nameref{prob:g:sp}) that we solved with Dijkstra's.
+
+\section{All Shortest Paths: Floyd--Warshall}
+
 \lecture{(07/18)}

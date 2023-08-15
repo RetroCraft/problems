@@ -92,6 +92,11 @@
   \pgfplotsset{compat=1.15}
   \usepgfplotslibrary{fillbetween}
   \usetikzlibrary{patterns,positioning,shapes,calc,chains}
+  \tikzset{
+    vertalign/.style = {
+      baseline={([yshift=-.8ex]current bounding box.center)}
+    }
+  }
 \fi
 
 \ifagony@minted

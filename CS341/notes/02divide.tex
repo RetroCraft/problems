@@ -47,15 +47,15 @@ We can instead modify \Call{MergeSort}{} and find $c_t$ using a modified \Call{M
     \State \textcolor{Green}{copy $A$ into a new array $S$; $c = 0$}
     \State $i \gets 1$; $j \gets n/2+1$
     \For{$k \gets 1,\dotsc,n$}
-    \If{$i > n/2$} $A[k] \gets S[j\pp]$
-    \ElsIf{$j > n$}
-    \State $A[k] \gets S[i\pp]$
-    \State \textcolor{Green}{$c \gets c + \frac{n}{2}$}
-    \ElsIf{$S[i] < S[j]$}
-    \State $A[k] \gets S[i\pp]$
-    \State \textcolor{Green}{$c \gets c + j - (\frac{n}{2}+1)$}
-    \Else{} $A[k] \gets S[j\pp]$
-    \EndIf
+      \If{$i > n/2$} $A[k] \gets S[j\pp]$
+      \ElsIf{$j > n$}
+        \State $A[k] \gets S[i\pp]$
+        \State \textcolor{Green}{$c \gets c + \frac{n}{2}$}
+      \ElsIf{$S[i] < S[j]$}
+        \State $A[k] \gets S[i\pp]$
+        \State \textcolor{Green}{$c \gets c + j - (\frac{n}{2}+1)$}
+      \Else{} $A[k] \gets S[j\pp]$
+      \EndIf
     \EndFor
   \end{algorithmic}
 \end{algorithm}

@@ -81,13 +81,13 @@ Now, we can define some structures on a graph:
     \State \Call{enqueue}{$s$, $Q$}
     \State $\vv{visited}[s] \gets \top$
     \While{$Q$ is not empty}
-    \State $v \gets \Call{dequeue}{Q}$
-    \For{$w$ neighbours of $v$} \label{line:bfs:forloop}
-    \If{$\vv{visited}[w] = \bot$}
-    \State \Call{enqueue}{$w$, $Q$}
-    \State $\vv{visited}[w] \gets \top$
-    \EndIf
-    \EndFor
+      \State $v \gets \Call{dequeue}{Q}$
+      \For{$w$ neighbours of $v$} \label{line:bfs:forloop}
+        \If{$\vv{visited}[w] = \bot$}
+          \State \Call{enqueue}{$w$, $Q$}
+          \State $\vv{visited}[w] \gets \top$
+        \EndIf
+      \EndFor
     \EndWhile
   \end{algorithmic}
 \end{algorithm}
@@ -146,14 +146,14 @@ and levels (depths):
     \State \textcolor{Green}{$\vv{parent}[s] \gets s$}
     \State \textcolor{Green}{$\vv{level}[s] \gets0$}
     \While{$Q$ is not empty}
-    \State $v \gets \Call{dequeue}{Q}$
-    \For{$w$ neighbours of $v$}
-    \If{$\vv{parent}[w] = \bot$}
-    \State \Call{enqueue}{$w$, $Q$}
-    \State \textcolor{Green}{$\vv{parent}[w] \gets v$}
-    \State \textcolor{Green}{$\vv{level}[w] \gets \vv{level}[v] + 1$}
-    \EndIf
-    \EndFor
+      \State $v \gets \Call{dequeue}{Q}$
+      \For{$w$ neighbours of $v$}
+        \If{$\vv{parent}[w] = \bot$}
+          \State \Call{enqueue}{$w$, $Q$}
+          \State \textcolor{Green}{$\vv{parent}[w] \gets v$}
+          \State \textcolor{Green}{$\vv{level}[w] \gets \vv{level}[v] + 1$}
+        \EndIf
+      \EndFor
     \EndWhile
   \end{algorithmic}
 \end{algorithm}
@@ -279,17 +279,17 @@ or explicitly with a stack data structure) to follow neighbours until we cannot.
     \Require $G$ is a graph on $n$ vertices given by adjacency lists
     \State $\vv{visited} \gets$ array of size $n$ initialized to $\bot$
     \Procedure{explore}{$v$}
-    \State $\vv{visited}[v] \gets \top$
-    \For{$w$ neighbour of $v$}
-    \If{$\vv{visited}[v] = \bot$}
-    \State \Call{explore}{$v$}
-    \EndIf
-    \EndFor
+      \State $\vv{visited}[v] \gets \top$
+      \For{$w$ neighbour of $v$}
+        \If{$\vv{visited}[v] = \bot$}
+          \State \Call{explore}{$v$}
+        \EndIf
+      \EndFor
     \EndProcedure
     \For{$v \in G$}
-    \If{$\vv{visited}[v] = \bot$}
-    \State \Call{explore}{$v$}
-    \EndIf
+      \If{$\vv{visited}[v] = \bot$}
+        \State \Call{explore}{$v$}
+      \EndIf
     \EndFor
   \end{algorithmic}
 \end{algorithm}
@@ -362,19 +362,19 @@ We can extend DFS with $\vv{start}$ and $\vv{finish}$ arrays:
     \State \textcolor{Green}{$\vv{start}, \vv{finish} \gets$ array of size $n$}
     \State \textcolor{Green}{$t \gets 1$}
     \Procedure{explore}{$v$}
-    \State $\vv{visited}[v] \gets \top$
-    \State \textcolor{Green}{$\vv{start}[v] \gets t$; $t\pp$}
-    \For{$w$ neighbour of $v$}
-    \If{$\vv{visited}[v] = \bot$}
-    \State \Call{explore}{$v$}
-    \EndIf
-    \EndFor
-    \State \textcolor{Green}{$\vv{finish}[v] \gets t$; $t\pp$}
+      \State $\vv{visited}[v] \gets \top$
+      \State \textcolor{Green}{$\vv{start}[v] \gets t$; $t\pp$}
+      \For{$w$ neighbour of $v$}
+        \If{$\vv{visited}[v] = \bot$}
+          \State \Call{explore}{$v$}
+        \EndIf
+      \EndFor
+      \State \textcolor{Green}{$\vv{finish}[v] \gets t$; $t\pp$}
     \EndProcedure
     \For{$v \in G$}
-    \If{$\vv{visited}[v] = \bot$}
-    \State \Call{explore}{$v$}
-    \EndIf
+      \If{$\vv{visited}[v] = \bot$}
+        \State \Call{explore}{$v$}
+      \EndIf
     \EndFor
   \end{algorithmic}
 \end{algorithm}
@@ -489,15 +489,15 @@ Therefore, we can test all vertices in $O(m)$ time.
     \State $a, m \gets$ arrays of size $\abs{V(G)}$ initialized to $\infty$
     \State $\vv{cut} \gets$ array of size $\abs{V(G)}$ initialized to $\bot$
     \Procedure{Explore}{$v$}
-    \For{$w$ child of $v$}
-    \State $a[v] \gets \min\{a[v], \vv{level}[w]\}$
-    \State \Call{Explore}{w}
-    \State $m[v] \gets \min\{m[v], a[w]\}$
-    \EndFor
-    \State $m[v] \gets \min\{a[v], m[v]\}$
-    \For{$w$ child of $v$}
-    \If{$m[w] \geq T.\vv{level}[v]$} $\vv{cut}[v] \gets \top$ \EndIf
-    \EndFor
+      \For{$w$ child of $v$}
+        \State $a[v] \gets \min\{a[v], \vv{level}[w]\}$
+        \State \Call{Explore}{w}
+        \State $m[v] \gets \min\{m[v], a[w]\}$
+      \EndFor
+      \State $m[v] \gets \min\{a[v], m[v]\}$
+      \For{$w$ child of $v$}
+        \If{$m[w] \geq T.\vv{level}[v]$} $\vv{cut}[v] \gets \top$ \EndIf
+      \EndFor
     \EndProcedure
     \State \Call{Explore}{$T.\vv{root}$}
   \end{algorithmic}
@@ -597,10 +597,10 @@ Paths and cycles have the ordinary meaning.
   \caption{Kosaraju's algorithm for strongly connected components}
   \begin{algorithmic}[1]
     \Procedure{SCC}{$G$}
-    \State run \Call{DFS}{$G$} augmented with finish times
-    \State sort the vertices by decreasing finish time
-    \State run \Call{DFS}{$G\trans$}
-    \State \Return{the trees in the DFS forest of $G\trans$}
+      \State run \Call{DFS}{$G$} augmented with finish times
+      \State sort the vertices by decreasing finish time
+      \State run \Call{DFS}{$G\trans$}
+      \State \Return{the trees in the DFS forest of $G\trans$}
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}

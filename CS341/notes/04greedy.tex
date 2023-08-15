@@ -44,9 +44,9 @@ However, we can prove that the greedy algorithm taking the earliest finish time 
     \State $S \gets \varnothing$
     \State $I \gets$ sort $I$ by finish time
     \For{$[s_i,f_i] \in I$}
-    \If{$[s_i,f_i]$ has no conflicts in $S$}
-    \State $S \gets S \cup \{[s_i,f_i]\}$
-    \EndIf
+      \If{$[s_i,f_i]$ has no conflicts in $S$}
+        \State $S \gets S \cup \{[s_i,f_i]\}$
+      \EndIf
     \EndFor
   \end{algorithmic}
 \end{algorithm}
@@ -101,7 +101,7 @@ Consider the algorithm:
     \State $c \gets$ empty colouring
     \State $I \gets$ sort $I$ by start time
     \For{$[s_i,f_i] \in I$}
-    \State $c(i) \gets$ minimum $c$ such that there are no conflicts
+      \State $c(i) \gets$ minimum $c$ such that there are no conflicts
     \EndFor
   \end{algorithmic}
 \end{algorithm}
@@ -205,7 +205,7 @@ Recall that we can define a weight function on a graph.
   with no negative-weight cycles.
 \end{remark}
 
-\begin{problem}[single-source shortest path]
+\begin{problem}[single-source shortest path]\label{prob:g:sp}
   Given $G = (V, E)$ with weight $w : E \to \R_{\geq 0}$ and a source $s \in V$,
   find a shortest path from $s$ to each $v \in V$.
 \end{problem}
@@ -237,21 +237,21 @@ update the distance estimates and predecessors of its neighbours.
   \caption{\Call{Dijkstra}{$G,w,s$}}
   \begin{algorithmic}[1]
     \For{each vertex $v \in V$}
-    \State $d[v] \gets \infty$
-    \State $\pi[v] \gets \bot$
+      \State $d[v] \gets \infty$
+      \State $\pi[v] \gets \bot$
     \EndFor
     \State $d[s] \gets 0$
     \State $C \gets \varnothing$
     \State $Q \gets V$
     \While{$Q \neq \varnothing$}
-    \State $u \gets \Call{ExtractMin}{Q}$
-    \State $C \gets C \cup \{u\}$
-    \For{neighbours $v \in \vv{Adj}[u]$}
-    \If{$d[v] > d[u] + w(uv)$}
-    \State $d[v] = d[u] + w(uv)$
-    \State $\pi[v] = u$
-    \EndIf
-    \EndFor
+      \State $u \gets \Call{ExtractMin}{Q}$
+      \State $C \gets C \cup \{u\}$
+      \For{neighbours $v \in \vv{Adj}[u]$}
+        \If{$d[v] > d[u] + w(uv)$}
+          \State $d[v] = d[u] + w(uv)$
+          \State $\pi[v] = u$
+        \EndIf
+      \EndFor
     \EndWhile
   \end{algorithmic}
 \end{algorithm}
@@ -322,9 +322,9 @@ that does not create a cycle:
     \State $A \gets $ empty graph
     \State sort edges by increasing weight
     \For{$e \in E$}
-    \If{$e$ does not create a cycle in $A$}
-    \State append $e$ to $A$
-    \EndIf
+      \If{$e$ does not create a cycle in $A$}
+        \State append $e$ to $A$
+      \EndIf
     \EndFor
   \end{algorithmic}
 \end{algorithm}
@@ -379,7 +379,7 @@ Now, we prove that this indeed works.
 \begin{claim}\label{claim:g:3}
   Let $(V, A)$ and $(V, T)$ be two spanning trees,
   and let $e$ be an edge in $T$ but not in $A$.
-  
+
   Then, there exists an edge $e'$ in $A - T$ such that
   $(V, T + e' - e)$ is still a spanning tree.
   Also, $e'$ is on the cycle that $e$ creates in $A$.
@@ -445,10 +445,10 @@ With these operations, we can rewrite Kruskal's as:
     \State $U \gets \{\{v_1\},\dotsc,\{v_n\}\}$
     \State sort edges by increasing weight
     \For{$e \in E(G)$ sorted}
-    \If{$U.\Call{Find}{e_k.1} \neq U.\Call{Find}{e_k.2}$}
-    \State $U.\Call{Union}{U.\Call{Find}{e_k.1}, U.\Call{Find}{e_k.2}}$
-    \State $T.\Call{Append}{e_k}$
-    \EndIf
+      \If{$U.\Call{Find}{e_k.1} \neq U.\Call{Find}{e_k.2}$}
+        \State $U.\Call{Union}{U.\Call{Find}{e_k.1}, U.\Call{Find}{e_k.2}}$
+        \State $T.\Call{Append}{e_k}$
+      \EndIf
     \EndFor
   \end{algorithmic}
 \end{algorithm}
@@ -461,7 +461,7 @@ There will be $O(m)$ \Call{Find}{}'s and $O(n)$ \Call{Union}{}'s.
 The total time complexity is then $O(m \log m + n^2)$.
 
 We can optimize this slightly.
-First, only traverse the smaller list when unioning. 
+First, only traverse the smaller list when unioning.
 Also, have each linked list in $U$ keep track of its size
 and have an optional pointer to a continuation.
 Then, by setting the pointer, we can get concatenation in $O(1)$

@@ -97,7 +97,7 @@ A \term{galactic algorithm} is practically irrelevant because the crossing point
 \section{Types of Algorithms}
 
 \begin{problem}[contiguous subarrays]
-Given an array $A[1..n]$, find a contiguous subarray $A[i..j]$ that maximizes the sum $A[i] + \dotsb + A[j]$.
+  Given an array $A[1..n]$, find a contiguous subarray $A[i..j]$ that maximizes the sum $A[i] + \dotsb + A[j]$.
 \end{problem}
 
 Consider the brute-force attempt
@@ -106,13 +106,13 @@ Consider the brute-force attempt
   \begin{algorithmic}[1]
     \State $opt \gets 0$
     \For{$i \gets 1,\dotsc,n$}
-    \For{$j \gets i,\dotsc,n$}
-    \State $sum \gets 0$
-    \For{$k \gets i,\dotsc,j$}
-    \State $sum \gets sum + A[k]$
-    \EndFor
-    \If{$sum > opt$} \State $opt \gets sum$ \EndIf
-    \EndFor
+      \For{$j \gets i,\dotsc,n$}
+        \State $sum \gets 0$
+        \For{$k \gets i,\dotsc,j$}
+          \State $sum \gets sum + A[k]$
+        \EndFor
+        \If{$sum > opt$} \State $opt \gets sum$ \EndIf
+      \EndFor
     \EndFor
     \State \Return $opt$
   \end{algorithmic}
@@ -126,11 +126,11 @@ so if we instead keep the running sum:
   \begin{algorithmic}[1]
     \State $opt \gets 0$
     \For{$i \gets 1,\dotsc,n$}
-    \State $sum \gets 0$
-    \For{$j \gets i,\dotsc,n$}
-    \State $sum \gets sum + A[j]$
-    \If{$sum > opt$} \State $opt \gets sum$ \EndIf
-    \EndFor
+      \State $sum \gets 0$
+      \For{$j \gets i,\dotsc,n$}
+        \State $sum \gets sum + A[j]$
+        \If{$sum > opt$} \State $opt \gets sum$ \EndIf
+      \EndFor
     \EndFor
     \State \Return $opt$
   \end{algorithmic}
@@ -153,8 +153,8 @@ or (3) contains $A[n/2]$ and $A[n/2+1]$.
     \State $opt \gets A[n/2]$
     \State $sum \gets A[n/2]$
     \For{$i \gets n/2-1,\dotsc,1$}
-    \State $sum \gets sum + A[i]$
-    \If{$sum > opt$} $opt \gets sum$ \EndIf
+      \State $sum \gets sum + A[i]$
+      \If{$sum > opt$} $opt \gets sum$ \EndIf
     \EndFor
     \State \Return $opt$
     \EndFunction
@@ -184,8 +184,8 @@ or exactly $[A[n]]$.
     \State $\bar M \gets A[1]$
     \State $M \gets \max(\bar M, 0)$
     \For{$i=2,\dotsc,n$}
-    \State $\bar M \gets A[i] + \max(\bar M, 0)$
-    \State $M \gets \max(M, \bar M)$
+      \State $\bar M \gets A[i] + \max(\bar M, 0)$
+      \State $M \gets \max(M, \bar M)$
     \EndFor
     \State \Return $M$
   \end{algorithmic}
