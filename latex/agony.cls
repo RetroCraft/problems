@@ -88,14 +88,15 @@
 
 % Figures
 \ifagony@tikz
-  \RequirePackage{tikz,pgfplots,transparent}
+  \RequirePackage{tikz,pgfplots,transparent,annotate-equations}
   \pgfplotsset{compat=1.15}
   \usepgfplotslibrary{fillbetween}
-  \usetikzlibrary{patterns,positioning,shapes,calc,chains}
+  \usetikzlibrary{patterns,positioning,shapes,calc,chains,tikzmark}
   \tikzset{
     vertalign/.style = {
       baseline={([yshift=-.8ex]current bounding box.center)}
-    }
+    },
+    annotate equations/text/.style={font=\footnotesize},
   }
 \fi
 
@@ -138,7 +139,8 @@
 \author{James Ah Yong}
 
 % Links
-\usepackage{imakeidx,bookmark,hyperref,cleveref}
+\usepackage{imakeidx,bookmark,hyperref}
+\RequirePackage[capitalise]{cleveref}
 \hypersetup{
   colorlinks,
   linkcolor=RoyalBlue,

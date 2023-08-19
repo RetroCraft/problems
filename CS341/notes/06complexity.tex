@@ -80,17 +80,55 @@ Similarly, an \term{independent set} is a set $S$ of vertices such that
 for all $u, v \in S$, $uv \not\in E(G)$.
 
 \begin{prop}
-  Consider the problems $\vv{Clique}$ (does a graph $G$ have a clique of size $k$?)\@
-  and $\vv{IS}$ (does a graph $G$ have an independent set of size $k$?).
+  Consider the problems $\vv{Clique}$ (does a graph $G$ have a clique of size at least $k$?)\@
+  and $\vv{IS}$ (does a graph $G$ have an independent set of size at least $k$?).
   Then, $\vv{Clique} \pequiv \vv{IS}$.
 \end{prop}
 \begin{prf}
+  Notice that a clique is the ``inverse'' of an independent set
+  (i.e., a clique is a set $S \subseteq V$ such that $S^2 \subseteq E$
+  while an independent set is a set $S \subseteq V$ such that $S^2 \sqcup E$).
 
+  Define the inverse graph $\bar G = (V, \bar E)$ where $\bar E = V^2 - E$.
+  Then, given an instance of one problem $(G,k)$,
+  we can make a call to the other problem $(\bar G,k)$.
+  The inversion takes $O(m)$ time, which is polynomial.
+
+  Therefore, $\vv{Clique} \pequiv \vv{IS}$.
 \end{prf}
+
+Recall again that a \term{vertex cover} is a set $S \subseteq V$
+such that $\{uv\} \cap S \neq \varnothing$ for all $uv \in E$
+(i.e., at least one endpoint of every edge is in $S$).
+
+\begin{prop}
+  $\vv{IS} \pequiv \vv{VC}$ (does $G$ contain a vertex cover of at most $k$ vertices?)
+\end{prop}
+\begin{prf}
+  Notice that $S$ is a vertex cover if and only if $V \setminus S$ is an independent set.
+
+  Suppose $S$ is a vertex cover but $V \setminus S$ is not independent.
+  That is, there exists $x,y \in V \setminus S$ such that $xy \in E$.
+  But at least one of $x$ or $y$ must be in $S$ since it is a vertex cover.
+  Contradiction.
+
+  Conversely, suppose $V \setminus S$ is independent but $S$ is not a vertex cover.
+  Then, there is an edge $xy \in E$ with $x, y \not\in S$.
+  But that means $x$ and $y$ are adjacent in the independent set $V \setminus S$.
+  Contradiction.
+
+  Therefore, $G$ has a vertex cover of size at most $k$ if and only if
+  $G$ has an independent set of size at least $n-k$.
+  We map $\vv{VC}$ instances $(G,k) \leftrightarrow (G,n-k)$ instances of $\vv{IS}$.
+  This map obviously takes polynomial time, so $\vv{IS} \pequiv \vv{VC}$.
+\end{prf}
+
+Therefore, finding cliques, independent sets, and vertex covers are all equivalent
+up to polynomial-time reducibility.
 
 \lecture{(07/25)}
 
-\begin{prop}
+\begin{prop}\label{prop:c:hchp}
   Consider the problems $\vv{HC}$ (does a graph $G$ have a Hamiltonian cycle?)\@
   and $\vv{HP}$ (does a graph $G$ contain a Hamiltonian path?).
   Then, $\vv{HC} \pequiv \vv{HP}$.
@@ -222,7 +260,7 @@ we create a notion of the ``hardest'' problems in \NP.
 
 Then, it immediately follows that $\P = \NP \iff \exists\vv{X} \in \NPC, \vv{X} \in \P$.
 
-\begin{theorem}[Cook--Levin]
+\begin{theorem}[Cook--Levin]\label{thm:c:3sat}
   $\vv{3SAT} \in \NPC$
 \end{theorem}
 
@@ -297,4 +335,44 @@ We will show \NP-completeness for Hamiltonian cycles and paths.
   corresponding to each possible truth value assignment.
   Then, we will add vertices to constrain the valid cycles to those
   consistent with the given clauses.
+
+  TODO
+
+  To convert a directed graph $G$ to an undirected graph $G'$,
+  replace each vertex $v$ by $v_i$, $v_m$, and $v_o$:
+  \begin{center}
+    \begin{tikzpicture}[vertalign]
+      \graph[empty nodes]{{1,2}->v[math nodes,y=-0.5]->{3,4}};
+    \end{tikzpicture}
+    becomes
+    \begin{tikzpicture}[vertalign]
+      \graph[empty nodes] {
+        {1,2}--{[nodes={math nodes,y=-0.5}] v_i--v_m--v_o}--{3,4}};
+    \end{tikzpicture}
+  \end{center}
+  Suppose there is a directed Hamiltonian cycle in $G$.
+  Then, we just have to follow it in $G'$ to hit every vertex.
+  If there is a Hamiltonian cycle in $G'$, it must go
+  \begin{center}
+    \begin{tikzpicture}[vertalign]
+      \graph[empty nodes] {
+        {1,2}--{[nodes={math nodes,y=-0.5}] v_i--v_m--v_o}--{3,4};
+        {[edges={red}] 1--v_i--v_m--v_o--4}
+        };
+    \end{tikzpicture}
+    and not
+    \begin{tikzpicture}[vertalign]
+      \graph[empty nodes] {
+        {1,2}--{[nodes={math nodes,y=-0.5}] v_i--v_m--v_o}--{3,4};
+        {[edges={red}] 1--v_i--2; v_m--v_o--4;}
+        };
+    \end{tikzpicture}
+    because it is a cycle,
+  \end{center}
+  so we can construct the directed Hamiltonian cycle in $G$.
+
+  This takes polynomial time, so we have $\vv{DirectedHamiltonianCycle} \pleq \vv{HamiltonianCycle}$.
 \end{prf}
+
+Then, by combining with \cref{thm:c:3sat,prop:c:hchp},
+we have proved \NP-completeness for $\vv{HamiltonianCycle}$ and $\vv{HamiltonianPath}$.

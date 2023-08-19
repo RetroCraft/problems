@@ -63,10 +63,10 @@
 	bodyfont=\normalfont,
 	mdframed={style=mdquote,linecolor=RoyalBlue,backgroundcolor=CornflowerBlue!5},
 ]{thmquoteresult}
-\declaretheorem[refname={theorem,theorems},style=thmroundresult,numberwithin=section]{theorem}
-\declaretheorem[refname={lemma,lemmas},style=thmsquareresult,sibling=theorem]{lemma}
-\declaretheorem[name=Proposition,refname={proposition,propositions},style=thmprop,sibling=theorem]{prop}
-\declaretheorem[refname={corollary,corollaries},style=thmquoteresult,sibling=theorem]{corollary}
+\declaretheorem[refname={Theorem,Theorems},style=thmroundresult,numberwithin=section]{theorem}
+\declaretheorem[refname={Lemma,Lemmas},style=thmsquareresult,sibling=theorem]{lemma}
+\declaretheorem[name=Proposition,refname={Proposition,Propositions},style=thmprop,sibling=theorem]{prop}
+\declaretheorem[refname={Corollary,Corollaries},style=thmquoteresult,sibling=theorem]{corollary}
 
 % Problems (red)
 \declaretheoremstyle[
@@ -87,9 +87,9 @@
 	bodyfont=\normalfont,
 	mdframed={style=mdquote,linecolor=Red,backgroundcolor=CarnationPink!5},
 ]{thmquotered}
-\declaretheorem[refname={conjecture,conjectures},style=thmroundpink,sibling=theorem]{conjecture}
-\declaretheorem[refname={problem,problems},style=thmroundred,sibling=theorem]{problem}
-\declaretheorem[name=Exercise,refname={exercise,exercises},style=thmquotered,sibling=theorem]{xca}
+\declaretheorem[refname={Conjecture,Conjectures},style=thmroundpink,sibling=theorem]{conjecture}
+\declaretheorem[refname={Problem,Problems},style=thmroundred,sibling=theorem]{problem}
+\declaretheorem[name=Exercise,refname={Exercise,Exercises},style=thmquotered,sibling=theorem]{xca}
 
 % Definitions (green)
 \declaretheoremstyle[
@@ -116,11 +116,11 @@
 	bodyfont=\normalfont,
 	mdframed={style=mdquote,linecolor=Goldenrod,backgroundcolor=Goldenrod!5}
 ]{thmquoteyellow}
-\declaretheorem[refname={remark,remarks},style=thmquoteyellow,sibling=theorem]{remark}
-\declaretheorem[refname={claim,claims},style=thmquoteblack,sibling=theorem]{claim}
-\declaretheorem[refname={example,examples},style=thmquoteblack,sibling=theorem]{example}
+\declaretheorem[refname={Remark,Remarks},style=thmquoteyellow,sibling=theorem]{remark}
+\declaretheorem[refname={Claim,Claims},style=thmquoteblack,sibling=theorem]{claim}
+\declaretheorem[refname={Example,Examples},style=thmquoteblack,sibling=theorem]{example}
 
-\RequirePackage[hybrid,underscores=false]{markdown}
+% \RequirePackage[hybrid,underscores=false]{markdown}
 
 % Use inside of definitions: "a \term{thing} is a whatever"
 \makeindex[columns=3, title=Index of Defined Terms, intoc]

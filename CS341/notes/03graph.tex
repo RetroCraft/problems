@@ -193,14 +193,14 @@ and all edges $\{w,\vv{parent}[w]\}$ between those vertices.
   Suppose that $u$ and $v$ are adjacent and visited.
 
   If we dequeue $v$ before $u$, then $\vv{level}[v] \leq \vv{level}[u] + 1$
-  by \Cref{claim:bfs:level-non-decreasing}.
+  by \cref{claim:bfs:level-non-decreasing}.
 
   If $u$ is dequeued before $v$, then the parent of $v$ is
   either $u$ or something else before $u$.
   This is because while visiting $u$, we must either have enqueued $v$
   or already visited $v$.
   Therefore, $v$'s parent must be at or before $u$.
-  Then, by \Cref{claim:bfs:level-non-decreasing},
+  Then, by \cref{claim:bfs:level-non-decreasing},
   $\vv{level}[\vv{parent}[v]] \leq \vv{level}[u]$.
 
   That is, $\vv{level}[v] = \vv{level}[\vv{parent}[v]] + 1 \leq \vv{level}[u] + 1$.
@@ -213,7 +213,7 @@ and all edges $\{w,\vv{parent}[w]\}$ between those vertices.
   If so, the path in $T$ is a shortest path and $\vv{level}[v]$ is the distance from $s$ to $t$.
 \end{lemma}
 \begin{prf}
-  By \Cref{lemma:bfs:visited}, $s \leadsto_G v$ if and only if $v$ is visited.
+  By \cref{lemma:bfs:visited}, $s \leadsto_G v$ if and only if $v$ is visited.
   That is, all such $v$ are in $T$.
   But $T$ is connected as a tree, therefore $s \leadsto_G v \iff s \leadsto_T v$.
 
@@ -231,7 +231,7 @@ and all edges $\{w,\vv{parent}[w]\}$ between those vertices.
   Suppose this is true for $i-1$, and consider a path $P = s\dotsb uv$ with length $i$.
   Then, we can decompose $P$ as $P' = s\dotsb u$ and $uv$.
   But $P'$ has length $i-1$, so $\vv{level}[u] \leq i-1$.
-  Then, by \Cref{claim:bfs:edge-level}, $\vv{level}[v] \leq \vv{level}[u] + 1 \leq i$.
+  Then, by \cref{claim:bfs:edge-level}, $\vv{level}[v] \leq \vv{level}[u] + 1 \leq i$.
 
   Therefore, since this is true for all $i$, it is true for $i=\delta$.
 

@@ -110,7 +110,7 @@ which we do not bother analyzing the time complexity of.
 We show correctness:
 
 \begin{prop}
-  Suppose that \Cref{alg:g:ic} uses $k$ colours.
+  Suppose that \cref{alg:g:ic} uses $k$ colours.
   There is no way to colour $I$ with $k-1$ colours.
 \end{prop}
 \begin{prf}
@@ -282,7 +282,7 @@ Proceed by a greedy stays ahead proof.
   for all vertices $w$ in $C$ at time $t$, $d[w] = \delta(s,w)$.
   In particular, $d[x] = \delta(s,x)$.
   When $x$ was added to $C$, the edge $xy$ was considered.
-  By \Cref{rem:greedy:path}, since $P$ is a shortest path,
+  By \cref{rem:greedy:path}, since $P$ is a shortest path,
   the parts from $s$ to $x$ and $y$ are also shortest paths.
   Therefore, $\delta(s,y) = d[x] + w(x,y)$ which is exactly what
   $d[y]$ is set to during that iteration.
@@ -354,7 +354,7 @@ Now, we prove that this indeed works.
 \end{prf}
 
 \begin{claim}\label{claim:g:2}
-  If the output of \Cref{alg:g:mst1} is $A = [e_1,\dotsc,e_r]$,
+  If the output of \cref{alg:g:mst1} is $A = [e_1,\dotsc,e_r]$,
   then $(V,A)$ is a spanning tree and $r = n-1$.
 \end{claim}
 \begin{prf}
@@ -412,7 +412,7 @@ Now, proceed by an exchange argument.
   If $T - A = \varnothing$, then $A = T$ and naturally $w(A) = w(T)$.
 
   Suppose $A \neq T$. Then, let $e \in T - A$.
-  By \Cref{claim:g:3}, there exists an edge $e' \in A - T$
+  By \cref{claim:g:3}, there exists an edge $e' \in A - T$
   such that $(V, T+e'-e)$ is a spanning tree and $e'$ is on the cycle that $e$ creates in $A$.
 
   Since we rejected $e$, it must have created a cycle in $A$.

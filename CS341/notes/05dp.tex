@@ -85,7 +85,7 @@ and are not easily rewritten iteratively.
 \section{Interval Scheduling}
 
 \begin{problem}[weighted interval scheduling]
-  Recall \Cref{prob:g:intsched}.
+  Recall \cref{prob:g:intsched}.
   Now, add a weight $w_i$ to each interval.
   We choose a subset $T \subseteq [n]$ which maximizes $W = \sum_{i \in T} w_i$.
 \end{problem}
@@ -267,7 +267,7 @@ but it is trivial to find the sequence from the array $L$.
   For $A = \vv{blurry}$ and $B = \vv{burger}$, we should return $\vv{burr}$ for $k=4$.
 \end{example}
 
-As with \Cref{prob:dp:k}, we have to work in a 2D problem space.
+As with \cref{prob:dp:k}, we have to work in a 2D problem space.
 Let $M[i,j]$ be the longest subsequence length between $A[1..i]$ and $B[1..j]$.
 Zero out $M[0,]$ and $M[,0]$.
 Then, $M[i,j]$ will be the greatest of either
@@ -370,7 +370,7 @@ for each node $\ell$ in the subtree:
       }
       };
   \end{tikzpicture}
-  to get \Cref{ex:dp:bst}.
+  to get \cref{ex:dp:bst}.
 \end{center}
 Then,
 \begin{align*}
@@ -421,9 +421,193 @@ We will have to calculate $I$ bottom-up, but otherwise this gives us an $O(n)$ a
 
 \section{Shortest Path Revisited: Bellman--Ford}
 
-\lecture{(07/13)}
-Recall \Cref{prob:g:sp} (\nameref{prob:g:sp}) that we solved with Dijkstra's.
+\lecture{(07/18)}
+Recall \cref{prob:g:sp} (\nameref{prob:g:sp}) that we solved with Dijkstra's.
+
+Let $\delta_i(s,v)$ be the length of the shortest path $s \leadsto v$ with at most $i$ edges
+and $\infty$ if no such path exists.
+
+Then, we get a base case $\delta_0(s,s) = 0$ and $\delta_0(s,v) = \infty$ for $v \neq s$.
+By construction, $\delta(s,v) \leq \delta_i(s,v)$ for all $i$ and $v$.
+In particular, if there are no negative cycles, $\delta_{n-1}(s,v) = \delta(s,v)$.\footnote{
+  Since a path with no cycles on a graph with $n$ vertices
+  can only have at most $n-1$ edges (if it is Hamiltonian).}
+Therefore, we only need to calculate for $i = 0,\dotsc,n-1$.
+
+Now, consider $\delta_i(s,v)$.
+The size of the shortest path is either exactly $i$ or at most $i-1$.
+If it is at most $i-1$, then $\delta_i(s,v) = \delta_{i-1}(s,v)$.
+Otherwise, there is an $i\xth$ edge $uv$ and the length is
+exactly $\delta_{i-1}(s,u) + w(uv)$.
+That is, we can calculate all of $\delta_{i-1}$ by:
+\begin{algorithm}[H]
+  \caption{\Call{BellmanFord}{$G,s$}}
+  \begin{algorithmic}[1]
+    \State $d_0 \gets [\infty,\dotsc,\infty]$; $d_0[s] \gets 0$
+    \State $\vv{parent} \gets [\bot,\dotsc,\bot]$; $\vv{parent}[s] \gets s$
+    \For{$i = 1,\dotsc,n-1$}
+      \For{$v \in V$}
+        \State $d_i[v] \gets d_{i-1}[v]$
+        \For{$u$ neighbour of $v$}
+          \If{$d_{i-1}[u] + w(u,v) < d_i[v]$}
+            \State $d_i[v] \gets d_{i-1}[u] + w(uv)$
+            \State $\vv{parent}[v] = u$
+          \EndIf
+        \EndFor
+      \EndFor
+    \EndFor
+  \end{algorithmic}
+\end{algorithm}
+The runtime here is not great ($O(n^2m)$).
+We can improve by noticing that we can use only one $d$ array.
+Instead of iterating over edges incident to vertices, iterate over every edge $uv$.
+If $u$ and $v$ are both undiscovered,
+we get $d[u] + w(uv) < d[v] = \infty + w(uv) < \infty$ which is false,
+so the effect is the same:
+\begin{algorithm}[H]
+  \caption{\Call{BellmanFord2.0}{$G,s$}}
+  \begin{algorithmic}[1]
+    \State $d \gets [\infty,\dotsc,\infty]$; $d[s] \gets 0$
+    \State $\vv{parent} \gets [\bot,\dotsc,\bot]$; $\vv{parent}[s] \gets s$
+    \For{$i = 1,\dotsc,n-1$}
+      \For{$uv \in E$}
+        \If{$d[u] + w(u,v) < d[v]$}
+          \State $d[v] \gets d[u] + w(uv)$
+          \State $\vv{parent}[v] = u$
+        \EndIf
+      \EndFor
+    \EndFor
+  \end{algorithmic}
+\end{algorithm}
+but we only use $O(nm)$ time, which is better (compare with Dijkstra's $O((n+m)\log m)$).
+
+\lecture{(07/18)}
+We now prove that this simplification (and the original) works.
+Call the operation of considering a new edge and setting
+$d[v] \gets \min\{d[v],d[u] + w(u,v)\}$ a \term{relaxation}.
+\begin{claim}\label{claim:dp:bf1}
+  After iteration $i$, we have $d \leq d_i$.
+  Also, $d[v]$ only decreases through relaxations.
+\end{claim}
+\begin{prf}
+  Induct on $i$.
+  At $i = 0$, $d_0 = [0,\infty,\dotsc,\infty] \leq d$.
+
+  Suppose $d \leq d_{i-1}$.
+  Since we are assigning $d[v] \gets \min\{d[v], \dotsc\}$,
+  obviously $d[v]$ can only decrease with each relaxation.
+  Then, $d \leq d_{i-1}$ holds throughout the iteration.
+  For each vertex:
+
+  \vspace*{1em}
+  \begin{equation*}
+    d[v] \gets \min\{\eqnmark{dvl}{d[v]}, \min_{uv \in E}(\eqnmark{sql}{d[u]} + w(u,v))\}
+    \leq \min\{\eqnmark{dvr}{d_{i-1}[v]}, \min_{uv \in E}(\eqnmark{sqr}{d_{i-1}[u]} + w(u,v))\}
+    = d_i[v]
+  \end{equation*}
+  \annotatetwo[yshift=1em]{above}{dvl}{dvr}{$d[v] \leq d_{i-1}[v]$ by inductive hypothesis}
+  \annotatetwo[yshift=-1em]{below, label below}{sql}{sqr}{since $d[u]$ (now) $\leq d[u]$ (at the start) $\leq d_{i-1}[u]$}
+  \vspace*{1em}
+
+  so at the end of the iteration, $d \leq d_i$.
+\end{prf}
+
+\begin{claim}\label{claim:dp:bf2}
+  When there are no negative cycles:
+  if $\delta(s,u) \leq d[u]$ and $d(s,v) \leq d[v]$ before a relaxation,
+  then $\delta(s,v) \leq d[v]$ afterwards.
+\end{claim}
+\begin{prf}
+  The triangle inequality $\delta(s,v) \leq \delta(s,u) + w(u,v)$
+  holds for all $uv \in E$ if there is no negative cycle.
+  Then, if $\delta(s,u) \leq d[u]$, we get $\delta(s,v) \leq d[u] + w(u,v)$.
+  We are also given $\delta(s,v) \leq d[v]$.
+  Therefore, $\delta(s,v) \leq \min\{d[v],d[u] + w(u,v)\}$,
+  so $\delta(s,v) \leq d[v]$ afterwards.
+\end{prf}
+
+\begin{prop}
+  If there are no negative cycles, for all $i$, after iteration $i$,
+  $\delta(s,v) \leq d[v] \leq \delta_i(s,v)$ for all $v$.
+  After $n-1$ iterations, $\delta(s,v) = d[v]$.
+\end{prop}
+\begin{prf}
+  We get $\delta(s,v) \leq d[v]$ from \Cref{claim:dp:bf2}
+  and $d[v] \leq \delta_i(s,v)$ from \Cref{claim:dp:bf1}.
+
+  Recall that $\delta(s,v) = \delta_{n-1}(s,v)$ if there are no negative cycles.
+  Then, at iteration $i=n-1$,
+  we have $\delta(s,v) \leq d[v] \leq \delta_{n-1}(s,v) = \delta(s,v)$,
+  i.e., $\delta(s,v) = d[v]$.
+\end{prf}
+
+\begin{prop}
+  If there is a negative cycle, then there must be an edge $uv$
+  with $d[u] > d[v] + w(u,v)$ (i.e., violates the triangle inequality).
+\end{prop}
+\begin{prf}
+  Let $C = v_1,\dotsc,v_k = v_1$ be a negative cycle with $\sum w(v_i,v_{i+1}) < 0$.
+  Suppose for a contradiction that all $d[v_{i+1}] \leq d[v_i] + w(v_i,v_{i+1})$.
+  Sum the inequality around the cycle:
+  \begin{align*}
+    \sum_{i=1}^{k-1} d[v_{i+1}] & \leq \sum_{i=1}^{k-1} (d[v_i] + w(v_i,v_{i+1}))                \\
+    \sum_{i=1}^{k-1} d[v_{i+1}] & \leq \sum_{i=1}^{k-1} d[v_i] + \sum_{i=1}^{k-1} w(v_i,v_{i+1}) \\
+    0                           & \leq \sum_{i=1}^{k-1} w(v_i,v_{i+1})
+  \end{align*}
+  which means this is a positive cycle. Contradiction.
+\end{prf}
+
+Therefore, we can test for a negative cycle after calculating $d$
+by analyzing all edges and finding one where the triangle inequality does not hold.
 
 \section{All Shortest Paths: Floyd--Warshall}
 
-\lecture{(07/18)}
+We now solve a variation of the single-source shortest-path problem.
+
+\begin{problem}[all shortest paths]
+  Given a graph $G = (V, E)$ with weights $w : E \mapsto \R$,
+  find every value of $\delta(u,v)$ for all $u, v \in V$.
+\end{problem}
+
+Floyd--Warshall is very simple, but slower than other algorithms.
+Notice that we are not restricting weights to be non-negative,
+but still disallow negative cycles.
+
+Instead of setting the path length as the subproblem parameter like Bellman--Ford,
+we instead restrict which vertices can be used.
+
+Let $D_i(v_j,v_k)$ be the length of the shortest path $v_j \leadsto v_k$
+with all intermediate vertices in $\{v_1,\dotsc,v_k\}$.
+
+Initially, $D_0(v_j,v_k) = \begin{cases}
+    0          & j = k            \\
+    w(v_j,v_k) & v_jv_k \in E     \\
+    \infty     & \text{otherwise}
+  \end{cases}$
+
+Then, by construction, $D_n(v_j,v_k) = \delta(v_j,v_k)$
+
+\begin{claim}
+  $D_i(v_j,v_k) = \min\{D_{i-1}(v_j,v_k), D_{i-1}(v_j,v_i) + D_{i-1}(v_i,v_k)\}$
+\end{claim}
+\begin{prf}
+  The shortest path $P : v_j \leadsto v_k$ either goes through $v_i$ or does not.
+  Since there are no negative cycles, it can only go through it exactly once.
+\end{prf}
+
+This gives the algorithm:
+\begin{algorithm}[H]
+  \caption{\Call{FloydWarshall}{$G$}}
+  \begin{algorithmic}[1]
+    \State initialize $D_0$ as above
+    \For{$i = 1,\dotsc,n$}
+      \For{$j = 1,\dotsc,n$}
+        \For{$k = 1,\dotsc,n$}
+          \State $D_i[v_j,v_k] \gets \min\{D_{i-1}[v_j,v_k],D_{i-1}[v_j,v_i] + D_{i-1}[v_i,v_k]\}$
+        \EndFor
+      \EndFor
+    \EndFor
+  \end{algorithmic}
+\end{algorithm}
+which has runtime $O(n^3)$ (similar to running Bellman--Ford on every source in $O(mn^2)$).
+
