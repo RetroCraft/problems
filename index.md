@@ -151,6 +151,12 @@ I don't implement the full design recipe in exercises, for obvious reasons (I'm 
 
 My own version of the [reference sheet](./CS245/ref.pdf) is a bit more compact.
 
+#### CS 246 (S2023) <small>Object-Oriented Software Development</small>
+
+[Lecture notes](https://www.notion.so/CS-246-6633f1e64d8e4dce9c5eeb318af6da23?pvs=4)
+from Ananya are available.
+These should be up-to-date with the latest course redesign.
+
 #### CS 341 (S2023) <small>Algorithms</small>
 
 My [lecture notes](./CS341/notes.pdf) are available, taken live during lecture.
