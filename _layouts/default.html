@@ -1,60 +1,109 @@
 <!DOCTYPE html>
-<html lang="{{ site.lang | default: "en-US" }}">
-  <head>
-    <meta charset="UTF-8">
-    
-    <script async defer data-domain="agony.retrocraft.ca" src="https://analytics.retrocraft.ca/js/plausible.file-downloads.outbound-links.js"></script>
-    <script>
-      window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }
-      document.addEventListener("click", function (event) {
-        if (!event.target.matches("a[href$=rkt],a[href$=pdf]")) return;
-        file = event.target.href.split("/");
-        plausible("View", { props: { file: file.pop(), class: file.pop() } });
-      }, false)
-    </script>
+<html lang="en-CA">
 
-    {% seo %}
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#157878">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
-  </head>
-  <body>
-    <header class="page-header" role="banner">
-      <h1 class="project-name">{{ page.title | default: site.title | default: site.github.repository_name }}</h1>
-      <h2 class="project-tagline">{{ page.description | default: site.description | default: site.github.project_tagline }}</h2>
-      {% if page.home %}
-        <a href="{{ site.github.repository_url }}" class="btn">View on GitHub</a>
-      {% else %}
-        <a href="/" class="btn">Back</a>
-      {% endif %}
-      {% if site.show_downloads %}
-        <a href="{{ site.github.zip_url }}" class="btn">Download .zip</a>
-        <a href="{{ site.github.tar_url }}" class="btn">Download .tar.gz</a>
-      {% endif %}
-    </header>
+<head>
+  <meta charset="UTF-8">
 
-    <main id="content" class="main-content" role="main">
-      {{ content }}
+  <!-- <script async defer data-domain="agony.retrocraft.ca"
+    src="https://analytics.retrocraft.ca/js/plausible.file-downloads.outbound-links.js"></script>
+  <script>
+    window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) };
+  </script> -->
 
-      <footer class="site-footer">
-        {% if site.github.is_project_page %}
-          <span class="site-footer-owner"><a href="{{ site.github.repository_url }}">{{ site.github.repository_name }}</a> is maintained by <a href="{{ site.github.owner_url }}">James Ah Yong</a>.</span>
-        {% endif %}
-        Content licensed CC-BY-SA.
-      </footer>
-    </main>
-    
-    <script src="{{ '/assets/js/mathjax.js?v=' | append: site.github.build_revision | relative_url }}"></script>
-    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
-    <script>
-      kofiWidgetOverlay.draw('jahyong', {
-        'type': 'floating-chat',
-        'floating-chat.donateButton.text': '++boba;',
-        'floating-chat.donateButton.background-color': '#159957',
-        'floating-chat.donateButton.text-color': '#fff'
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z40WHV9MJY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-Z40WHV9MJY', { 'debug_mode': window.location.hostname !== 'agony.retrocraft.ca' });
+  </script>
+
+  <script>
+    const view = (props) => {
+      // plausible("Resource Access", { props });
+      console.log("click", props);
+      gtag("event", "resource_access", props);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".a, .l").forEach((el) => {
+        // always open in new tab
+        el.setAttribute("target", "_blank");
+
+        // analytics
+        const parts = el.id.replaceAll("-", " ").split("  ");
+        const props = {
+          subject: parts[0].split(/\d/)[0],
+          course: parts[0],
+          type: parts[1],
+          author: parts[2],
+          resource: parts.join(" - "),
+          source: false,
+        };
+        el.addEventListener("click", (event) => { view(props) }, false);
+        el.addEventListener("auxclick", (event) => { if (event.button == 1) view(props) }, false);
+
+        // mini link for source
+        if (el.classList.contains("l")) {
+          const src = document.createElement("sup");
+          src.innerHTML = `[<a target="_blank" href="https://github.com/RetroCraft/problems/blob/master/${el.getAttribute("href").replace(".pdf", ".tex")}">src</a>]`;
+          const srcProps = {...props, source: true};
+          src.addEventListener("click", (event) => { view(srcProps) }, false);
+          src.addEventListener("auxclick", (event) => { if (event.button == 1) view(srcProps) }, false);
+          el.after(src);
+        }
       });
-    </script>
-  </body>
+    });
+  </script>
+
+  {% seo %}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#157878">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+</head>
+
+<body>
+  <header class="page-header" role="banner">
+    <h1 class="project-name">
+      {{ page.title | default: site.title | default: site.github.repository_name }}
+    </h1>
+    <h2 class="project-tagline">
+      {{ page.description | default: site.description | default: site.github.project_tagline }}
+    </h2>
+    {% if page.home %}
+    <a href="{{ site.github.repository_url }}" class="btn">View on GitHub</a>
+    {% else %}
+    <a href="/" class="btn">Back</a>
+    {% endif %}
+  </header>
+
+  <main id="content" class="main-content" role="main">
+    {{ content | replace: '/~gh', 'https://github.com/RetroCraft/problems' | replace: '/~src',
+    'https://github.com/RetroCraft/problems/blob/master' }}
+
+    <footer class="site-footer">
+      <span class="site-footer-owner">
+        <a href="/~repo">Pain and Agony</a>
+        is maintained by <a href="{{ site.github.owner_url }}">James Ah Yong</a>.
+      </span>
+      Content licensed CC-BY-SA.
+    </footer>
+  </main>
+
+  <script src="{{ '/assets/js/mathjax.js?v=' | append: site.github.build_revision | relative_url }}"></script>
+  <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+  <script>
+    kofiWidgetOverlay.draw('jahyong', {
+      'type': 'floating-chat',
+      'floating-chat.donateButton.text': '++boba;',
+      'floating-chat.donateButton.background-color': '#159957',
+      'floating-chat.donateButton.text-color': '#fff'
+    });
+  </script>
+</body>
+
 </html>
