@@ -243,14 +243,6 @@ A collection of theorems can be found [here](./MATH138/ref.html){:.a#MATH138--Re
 Jimmy has notes for [series](./MATH138/Jimmy05.pdf){:.a#MATH138--Notes--Jimmy--Series}
 and [Taylor series](./MATH138/Jimmy06.pdf){:.a#MATH138--Notes--Jimmy--Taylor-Series}.
 
-#### MATH 146 (W1989) <small>Linear Algebra I (Advanced)</small>
-
-I found an old copy of my father's _Linear Algebra, 2nd edition_ by Hoffman and Kunze
-from when he was at Waterloo (and had the guts to take 14x courses).
-I have no idea if anyone at all would find these useful, but here are
-[my solutions so far](./MATH146/HK.pdf){:.l#MATH146--Practice-Problems--James}.
-Note that I use the notation from the book, which might hurt when MATH 136 starts.
-
 #### MATH 239 (F2022) <small>Introduction to Combinatorics</small>
 
 My [lecture notes](./MATH239/notes.pdf){:.l#MATH239--Notes--James} (incomplete and somewhat experimental) are available.
