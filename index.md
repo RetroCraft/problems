@@ -187,6 +187,10 @@ I will try and format for publishing weekly.
 
 [Lecture notes](./CS350/notes.pdf){:.l#CS350--Notes--James}.
 
+#### CS 480/680 (W2024) <small>Introduction to Machine Learning</small>
+
+[Lecture notes](./CS480/notes.pdf){:.l#CS480--Notes--James}, updated after each lecture.
+
 ### Math
 
 #### MATH 135 (F2020) <small>Algebra for Honours Mathematics</small>
@@ -271,6 +275,10 @@ There are also [exercise solutions](./MATH239/exercises.pdf){:.l#MATH239--Practi
 They were originally written in Obsidian (which uses a different Markdown parser),
 so they look a little funny after spamming regexes to try and make it GFM-friendly.
 
+#### PMATH 370 (W2024) <small>Chaos and Fractals</small>
+
+[Lecture notes](./PMATH370/notes.pdf){:.l#PMATH370--Notes--James}, updated after each lecture.
+
 ### Combinatorics and Optimization
 
 #### CO 485/685 (F2022) <small>Mathematics of Public-Key Cryptography</small>
@@ -278,6 +286,10 @@ so they look a little funny after spamming regexes to try and make it GFM-friend
 More [lecture notes](./CO485/notes.pdf){:.l#CO485--Notes--James} with the caveat that
 (1) I am not actually enrolled in the course and just sit in it for fun
 and (2) I am missing two levels of prerequisites and do not fully understand the content.
+
+#### CO 487 (W2024) <small>Applied Cryptography</small>
+
+[Lecture notes](./CO487/notes.pdf){:.l#CO487--Notes--James}, updated after each lecture.
 
 ## Mistakes
 

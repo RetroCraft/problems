@@ -1,109 +1,125 @@
 <!DOCTYPE html>
-<html lang="{{ site.lang | default: "en-US" }}">
-  <head>
-    <meta charset="UTF-8">
-    
-    <script async defer data-domain="agony.retrocraft.ca" src="https://analytics.retrocraft.ca/js/plausible.file-downloads.outbound-links.js"></script>
-    <script>
-      window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }
-    </script>
+<html lang="{{ site.lang | default: " en-US" }}">
 
-    {% seo %}
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#157878">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
-    <style>
-      @media screen and (max-width: 128em) {
-        .main-content {
-          padding-left: 0;
-          padding-right: 0;
-        }
-      }
+<head>
+  <meta charset="UTF-8">
 
-      @media print {
-        body {
-          font-size: 9px;
-        }
+  <!-- <script async defer data-domain="agony.retrocraft.ca"
+    src="https://analytics.retrocraft.ca/js/plausible.file-downloads.outbound-links.js"></script>
+  <script>
+    window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) };
+  </script> -->
 
-        header {
-          display: none;
-        }
-      }
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z40WHV9MJY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
+    gtag('config', 'G-Z40WHV9MJY', { 'debug_mode': window.location.hostname !== 'agony.retrocraft.ca' });
+  </script>
+
+  {% seo %}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#157878">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+  <style>
+    @media screen and (max-width: 128em) {
       .main-content {
-        max-width: 128rem;
-        text-align: center;
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+
+    @media print {
+      body {
+        font-size: 9px;
       }
 
-      .main-content table {
-        display: inline;
+      header {
+        display: none;
       }
-    </style>
-  </head>
-  <body>
-    <header class="page-header" role="banner">
-      <h1 class="project-name">{{ page.title | default: site.title | default: site.github.repository_name }}</h1>
-      <h2 class="project-tagline">{{ page.description | default: site.description | default: site.github.project_tagline }}</h2>
-      <a href="/" class="btn">Back</a>
-      <a href="https://github.com/retrocraft/problems/tree/master/_data/{{ page.class }}.yml" class="btn">View on GitHub</a>
-    </header>
+    }
 
-    <main id="content" class="main-content" role="main">
-      {{ content }}
+    .main-content {
+      max-width: 128rem;
+      text-align: center;
+    }
 
-      {% for section in site.data[page.class] %}
-        {{ section.title | markdownify }}
-        <table class={{ section.class }}>
-          <thead>
-            <tr>
-              <th>Name (Reference)</th>
-              <th class="stmt" colspan="{% if section.class == "thms" %}3{% else %}2{% endif %}">
-                Statement
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for def in section.defs %}
-              <tr>
-                <td>{{ def.name | markdownify }}</td>
-                {% if def.stmt %}
-                  <td class="stmt" colspan="{% if section.class == "thms" %}3{% else %}2{% endif %}">
-                    {{ def.stmt | markdownify }}
-                  </td>
-                {% else %}
-                  <td>{{ def.from | markdownify }}</td>
-                  {% if section.class == "thms" %}
-                    <td>\( {{def.arrow}} \)</td>
-                  {% endif %}
-                  <td>{{ def.to | markdownify }}</td>
-                {% endif %}
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      {% endfor %}
+    .main-content table {
+      display: inline;
+    }
+  </style>
+</head>
 
-      <footer class="site-footer">
-        <span class="site-footer-owner">
-          <a href="{{ site.github.repository_url }}">{{ site.github.repository_name }}</a>
-          is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a>.
-        </span>
-        Content licensed CC-BY-SA.
-        <a href="//ko-fi.com/jahyong">Support the pain and agony!</a>
-      </footer>
-    </main>
-    
-    <script src="{{ '/assets/js/mathjax.js?v=' | append: site.github.build_revision | relative_url }}"></script>
-    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
-    <script>
-      kofiWidgetOverlay.draw('jahyong', {
-        'type': 'floating-chat',
-        'floating-chat.donateButton.text': '++boba;',
-        'floating-chat.donateButton.background-color': '#159957',
-        'floating-chat.donateButton.text-color': '#fff'
-      });
-    </script>
-  </body>
+<body>
+  <header class="page-header" role="banner">
+    <h1 class="project-name">{{ page.title | default: site.title | default: site.github.repository_name }}</h1>
+    <h2 class="project-tagline">{{ page.description | default: site.description | default: site.github.project_tagline
+      }}</h2>
+    <a href="/" class="btn">Back</a>
+    <a href="https://github.com/retrocraft/problems/tree/master/_data/{{ page.class }}.yml" class="btn">View on
+      GitHub</a>
+  </header>
+
+  <main id="content" class="main-content" role="main">
+    {{ content }}
+
+    {% for section in site.data[page.class] %}
+    {{ section.title | markdownify }}
+    <table class={{ section.class }}>
+      <thead>
+        <tr>
+          <th>Name (Reference)</th>
+          <th class="stmt" colspan="{% if section.class == " thms" %}3{% else %}2{% endif %}">
+            Statement
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for def in section.defs %}
+        <tr>
+          <td>{{ def.name | markdownify }}</td>
+          {% if def.stmt %}
+          <td class="stmt" colspan="{% if section.class == " thms" %}3{% else %}2{% endif %}">
+            {{ def.stmt | markdownify }}
+          </td>
+          {% else %}
+          <td>{{ def.from | markdownify }}</td>
+          {% if section.class == "thms" %}
+          <td>\( {{def.arrow}} \)</td>
+          {% endif %}
+          <td>{{ def.to | markdownify }}</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endfor %}
+
+    <footer class="site-footer">
+      <span class="site-footer-owner">
+        <a href="{{ site.github.repository_url }}">{{ site.github.repository_name }}</a>
+        is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a>.
+      </span>
+      Content licensed CC-BY-SA.
+      <a href="//ko-fi.com/jahyong">Support the pain and agony!</a>
+    </footer>
+  </main>
+
+  <script src="{{ '/assets/js/mathjax.js?v=' | append: site.github.build_revision | relative_url }}"></script>
+  <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+  <script>
+    kofiWidgetOverlay.draw('jahyong', {
+      'type': 'floating-chat',
+      'floating-chat.donateButton.text': '++boba;',
+      'floating-chat.donateButton.background-color': '#159957',
+      'floating-chat.donateButton.text-color': '#fff'
+    });
+  </script>
+</body>
+
 </html>

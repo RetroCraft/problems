@@ -1,0 +1,144 @@
+\documentclass[class=pmath370,tikz,notes]{agony}
+
+\title{PMATH 370 Winter 2024: Lecture Notes}
+\begin{document}
+\renewcommand{\contentsname}{PMATH 370 Winter 2024:\\{\huge Lecture Notes}}
+\thispagestyle{firstpage}
+\tableofcontents
+
+Lecture notes taken, unless otherwise specified,
+by myself during the Winter 2024 offering of PMATH 370,
+taught by Blake Madill.
+
+\begin{multicols}{2}
+  \listoflecture
+\end{multicols}
+
+\chapter{Iteration and Orbits}
+
+\section{Orbits}
+\lecture{Jan 8}
+
+\begin{defn}[iteration]
+  Let $f : A \to \R$ such that $A \subseteq \R$ and $f(A) \subseteq A$.
+  For $a \in A$ we may \term[iteration]{iterate} the function at $a$:
+  \[ x_1 = a, x_2 = f(a), x_3 = \underbrace{f(f(a))}_{f^2(a)}, \dotsc, x_i = f^{i-1}(a), \dotsc. \]
+  The sequence $(x_n)_{n=1}^\infty$ is the \term[orbit]{orbit of $a$ under $f$}
+  (abbreviated $(x_n)$ without limits).
+\end{defn}
+
+\begin{example}
+  Let $f(x) = x^4 + 2x^2 - 2$, $a = -1$. What is the orbit of $a$ under $f$?
+\end{example}
+\begin{sol}
+  $a = -1$, $f(a) = 1$, $f(f(a)) = f(1) = 1$, so we have $-1,1,1,1,\dotsc$.
+  We call this eventually constant.
+\end{sol}
+
+\begin{example}
+  Let $f(x) = -x^2 - x + 1$, $a = 0$. What is the orbit of $a$ under $f$?
+\end{example}
+\begin{sol}
+  Calculate: $0, 1, -1, 1, -1, 1, \dotsc$.
+  We call this eventually periodic (with period 2).
+\end{sol}
+
+\begin{example}
+  Let $f(x) = x^3 - 3x + 1$, $a = 1$. What is the orbit of $a$ under $f$?
+\end{example}
+\begin{sol}
+  Calculate the first few terms: $1, -1, 3, 19, \dotsc$ (too big).
+  This is a divergence to infinity.
+\end{sol}
+
+\begin{example}
+  Let $f(x) = x^2 + 2x$, $a = -0.5$. What is the orbit of $a$ under $f$?
+\end{example}
+\begin{sol}
+  Calculate: $-0.5, -0.75, -0.9375, -0.9961\dots$
+  and we make an educated guess that this converges to $-1$
+  since $f(-1) = -1$, a fixed point.
+\end{sol}
+
+\begin{example}
+  Let $f(x) = x^3 - 3x$, $a = 0.75$. What is the orbit of $a$ under $f$?
+\end{example}
+\begin{sol}
+  Calculate: $0.75, -1.828, -0.625, 1.631, -0.552, \dotsc$.
+  There is no clear pattern, so we call this chaotic.
+  In fact, the orbit is dense in a neighbourhood of 0.
+\end{sol}
+
+We can start to formalize the examples.
+
+\begin{defn}[fixed point]
+  Let $f : A \to \R$ such that $f(A) \subseteq A$.
+  A point $a \in A$ is fixed if $f(a) = a$.
+
+  Then, the orbit of $a$ under $f$ is $(a,a,a,\dotsc)$
+  which is \term[orbit!constant]{constant}.
+\end{defn}
+
+\begin{example}
+  Find all fixed points of $f(x) = x^2 + x - 4$.
+\end{example}
+\begin{sol}
+  We find points where $f(x) = x$, i.e., $x^2 + x - 4 = x$.
+  \begin{equation*}
+    x^2 + x - 4 = x \iff x^2 = 4 \iff x = \pm 2 \qedhere
+  \end{equation*}
+\end{sol}
+
+\begin{example}
+  How many fixed points does $f(x) = 2\sin x$ have?
+\end{example}
+\begin{sol}
+  Consider where the curve $y = 2\sin x$ meets $y = x$:
+  \begin{center}
+    \begin{tikzpicture}
+      \begin{axis}[axis lines=middle,
+          xlabel=$x$,
+          ylabel=$y$,
+          enlargelimits,
+          ytick=\empty,
+          xtick=\empty,
+          samples=60]
+        \addplot[name path=F,blue,domain={-6:6}] {2*sin(deg(x))} node[pos=.9, below]{$y = 2\sin x$};
+        \addplot[name path=G,ForestGreen,domain={-4:4}] {x} node[pos=.8, left]{$y = x$};
+      \end{axis}
+    \end{tikzpicture}
+  \end{center}
+  We can see there are three fixed points.
+\end{sol}
+
+\begin{example}
+  Prove that $f(x) = x^4 - 3x + 1$ has a fixed point.
+\end{example}
+\begin{prf}
+  We must show there is a solution to $x^4 - 3x + 1 \iff x^4 - 4x + 1 = 0$.
+  Let $g(x) = x^4 - 4x + 1$.
+  Since $g(x)$ is continuous, $g(0) = 1 > 0$, and $g(1) = -2 < 0$,
+  by the Intermediate Value Theorem, there must exist a root of $g$ on the interval $(0,1)$.
+  That is, a fixed point of $f$.
+\end{prf}
+
+\begin{defn}[periodicity]
+  Let $f : A \to \R, f(A) \subseteq A$.
+  \begin{enumerate}[nosep]
+    \item A point $a \in A$ is \term[point!periodic]{periodic} for $f$ if its orbit is periodic.
+          An orbit is \term[orbit!periodic]{periodic} if for some $n \in \N$, $f^n(a) = a$.
+          The smallest $n$ is the \term{period} of (the orbit of) $a$.
+    \item An orbit (of a point) is \term[orbit!eventually periodic]{eventually periodic}
+          if there exists $n < m$ such that $f^n(a) = f^m(a)$.
+          The smallest difference $m-n$ is the period of the orbit.
+  \end{enumerate}
+\end{defn}
+
+\pagebreak
+\phantomsection\addcontentsline{toc}{chapter}{Back Matter}
+\renewcommand{\listtheoremname}{List of Named Results}
+\phantomsection\addcontentsline{toc}{section}{\listtheoremname}
+\listoftheorems[ignoreall,onlynamed={theorem,lemma,corollary}]
+\printindex
+
+\end{document}

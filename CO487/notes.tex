@@ -1,0 +1,63 @@
+\documentclass[class=co487,notes]{agony}
+
+\title{CO 487 Winter 2024: Lecture Notes}
+\begin{document}
+\renewcommand{\contentsname}{CO 487 Winter 2024:\\{\huge Lecture Notes}}
+\thispagestyle{firstpage}
+\tableofcontents
+
+Lecture notes taken, unless otherwise specified,
+by myself during the Winter 2024 offering of CO 487,
+taught by Alfred Menezes.
+
+\begin{multicols}{2}
+  \listoflecture
+\end{multicols}
+
+\chapter{Introduction}
+\lecture{Jan 8}
+
+Cryptography is securing communications in the presence of malicious adversaries.
+To simplify, consider Alice and Bob communicating with the eavesdropper Eve.
+Communications should be:
+\begin{itemize}
+  \item Confidential: Only authorized people can read it
+  \item Integral: Ensured that it is unmodified
+  \item Origin authenticated: Ensured that the source is in fact Alice
+  \item Non-repudiated: Unable to gaslight the message existing
+\end{itemize}
+Examples: TLS for intenet browsing, GSM for cell phone communications,
+Bluetooth for other wireless devices.
+
+\paragraph{Overview: Transport Layer Security} The protocol used by browsers
+to visit websites.
+TLS assures an individual user (a \term{client})
+of the authenticity of the website (a \term{server})
+and to establish a secure communications \term{session}.
+
+TLS uses \term{symmetric-key cryptography}.
+Both the client and server have a shared secret $k$ called a \term{key}.
+They can then use AES for encryption and HMAC for authentication.
+
+To establish the shared secret, use \term{public-key cryptography}.
+Alice can encrypt the session key $k$ can be encrypted with Bob's RSA public key.
+Then, Bob can decrypt it with his private key.
+
+To ensure Alice is getting an authentic copy of Bob's public key,
+a \term{certification authority} (CA) signs it using the CA's private key.
+The CA public key comes with Alice's device preinstalled.
+
+Potential vulnerabilities when using TLS:
+\begin{itemize}
+  \item Weak cryptography scheme or vulnerable to quantum computing
+  \item Weak random number generation for the session key
+  \item Fraudulent certificates
+  \item Implementation bugs
+  \item Phishing attacks
+  \item Transmission is secured, but the endpoints are not
+\end{itemize}
+These are mostly the purview of cybersecurity,
+of which cryptography is a part.
+Cryptography is not typically the weakest link in the cybersecurity chain.
+
+\end{document}

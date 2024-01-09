@@ -1,0 +1,53 @@
+\documentclass[class=cs480,notes]{agony}
+
+\title{CS 480/680 Winter 2024: Lecture Notes}
+\begin{document}
+\renewcommand{\contentsname}{CS 480/680 Winter 2024:\\{\huge Lecture Notes}}
+\thispagestyle{firstpage}
+\tableofcontents
+
+Lecture notes taken, unless otherwise specified,
+by myself during section 002 of the Winter 2024 offering of CS 480/680,
+taught by Hongyang Zheng.
+
+\begin{multicols}{2}
+  \listoflecture
+\end{multicols}
+
+\chapter{Classic Machine Learning}
+
+\section{Introduction}
+\lecture{Jan 9}
+
+There have been three historical AI booms:
+\begin{enumerate}[1.,nosep]
+  \item 1950s--1970s: search-based algorithms (e.g., chess),
+        failed when they realized AI is actually a hard problem
+  \item 1980s--1990s: expert systems
+  \item 2012 -- present: deep learning
+\end{enumerate}
+
+Machine learning is the subset of AI where a program can learn from experience.
+
+Major learning paradigms of machine learning:
+\begin{itemize}[nosep]
+  \item Supervised learning: teacher/human labels answers (e.g., classification, ranking, etc.)
+  \item Unsupervised learning: without labels (e.g., clustering, representation, generation, etc.)
+  \item Reinforcement learning: rewards given for actions (e.g., gaming, pricing, etc.)
+  \item Others: semi-supervised, active learning, etc.
+\end{itemize}
+
+Active focuses in machine learning research:
+\begin{itemize}[nosep]
+  \item Representation: improving the encoding of data into a space
+  \item Generalization: improving the use of the model on new distributions
+  \item Interpretation: understanding how deep learning actually works
+  \item Complexity: improving time/space requirements
+  \item Efficiency: reducing the amount of samples required
+  \item Privacy: respecting legal/ethical concerns of data sourcing
+  \item Robustness: gracefully failing under errors or malicious attack
+  \item Applications
+\end{itemize}
+
+
+\end{document}
