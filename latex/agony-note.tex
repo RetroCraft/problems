@@ -99,9 +99,23 @@
 	postheadspace={0pt},
 	mdframed={style=mdsquare,linecolor=ForestGreen,backgroundcolor=ForestGreen!5},
 ]{thmsquaregreen}
+\declaretheoremstyle[
+	headfont=\bfseries\color{OliveGreen},
+	mdframed={style=mdround,linecolor=ForestGreen,backgroundcolor=ForestGreen!5},
+	headpunct={\\[3pt]},
+	postheadspace={0pt},
+]{thmroundgreen}
+\declaretheoremstyle[
+	headfont=\bfseries\color{OliveGreen},
+  notefont=\mdseries,
+	bodyfont=\normalfont,
+	mdframed={style=mdquote,linecolor=ForestGreen,backgroundcolor=ForestGreen!5},
+]{thmquotegreen}
 \declaretheorem[refname={definition,definitions},style=thmsquaregreen,sibling=theorem]{definition}
 \NewDocumentEnvironment{defn}{oO{#1}}{\IfNoValueTF{#1}{\definition}{\definition[#1]\index{#2}}}{\enddefinition}
 \NewDocumentEnvironment{defn*}{o}{\IfNoValueTF{#1}{\definition}{\definition[#1]}}{\enddefinition}
+\declaretheorem[refname={notation,notations},style=thmquotegreen,unnumbered]{notation}
+\declaretheorem[refname={convention,conventions},style=thmquotegreen,unnumbered]{convention}
 
 % Misc (black)
 \declaretheoremstyle[
@@ -140,3 +154,8 @@
   \refstepcounter{lecture}%
   \addcontentsline{lec.toc}{lecture}{\protect\numberline{Lecture~\thelecture}#1}%
   \marginnote{\normalsize{\textit{Lecture \thelecture\\#1}}}}
+
+% Default to 1., (a), (i)
+\setlist[enumerate,1]{label={\arabic*.}}
+\setlist[enumerate,2]{label={(\alpha*)}}
+\setlist[enumerate,3]{label={(\roman*)}}

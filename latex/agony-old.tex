@@ -1,0 +1,30 @@
+% 
+% Macros from Fall 2020/Winter 2021.
+% 
+% Originally in agony.cls, but that file is toooooo big.
+% Kept here so that old files can still compile.
+% To use, pass in [class=old]
+%
+
+\newcommand{\thetitle}{\@title}
+
+% MATH 135
+\let\U\@undefined
+\newcommand{\U}{\ensuremath{\mathcal{U}}}
+\let\O\@undefined
+\newcommand{\O}{\ensuremath{\mathcal{O}}}
+\newcommand{\sym}{\mathbin{\triangle}}
+\newcommand{\epsdel}[1][\delta]{\ensuremath{\epsilon\mathit{\textnormal{--}}#1}} % properly typeset ε-δ (epsilon en dash delta)
+\newcommand{\by}[1]{& \text{by #1}}
+\newcommand{\IH}{\by{inductive hypothesis}}
+\newcommand{\pf}[2]{%
+\let\tmp\relax\newcommand\tmp[1]{#1}
+\ensuremath{p_1^{\tmp{1}}p_2^{\tmp{2}}\cdots p_#2^{\tmp{#2}}}}
+\newcommand{\FLT}{F\ensuremath{\ell}T}
+% multiple choice (remove spacing between items)
+\newenvironment{choices}{\begin{enumerate}[(a),nosep]}{\end{enumerate}}
+
+
+% MATH 136
+\newcommand{\Mnn}{\ensuremath{M_{n \times n}}}
+\newcommand{\cbm}[2]{\ensuremath{{}_{#1}[I]{}_{#2}}} % change of basis matrix

@@ -1,6 +1,11 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{agony}
 
+% 
+% agony
+% LaTeX class for note-taking and assignment-writing
+% 
+
 %
 % Options
 %
@@ -75,13 +80,13 @@
   \let\underbrace\LaTeXunderbrace
   \let\overbrace\LaTeXoverbrace
   \AtBeginDocument{
-    % See https://github.com/wspr/unicode-math/issues/457
+    % [wspr/unicode-math#457]
     \renewcommand{\Re}{\operatorname{Re}}
     \renewcommand{\Im}{\operatorname{Im}}
   }
 }{}
 
-% See https://tex.stackexchange.com/questions/510506/conflict-between-flexisym-and-polynom-packages
+% [tex.se/510506]
 % \catcode`^=12 \catcode`_=12
 \usepackage{polynom}
 % \catcode`^=7 \catcode`_=8
@@ -94,14 +99,15 @@
   \usetikzlibrary{patterns,positioning,shapes,calc,chains,tikzmark}
   \tikzset{
     vertalign/.style = {
-      baseline={([yshift=-.8ex]current bounding box.center)}
-    },
+        baseline={([yshift=-.8ex]current bounding box.center)}
+      },
     annotate equations/text/.style={font=\footnotesize},
   }
 \fi
 
 \ifagony@minted
-  \@namedef{ver@framed.sty}{9999/12/31} % see gpoore/minted#181
+  % [gpoore/minted#181]
+  \@namedef{ver@framed.sty}{9999/12/31}
   \@namedef{opt@framed.sty}{}
   \RequirePackage{minted}
   \usemintedstyle{tango}
@@ -119,7 +125,7 @@
   \setlength{\headheight}{15pt}
   \setlength{\topmargin}{-20pt}
   \setlength{\headsep}{1.5ex}
-  
+
   \RequirePackage{fancyhdr}
   \pagestyle{fancy}
   \fancyhf{}
@@ -168,19 +174,7 @@
 % Macros
 %
 
-\newcommand{\thetitle}{\@title}
-
-% properly typeset ε-δ (epsilon en dash delta)
-\newcommand{\epsdel}[1][\delta]{\ensuremath{\epsilon\mathit{\textnormal{--}}#1}}
-\newcommand{\nr}[1]{\refstepcounter{equation}\label{#1}\tag{\theequation}} % label in * env
-\newcommand{\by}[1]{& \text{by #1}}
-\newcommand{\IH}{\by{inductive hypothesis}}
-\newcommand{\pf}[2]{%
-\let\tmp\relax\newcommand\tmp[1]{#1}
-\ensuremath{p_1^{\tmp{1}}p_2^{\tmp{2}}\cdots p_#2^{\tmp{#2}}}}
-\newcommand{\FLT}{F\ensuremath{\ell}T}
-% multiple choice (remove spacing between items)
-\newenvironment{choices}{\begin{enumerate}[(a),nosep]}{\end{enumerate}}
+\newcommand{\nr}[1]{\refstepcounter{equation}\label{#1}\tag{\theequation}} % label in align* env
 
 % Cute initialisms (with versions for start of sentences)
 \newcommand{\Wlog}{\textsc{wlog}\xspace}
@@ -205,12 +199,6 @@
 \newcommand{\R}{\ensuremath{\mathbb{R}}}
 \newcommand{\C}{\ensuremath{\mathbb{C}}}
 \newcommand{\F}{\ensuremath{\mathbb{F}}}
-\let\U\@undefined
-\newcommand{\U}{\ensuremath{\mathcal{U}}}
-\let\O\@undefined
-\newcommand{\O}{\ensuremath{\mathcal{O}}}
-\newcommand{\Mnn}{\ensuremath{M_{n \times n}}}
-\newcommand{\sym}{\mathbin{\triangle}}
 
 % Functions
 \DeclareMathOperator{\sgn}{sgn}
@@ -230,13 +218,13 @@
 % Linear Algebra
 \newcommand{\trans}{^{\intercal}} % Transpose
 \newcommand{\xto}{\xrightarrow} % \xto{R_1 \harr R_2}
-\newcommand{\cbm}[2]{\ensuremath{{}_{#1}[I]{}_{#2}}} % change of basis matrix
+\newcommand{\xfrom}{\xleftarrow}
 \DeclareMathOperator{\Proj}{Proj}
 \DeclareMathOperator{\Perp}{Perp}
 \DeclareMathOperator{\Span}{Span}
 \DeclareMathOperator{\Col}{Col}
 \DeclareMathOperator{\adj}{adj}
-% add optional argument for augmented matrices to ams *matrix environments and physics bmqty (tex.se 2233)
+% [tex.se/2233] add optional argument for augmented matrices to ams *matrix environments and physics bmqty
 \renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
   \hskip -\arraycolsep%
   \let\@ifnextchar\new@ifnextchar%

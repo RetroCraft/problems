@@ -134,11 +134,159 @@ We can start to formalize the examples.
   \end{enumerate}
 \end{defn}
 
+\lecture{Jan 10}
+\begin{defn}[doubling function]
+  $D : [0,1) \to [0,1) : x \mapsto 2x-\floor{2x}$
+  returns the fractional part of $2x$.
+\end{defn}
+\begin{example}
+  $D(0.4) = 0.8$, $D(0.6) = 0.2$, $D(0.8) = 0.6$, $D(0.5) = 0$.
+\end{example}
+
+This is a nice function that gives lots of periodic orbits for funsies.
+
+\begin{example}\label{ex:orbit1}
+  Find the orbit of $a=\frac15$ under $D$.
+\end{example}
+\begin{sol}
+  Double until we pass 1: $\frac15, \frac25, \frac45, \frac85 \to \frac35, \frac65 \to \frac15$.
+  The period is $\abs{\{\frac15,\frac25,\frac45,\frac35\}} = 4$.
+\end{sol}
+
+\begin{example}
+  Find the orbit of $a=\frac1{20}$ under $D$.
+\end{example}
+\begin{sol}
+  Double: $\frac1{20}, \frac1{10}, \frac15$ and we can stop
+  because \cref{ex:orbit1} showed $\frac15$ is periodic.
+
+  So this is eventually periodic with period 4.
+\end{sol}
+
+\begin{problem}
+  Given $f$ and $a$, does $f^n(a)$ tend towards some limit $L$?
+\end{problem}
+
+To solve this problem, we need to rigorously define ``tend'' and ``limit''.
+
+\section{Real Analysis Review}
+
+\begin{notation}
+  If $(x_n)_{n=1}^\infty$ is a sequence of real numbers,
+  we write $(x_n) \subseteq \R$.
+\end{notation}
+
+\begin{defn*}[convergence of a sequence]
+  Let $(x_n) \subseteq \R$, $x \in \R$.
+
+  We say $(x_n)$ \term[sequence!convergence]{converges} to $x$ if
+  for all $\varepsilon > 0$, there exists $N \in \N$
+  such that $\abs{x_n - x} < \varepsilon$ for all $n \geq N$.
+
+  Then, we write $x_n \to x$ or $\lim x_n = x$.
+\end{defn*}
+
+\begin{example}
+  Show that $\frac1n \to 0$.
+\end{example}
+\begin{prf}
+  Let $\varepsilon > 0$. Consider $N = \frac{2}{\varepsilon} > \frac{1}{\varepsilon}$.
+  For $n \geq N$, we have
+  \[ \abs{\frac1n - 0} = \frac1n < \varepsilon \]
+  Therefore, $\frac1n \to 0$.
+\end{prf}
+
+\begin{example}
+  Prove that $\frac{2n}{n+3} \to 2$.
+\end{example}
+\begin{prf}
+  Let $\varepsilon > 0$.
+  Since we know $\frac1n \to 0$,
+  let $N \in \N$ such that $\frac1N < \frac{\varepsilon}{6}$.
+
+  For $n \geq N$,
+  \begin{align*}
+    \abs{\frac{2n}{n+3} - 2} = \abs{\frac{2n}{n+3} - \frac{2n+6}{n+3}}
+    = \abs{\frac{-6}{n+3}}
+    = \frac{6}{n+3}
+    < \frac{6}{n}
+    \leq \frac{6}{N}
+    < 6\cdot\frac{\varepsilon}{6}
+    = \varepsilon
+  \end{align*}
+  Therefore, $\frac{2n}{n+3} \to 2$.
+\end{prf}
+
+\begin{defn*}[bounded sequence]
+  A sequence $(x_n)$ is \term[sequence!bounded]{bounded} (by $M$)
+  if there exists $M > 0$ such that $\forall n\in\N$, $\abs{x_n} \leq M$.
+\end{defn*}
+
+\begin{prop}[convergence implies boundedness]
+  If $(x_n)$ is convergent, then $(x_n)$ is bounded.
+\end{prop}
+\begin{prf}
+  Suppose $x_n \to x$.
+  Then, there exists $N \in \N$ such that if $n \geq N$,
+  then $\abs{x_n - x} < 1$.
+
+  For $n \geq N$, $\abs{x_n} - \abs{x} \leq \abs{x_n-x} < 1$.
+  That is, $\abs{x_n} < 1 + \abs{x}$.
+
+  Let $M = \max\{\abs{x_1},\dotsc,\abs{x_{n-1}},1+\abs{x}\}$.
+  Then, for both all $n < N$ and $n \geq N$, we have $\abs{x_n} \leq M$.
+\end{prf}
+
+The converse is not true. Notice that $x_n = (-1)^n$ is bounded by 1
+but obviously not convergent.
+
+\begin{prop}[limit laws]
+  Let $x_n \to x$ and $y_n \to y$. Then:
+  \begin{enumerate}[(1)]
+    \item $x_n + y_n \to x + y$
+    \item $x_ny_n \to xy$
+  \end{enumerate}
+\end{prop}
+\begin{prf}
+  (1) Let $\varepsilon > 0$.
+  Then, since $x_n \to x$ and $y_n \to y$,
+  there exist $N_1,N_2 \in \N$ such that $n \geq N_1 \implies \abs{x_n - x} < \frac\varepsilon2$
+  and $n \geq N_2 \implies \abs{y_n - y} < \frac\varepsilon2$.
+
+  For $N = \max\{N_1,N_2\}$ and $n \geq N$,
+  \begin{align*}
+    \abs{(x_n + y_n) - (x + y)}
+     & = \abs{(x_n - x) + (y_n - y)}           \\
+     & \leq \abs{x_n-x} + \abs{y_n-y}          \\
+     & < \frac\varepsilon2 + \frac\varepsilon2 \\
+     & = \varepsilon
+  \end{align*}
+  That is, $x_n + y_n \to x+y$.
+
+  (2) Let $\varepsilon > 0$. Notice that:
+  \begin{equation*}
+    \abs{x_ny_n - xy} = \abs{x_ny_n - x_ny + x_ny - xy}
+    \leq \abs{x_n}\cdot\abs{y_n-y} + \abs{y}\cdot\abs{x_n-x}
+    \tag{\ast}
+  \end{equation*}
+  Since $x_n$ is bounded, there exists $M > 0$ such that
+  $\abs{x_n} \leq M$ for all $n$.
+
+  Let $N_1,N_2 \in \N$ such that
+  \begin{align*}
+    n \geq N_1 & \implies \abs{x_n - x} \leq \frac{\varepsilon}{2(\abs{y}+1)}\text{ and} \\
+    n \geq N_2 & \implies \abs{y_n-y} < \frac{\varepsilon}{2M}.
+  \end{align*}
+  Then, for $n \geq N := \max\{N_1,N_2\}$,
+  $\abs{x_ny_n - xy} < \frac\varepsilon2 + \frac\varepsilon2 = \varepsilon$
+  by $(\ast)$.
+\end{prf}
+
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
 \renewcommand{\listtheoremname}{List of Named Results}
 \phantomsection\addcontentsline{toc}{section}{\listtheoremname}
-\listoftheorems[ignoreall,onlynamed={theorem,lemma,corollary}]
+\listoftheorems[ignoreall,onlynamed={theorem,lemma,corollary,prop}]
 \printindex
 
 \end{document}
