@@ -1,0 +1,284 @@
+\documentclass[notes]{agony}
+
+\newcommand{\rv}{\mathsf}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\ind}{\perp}
+\renewcommand{\N}{\mathcal{N}}
+\newcommand{\stdspace}{(\Omega, \mathcal{F}, \mu)}
+
+\title{CS 886 Winter 2024: Lecture Notes}
+\begin{document}
+\renewcommand{\contentsname}{CS 886 Winter 2024:\\{\huge Lecture Notes}}
+\thispagestyle{firstpage}
+\tableofcontents
+
+Lecture notes taken, unless otherwise specified,
+by myself during the Winter 2024 offering of CS 886,
+taught by Yaoliang Yu.
+
+I am not a graduate student. This is going to be a disaster.
+
+\begin{multicols}{2}
+	\listoflecture
+\end{multicols}
+
+\chapter{Introduction}
+\lecture{Jan 9}
+
+A diffusion model is basically a limit of infinite auto-regressive models.
+We can construct this $\vb x_{t+1} \approx \vb x_t + \eta_t \cdot \vb f_t(\vb x_t)$ as an ODE and take the limit:
+\[ \dd{\vb x_{t+1}} = \vb f_t(\vb x_t) \]
+
+Make a stochastic differential equation: add a perturbation $G_t(\vb x_t)$.
+\[ \dd{\vb x_{t+1}} = \vb f_t(\vb x_t) \dd{t} + G_t(\vb x_t) \dd{\rv B_t} \]
+Clearly, an ODE is an SDE with $G_t \equiv \vb 0$.
+But an SDE can be integrated to recover an ODE using the score function.
+
+Given an SDE, we can reverse it.
+That is, if the forward SDE goes from data to noise,
+a backwards SDE can generate data from noise.
+The key is estimating that score function.
+
+If we have some normalized distribution $p(x) = \frac{\exp(E(x))}{\int \exp(E(x))}$
+for some energy function $E$, then $\log p(x) = E(x) - \log \int \cdots$
+which gives us an ignorable integral constant.
+Then, we can define a loss function.
+
+This is all very vague.
+
+\section{Probability basics}
+
+\begin{defn}[random variable]
+	Fix a sample space $\Omega$ equipped with a $\sigma$-algebra $\mathcal{F}$
+	where $\mu : \mathcal{F} \to [0,1]$ assigns probability.
+
+	A \term{random variable} is a function $\rv X : \stdspace \to (\bb S, \B, \rv X_\#\mu)$
+	to the state space $\bb S$ (in this course, always $\R$).
+
+	The \term{distribution} of $\rv X$, notated $\rv X_\#\mu$,
+	is a probability measure on $\B \subseteq 2^{\bb S}$, i.e.,
+	\[ (\rv X_\#\mu)(S) := \mu(\{\omega : \rv X(\omega) \in S\}) = \mu(\rv X^{-1}(S)) \]
+	so long as $\rv X^{-1}(\mathcal B) \subseteq \mathcal F$.
+	If $\omega \simeq \mu$, then $\rv X(\omega) \simeq \rv X_\#\mu$.
+\end{defn}
+\begin{example}
+	Say $\rv X \simeq \N(0,1)$.
+
+	That formally means
+	$\rv X : \stdspace \to (\R, \B)$ and $\rv X_\#\mu = \N(0,1)$.
+\end{example}
+\begin{example}
+	Say $\rv Y \simeq \chi^2_1$.
+
+	That formally means
+	$\rv Y : \stdspace \to (\R, \B)$ and $\rv Y_\#\mu = \chi^2_1$.
+\end{example}
+
+Consider $f : (\R,\B) \to (\R,\B)$ where $x \mapsto x^2$.
+Compose $f(\rv X) : \stdspace \to (\R,\B)$.
+Then, $f(\rv X) \simeq \chi^2_1$ by definition of the $\chi^2$ distribution.
+
+Observe that the distribution of $f(\rv X)$ is $(f\circ \rv X)_\#\mu = f_\#[\rv X_\# \mu]$.
+
+We want to go the other direction, to solve the inverse problem going from
+distributions to functions.
+
+\begin{problem}
+	Given distributions $P$ and $Q$, find $f$ such that $f_\#P = Q$.
+\end{problem}
+
+In a generative model, $P = \N(\vb 0,I)$ is noise, and $Q$ is the data distribution.
+We want to find $f$ such that if we draw $\rv X \simeq P$, then we can apply
+$f(\rv X) \simeq Q$.
+
+\begin{theorem}[Representation through Push-forward]
+	Let $P$ be any continuous distribution on $\R^m$.
+	For any distribution $Q$ on $\R^d$, there exist push-forward maps
+	$f : \R^m \to \R^d$ such that $\rv Z \simeq P \implies f(\rv Z) \simeq Q$
+	(equivalently $f_\#P = Q$).
+\end{theorem}
+
+We need $P$ to be continuous so that we can send it to anything.
+
+In practice, we never have a continuous $Q$, since our data is discrete.
+Instead, we only have an approximated empirical $\hat Q$.
+
+\begin{example}
+	Let $X \simeq \N(0,1)$ and $Y \simeq \chi_1^2$.
+\end{example}
+\begin{sol}
+	By definition, $f(x) = x^2$ works.
+
+	But we can also consider the CDF $\Phi$ of $\N(0,1)$.
+	If we apply $\Phi(\rv X)$:
+	\[ \Pr[\Phi(\rv X) \leq u] = \Pr[\rv X \leq \Phi^{-1}(u)] = \Phi(\Phi^{-1}(u)) = u \]
+	we get a uniform distribution.
+
+	Then, apply the inverse CDF $\Psi^{-1}$ of $\chi^2$:
+	\[ \Pr[\Psi^{-1}(\Phi(\rv X)) \leq t] = \Pr[\Phi(\rv X) \leq \Psi(t)] = \Psi(t) \]
+	since $\Psi(\rv X)$ is uniform,
+	which means that $\Psi^{-1}(\Phi(\rv X))$ has CDF $\Psi$.
+
+	That is, $f = \Psi^{-1} \circ \Phi$ works as well.
+	In fact, we know this is a distinct solution,
+	since this function is always increasing, but $x^2$ is not.
+\end{sol}
+
+\begin{remark}
+	If we add the condition that $f$ is monotonically increasing,
+	the only $f$ is $\Psi^{-1} \circ \Phi$.
+	We call this the \term{optimal transformation}.
+\end{remark}
+
+We can consider $\rv X \xto g \mu$ as a composition of functions
+$\rv X \xto{g_1} \rv X_1 \xto{g_2} \rv X_2 \xto{g_3} \dotsb \xto{g_n} \rv X_n \approx \mu$.
+
+Then, to go backwards, $Y \xfrom h \mu$ ...
+
+This does not work because [reason]
+
+\begin{defn}[stochastic process]
+	Consider ``time'' $t \in \bb T$. Equivalently:
+	\begin{itemize}[nosep]
+		\item A collection of random variables $\rv X : \bb T \to \R^{\Omega} : t \mapsto \rv X(t,\cdot)$
+		\item A random function to paths $\rv X : \Omega \to \R^{\bb T} : \omega \mapsto \rv X(\cdot,\omega)$
+		\item A bivariate function $\rv X(t,\omega) : \bb T \times \Omega \to \R$
+	\end{itemize}
+	depending on if we fix the time or state.
+\end{defn}
+
+We can equivalently write $\rv X(t)$, $\rv X(t,\omega)$, or $\rv X_t$.
+
+\section{Brownian motion}
+
+\begin{defn}[Brownian motion]
+	A stochastic process $\{\rv B_t : t \geq 0\}$ such that:
+	\begin{itemize}[nosep]
+		\item $\rv B_0 \equiv 0$
+		\item Each increment $B_{t_1} - B_{t_0}$ is independent of all others
+		\item All increments $\rv B_t - \rv B_s \simeq \rv B_{t-s}$
+		\item $\vb B_t \simeq \N(0,t)$
+		\item The function $t \mapsto \rv B_t(\omega)$ is continuous for all $\omega$
+	\end{itemize}
+\end{defn}
+
+Brownian motion is a Gaussian process with covariance kernel
+$\kappa(s,t) := \E[\rv B_s\rv B_t] = s \wedge t$
+(i.e., the minimum of $s$ and $t$).
+We can simulate this (discretely) now, since we can simulate a Gaussian process.
+
+Side note: ``white noise'' is typically defined as the derivative $\rv B_t'$
+of a Brownian motion, since $\kappa' := \partial_{12}\kappa$ is also a kernel.
+
+However, we still need the continuity condition.
+Luckily, we cheat and cite some theorem:
+
+\begin{theorem}[Continuity condition of stochastic processes]
+	Let $\rv X_t$ be a stochastic process with index $t \in \R^m$.
+	If for some $\alpha,\beta,\rv L > 0$,
+	\[ \E[\norm{\rv X_s - \rv X_t}^\alpha] \leq \rv L\norm{t-s}^{m+\beta} \]
+	for all $s$ and $t$,
+	then there exists a modification $\tilde{\rv{X}}_t$
+	that is locally Hölder continuous of order $\gamma < \beta/\alpha$.
+\end{theorem}
+To be Hölder continuous at $s$ of order $\gamma$
+means that for all $t$ around $s$, $\norm{\rv X_s - \rv X_t} \leq c\cdot\norm{s-t}^\gamma$.
+
+We can show this condition holds for Brownian motion.
+
+\paragraph{Kolmogorov's construction}
+For finitely many $t_1,\dotsc,t_n$,
+define $\rv B_{1:n} := (B_{t_i}) \simeq \mathcal N(\vb 0, K_n)$
+where $K_n(t_i,t_j) = t_i \wedge t_j$.
+Then, by the Kolmogorov extension theorem,
+a continuous process $\rv B_t$ exists that satisfies all conditions
+except continuity.
+
+We know that
+\begin{align*}
+	\E\abs{\rv B_s - \rv B_t}^{2k}
+	 & = \E\abs{\rv B_{s-t}}^{2k}            & \text{stationary} \\
+	 & = \E\abs{\sqrt{t-s}\cdot\rv B_1}^{2k} & \text{Gaussian}   \\
+	 & = \abs{t-s}^k\cdot\E\abs{B_1}^k
+\end{align*}
+by properties of Brownian motion.
+With $\alpha = 2k$, $m=1$, $\beta=k-m=k-1$,
+we have continuity of order $\gamma < \frac{k-1}{2k}$
+which maxes out to $\frac12$.
+
+\begin{theorem}[Irregularity]
+	Brownian motion is nowhere Hölder continuous of order $\gamma > \frac12$.
+\end{theorem}
+
+That is, it is differentiable nowhere.
+
+We can make a heuristic argument as well.
+At some time $\tau$, Brownian motion is independent of the information up to $\tau$.
+That is, it is a memoryless Markov process.
+But then the left and right derivatives can never agree,
+since they are independently generated.
+
+\begin{defn}[Brownian bridge]
+	A stochastic process $\{\rv B_t^\circ : t \in [0,1]\}$ where:
+	\begin{itemize}[nosep]
+		\item $\rv B_0^\circ \equiv \rv B_1^\circ \equiv 0$
+		\item Each increment $B^\circ_{t_1} - B^\circ_{t_0}$ is independent of all others
+		\item All increments $\rv B^\circ_t - \rv B^\circ_s \simeq \rv B^\circ_{t-s}$
+		\item $\vb B^\circ_t \simeq \N(0,t(1-t))$
+		\item The function $t \mapsto \rv B^\circ_t(\omega)$ is continuous for all $\omega$
+	\end{itemize}
+\end{defn}
+
+We can go back and forth between Brownian motions and bridges.
+If $t$ is restricted to $[0,1]$,
+$\rv B_t^\circ \simeq \rv B_t - t\rv B_1$
+and $\rv B_t \simeq \rv B_t^\circ + t\rv Z$
+with perturbation $\rv Z \simeq \N(0,1) \ind \rv B_t^\circ$.
+
+Since $t$ is in the variance, $\frac{1}{\sqrt{c}}\rv B_{ct}$
+is also Brownian, as is $t\rv B_{1/t}$.
+
+[aside: Poisson and Lévy processes]
+
+Now, consider a bunch more ways to construct Brownian motion.
+
+\paragraph{Wiener's construction}
+Let $\rv G_n$ be i.i.d.\ Gaussian variables.
+Then, based on a Fourier process, take
+\[ \rv B_t = t\rv G_0 + \sum_{n=1}^\infty \frac{\sin(n\pi t)}{nt} \rv G_n \]
+We can apply this by truncating the series to get a Brownian path.
+
+\paragraph{Ciecielski's construction}
+For Haar wavelets (square waves) $\phi_{k/2^n}(t)$, notice that we can write:
+\[
+	\int_0^1 \rv B_t' \cdot \phi_{k/2^n}(t) \dd t \simeq \rv G_{k/2^n}	
+\]
+which means we can go the other way to get
+\[
+	\rv B_t = \int \rv B_t' \dd{t} = t\rv G_0 + \sum \rv G_{k/2^n} \int \phi_{k/2^n}(s) \dd{s}
+\]
+which is calculable, I guess.
+
+\paragraph{Lévy's construction \rm (which is actually simple-ish)}
+Initialize points $\rv B_0 = 0$, $\rv B_1 \simeq \N(0,1)$.
+Recursively interpolate between points, adding a Gaussian perturbation
+to each point before saving it.
+In fact, it's possible to prove this is the same as Ciecielski's method.
+
+\paragraph{Donsker's construction} Take i.i.d.\ random variables $\xi_i \simeq F$
+each with mean 0 and unit variance from literally any distribution.
+Let $S_n = \sum_{i=1}^n \xi_i$ be the cumulative sum.
+Then, $\rv X_t^n := \frac{1}{\sqrt{n}}S_{\floor{nt}}$
+will eventually converge to Brownian motion even though there's no Gaussian.
+In other words, Brownian motion is a sort of limiting behaviour of a random walk.
+
+\begin{defn}
+	Let $g : [0,T] \to \R$ be of bounded variation where $g(0) = g(T) = 0$.
+	We define the integral
+	\[ \int_0^T g(t) \dd{\rv X_t} = -\int_0^T \rv X_t \dd{g(t)} \]
+	as the integration by parts. 
+	% weird where did g(t)X_t go?
+\end{defn}
+
+\end{document}
