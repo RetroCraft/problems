@@ -213,6 +213,9 @@
 \newcommand{\harr}{\leftrightarrow}
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\xor}{\oplus}
+
+% Calculus
 \newcommand{\dyx}{\dv{y}{x}}
 
 % Linear Algebra

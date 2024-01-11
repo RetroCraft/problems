@@ -1,4 +1,4 @@
-\documentclass[class=cs480,notes]{agony}
+\documentclass[class=cs480,notes,tikz]{agony}
 
 \title{CS 480/680 Winter 2024: Lecture Notes}
 \begin{document}
@@ -49,5 +49,198 @@ Active focuses in machine learning research:
   \item Applications
 \end{itemize}
 
+\lecture{Jan 11}
+A machine learning algorithm has three phases:
+training, prediction, and evaluation.
+
+\begin{defn}[dataset]
+  A \term{dataset} consists of a list of \term[feature]{features}
+  $\vb x_1,\dotsc, \vb x_n, \vb x_1', \dotsc, \vb x_m' \in \R^d$
+  which are $d$-dimensional vectors and a label vector $\vb y\trans \in \R^n$.
+
+  Each \term{training sample} $\vb x_i$ is associated with a \term{label} $y_i$.
+  A \term{test sample} $\vb x'_i$ may or may not be labelled.
+\end{defn}
+
+\begin{example}[email filtering]
+  Suppose we have a list $D$ of $d$ English words.
+
+  Define the training set $X = [\vb x_1,\dotsc,\vb x_n] \in \R^{d\times n}$ and $\vb y = [y_1,\dotsc,y_n] \in \{\pm1\}^n$
+  such that $\vb x_{ij} = 1$ if the word $j \in D$ appears in email $i$
+  (this is the \term{bag-of-words representation}):
+
+  \begin{center}
+    \begin{tabular}{cCCCCCC|C}
+              & \vb x_1 & \vb x_2 & \vb x_3 & \vb x_4 & \vb x_5 & \vb x_6 & \vb x' \\ \hline
+      and     & 1       & 0       & 0       & 1       & 1       & 1       & 1      \\
+      viagra  & 1       & 0       & 1       & 0       & 0       & 0       & 1      \\
+      the     & 0       & 1       & 1       & 0       & 1       & 1       & 0      \\
+      of      & 1       & 1       & 0       & 1       & 0       & 1       & 0      \\
+      nigeria & 1       & 0       & 0       & 0       & 1       & 0       & 0      \\ \hline
+      $y$     & +       & -       & +       & -       & +       & -       & ?
+    \end{tabular}
+  \end{center}
+
+  Then, given a new email $\vb x'_1$, we must determine if it is spam or not.
+\end{example}
+
+\begin{example}[OR dataset]
+  We want to train the OR function:
+  \begin{center}
+    \begin{tabular}{cCCCC}
+          & \vb x_1 & \vb x_2 & \vb x_3 & \vb x_4 \\ \hline
+          & 0       & 1       & 0       & 1       \\
+          & 0       & 0       & 1       & 1       \\ \hline
+      $y$ & -       & +       & +       & +
+    \end{tabular}
+  \end{center}
+  This can be represented graphically by finding a line dividing the points:
+  \begin{center}
+    \begin{tikzpicture}
+      \begin{axis}
+        \addplot[blue, thick, mark=none] coordinates {(-0.2, 0.8) (0.8, -0.2)};
+        \addplot[red, mark=*] coordinates {(0,0)};
+        \addplot[ForestGreen, mark=*] coordinates {(0,1)};
+        \addplot[ForestGreen, mark=*] coordinates {(1,0)};
+        \addplot[ForestGreen, mark=*] coordinates {(1,1)};
+      \end{axis}
+    \end{tikzpicture}
+  \end{center}
+\end{example}
+
+\section{Perceptron}
+
+\begin{defn}
+  The \term{inner product} of vectors $\ip{\vb a}{\vb b}$
+  is the sum of the element-wise product $\sum_j a_j b_j$.
+
+  A \term{linear function} is a function $f : \R^d \to \R^d$
+  such that for all $\alpha,\beta \in \R$, $\vb x, \vb z \in \R^d$,
+  $f(\alpha\vb x + \beta\vb z) = \alpha f(\vb x) + \beta f(\vb z)$.
+\end{defn}
+\begin{theorem}[linear duality]
+  A function is linear if and only if there exists $\vb w \in \R^d$
+  such that $f(\vb x) = \ip{\vb x}{\vb w}$.
+\end{theorem}
+\begin{prf}
+  ($\Rarr$) Suppose $f$ is linear.
+  Let $\vb w := [f(\vb e_1), \dotsc, f(\vb e_d)]$
+  where $\vb e_i$ are coordinate vectors. Then:
+  \begin{align*}
+    f(\vb x) & = f(x_1\vb e_1 + \dotsb + x_d \vb e_d)     \\
+             & = x_1 f(\vb e_1) + \dotsb + x_d f(\vb e_d) \\
+             & = \ip{\vb x}{\vb w}
+  \end{align*}
+  by linearity of $f$.
+
+  ($\Larr$) Suppose there exists $\vb w$ such that $f(\vb x) = \ip{\vb x}{\vb w}$.
+  Then: \begin{align*}
+    f(\alpha\vb x + \beta\vb z)
+     & = \ip{\alpha\vb x+\beta\vb z,\vb w}                \\
+     & = \alpha\ip{\vb x}{\vb w} + \beta\ip{\vb x}{\vb w} \\
+     & = \alpha f(\vb x) + \beta f(\vb z)
+  \end{align*}
+  since inner products are linear in the first argument.
+\end{prf}
+
+\begin{defn}[affine function]
+  A function $f(\vb x)$ where there exist $\vb w \in \R^d$
+  and \term{bias} $b \in \R$ such that $f(\vb x) = \ip{\vb x}{\vb w} + b$.
+\end{defn}
+
+\begin{defn}[sign function]
+  \[
+    \sgn(t) = \begin{cases}
+      +1 & t > 0    \\
+      -1 & t \leq 0
+    \end{cases}
+  \]
+  It does not matter what $\sgn(0)$ is defined as.
+\end{defn}
+
+\begin{defn}[linear classifier]
+  $\hat y = \sgn(\ip{\vb x}{\vb w} + b)$
+\end{defn}
+
+The parameters $\vb w$ and $b$ will uniquely determine the linear classifier.
+
+\begin{example}[geometric interpretation]
+  We can interpret $\hat y > 0$ as a halfspace (see CO 250).
+  Then, we can draw something like:
+  \begin{center}
+    \begin{tikzpicture}
+      \begin{axis}[axis lines=middle,
+          xlabel=$x_1$,
+          ylabel=$x_2$,
+          enlargelimits,
+          ytick=\empty,
+          xtick=\empty,
+          xmin=-0.5, xmax=1.5, ymin=-0.5, ymax=1.5,
+          samples=60]
+        \fill[pattern=north west lines, pattern color=blue!20] (-0.5,1.5) -- (1.5,1.5) -- (1.5,-0.5) -- (0.5,-0.5) -- cycle;
+        \addplot[blue, thick, mark=none] coordinates {(-0.5, 1.5) (0.5, -0.5)};
+        \addplot[red, mark=*] coordinates {(0,0)};
+        \addplot[ForestGreen, mark=*] coordinates {(0,1)};
+        \addplot[ForestGreen, mark=*] coordinates {(1,0)};
+        \addplot[ForestGreen, mark=*] coordinates {(1,1)};
+        \draw[line width=2pt,blue,-stealth](0,0)--(0.75,0.5) node[anchor=south west]{$\vb w$};
+      \end{axis}
+    \end{tikzpicture}
+  \end{center}
+\end{example}
+
+\begin{prop}
+  The vector $\vb w$ is orthogonal to the decision boundary $H$.
+\end{prop}
+\begin{prf}
+  Let $\vb x, \vb x' \in H$ be vectors on the boundary $H = \{x : \ip{\vb w}{\vb x} + b = 0\}$.
+  Then, we must show $\vb x' - \vb x = \overrightarrow{\vb{xx'}} \perp \vb w$.
+
+  We can calculate $\ip{\vb w}{\vb x' - \vb x}
+    = \ip{\vb w}{\vb x} - \ip{\vb w}{\vb x'}
+    = -b - (-b) = 0$.
+\end{prf}
+
+Originally, the inventor of the perceptron thought it could do anything.
+He was (obviously) wrong.
+
+\begin{algorithm}[H]
+  \caption{Training Perceptron}
+  \begin{algorithmic}
+    \Require Dataset $(\vb x_i, y_i) \in \R^d \times \{\pm 1\}$,
+    initialization $\vb w_0 \in \R^d$, $b_0 \in \R$.
+    \Ensure $\vb w$ and $b$ for linear classifier $\sgn(\ip{\vb x}{\vb w} + b)$
+    \For{$t=1,2,\dotsc$}
+      \State receive index $I_t \in \{1,\dotsc,n\}$
+      \If{$y_{I_t}\qty(\ip{\vb x_{I_t}}{\vb w} + b) \leq 0$}
+        \State $\vb w \gets \vb w + y_{I_t}\vb x_{I_t}$
+        \State $b \gets b + y_{I_t}$
+      \EndIf
+    \EndFor
+  \end{algorithmic}
+\end{algorithm}
+
+In a perceptron, we train by adjusting $\vb w$ and $b$
+whenever a training data feature is classified ``wrong''
+(i.e., $\vv{score}_{\vb w,b}(\vb x) := y\hat y < 0 \iff$ the signs disagree).
+
+The perceptron solves the feasibility problem
+\begin{center}
+  Find $\vb w \in \R^d$, $b \in \R$ such that $\forall i, y_i(\ip{\vb x_i}{\vb w} + b) > 0$
+\end{center}
+by iterating one-by-one.
+It will converge ``faster'' (with fewer $t$-iterations) if the data is ``easy''.
+
+Consider what happens when there is a ``wrong'' classification.
+Let $w_{k+1} = w_k + yx$ and $b_{k+1} = b_k + y$.
+Then, the updated score is:
+\begin{align*}
+  \vv{score}_{\vb w_{k+1},b_{k+1}}(\vb x)
+   & = y \cdot (\ip{\vb x}{\vb w_{k+1}} + b_{k+1})                                                                 \\
+   & = y \cdot (\ip{\vb x}{\vb w_k + y\vb x} + b_k + y)                                                            \\
+   & = y \cdot (\ip{\vb x}{\vb w_k} + b_k) + \ip{\vb x}{\vb x} + 1                                                 \\
+   & = y \cdot (\ip{\vb x}{\vb w_k} + b_k) + \underbrace{\norm{\vb x}_2^2 + 1}_{\mathclap{\text{always positive}}}
+\end{align*}
+which is always an increase over the previous ``wrong'' score.
 
 \end{document}
