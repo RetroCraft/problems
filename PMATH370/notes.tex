@@ -237,8 +237,10 @@ To solve this problem, we need to rigorously define ``tend'' and ``limit''.
   Then, for both all $n < N$ and $n \geq N$, we have $\abs{x_n} \leq M$.
 \end{prf}
 
-The converse is not true. Notice that $x_n = (-1)^n$ is bounded by 1
-but obviously not convergent.
+\begin{remark}
+  The converse is not true. Notice that $x_n = (-1)^n$ is bounded by 1
+  but obviously not convergent.
+\end{remark}
 
 \begin{prop}[limit laws]
   Let $x_n \to x$ and $y_n \to y$. Then:
@@ -281,6 +283,148 @@ but obviously not convergent.
   $\abs{x_ny_n - xy} < \frac\varepsilon2 + \frac\varepsilon2 = \varepsilon$
   by $(\ast)$.
 \end{prf}
+
+\lecture{Jan 12}
+\begin{defn*}[Cauchy sequence]
+  We say $(x_n) \in \R$ is \term[sequence!Cauchy]{Cauchy}
+  if for all $\varepsilon > 0$, there exists $N \in \N$ such that
+  for all $n$ and $m$,
+  \[ n,m \geq N \implies \abs{x_n - x_m} < \varepsilon \]
+\end{defn*}
+
+\begin{prop}
+  Every convergent sequence is Cauchy.
+\end{prop}
+\begin{prf}
+  Intuitively: if the terms get arbitrarily close to some limit,
+  they must get arbitrarily close to each other.
+
+  Formally: Let $x_n \to x$ be a convergent sequence and $\varepsilon > 0$.
+  Since $x_n$ converges, there exists $N \in \N$ such that
+  $n \geq N \implies \abs{x_n-x} < \frac\varepsilon2$.
+
+  Then, when $n,m \geq N$, we have:
+  \begin{align*}
+    \abs{x_n - x_m}
+     & = \abs{x_n - x_m + x - x}               \\
+     & = \abs{(x_n - x) + (x - x_m)}           \\
+     & \leq \abs{x_n - x} + \abs{x_m - x}      \\
+     & < \frac\varepsilon2 + \frac\varepsilon2 \\
+     & = \varepsilon
+  \end{align*}
+  as desired.
+\end{prf}
+
+We take the following theorem from real analysis without proof.
+
+\begin{theorem}[completeness of $\R$]
+  A sequence is Cauchy if and only if it is convergent.
+\end{theorem}
+
+The big idea here: To prove $(x_n)$ is Cauchy,
+you do not have to guess the limit first.
+That is, if you must prove convergence but do not care about the limit's value,
+prove that it is Cauchy instead.
+
+\begin{defn*}[continuity of a function]
+  Let $f : A \to \R, A \subseteq \R, a \in A$.
+  We say $f$ is \term[function!continuity]{continuous at $a$} if
+  for all $\varepsilon > 0$, there exists $\delta > 0$
+  such that $\abs{f(x) - f(a)} < \varepsilon$ whenever
+  $x \in A$ and $\abs{x-a} < \delta$.
+
+  If $f$ is continuous at all $a \in A$, we say it is continuous.
+\end{defn*}
+
+We also take this theorem from MATH 137 without proof.
+
+\begin{theorem}
+  A function $f : A \to \R$ is continuous at $a \in A$ if and only if
+  for all sequences $(x_n) \subseteq A$ with $x_n \to a$,
+  we have $f(x_n) \to a$.
+\end{theorem}
+
+\section{Orbits, revisited}
+
+\begin{prop}
+  If $f : [a,b] \to [a,b]$ is continuous, then $f(x)$ has a fixed point.
+\end{prop}
+\begin{prf}
+  We know by the domain and codomain that $f(a) \geq a$ and $f(b) \leq b$.
+  This means $f(a) - a \geq 0$ and $f(b) - b \leq 0$.
+  By the IVT on the continuous function $g(x) = f(x) - x$,
+  we know there exists an $x \in [a,b]$ such that $g(x) = f(x) - x = 0 \iff f(x) = x$,
+  i.e., $x$ is a fixed point.
+\end{prf}
+
+\begin{defn*}[contraction]
+  Let $f : A \to \R, A \subseteq \R$.
+  We say $f$ is a \term{contraction} if there exists $C \in [0,1)$
+  such that for all $x,a \in A$,
+  \[ \abs{f(x) - f(y)} \leq C\abs{x-y} \]
+\end{defn*}
+
+This is just a Lipschitz function with Lipschitz constant less than 1.
+
+\begin{prop}
+  Contractions are continuous.
+\end{prop}
+\begin{prf}
+  Let $\varepsilon > 0$.
+  Suppose $f$ is a contraction such that $\abs{f(x) - f(y)} \leq C\abs{x-y}$.
+
+  Consider $y \in A$.
+  Let $\delta = \frac{\varepsilon}{C+1}$
+  and assume that $x \in A$ and $\abs{x-y} < \delta$.
+  But we have:
+  \begin{align*}
+    \abs{f(x) - f(y)} \leq C\abs{x-y} \leq C\delta < \varepsilon
+  \end{align*}
+  as desired.
+\end{prf}
+
+\begin{defn*}[closure of an interval]
+  We say $A \in \R$ is \term[interval!closure]{closed}
+  if whenever $(x_n) \subseteq A$ with $x_n \to x$,
+  then $x \in A$.
+\end{defn*}
+
+\begin{example}
+  $[a,b]$ is closed but $(0,1]$ is not because $\frac1n \to 0 \not\in (0,1]$.
+\end{example}
+
+\begin{theorem}[Banach contraction mapping theorem]
+  Suppose $A \subseteq \R$ is closed and $f : A \to A$ is a contraction.
+  Then, there exists a unique fixed point $a \in A$ for $f$.
+
+  Moreover, for all $x \in A$, $f^n(x) \to a$.
+\end{theorem}
+
+\begin{example}
+  Analyze the orbit of $f : [0,1] \to [0,1]$, $f(x) = \frac{1}{3-x}$.
+\end{example}
+\begin{sol}
+  We can observe that $\frac13 \leq \frac{1}{3-x} \leq \frac12$.
+
+  Also, $f'(x) = \frac{1}{(3-x)^2}$.
+  Notice that $\frac19 \leq \abs{f'(x)} \leq \frac14$.
+  So by the mean value theorem, for all $x,y \in [0,1]$,
+  there exists $c \in (0,1)$ such that:
+  \begin{align*}
+    f(x) - f(y)       & = f'(c)(x-y)                \\
+    \abs{f(x) - f(y)} & = \abs{f'(c)}\cdot\abs{x-y} \\
+                      & \leq \frac14\abs{x-y}
+  \end{align*}
+  Then, identifying $C = \frac14$, $f$ is a contraction. Now,
+  \begin{align*}
+    \frac{1}{3-x} = x \iff 1 = 3x-x^2 \iff x^2 - 3x + 1 = 0 \iff x = \frac{3\pm \sqrt{9-4}}{2} \iff x = \frac{3-\sqrt{5}}{2}
+  \end{align*}
+  where we pick the negative root because we need $x \in [0,1]$.
+  
+  Therefore, by the Banach contraction mapping theorem,
+  for all $x \in [0,1]$, $f^n(x) \to \frac{3-\sqrt5}{2}$.
+\end{sol}
+
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}

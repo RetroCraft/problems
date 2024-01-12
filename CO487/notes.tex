@@ -183,5 +183,149 @@ Can we quantify how feasible something is?
   \end{itemize}
 \end{convention}
 
+\lecture{Jan 12}
+The simple substitution cipher can be attacked by frequency analysis,
+since, for example, if ``e'' is the most common English letter,
+we check the ciphertext for the most common letter and identify it with ``e''.
+
+\begin{scheme}[Vigenère cipher]
+  Let the key $K$ be an English word with no repeated letters, e.g., $K = \symrm{CRYPTO}$.
+
+  To encrypt, add letter-wise the key modulo 26, where $k$ is $K$ repeated until
+  it matches the length of the message:
+  \begin{center}
+    \begin{tabular}{rcccccccccccccc}
+      $m =$        & t & h & i & s & i & s & a & m & e & s & s & a & g & e \\
+      $+\quad k =$ & C & R & Y & P & T & O & C & R & Y & P & T & O & C & R \\ \hline
+      $c =$        & V & Y & G & H & B & G & C & D & C & H & L & O & I & V
+    \end{tabular}
+  \end{center}
+  To decrypt, just take $c - k$.
+\end{scheme}
+
+This solves our frequency analysis problem.
+However, the Vigenere cipher is still totally insecure.
+
+\begin{xca}
+  Show that the Vigenere cipher is totally insecure under a chosen-plaintext attack
+  and a ciphertext-only attack.
+\end{xca}
+
+\begin{scheme}[one-time pad]
+  The key is a random string of letters with the same length as the message.
+
+  Repeat the process for Vigenere.
+  To encode, add each letter.
+  To decode, subtract each letter.
+\end{scheme}
+
+\begin{example}
+  We can encrypt as follows:
+  \begin{center}
+    \begin{tabular}{rcccccccccccccc}
+      $m =$        & t & h & i & s & i & s & a & m & e & s & s & a & g & e \\
+      $+\quad k =$ & Z & F & K & W & O & G & P & S & M & F & J & D & L & G \\ \hline
+      $c =$        & S & M & S & P & W & Y & P & F & Q & X & C & D & R & K \\
+    \end{tabular}
+  \end{center}
+\end{example}
+
+This is semantically secure as long as the key is never reused.
+Formally, there exist keys that can decrypt the ciphertext into \emph{anything},
+so there is no way for an attacker to know the plaintext.
+If it is reused, i.e., if $c_1 = m_1 + k$ and $c_2 = m_2 + k$,
+then $c_1 - c_2 = (m_1 + k) - (m_2 + k) = m_1 - m_2$.
+Since this is a function only of messages, it can leak frequency information etc.
+
+Also, since the key is never reused, this is secure against a chosen plaintext attack,
+since one would only recover the already used key.
+
+\begin{convention}
+  From now on, messages and keys are assumed to be binary strings.
+\end{convention}
+
+\begin{defn}[bitwise exclusive or]
+  For two bitstrings $x,y \in \{0,1\}^n \cong \Z/2\Z^n$,
+  the bitwise XOR $x \xor y$ is just addition mod 2.
+\end{defn}
+
+Unfortunately, due to Shannon, we have this theorem:
+
+\begin{theorem}
+  A perfectly secure symmetric-key scheme must have
+  at least as many keys as there are messages.
+\end{theorem}
+
+\section{Stream ciphers}
+
+Instead of using a random key in the OTP, use a pseudorandom key.
+
+\begin{defn}[pseudorandomness]
+  A \term*{pseudorandom bit generator} (PBRG) is a deterministic algorithm
+  that takes as input a \term{seed} and outputs a \term*{pseudorandom} sequence called
+  the \term{keystream}.
+\end{defn}
+
+Then, we can construct a stream cipher by defining the key as the seed
+and the ciphertext as the keystream XOR'd with the plaintext.
+To decrypt, use the seed to generate the same keystream and XOR with the ciphertext.
+
+For a stream cipher to be secure, we need:
+\begin{itemize}
+  \item Indistinguishability: the keystream is indistinguishable from a
+        truly random sequence; and
+  \item Unpredictability: given a partial keystream, it is infeasible to learn
+        any information from the remainder of the keystream.
+\end{itemize}
+
+\begin{remark}
+  Do not use built-in UNIX \texttt{rand} or \texttt{srand} for cryptography!
+\end{remark}
+
+\subsection{ChaCha20}
+
+The algorithm works entirely on words (32-bit numbers).
+
+\begin{scheme}[ChaCha20]
+  First, define a helper function $QR(a,b,c,d)$ on 32-bit words:
+  \begin{enumerate}[nosep]
+    \item $a \gets a \modplus b$, $d \gets d \xor a$, $d \gets d \lll 16$
+    \item $c \gets c \modplus d$, $b \gets b \xor c$, $b \gets b \lll 12$
+    \item $a \gets a \modplus b$, $d \gets d \xor a$, $d \gets d \lll 8$
+    \item $c \gets c \modplus d$, $b \gets b \xor c$, $b \gets b \lll 7$
+  \end{enumerate}
+  where $\xor$ is bitwise XOR, $\modplus$ is addition mod $2^{32}$, and $\lll$ is left bit-rotation.
+
+  Given a 256-bit key $k = (k_1,\dotsc,k_8)$,
+  a selected 96-bit nonce $n = (n_1,n_2,n_3)$,
+  a 128-bit given constant $f = (f_1,\dotsc,f_4)$,
+  and 32-bit counter $c \gets 0$, construct an initial state:
+  \[
+    S := \begin{bmatrix}
+      f_1 & f_2 & f_3 & f_4 \\
+      k_1 & k_2 & k_3 & k_4 \\
+      k_5 & k_6 & k_7 & k_8 \\
+      c   & n_1 & n_2 & n_3
+    \end{bmatrix} = \begin{bmatrix}
+      S_1    & S_2    & S_3    & S_4    \\
+      S_5    & S_6    & S_7    & S_8    \\
+      S_9    & S_{10} & S_{11} & S_{12} \\
+      S_{13} & S_{14} & S_{15} & S_{16}
+    \end{bmatrix}
+  \]
+  Keep a copy $S' \gets S$, then apply:
+  \begin{gather*}
+    QR(S_{1}, S_{5}, S_{9}, S_{13}),\quad QR(S_{2}, S_{6}, S_{10}, S_{14}),\quad QR(S_{3}, S_{7}, S_{11}, S_{15}),\quad QR(S_{4}, S_{8}, S_{12}, S_{16}) \\
+    QR(S_{1}, S_{6}, S_{11}, S_{16}),\quad QR(S_{2}, S_{7}, S_{12}, S_{13}),\quad QR(S_{3}, S_{8}, S_{9}, S_{14}),\quad QR(S_{4}, S_{5}, S_{10}, S_{15})
+  \end{gather*}
+  ten times (for 80 total calls to $QR$) and output $S \xor S'$.
+  This gives us 64 keystream bytes.
+
+  Increment $c \gets c+1$ and repeat as necessary to generate more keystream bytes.
+
+  To encrypt, XOR the keystream with the plaintext, then append the nonce.
+
+  To decrypt, pop off the nonce, then XOR the keystream with the ciphertext.
+\end{scheme}
 
 \end{document}
