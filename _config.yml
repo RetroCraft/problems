@@ -6,6 +6,7 @@ kramdown:
   parse_block_html: true
 exclude:
   - PMATH348/PMATH348_Lecture_Notes*
+  - CO250/notes-obsidian*
 plugins:
   - jemoji
 defaults:

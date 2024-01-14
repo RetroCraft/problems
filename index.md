@@ -181,11 +181,10 @@ by Imaad. This should honestly be in the BU section.
 #### CS 341 (S2023) <small>Algorithms</small>
 
 My [lecture notes](./CS341/notes.pdf){:.l#CS341--Notes--James} are available, taken live during lecture.
-I will try and format for publishing weekly.
 
 #### CS 350 (S2023) <small>Operating Systems</small>
 
-[Lecture notes](./CS350/notes.pdf){:.l#CS350--Notes--James}.
+[Lecture notes](./CS350/notes.pdf){:.l#CS350--Notes--James} for the first few lectures, before I gave up on going to class.
 
 #### CS 480/680 (W2024) <small>Introduction to Machine Learning</small>
 
@@ -280,6 +279,13 @@ so they look a little funny after spamming regexes to try and make it GFM-friend
 [Lecture notes](./PMATH370/notes.pdf){:.l#PMATH370--Notes--James}, updated after each lecture.
 
 ### Combinatorics and Optimization
+
+#### CO 250 (S2022) <small>Introduction to Optimization</small>
+
+[Lecture notes](./CO250/notes.html){:.a#CO250--Notes--James} originally written in Obsidian.
+Like the PMATH 348 notes, they look weird.
+
+Work in progress: [porting the lecture notes](./CO250/reformatted-notes.pdf){:.l#CO250--Notes--James--Reformatted} to $$\LaTeX$$.
 
 #### CO 485/685 (F2022) <small>Mathematics of Public-Key Cryptography</small>
 
