@@ -1,4 +1,5 @@
 \documentclass[class=pmath370,tikz,notes]{agony}
+\declaretheorem[name=Cryptoscheme,refname={scheme,scheme},style=thmroundpink]{scheme}
 
 \title{PMATH 370 Winter 2024: Lecture Notes}
 \begin{document}
@@ -89,7 +90,7 @@ We can start to formalize the examples.
   \end{equation*}
 \end{sol}
 
-\begin{example}
+\begin{example}\label{ex:graph}
   How many fixed points does $f(x) = 2\sin x$ have?
 \end{example}
 \begin{sol}
@@ -169,7 +170,7 @@ This is a nice function that gives lots of periodic orbits for funsies.
 
 To solve this problem, we need to rigorously define ``tend'' and ``limit''.
 
-\section{Real Analysis Review}
+\section{Real analysis review}
 
 \begin{notation}
   If $(x_n)_{n=1}^\infty$ is a sequence of real numbers,
@@ -366,7 +367,7 @@ We also take this theorem from MATH 137 without proof.
 
 This is just a Lipschitz function with Lipschitz constant less than 1.
 
-\begin{prop}
+\begin{prop}\label{prop:cont-cts}
   Contractions are continuous.
 \end{prop}
 \begin{prf}
@@ -393,7 +394,7 @@ This is just a Lipschitz function with Lipschitz constant less than 1.
   $[a,b]$ is closed but $(0,1]$ is not because $\frac1n \to 0 \not\in (0,1]$.
 \end{example}
 
-\begin{theorem}[Banach contraction mapping theorem]
+\begin{theorem}[Banach contraction mapping theorem]\label{thm:banach}
   Suppose $A \subseteq \R$ is closed and $f : A \to A$ is a contraction.
   Then, there exists a unique fixed point $a \in A$ for $f$.
 
@@ -420,17 +421,109 @@ This is just a Lipschitz function with Lipschitz constant less than 1.
     \frac{1}{3-x} = x \iff 1 = 3x-x^2 \iff x^2 - 3x + 1 = 0 \iff x = \frac{3\pm \sqrt{9-4}}{2} \iff x = \frac{3-\sqrt{5}}{2}
   \end{align*}
   where we pick the negative root because we need $x \in [0,1]$.
-  
-  Therefore, by the Banach contraction mapping theorem,
+
+  Therefore, by the \nameref{thm:banach},
   for all $x \in [0,1]$, $f^n(x) \to \frac{3-\sqrt5}{2}$.
 \end{sol}
 
+\lecture{Jan 15}
+\begin{defn}
+  A sequence $(a_n) \subseteq \R$ is \term{strongly-Cauchy} if there exists
+  $(\varepsilon_n) \subseteq [0,\infty)$ such that
+  $\sum_{n=1}^\infty \varepsilon_n < \infty$
+  and for all $n$, $\abs{a_n - a_{n+1}} < \varepsilon_n$.
+\end{defn}
+
+Informally, ``far enough along the sequence, the \emph{neighbours}
+must get close''.
+This is distinct from Cauchy, which is ``far enough along the sequence,
+the \emph{terms} must get close''.
+
+\begin{remark}[assignment hint!]
+  Let $\sum_{n=1}^\infty a_n = L$.
+  This means that $\sum_{k=1}^n a_k \xto{n\to \infty} L$.
+
+  That is, for all $\varepsilon > 0$, there exists $N \in \N$
+  such that $n \geq N$ implies $\abs{\sum_{k=1}^n a_k - L} < \varepsilon$.
+
+  But $\abs{\sum_{k=1}^n a_k - L} = \abs{\sum_{k=1}^\infty a_k - \sum_{k=1}^n a_k}
+    = \abs{\sum_{k=n+1}^\infty a_k} < \varepsilon$.
+\end{remark}
+
+We can now prove the \nameref{thm:banach}.
+
+\begin{prf}
+  Let $A \subseteq \R$ be closed and suppose there exists
+  $f : A \to A$ and $C \in [0,1)$ such that $\abs{f(x) - f(y)} \leq C\abs{x-y}$
+  for all $x$ and $y$ in $A$.
+
+  Fix $x_0 \in A$ and construct the orbit
+  $x_1 = f(x_0)$, $x_2 = f(x_1)$, $\dotsc$, $x_n = f(x_{n-1}) = f^n(x_0)$.
+
+  For $n \in \N$, since $f$ is a contraction,
+  \begin{align*}
+    \abs{x_{n+1} - x_n}
+     & = \abs{f(x_n) - f(x_{n-1})}      \\
+     & \leq C\abs{x_n - x_{n-1}}        \\
+     & = C\abs{f(x_{n-1}) - f(x_{n-2})} \\
+     & \leq C^2\abs{x_{n-1} - x_{n-2}}  \\
+     & \vdotswithin{=}                  \\
+     & \leq C^n\abs{x_1 - x_0}
+  \end{align*}
+  Since $\sum_{n=1}^\infty C^n\abs{x_1-x_0} = \abs{x_1-x_0}\sum_{n=1}^\infty C^n$
+  is a convergent geometric series, we have that the sequence $(x_n)$ is strongly-Cauchy.
+
+  Hence, by Assignment 1, $x_n \to a$ for some limit point $a \in A$ since $A$ is closed.
+
+  Since $f$ is continuous (\cref{prop:cont-cts}), we have that $f(x_n) \to f(a)$.
+  By definition, $f(x_n) = x_{n+1}$, so $x_n \to f(a)$.
+  But we already know $x_n \to a$, so $a = f(a)$.
+  That is, $a$ is a fixed point of $f$.
+
+  It remains to show uniqueness.
+
+  Suppose $a,b \in A$ such that $f(a) = a$ and $f(b) = b$.
+  \begin{align*}
+    \abs{f(a) - f(b)} & \leq C\abs{a-b} \\
+    \abs{a-b}         & \leq C\abs{a-b}
+  \end{align*}
+  Since $C < 1$, we must have $\abs{a-b} = 0$, that is, $a = b$.
+\end{prf}
+
+\chapter{Graphical Analysis}
+
+\section{Cobweb plots}
+
+Recall \cref{ex:graph}.
+To visualize the orbit of $a$ under $f$, we can:
+\begin{enumerate}[noitemsep]
+  \item Superimpose $y=f(x)$ over the line $y=x$.
+  \item Connect a vertical line $(a,a) - (a,f(a))$
+  \item Connect a horizontal line $(a,f(a)) - (f(a),f(a))$
+  \item Connect a vertical line $(f(a),f(a)) - (f(a), f(f(a)))$
+  \item Connect a horizontal line $(f(a), f(f(a))) - (f(f(a)), f(f(a)))$
+
+        etc.
+\end{enumerate}
+This is sometimes called a \term{cobweb plot}.
+We will be using \href{https://marksmath.org/visualization/cobwebs/}{https://marksmath.org/visualization/cobwebs/}
+to make cobweb plots.
+
+\begin{example}
+  Conduct a complete orbit analysis of $f(x) = x^2 - x + 1$
+\end{example}
+\begin{sol}
+  Playing around, we find that there is one fixed point $x=1$.
+
+  When $x \in [0,1]$, $f^n(x) \to 1$.
+  Otherwise, $f^n(x) \to \infty$.
+\end{sol}
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
 \renewcommand{\listtheoremname}{List of Named Results}
 \phantomsection\addcontentsline{toc}{section}{\listtheoremname}
-\listoftheorems[ignoreall,onlynamed={theorem,lemma,corollary,prop}]
+\listoftheorems[ignoreall,numwidth=3em,onlynamed={theorem,lemma,corollary,prop}]
 \printindex
 
 \end{document}

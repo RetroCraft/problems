@@ -175,6 +175,8 @@
 %
 
 \newcommand{\nr}[1]{\refstepcounter{equation}\label{#1}\tag{\theequation}} % label in align* env
+% \skipto{5} immediately before environment #5
+\newcommand{\skipto}[2][theorem]{\setcounter{#1}{#2}\addtocounter{#1}{-1}}
 
 % Cute initialisms (with versions for start of sentences)
 \newcommand{\Wlog}{\textsc{wlog}\xspace}

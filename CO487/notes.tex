@@ -1,5 +1,5 @@
-\documentclass[class=co487,notes]{agony}
-\declaretheorem[name=Cryptoscheme,refname={scheme,scheme},style=thmroundgreen]{scheme}
+\documentclass[class=co487,tikz,notes]{agony}
+\declaretheorem[name=Cryptoscheme,refname={scheme,scheme},style=thmroundpink]{scheme}
 
 \title{CO 487 Winter 2024: Lecture Notes}
 \begin{document}
@@ -116,19 +116,19 @@ To determine how secure the protocol is, we have to define security.
 
 Some options for strength:
 \begin{itemize}[nosep]
-  \item \term{Information-theoretic security}: Eve has infinite resources.
-  \item \term{Complexity-theoretic security}: Eve is a polynomimal-time Turing machine.
-  \item \term{Computational-theoretic security}: Eve has a specific amount of computing power.
+  \item \term[security!information-theoretic]{Information-theoretic security}: Eve has infinite resources.
+  \item \term[security!complexity-theoretic]{Complexity-theoretic security}: Eve is a polynomimal-time Turing machine.
+  \item \term[security!computational-theoretic]{Computational-theoretic security}: Eve has a specific amount of computing power.
         In this course, Eve is \term{computationally bounded} by
         6,768 Intel E5-2683 V4 cores running at 2.1 GHz at her disposal.
 \end{itemize}
 For the interaction:
 \begin{itemize}[nosep]
-  \item \term{Ciphertext-only attack}: Eve only knows the ciphertext.
-  \item \term{Known-plaintext attack}: Eve knows some plaintext and the corresponding ciphertext.
-  \item \term{Chosen-plaintext attack}: Eve picks some plaintext and knows the corresponding ciphertext.
-  \item \term{Clanedestine attack}: Eve resorts to bribery, blackmail, etc.
-  \item \term{Side-channel attack}: Eve has physical access to hardware and has some monitoring data.
+  \item \term[attack!ciphertext-only]{Ciphertext-only attack}: Eve only knows the ciphertext.
+  \item \term[attack!known-plaintext]{Known-plaintext attack}: Eve knows some plaintext and the corresponding ciphertext.
+  \item \term[attack!chosen-plaintext]{Chosen-plaintext attack}: Eve picks some plaintext and knows the corresponding ciphertext.
+  \item \term[attack!clandestine]{Clanedestine attack}: Eve resorts to bribery, blackmail, etc.
+  \item \term[attack!side-channel]{Side-channel attack}: Eve has physical access to hardware and has some monitoring data.
 \end{itemize}
 And for the goal:
 \begin{itemize}[nosep]
@@ -282,9 +282,9 @@ For a stream cipher to be secure, we need:
   Do not use built-in UNIX \texttt{rand} or \texttt{srand} for cryptography!
 \end{remark}
 
-\subsection{ChaCha20}
-
+Now, we introduce ChaCha20, a stream cipher actually uesd in the real world.
 The algorithm works entirely on words (32-bit numbers).
+It has no known flaws (other than people bungling the implementation).
 
 \begin{scheme}[ChaCha20]
   First, define a helper function $QR(a,b,c,d)$ on 32-bit words:
@@ -327,5 +327,124 @@ The algorithm works entirely on words (32-bit numbers).
 
   To decrypt, pop off the nonce, then XOR the keystream with the ciphertext.
 \end{scheme}
+
+\lecture{Jan 15}
+One must be careful never to reuse nonces, since this results in the same keystream,
+leading to recoverable messages.
+In practice, this is hard (e.g., two devices with the same key).
+
+Miscellaneous remarks:
+\begin{itemize}[nosep]
+  \item Why is ChaCha20 so good? The $QR$ function is very fast at the hardware level
+        and there is wide adoption/standardization by experts.
+  \item Why 10 rounds? If you do 1 or 2 rounds, there is a trivial attack.
+        The latest theoretical attacks can attack 7 rounds
+        (currently infeasible, but still better than exhaustive key search).
+        So 8 rounds is secure and we do 10 to be safe.
+  \item Is this secure forever (i.e., can we always just increase rounds)?
+        No. Nothing in this course is.
+        Someone could find a super crazy PMATH theorem that shows
+        predictability of the $QR$ scramble.
+\end{itemize}
+
+\section{Block ciphers}
+
+\begin{defn}[block cipher]
+  Like a stream cipher, but instead of processing one character at a time,
+  we break up the plaintext into \term[block]{blocks} of equal length
+  and encrypt block-wise.
+\end{defn}
+
+\begin{example}
+  The Data Encryption Standard (DES) is a standard
+  56-bit key and 64-bit blocks.
+\end{example}
+
+\paragraph{Aside: History and the NSA doing ratfuckery}
+In 1972, the National Institute of Standards and Technology (NIST)\footnote{of standardized peanut butter fame}
+puts out an RfP for encryption algorithms.
+
+IBM developed and proposed 64-bit DES, but then the NSA reduced it in 1975
+to 56-bit so they can do some spying.
+This made DES feasible to break by nation-states but not smaller organizations.
+
+The National Security Agency (NSA)
+is the US' signals intelligence (SIGINT; hacking foreign intelligence)
+and information insurance (IA; defending domestic intelligence) agency.
+They have a history of regulating how strong cryptoraphic products can be
+by banning the export of strong cryptography.
+
+Canada has an NSA equivalent: the Communications Security Establishment (CSE).
+Along with the Kiwi CCSA, British GCHQ, and Australian ASD,
+these are the Five Eyes who spy on just about everyone.
+
+
+We only really know stuff about the NSA/Five Eyes due to the Snowden leaks.
+For example, the SIGINT Enabling Project attempts to influence/blackmail
+companies to weaken their security with backdoors.
+
+Throughout the course, we will use the NSA to mean ``generic nation-state level adversary'',
+since if you can defeat the NSA, you can defeat basically anyone.
+
+Anyways, weakened DES was adopted by NIST in 1977 as FIPS 46 in 1977,
+then as a banking standard as ANSI X3.92 in 1982 (replaced by Triple-DES in 1988).
+From 1997--2001, a new contest developed the Advanced Encryption Standard (AES),
+which is the current standard block cipher.
+
+\paragraph{Desired properties of block ciphers} (Shannon, 1949):
+\begin{enumerate}[nosep]
+  \item Diffusion: Each ciphertext bit should depend on all plaintext bits.
+  \item Confusion: The key--ciphertext relationship should be complicated.
+  \item Key length: Keys should be small but not too small to be searchable.
+  \item Simplicity: Ease of implementation and analysis.
+  \item Speed: Runs quickly on all reasonable hardware.
+  \item Platform: Can be implemented in hardware and software.
+\end{enumerate}
+
+\begin{scheme}[DES]
+  The design principles of DES are still classified,
+  so we just treat it as a black box for this course.
+  We only need to know that there is a 56-bit key and 64-bit blocks.
+\end{scheme}
+
+The DES key space is not very big.
+Exhaustive search on DES takes $2^{56}$ operations.
+In 1997, this took three months.
+In 2012, it takes 11.5 hours.
+
+The blocks are also not very large.
+By the birthday paradox, there is a collision every $2^{32}$ blocks.
+This is an information leak, breaking semantic security.
+
+These are the only (known) weaknesses in DES.
+
+\begin{defn}[multiple encryption]
+  Re-encrypt the ciphertext more times with different keys.
+\end{defn}
+
+This is not always more secure. For example, in the simple substitution cipher,
+permutations can be composed and do not introduce more security.
+
+\begin{scheme}[Double-DES]
+  Pick a secret key $k = (k_1,k_2) \randin \{0,1\}^{112}$.
+  
+  Then, encrypt $E_{k_2}(E_{k_1}(m))$ where $E$ is DES encryption
+
+  Likewise, decrypt $E^{-1}_{k_2}(E^{-1}_{k_1}(m))$ where $E^{-1}$ is DES decryption.
+\end{scheme}
+
+We now have an exhaustive key search of $2^{112}$ operations, which is better.
+However, there is an attack which reduces this to breaking DES.
+
+\pagebreak
+\phantomsection\addcontentsline{toc}{chapter}{Back Matter}
+\renewcommand{\listtheoremname}{List of Named Results}
+\phantomsection\addcontentsline{toc}{section}{\listtheoremname}
+\listoftheorems[ignoreall,numwidth=3em,onlynamed={theorem,lemma,corollary,prop}]
+\renewcommand{\listtheoremname}{List of Cryptosystems}
+\phantomsection\addcontentsline{toc}{section}{\listtheoremname}
+\listoftheorems[ignoreall,onlynamed={scheme}]
+\printindex
+
 
 \end{document}
