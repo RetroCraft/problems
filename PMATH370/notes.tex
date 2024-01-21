@@ -1,4 +1,7 @@
 \documentclass[class=pmath370,tikz,notes]{agony}
+\usetikzlibrary{external}
+\tikzexternalize[prefix=figures-cache/]
+\tikzset{external/only named=true}
 \declaretheorem[name=Cryptoscheme,refname={scheme,scheme},style=thmroundpink]{scheme}
 
 \title{PMATH 370 Winter 2024: Lecture Notes}
@@ -509,6 +512,9 @@ This is sometimes called a \term{cobweb plot}.
 We will be using \href{https://marksmath.org/visualization/cobwebs/}{https://marksmath.org/visualization/cobwebs/}
 to make cobweb plots.
 
+Within these lecture notes, I use a \LaTeX{} macro to draw plots
+\href{https://github.com/RetroCraft/problems/blob/master/latex/agony-pmath370.tex}{defined here}.
+
 \begin{example}
   Conduct a complete orbit analysis of $f(x) = x^2 - x + 1$
 \end{example}
@@ -517,7 +523,227 @@ to make cobweb plots.
 
   When $x \in [0,1]$, $f^n(x) \to 1$.
   Otherwise, $f^n(x) \to \infty$.
+  \begin{center}
+    \cobweb[0.5]{\x^2-\x+1}{10}
+    \quad
+    \cobweb[-0.5][domain=-1:5,ymax=5]{\x^2-\x+1}{7}
+  \end{center}
 \end{sol}
+
+\textrule{$\downarrow$ Lectures 5 and 6 adapted from \href{https://www.rosiedefazio.ca}{Rosie} $\downarrow$}
+\lecture{Jan 17}
+
+\begin{example}
+  Conduct a complete orbit analysis of $f(x) = -\frac32 x^2 + \frac52x + 1$.
+\end{example}
+\begin{sol}
+  At $x = 0$, we can see there is a cycle going from $0 \to 1 \to 2 \to 0$:
+  \begin{center}
+    \cobweb[0][domain=-0.5:2.5]{-1.5*\x^2 + 2.5*\x + 1}{4}
+  \end{center}
+  At points near 0, like $x=-0.3$ or $x=0.3$, the graph becomes chaotic:
+  \begin{center}
+    \cobweb[-0.3][domain=-0.5:2.5]{-1.5*\x^2 + 2.5*\x + 1}{500}
+    \quad
+    \cobweb[0.3][domain=-0.5:2.5]{-1.5*\x^2 + 2.5*\x + 1}{500}
+  \end{center}
+  It appears that the cobweb densely covers the graph.
+\end{sol}
+
+As an aside, note that we cannot actually hit every point in the interval
+because the orbit is countable (i.e., has the same size as the naturals)
+but the interval is uncountable.
+We will later show that the points are dense (as the rationals are).
+
+\chapter{Fixed Points}
+
+\section{Attracting/repelling fixed point theorems}
+
+\begin{remark}
+  If $f(x)$ is continuous and $f^n(a) \to L$, then $f^{n+1}(a) \to f(L)$.
+  Therefore, $f(L) = L$ is a fixed point.
+\end{remark}
+
+\begin{example}
+  The function $f(x) = x^3$ has three fixed points: $0, \pm1$.
+  For $x \in (-1,1)$, we see that $f^n(x) \to 0$:
+  \begin{center}
+    \cobweb[0.9][domain=-0.1:1.1,width=.4\textwidth,height=.4\textwidth]{\x^3}{4}
+    \quad
+    \cobweb[-0.9][domain=-1.1:0.1,width=.4\textwidth,height=.4\textwidth]{\x^3}{4}
+  \end{center}
+  It looks like point 0 is \term*{attracting} the orbit.
+  For $x \in (-\infty,-1)\cup(1,\infty)$, we see $f^n(x) \to \infty$:
+  \begin{center}
+    \cobweb[1.01][domain=0.9:2,ymax=4,width=.4\textwidth,height=.4\textwidth]{\x^3}{4}
+    \quad
+    \cobweb[-1.01][domain=-2:-0.9,ymin=-4,width=.4\textwidth,height=.4\textwidth]{\x^3}{4}
+  \end{center}
+  so the points $\pm1$ are \term*{repelling} the orbit.
+\end{example}
+
+\begin{example}
+  The function $f(x) = x^3 - 3x$ also has three fixed points: $0, \pm2$.
+  To the right (left) of $\pm 2$, orbits go to infinity:
+  \begin{center}
+    \cobweb[-2.01][domain=-4.1:-1.9,ymin=-5,width=.4\textwidth,height=.4\textwidth]{\x^3 - 3*\x}{3}
+    \quad
+    \cobweb[2.01][domain=1.9:4.1,ymax=5,width=.4\textwidth,height=.4\textwidth]{\x^3 - 3*\x}{3}
+  \end{center}
+  The point 0 is repelling (in a different sense) since we get chaos:
+  \begin{center}
+    \cobweb[0.3][domain=-2:2,width=.4\textwidth,height=.4\textwidth]{\x^3 - 3*\x}{250}
+    \quad
+    \cobweb[0.3][domain=-2:2,width=.4\textwidth,height=.4\textwidth]{\x^3 - 3*\x}{250}
+  \end{center}
+  At $x_0 = \pm 1$, the orbit is eventually constant, jumping to the fixed point $\mp 2$:
+  \begin{center}
+    \cobweb[1][domain=-2:2,width=.4\textwidth,height=.4\textwidth]{\x^3 - 3*\x}{4}
+    \quad
+    \cobweb[-1][domain=-2:2,width=.4\textwidth,height=.4\textwidth]{\x^3 - 3*\x}{4}
+  \end{center}
+\end{example}
+
+\begin{defn}
+  Let $a$ be a fixed point of $f(x)$.
+  \begin{enumerate}[noitemsep]
+    \item If $\abs{f'(a)} > 1$, we call $a$ a \term[fixed point!repelling]{repelling} fixed point
+    \item If $\abs{f'(a)} < 1$, we call $a$ a \term[fixed point!attracting]{attracting} fixed point
+    \item If $\abs{f'(a)} = 1$, we call $a$ a \term[fixed point!neutral]{neutral} fixed point
+  \end{enumerate}
+  Neutral fixed points can be a lot of different things.
+\end{defn}
+
+\begin{theorem}[attracting fixed point theorem]\label{thm:afp}
+  Suppose $a$ is an attracting fixed point of $f(x)$.
+  Then, there exists an open interval $I$ containing $a$ such that
+  \begin{enumerate}[noitemsep]
+    \item for all $x \in I$, $n \in \N$, $f^n(x) \in I$
+    \item for all $x \in I$, $f^n(x) \to a$
+  \end{enumerate}
+\end{theorem}
+
+Recall the $\varepsilon$-$\delta$ definition of a limit.
+
+\begin{defn*}[limit of a function at a point]
+  Let $f : A \to \R$, $A \subseteq \R$.
+
+  We say a point $a \in A$ is \term{non-isolated} if for each $\varepsilon > 0$
+  there exists $b \in A$, $b \neq a$ with $b \in (a-\varepsilon,a+\varepsilon)$.
+
+  Suppose $a$ is non-isolated. We say $\lim_{x\to a}f(x) = L$
+  if for all $\varepsilon > 0$, there exists a $\delta > 0$
+  such that $\abs{f(x)-L}<\varepsilon$ whenever $a \in A$ and $0 < \abs{x-a} < \delta$.
+\end{defn*}
+
+It is important to define non-isolation.
+If $a$ is isolated, we can choose a $\delta$ where $\abs{x-a} < \delta$ is false.
+Then, every point is vacuously a limit point.
+
+We now give the proof of the \nameref{thm:afp}:
+\begin{prf}
+  Assume $\abs{f'(a)} < 1$. Then, there exists $c \in \R$ such that $\abs{f'(a)} < c < 1$.
+  By definition of the derivative, this means we can write
+  \[ \lim_{x\to a}\frac{\abs{f(x)-f(a)}}{x-a} < c \]
+  and by the definition of the limit, we know there exists $\delta > 0$ such that
+  \[ \frac{\abs{f(x)-f(a)}}{\abs{x-a}} \leq c \qc{\forall x\in (a-\delta,a+\delta)} \]
+  Hence, for $x \in I := (a-\delta,a+\delta)$, we have $\abs{f(x)-f(a)} \leq c\abs{x-a}$
+  and $f$ is a contraction.
+
+  \lecture{Jan 19}
+  In particular, for $x \in I$, we have
+  \begin{align*}
+    \abs{f(x) - a}
+     & = \abs{f(x) - f(a)} \tag{$a$ is a fixed point}     \\
+     & \leq c\abs{x-a} \leq \abs{x-a} \tag{$c \in (0,1)$} \\
+     & < \delta
+  \end{align*}
+  That is, $f(x) \in (a-\delta,a+\delta) = I$.
+  Continuing for the rest of the orbit, for all $n \in \N$,
+  \[ \abs{f^n(x) - a} \leq c^n\abs{x-a} \leq \abs{x-a} < \delta \]
+  so we also have $f^n(x) \in I$.
+
+  Finally, notice that $0 \leq \abs{f^n(x) - a} \leq c^n\abs{x-a}$
+  and $c^n\abs{x-a} \to 0$ since $c \in (0,1)$.
+  By the squeeze theorem, $\abs{f^n(x)-a} \to 0$.
+\end{prf}
+
+\begin{theorem}[repelling fixed point theorem]
+  Suppose $a$ is a repelling fixed point for $f(x)$.
+  Then, there exists an open interval $I$ containing $a$
+  such that for all $x \in I$, $x \neq a$, there exists $n \in \N$
+  such that $f^n(x) \not\in I$.
+\end{theorem}
+\begin{prf}
+  Say $\abs{f'(a)} > c > 1$. Then, as above, there exists a $\delta$ such that
+  \[ \lim_{x\to a}\frac{\abs{f(x)-f(a)}}{x-a} > c \implies \abs{f(x)-f(a)} \geq c\abs{x-a} \]
+  for all $x \in I := (a-\delta,a+\delta)$.
+
+  Since $a$ is a fixed point, $\abs{f(x) - f(a)} = \abs{f(x) - a}$.
+  Suppose for a contradiction that for all $n$, $f^n(x) \in I$.
+  But since $c > 1$, $\abs{f(n)-a} \geq c^n\abs{x-a} \to \infty$.
+  That is, $\delta$ must be arbitrarily large, which it is not.
+\end{prf}
+
+\section{Neutral fixed points}
+
+Neutral fixed points can exhibit a lot of different behaviours.
+
+\begin{example}
+  For $f(x) = -x$, 0 is a fixed point with $\abs{f'(0)} = 1$. The orbit bounces:
+  \begin{center}
+    \cobweb[1][domain=-1.5:1.5,width=.4\textwidth,height=.4\textwidth]{-\x}{2}
+    \quad
+    \cobweb[-1][domain=-1.5:1.5,width=.4\textwidth,height=.4\textwidth]{-\x}{2}
+  \end{center}
+\end{example}
+
+\begin{example}
+  For $f(x) = x - x^2$, $\abs{f'(1)} = 1$ is a neutral fixed point.
+  It is attracting from the right and repelling from the left:
+  \begin{center}
+    \cobweb[0.25][domain=-0.1:0.4,width=.4\textwidth,height=.4\textwidth]{\x-\x^2}{10}
+    \quad
+    \cobweb[-0.1][domain=-0.4:0.1,xmin=-0.4,width=.4\textwidth,height=.4\textwidth]{\x-\x*\x}{9}
+  \end{center}
+\end{example}
+
+\begin{example}
+  For $f(x) = x - x^3$, $\abs{f'(0)} = 1$ is a neutral fixed point.
+  It is \term[fixed point!attracting!weakly]{weakly attracting},
+  attracting but too slowly.
+  \begin{center}
+    \cobweb[-0.6][domain=-1:0,width=.4\textwidth,height=.4\textwidth]{\x - \x^3}{10}
+    \quad
+    \cobweb[0.6][domain=0:1,width=.4\textwidth,height=.4\textwidth]{\x - \x^3}{10}
+  \end{center}
+\end{example}
+
+\begin{example}
+  For $f(x) = x + x^3$, $\abs{f'(0)} = 1$ is a neutral fixed point.
+  It is \term[fixed point!repelling!weakly]{weakly repelling},
+  repelling but too slowly:
+  \begin{center}
+    \cobweb[-0.2][domain=-1:0,ymin=-1,width=.4\textwidth,height=.4\textwidth]{\x^3 + \x}{15}
+    \quad
+    \cobweb[0.2][domain=0:1,ymax=1,width=.4\textwidth,height=.4\textwidth]{\x^3 + \x}{15}
+  \end{center}
+\end{example}
+
+\begin{example}
+  Consider $f(x) = x^2 - 1$.
+  The orbit at $a = 0$ is periodic ($0,-1,0,-1,\dots$) with period 2.
+  Near 0, the orbit tends to the $(0,-1)$-cycle:
+  \begin{center}
+    \cobweb[-0.5][domain=-1.1:0.1,width=.4\textwidth,height=.4\textwidth]{\x*\x - 1}{50}
+    \quad1
+    \cobweb[0.6][domain=-1.1:0.9,width=.4\textwidth,height=.4\textwidth]{\x*\x - 1}{50}
+  \end{center}
+  We will call 0 an \term[periodic point!attracting]{attracting periodic point}
+  because 0 is an attracting point of $f^2(x)$.
+\end{example}
+
+\textrule{$\uparrow$ Lectures 5 and 6 adapted from \href{https://www.rosiedefazio.ca}{Rosie} $\uparrow$}
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}

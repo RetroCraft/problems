@@ -290,3 +290,7 @@ _markdown_*
 # GitHub Pages / Ruby
 _site
 .sass-cache
+
+# TikZ figure cache
+!**/figures-cache/*.dpth
+!**/figures-cache/*.md5

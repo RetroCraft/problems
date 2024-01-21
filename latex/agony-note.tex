@@ -155,6 +155,10 @@
   \addcontentsline{lec.toc}{lecture}{\protect\numberline{Lecture~\thelecture}#1}%
   \marginnote{\normalsize{\textit{Lecture \thelecture\\#1}}}}
 
+% [tex.se/347893] ------ Text rule -------
+\def\rulefill{\leavevmode\leaders\hrule height .7ex width 1ex depth -0.6ex\hfill\kern\z@}
+\newcommand{\textrule}[1]{\noindent\rulefill\quad{\small\emph{#1}}\quad\rulefill}
+
 % Default to 1., (a), (i)
 \setlist[enumerate,1]{label={\arabic*.}}
 \setlist[enumerate,2]{label={(\alpha*)}}

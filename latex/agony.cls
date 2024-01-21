@@ -253,11 +253,11 @@
     {\left\langle{#2}\ipsep{#3}\right\rangle}
   }}
 
-% Notes-specific macros (e.g. layout)
-\ifagony@notes\input{agony-note.tex}\fi
-
 % Class-specific macros
 % Files are named agony-[class].sty and placed in this directory
 \ifx\agony@class\@empty\else
   \IfFileExists{agony-\agony@class.tex}{\input{agony-\agony@class.tex}}{}
 \fi
+
+% Notes-specific macros (e.g. layout)
+\ifagony@notes\input{agony-note.tex}\fi

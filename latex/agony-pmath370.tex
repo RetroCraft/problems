@@ -1,0 +1,18 @@
+\newcounter{cobweb}
+% [tex.se/640022] base [tex.se/73914] variables [tex.se/14566] external
+\NewDocumentCommand{\cobweb}{O{.5}O{domain=0:1}mm}{% \cobweb[<start value>][<axis args>]{<function>}{<iterations>}
+  \refstepcounter{cobweb}\tikzsetnextfilename{cobweb-\thecobweb}%
+  \begin{tikzpicture}[declare function={f(\x)=#3;}]%
+    \begin{axis}[#2]%
+      \pgfmathsetmacro{\startv}{#1}
+      \addplot[green!70!black] {x};
+      \addplot[blue] {f(x)};
+      \pgfplotsforeachungrouped \t in {1,...,#4} {
+        \pgfmathsetmacro{\newv}{f(\startv)}
+        \addplot[red] coordinates {(\startv,\startv) (\startv,\newv) (\newv,\newv)};
+        \pgfmathsetmacro{\startv}{\newv}
+      }
+      \addplot[green!70!black,mark=*] coordinates {(#1,#1)};
+    \end{axis}%
+  \end{tikzpicture}%
+}
