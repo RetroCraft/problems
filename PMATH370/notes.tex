@@ -129,7 +129,7 @@ We can start to formalize the examples.
 \begin{defn}[periodicity]
   Let $f : A \to \R, f(A) \subseteq A$.
   \begin{enumerate}[nosep]
-    \item A point $a \in A$ is \term[point!periodic]{periodic} for $f$ if its orbit is periodic.
+    \item A point $a \in A$ is \term[periodic point]{periodic} for $f$ if its orbit is periodic.
           An orbit is \term[orbit!periodic]{periodic} if for some $n \in \N$, $f^n(a) = a$.
           The smallest $n$ is the \term{period} of (the orbit of) $a$.
     \item An orbit (of a point) is \term[orbit!eventually periodic]{eventually periodic}
@@ -739,11 +739,119 @@ Neutral fixed points can exhibit a lot of different behaviours.
     \quad1
     \cobweb[0.6][domain=-1.1:0.9,width=.4\textwidth,height=.4\textwidth]{\x*\x - 1}{50}
   \end{center}
-  We will call 0 an \term[periodic point!attracting]{attracting periodic point}
+  We will call 0 an \term*{attracting periodic point}
   because 0 is an attracting point of $f^2(x)$.
 \end{example}
 
 \textrule{$\uparrow$ Lectures 5 and 6 adapted from \href{https://www.rosiedefazio.ca}{Rosie} $\uparrow$}
+
+\lecture{Jan 22}
+
+\begin{defn}
+  Let $a$ be a periodic point for $f(x)$ with period $n$.
+
+  We say $a$ is an \term[periodic point!attracting]{attracting}/\term[periodic point!repelling]{repelling}/\term[periodic point!neutral]{neutral periodic point}
+  if $a$ is an attracting/repelling/neutral fixed point of $f^n$
+\end{defn}
+
+Finding a closed form expression for something like $f^{10}(x)$
+is a nightmare, so we need a better way.
+
+\begin{prop}
+  Let $f(x)$ be a differentiable function.
+  Then, $(f^n)'(x) = f'(x)\cdot f'(f(x))\dotsb f'(f^{n-1}(x))$.
+\end{prop}
+\begin{prf}
+  Proceed by induction on $n$.
+
+  If $n=1$, we have $f'(x) = f'(x)$ and we are done.
+
+  Suppose $(f^n)'(x) = \prod_{k=0}^{n-1} f'(f^k(x))$ for some $n \geq 1$.
+  Consider $f^{n+1}$:
+  \begin{align*}
+    \dv{x} f^{n+1}(x) = \dv{x} f(f^n(x)) = f'(f^n(x))\cdot(f^n)'(x)
+  \end{align*}
+  by the chain rule. Then,
+  \begin{align*}
+    (f^{n+1})'(x)
+     & = f'(f^n(x))\cdot(f^n)'(x)                    \\
+     & = f'(f^n(x))\cdot\prod_{k=0}^{n-1} f'(f^k(x)) \\
+     & = \prod_{k=0}^{n} f'(f^k(x))
+  \end{align*}
+  completing the proof.
+\end{prf}
+
+\begin{example}
+  Analyze the periodic point $f(x) = -\frac32x^2+\frac52x+1$, $a=0$
+\end{example}
+\begin{sol}
+  The orbit is $(0,1,2,0,1,2,\dotsc)$ with period 3.
+
+  We have $f'(x) = -3x + \frac52$.
+  Then, $(f^3)'(0) = f'(0)f'(1)f'(2) = (-\frac72)(-\frac12)(\frac52) = \frac{35}{8} > 1$.
+
+  Therefore, the point is repelling.
+\end{sol}
+
+\chapter{Bifurcations}
+
+In general, bifurcation theory is the study of how a family of curves
+can change when a defining parameter is changed.
+
+\section{Quadratic family}
+
+Consider the \term{quadratic family}:
+\[ Q_C(x) = x^2 + C \]
+defined by the parameter $C \in \R$.
+
+\begin{problem}
+  How does the behaviour (fixed points, orbits, etc.) of $Q_C$ change based on $C$?
+\end{problem}
+
+First, we can find the fixed points (if they exist) by solving
+\[ Q_C(x) = x \iff x^2 - x + C = 0 \iff x = \frac{1\pm\sqrt{1-4C}}{2} \]
+and note that $Q_C(x)$ has 2 fixed points when $C < \frac14$,
+1 fixed point when $C = \frac14$, and
+no fixed points when $C > \frac14$.
+
+Suppose $C > \frac14$.
+Then, we must have $Q_C^n(x) \to \infty$ for all $x$.
+
+Instead, if $C = \frac14$, $Q_C(x)$ has the unique fixed point $p=\frac12$.
+Since $Q_C'(x) = 2x$ and $Q_C'(p) = 1$, this is a neutral fixed point.
+In fact, it attracts to one side and repels from the other.
+
+Finally, if $C < \frac14$, $Q_C(x)$ has two fixed points
+$p_+ = \frac{1+\sqrt{1-4C}}{2}$ and $p_- = \frac{1-\sqrt{1-4C}}{2}$.
+Then, $Q_C'(p_+) = 1+\sqrt{1-4C} > 1$ is repelling.
+Next,
+\begin{align*}
+       & -1 < Q_C'(p_-) < 1     \\
+  \iff & -1 < 1-\sqrt{1-4C} < 1 \\
+  \iff & -2 < -\sqrt{1-4C} < 0  \\
+  \iff & 0 < \sqrt{1-4C} < 2    \\
+  \iff & -\frac34 < C < \frac14 \\
+\end{align*}
+and in fact if $C < -\frac34$, $Q'_C(p_-) < -1$
+and if $C = -\frac34$, $Q'_C(p_-) = -1$.
+
+\begin{theorem}
+  For the family
+  \[ Q_C(x) = x^2 + C, \]
+  depending on $C$:
+  \begin{enumerate}
+    \item All orbits tend to $\infty$ if $C > \frac14$.
+    \item When $C = \frac14$, $Q_C(x)$ has a unique fixed point $\frac12$ and it is neutral.
+    \item If $C < \frac14$, $Q_C(x)$ has two fixed points $p_+$ and $p_-$.
+          The point $p_+$ is repelling.
+          Moreover,
+          \begin{enumerate}[(a),nosep]
+            \item if $-\frac34 < C < \frac14$, $p_-$ is attracting;
+            \item if $C = -\frac34$, $p_-$ is neutral; and
+            \item if $C < -\frac34$, $p_-$ is repelling.
+          \end{enumerate}
+  \end{enumerate}
+\end{theorem}
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
