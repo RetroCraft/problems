@@ -243,4 +243,312 @@ Then, the updated score is:
 \end{align*}
 which is always an increase over the previous ``wrong'' score.
 
+\textrule{$\downarrow$ Lectures 3 and 4 taken slides and Neysa since I was sick $\downarrow$}
+\lecture{Jan 16}
+
+TODO: ...remaining slides
+
+\section{Linear Regression}
+
+\lecture{Jan 18}
+
+\begin{problem}[regression]
+  Given training data $(\x_i,\y_i) \in \R^{d+t}$, find $f : \mathcal X \to \mathcal Y$
+  such that $f(\x_i) \approx \y_i$.
+\end{problem}
+
+The problem is that for finite training data,
+there are an infinite number of functions that exactly hit each point.
+
+\begin{theorem}[exact interpolation is always possible]
+  For any finite training data $(\x_i,\y_i) : {i=1,\dotsc,n}$
+  such that $\x_i \neq \x_j$ for all $i \neq j$,
+  there exist infinitely many functions $f : \R^d \to \R^t$ such that for all $i$,
+  $f(\x_i) = \y_i$.
+\end{theorem}
+
+
+TODO: ...up to slide 14 (geometry of linear regression)
+
+\textrule{$\uparrow$ Lectures 3 and 4 taken from slides and Neysa since I was sick $\uparrow$}
+
+\lecture{Jan 23}
+
+\begin{theorem}[Fermat's necessary condition for optimality]
+  If $\w$ is a minimizer/maximizer of a differentiable function $f$
+  over an open set, then $f'(\w) = \0$.
+\end{theorem}
+
+We can use this property to solve linear regression.
+
+Recall the loss is $\Loss(\W) = \frac1n\norm{\W\X-\Y}^2_F$.
+Then, the derivative $\nabla_{\W}\Loss(\W) = \frac2n(\W\X-\Y)\X\trans$.
+
+We can derive the \term{normal equation}:
+\begin{align*}
+  \frac2n(\W\X-\Y)\X\trans & = 0                           \\
+  \W\X\X\trans-\Y\X\trans  & = 0                           \\
+  \Aboxed{\W\X\X\trans     & = \Y\X\trans}                 \\
+  \W                       & = \Y\X\trans(\X\X\trans)^{-1}
+\end{align*}
+
+Once we find $\W$, we can predict on unseen data $\X_{test}$ with $\hat{\Y}_{test} = \W\X_{test}$.
+
+Then,
+
+Suppose $\X = \mqty[0&\epsilon\\1&1]$ and $\vv{y} = \mqty[1&-1]$.
+
+Then, solving the linear least squares regression we get
+$\vb{w} = \vv{y}\X\trans(\X\X\trans)^{-1} = \mqty[-2/\epsilon & 1]$.
+This is chaotic!
+
+Why does this happen? As $\epsilon\to0$, two columns in $\X$ become almost linearly dependent
+with incongruent corresponding $y$-values.
+This leads to a contradiction and an unstable $\vb{w}$.
+
+To solve this, we add a $\lambda\norm{\W}_F^2$ term.
+
+\begin{defn}[ridge regression]
+  Take the linear regression and add a \term{regularization term}:
+  \[ \min_{\W} \frac1n\norm{\W\X-\Y}^2_F + \lambda\norm{\W}^2_F \]
+\end{defn}
+
+This gives a new normal equation:
+\begin{align*}
+  \Loss(\W)                           & = \frac1n\norm{\W\X-\Y}^2_F + \lambda\norm{\W}^2_F \\
+  \nabla_{\W}\Loss(\W)                & = \frac2n(\W\X-\Y)\X\trans + 2\lambda\W            \\
+  0                                   & = \frac2n(\W\X-\Y)\X\trans + 2\lambda\W            \\
+  \Aboxed{\W(\X\X\trans + n\lambda I) & = \Y\X\trans}                                      \\
+  \W                                  & = \Y\X\trans(\X\X\trans + n\lambda I)^{-1}
+\end{align*}
+
+\begin{prop}
+  $\X\X\trans + n\lambda I$ is far from rank-deficient for large $\lambda$.
+\end{prop}
+\begin{prf}
+  Recall from linear algebra that we can always take the singular value decomposition
+  of any matrix $M = U\Sigma V\trans$ where $U$ and $V$ are orthogonal
+  and $\Sigma$ is non-negative diagonal where the rank is the number of non-zero
+  entries in $\Sigma$.
+
+  Consider the SVD of $\X$:
+  \begin{align*}
+    \X                      & = U\Sigma V\trans                                           \\
+    \X\X\trans              & = U\Sigma V\trans V \Sigma\trans U\trans = U\Sigma^2U\trans \\
+    \X\X\trans + n\lambda I & = U\Sigma^2U\trans + U(n\lambda I)U\trans                   \\
+                            & = U(\Sigma^2 + n\lambda I)U\trans
+  \end{align*}
+  The matrix $\Sigma^2 + n\lambda I$ is a diagonal matrix with
+  strictly positive elements for sufficiently large $\lambda$.
+  Therefore, $\X\X\trans + n\lambda I$ has full rank and thus no singular values.
+\end{prf}
+
+\begin{remark}
+  Performing a ridge regularization is identical to augmenting the data.
+\end{remark}
+
+Notice that
+\[
+  \frac1n\norm{\W\X-\Y}^2_F + \lambda\norm{\W}^2_F
+  = \frac1n\norm{\W\mqty[\X & \sqrt{n\lambda}I] - \mqty[\Y & \0]}^2_F
+\]
+so if we augment $\X$ with $\sqrt{n\lambda}I$ and $\Y$ with $\0$, i.e.,
+$p$ data points $\x_j = \sqrt{n\lambda}\e_j$ and $\y_j = 0$.
+
+\section{Logistic Regression}
+
+Return to the linear classification problem.
+
+Recall that we took $\hat{\y} = \sgn(\ip{\x}{\w})$
+where $\x = \mqty(\x\\1)$ and $\w = \mqty(\w\\b)$ in $\R^{d+1}$.
+
+How confident are we in our prediction $\hat\y$?
+We can use the \term{margin} (or \term{logit}) $\abs{\ip{\x}{\w}}$
+(``how far away is the point from the decision boundary?'').
+
+The margin is unnormalized with respect to the data,
+so we cannot really interpret it until we somehow cram it into $[0,1]$.
+
+We can try directly learning hte confidence.
+
+Let $\mathcal Y = \{0,1\}$.
+Consider confidence $p(\x;\w) := \Pr[\Y = 1 \mid \vv X = \x]$.
+Given independent $(\x_i,\y_i)$:
+\begin{align*}
+    & \Pr[\Y_1 = \y_1,\dotsc,\Y_n=\y_n \mid \vv X_1 = \x_1,\dotsc,\vv X_n = \x_n] \\
+  = & \prod_{i=1}^n \Pr[\Y_i = \y_i \mid \vv X_i = \x_i]                          \\
+  = & \prod_{i=1}^n [p(\x_i;\w)]^{\y_i}[1-p(\x_i;\w)]^{1-\y_i}
+\end{align*}
+and we can get our maximum likelihood estimation
+\begin{defn}[maximum likelihood estimation]
+  \[\max_{\w}\prod_{i=1}^n [p(\x_i;\w)]^{\y_i}[1-p(\x_i;\w)]^{1-\y_i} \]
+  or equivalently the minimum minus log-likelihood
+  \[ \min_{\w}\sum_{i=1}^n\qty[-\y_i\log p(\x_i;\w)-(1-\y_i)\log(1-p(\x_i;\w))] \]
+\end{defn}
+Now, how do we define the probability $p$ based on $\w$?
+
+We will assume that the log of the odds ratio $\log\frac{\text{probability of event}}{\text{probability of no event}}
+  = \log\frac{p(\x;\w)}{1-p(\x;\w)} = \ip{\x}{\w}$ is linear.
+
+This leads us to the sigmoid transformation.
+\begin{defn}[sigmoid transformation]
+  \[p(\x;\w) = \frac{1}{1+\exp(-\ip{\x}{\w})}\]
+\end{defn}
+
+If we return now to the MLE we defined earlier, we get
+\begin{align*}
+    & \min_{\w}\sum_{i=1}^n\qty[-\y_i\log p(\x_i;\w)-(1-\y_i)\log(1-p(\x_i;\w))]                                                   \\
+  = & \min_{\w}\sum_{i=1}^n\qty[-\y_i\log \frac{1}{1+\exp(-\ip{\x}{\w})} -(1-\y_i)\frac{\exp{-\ip{\x}{\w}}}{1+\exp(-\ip{\x}{\w})}] \\
+  = & \min_{\w}\sum_{i=1}^n\qty[\y_i\log(1+\exp(-\ip{\x}{\w}))+(1-\y_i)\log(1+\exp(-\ip{\x}{\w})) + (1-\y_i)\ip{\x}{\w}]           \\
+  = & \min_{\w}\sum_{i=1}^n \log[1+\exp(-\ip{\x_i}{\w})] + (1-\y_i)(\ip{\x_i}{\w})
+\end{align*}
+If we redefine $\y'_i = \frac{\y_i+1}{2}$, i.e., $\y' \in \{\pm1\}$,
+then we get the \term{logistic loss}
+\[ \min_{\w} \sum_{i=1}^n \log[1+\exp(-\y'_i\ip{\x}{\w})] \]
+There is no closed form solution for this problem,
+so we use the gradient descent algorithm (covered in lecture 8).
+
+Suppose we have found an optimal $\w$.
+Then, we can set $\hat y = 1 \iff p(\x;\w) = \Pr[\Y=1\mid\vv X=\x] > \frac12$.
+The value of $p(\x;\w)$ is our confidence.
+
+Remember: All this is under the assumption that the log of the odds ratio is linear.
+Everything is meaningless if it is not.
+
+\paragraph{Extending to the multiclass case}
+Suppose we instead have $\y \in \{1,\dotsc,c\}$ and we need to learn $\w_i$ for each class.
+The sigmoid function becomes the \term{softmax} function
+\[
+  \Pr[\Y = k \mid \vv X = \x; \W = [\w_1,\dotsc,\w_c]]
+  = \frac{\exp\ip{\x}{\w_k}}{\sum_{l=1}^c\exp\ip{\x}{\w_l}}
+\]
+This maps the real-valued vector $\x$ to a probability vector.
+Notice that the softmax values for each class are all non-negative and sum to 1.
+
+To train, we use the MLE again
+
+To predict, pick the index of the highest softmax value
+\[ \hat{\y} = \argmax_k \Pr[\Y = k \mid \vv X = \x; \W = [\w_1,\dotsc,\w_c]] \]
+
+\section{Hard-Margin Support Vector Machines}
+
+\lecture{Jan 25}
+
+Recall that the perceptron is a feasibility program, i.e.,
+a linear program with $\vb c\trans \x = \vb 0$.
+It has infinite solutions.
+
+Naturally, some are much better than others.
+To take advantage of better algorithms, we can instead maximize the separation.
+
+Let $H$ be a the hyperplane defined by $\ip{\x}{\w} + b = 0$.
+The separation (distance) between a point $\x_i$ and $H$
+is the length of the projection of \textcolor{blue}{$\x_i-\x$}
+onto the normal vector \textcolor{orange}{$\w$}.
+\begin{center}
+  \begin{tikzpicture}
+    % Define coordinates
+    \coordinate (x) at (0,0);
+    \coordinate (xi) at (3,2);
+    \coordinate (w) at (1,-1);
+
+    % Draw vector x
+    \draw[->, thick, blue] (0,0) -- (1,1.67) node[midway, above left] {$\x$};
+    \draw[->, thick, blue] (0,0) -- (5,2) node[midway, above left] {$\x_i$};
+    \draw[->, thick, blue] (1,1.67) -- (5,2) node[midway, above left] {$\x_i-\x$};
+
+      % Draw hyperplane
+    \draw[dashed, gray] (-1,3) -- (5,-1) node[right] {$H$};
+
+      % Draw projection
+    \draw[->, thick, red] (3.5,0) -- (5,2) node[midway, right] {$\text{proj}_{\w}(\x_i - \x)$};
+
+      % Draw vector w
+    \draw[->, thick, orange] (3.5,0) -- (4.25,1) node[midway, left] {$\mathbf{w}$};
+  \end{tikzpicture}
+\end{center}
+Simplfiying, we can express this as
+\begin{align*}
+  \frac{\ip{\x_i-\x}{\w}}{\norm{\w}_2}
+   & = \frac{\ip{\x_i}{\w} - \ip{\x}{\w}}{\norm{\w}_2} \tag{linearity}                \\
+   & = \frac{\ip{\x_i}{\w} + b}{\norm{\w}_2} \tag{$\x \in H \Harr \ip{\x}{\w}+b = 0$} \\
+   & = \frac{\y_i\hat y_i}{\norm{\w}_2}
+\end{align*}
+We now have something to maximize.
+\begin{defn}[margin]
+  Given a hyperplane $H := \{\x : \ip{\x}{\w} + b = 0\}$ separating the data,
+  the \term{margin} is the smallest distance between a data point $\x_i$ and $H$.
+
+  That is, $\min_i \frac{\y_i \hat y_i}{\norm{\w}_2}$.
+\end{defn}
+The goal is the maximize the margin across all possible hyperplanes:
+\[ \max_{\w,b} \min_i \frac{\y_i \hat y_i}{\norm{\w}_2} \qq{s.t.} \forall i, \y_i \hat y_i > 0 \qq{where} \hat y_i := \ip{\x_i}{\w} + b \]
+We claim that we can arbitrarily scale the numerator.
+Let $c>0$.
+Then, $(\w,b)$ has the same loss as $(c\w,cb)$ because
+$\frac{\ip{\x_i}{c\w}+cb}{\norm{c\w}_2}
+= \frac{c\ip{\x_i}{\w}+cb}{c\norm{\w}_2}
+= \frac{\ip{\x_i}{\w}+b}{\norm{\w}_2}$.
+
+Therefore, we can equivalently write
+\[ \max_{\w,b} \frac{1}{\norm{\w}_2} \qq{s.t.} \min_i \y_i \hat y_i = 1 \qq{where} \hat y_i := \ip{\x_i}{\w} + b \]
+or even better:
+\[ \min_{\w,b} \norm{\w}_2^2 \qq{s.t.} \forall i,\y_i(\ip{\x_i}{\w} + b) \geq 1 \]
+
+Finally, consider the points that are closest to the boundary.
+\begin{defn*}
+  For the separating hyperplane $H = \{\ip{\x_i}{\w}+b = 0\}$,
+  the two \term{supporting hyperplanes} are the parallel hyperplanes
+  $H_+ := \{\ip{\x_i}{\w}+b = 1\}$ and $H_- := \{\ip{\x_i}{\w}+b = -1\}$
+  which represent the margin boundaries.
+
+  A \term{support vector} is a data point $\x_i \in H_+ \cup H_-$.
+\end{defn*}
+The support vectors are rare, but decisive because they reach the boundary of the constraint.
+
+\paragraph{Explanation from the dual perspective}
+Recall the SVM quadratic program
+\[ \min_{\w_b} \frac12\norm{\w}^2_2 \qq{s.t.} \forall i,\y_i(\ip{\x_i}{\w}+b) \geq 1 \]
+Introduce Lagrangian multipliers (dual variables) $\symbf{\alpha} \in \R^n$.
+\begin{align*}
+    & \min_{\w,b}\max_{\symbf\alpha>\0} \frac12\norm{\w}^2_2 - \sum_i \alpha_i[\y_i(\ip{\x_i}{\w}+b)-1]                                          \\
+  = & \min_{\w,b} \begin{cases}
+                    +\infty              & \exists i,\y_i(\ip{\x_i}{\w}+b)<1 (\text{set $\alpha_i$ as $+\infty$})   \\
+                    \frac12\norm{\w}_2^2 & \forall i,\y_i(\ip{\x_i}{\w}+b)\geq 1 (\text{set all $\alpha_i$ as $0$})
+                  \end{cases} \\
+  = & \min_{\w_b} \frac12\norm{\w}^2_2 \qc{s.t.} \forall i,\y_i(\ip{\x_i}{\w}+b) \geq 1
+\end{align*}
+Therefore, we only need to study the minimax problem.
+Assuming that the problem is convex (which it is, outside the scope of the course),
+we can express this as
+\[
+  \max_{\symbf\alpha>\0} \overbrace{\min_{\w,b} \underbrace{\frac12\norm{\w}^2_2 - \sum_i \alpha_i[\y_i(\ip{\x_i}{\w}+b)-1]}_{\Loss(\w,b,\alpha)}}^{\Loss(\alpha)}
+\]
+and take the derivative of the interior with respect to $\w$ and $b$:
+\begin{align*}
+  \pdv{\Loss(\w,b,\alpha)}{\w} & = \w - \sum_i \alpha_i \y_i \x_i = 0 \\
+  \w^*                         & = \sum_i \alpha_i \y_i \x_i          \\
+  \pdv{\Loss(\w,b,\alpha)}{b}  & = - \sum_i \alpha_i \y_i = 0         \\
+  \sum_i \alpha_i \y_i         & = 0
+\end{align*}
+Substitute back into $\Loss(\alpha)$:
+\begin{align*}
+  \Loss(\alpha)
+   & := \min_{\w,b} \frac12\norm{\w}^2_2 - \sum_i \alpha[\y_i(\ip{\x}{\w}+b)-1]                                                                                    \\
+   & = \min_{\w,b} \frac12\norm{\w}^2_2 - \ip{\sum_i\alpha_i\y_i\x_i}{\w} - b\sum_i \alpha_i\y_i + \sum_i \alpha_i                                                 \\
+   & = \frac12\norm{\sum_i \alpha_i \y_i \x_i}^2_2 - \ip{\sum_i\alpha_i\y_i\x_i}{\sum_i \alpha_i \y_i \x_i} + \sum_i \alpha_i \tag{s.t. $\sum_i \alpha_i\y_i = 0$} \\
+   & = -\frac12\norm{\sum_i \alpha_i \y_i \x_i}^2_2 + \sum_i \alpha_i                                                         \tag{s.t. $\sum_i \alpha_i\y_i = 0$}
+\end{align*}
+Therefore, we can write the dual problem as
+\[ \min_{\symbf\alpha\geq0} {-\sum_i \alpha_i} + \frac12 \sum_i\sum_j \alpha_i\alpha_j\y_i\y_j\ip{\x_i}{\x_j} \qq{s.t.} \sum_i \alpha_i\y_i = 0 \]
+We prefer this dual problem because it admits a very easy way to
+use a non-linear mapping $\x \xto{\phi} \phi(\x)$
+to transform non-linearly separable data $\x$
+into linearly separable $\phi(\x)$.
+After applying the unknown non-linear mapping, we get
+\[ \min_{\symbf\alpha\geq0} {-\sum_i \alpha_i} + \frac12 \sum_i\sum_j \alpha_i\alpha_j\y_i\y_j\boxed{\ip{\phi(\x_i)}{\phi(\x_j)}} \qq{s.t.} \sum_i \alpha_i\y_i = 0 \]
+which we can find \emph{without explicitly applying $\phi$}
+by using the ``kernel trick'' from lecture 7,
+writing the inner product directly as a non-linear function.
+
 \end{document}
