@@ -184,6 +184,7 @@
 \newcommand{\Tfae}{\textsc{tfae}\xspace}
 \newcommand{\TFAE}{\textsc{Tfae}\xspace}
 \newcommand{\xth}{\textsuperscript{th}\xspace}
+\newcommand{\nd}{\textsuperscript{nd}\xspace}
 
 % Typesetting
 \newcolumntype{C}{>{$}c<{$}} % math version of "C" column type
@@ -216,6 +217,8 @@
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 \newcommand{\xor}{\oplus}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
 
 % Calculus
 \newcommand{\dyx}{\dv{y}{x}}

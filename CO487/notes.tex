@@ -1,5 +1,6 @@
 \documentclass[class=co487,tikz,notes]{agony}
-\declaretheorem[name=Cryptoscheme,refname={scheme,scheme},style=thmroundpink]{scheme}
+\declaretheorem[name=Cryptoscheme,refname={scheme,schemes},style=thmroundpink,sibling=theorem]{scheme}
+\declaretheorem[name=Attack,refname={attack,attacks},style=thmroundpink,sibling=theorem]{attack}
 
 \title{CO 487 Winter 2024: Lecture Notes}
 \begin{document}
@@ -427,7 +428,7 @@ permutations can be composed and do not introduce more security.
 
 \begin{scheme}[Double-DES]
   Pick a secret key $k = (k_1,k_2) \randin \{0,1\}^{112}$.
-  
+
   Then, encrypt $E_{k_2}(E_{k_1}(m))$ where $E$ is DES encryption
 
   Likewise, decrypt $E^{-1}_{k_2}(E^{-1}_{k_1}(m))$ where $E^{-1}$ is DES decryption.
@@ -435,6 +436,327 @@ permutations can be composed and do not introduce more security.
 
 We now have an exhaustive key search of $2^{112}$ operations, which is better.
 However, there is an attack which reduces this to breaking DES.
+
+\textrule{$\downarrow$ Lectures 5, 6, and 7 taken directly from slides $\downarrow$}
+\lecture{Jan 17}
+\lecture{Jan 19}
+
+\chapter{Hash functions}
+
+\section{Definitions}
+\lecture{Jan 22}
+
+\begin{defn}[hash function]
+  A mapping $H$ such that
+  \begin{enumerate}
+    \item $H : \{0,1\}^{\leq L} \to \{0,1\}^n$ maps binary messages
+          of arbitrary lengths $\leq L$ to outputs of a fixed length $n$.
+    \item $H(x)$ can be efficiently computed for all $x \in \{0,1\}^{\leq L}$
+  \end{enumerate}
+  is an \term*{$n$-bit hash function}.
+  We call $H(x)$ the \term{hash} or \term{digest} of $x$.
+
+  We usually suppose that $L$ is large and just write $H : \hash{n}$.
+\end{defn}
+
+In a more general context, a hash function is an efficiently computable function.
+
+\begin{example}
+  Let $H : \{0,1\}^{\leq4} \to \{0,1\}^2$
+  be a hash function mapping a bitstring to its last two digits.
+  For example, $H(1101) = 01$.
+
+  We call 1001 a \term{preimage} of 01.
+
+  The pair $(01, 1001)$ is a \term{collision}
+  where 01 is a \term{second preimage} of 1001.
+\end{example}
+
+Generically, we can create a hash function given a block cipher.
+
+\begin{scheme}[Davies--Meyer hash function]
+  Let $E_k$ be an $m$-bit block cipher with $n$-bit key $k$.
+  Let $\vv{IV}$ be a fixed $m$-bit initializing value.
+
+  Then, to compute $H(x)$,
+  \begin{enumerate}[noitemsep]
+    \item Break up $x \| 1$ into $n$-bit blocks $\bar x = x_1,\dotsc,x_t$
+          (padding $x_t$ with 0s if necessary)
+    \item $H_0 \gets \vv{IV}$
+    \item $H_i \gets E_{x_i}(H_{i-1}) \xor H_{i-1}$ for all $i=1,\dotsc,t$
+    \item $H(x) \gets H_t$
+  \end{enumerate}
+\end{scheme}
+
+Hash functions are used basically everywhere in cryptography,
+mostly just because they are stupidly fast and introduce ``scrambling'' that,
+given a good enough hash function, cannot be reversed.
+
+\begin{defn}[preimage resistance]
+  A hash function $H = \hash{n}$ is \term*{preimage resistant} (PR) if,
+  given a hash value $y \randin \{0,1\}^n$, it is computationally infeasible
+  to find any $x \in \{0,1\}^*$ with $H(x) = y$ with non-negligible success probability.
+\end{defn}
+
+Note that we include disclaimers like ``non-negligible success probability''
+since otherwise we could just use an attack like ``guess! it might just work!''
+
+This is helpful for implementing passwords.
+If we store $(\vv{password}, H(\vv{password}))$ with a PR hash $H$,
+then stealing the system password file does not actually reveal the passwords.
+
+\begin{defn}[2\nd preimage resistance]
+  A hash function $H = \hash{n}$ is \term*{2\nd preimage resistant} (2PR) if,
+  given $x \randin \{0,1\}^*$, it is computationally infeasible to find
+  any $x' \in \{0,1\}^*$ with $x' \neq x$ and $H(x') = H(x)$ with non-negligible success probability.
+\end{defn}
+
+This is helpful for ensuring that a message is unchanged
+(Modification Detection Codes; MDCs).
+To ensure a message $m$ is unmodified, publicize $H(m)$.
+Then, as long as $H$ is 2PR and we can verify the hash,
+we can safely assume $m$ is unmodified.
+
+\begin{defn}[collision resistance]
+  A hash function $H = \hash{n}$ is \term*{collision resistant} (CR)
+  if it is computationally infeasible to find distinct $x,x' \in \{0,1\}^*$
+  where $H(x') = H(x)$.
+\end{defn}
+
+This allows us to optimize message signing.
+Instead of signing a large file $x$, Alice can sign $H(x)$ instead.
+Keeping all the desired properties of a signing scheme
+requires PR, 2PR, and CR.
+
+\textrule{$\uparrow$ Lectures 5, 6, and 7 taken directly from slides $\uparrow$}
+\lecture{Jan 24}
+
+\begin{prop}
+  If $H$ is CR, then $H$ is 2PR.
+\end{prop}
+\begin{prf}
+  Take the contrapositive: $H$ is not 2PR $\implies$ $H$ is not CR.
+
+  Suppose $H$ is not 2PR, i.e., we have an efficient algorithm
+  to find a collision $x'$ given $x$.
+
+  Select a random $x$. Get the collision $x'$ from our algorithm.
+  Then, we have a collision $(x,x')$ that we found efficiently,
+  so $H$ is not CR.
+\end{prf}
+
+It will \emph{always} be easier to do the contrapositive in this course,
+especially because most definitions use ``it is not possible''.
+
+\begin{prop}
+  CR does not guarantee PR.
+\end{prop}
+\begin{prf}
+  We give a counterexample.
+
+  Suppose that $H : \{0,1\}^* \to \{0,1\}^n$ is CR.
+
+  Consider the hash function $\bar H = \{0,1\}^* \to \{0,1\}^{n+1}$ defined by
+  \[
+    \bar H(x) = \begin{cases}
+      0 \| H(x) & x \not\in \{0,1\}^n \\
+      1 \| x    & x \in \{0,1\}^n
+    \end{cases}
+  \]
+  where $\|$ denotes the concatenation operation. Then $\bar H$ is CR because $H$ is.
+
+  However, $\bar H$ is not PR for at least half of all $y \in \{0,1\}^{n+1}$
+  we can efficiently find the preimage (i.e., for all the hash values beginning with 1,
+  we can just lop off the 1 to get the original).
+\end{prf}
+
+Note: if we disallow pathological hash functions like this, i.e.,
+we have some constraint on uniformity in the size of preimages,
+CR does guarantee PR.
+
+\begin{prop}
+  Suppose $H$ is \term{somewhat uniform}, i.e., preimages are all around the same size.
+  If $H$ is CR, then $H$ is PR.
+\end{prop}
+\begin{prf}
+  Suppose that $H : \{0,1\}^* \to \{0,1\}^n$ is not PR.
+  We must show $H$ is not CR.
+
+  Select $x \randin \{0,1\}^*$ and compute $y = H(x)$.
+  Since $H$ is not PR, we can efficiently find $x' \in \{0,1\}^*$ with $H(x') = y$.
+  Since $H$ is somewhat uniform, we expect that $y$ has many preimages,
+  so $x' \neq x$ with very high probability.
+
+  Therefore, $(x,x')$ is a collision and $H$ is not CR.
+\end{prf}
+
+\begin{prop}
+  PR does not guarantee 2PR.
+\end{prop}
+\begin{prf}
+  Suppose that $H : \{0,1\}^* \to \{0,1\}^n$ is PR.
+
+  Define $\bar H : \{0,1\}^* \to \{0,1\}^n$ by $\bar H(x_1x_2\dots x_t) = H(0x_2\dots x_t)$.
+
+  Then, $\bar H$ is PR but not 2PR.
+\end{prf}
+
+\begin{prop}
+  Suppose $H$ is somewhat uniform. If $H$ is 2PR, then $H$ is PR.
+\end{prop}
+\begin{prf}
+  Suppose that $H : \{0,1\}^* \to \{0,1\}^n$ is not PR and show it is not 2PR.
+
+  Suppose we are given $x \{0,1\}^*$.
+  Compute $y = H(x)$ and then find with our PR-breaking algorithm $x'$ with $H(x') = y$.
+  Since $H$ is somewhat uniform, we expect $x \neq x'$.
+
+  Then, we have a collision $x'$ for $x$ and that breaks PR.
+\end{prf}
+
+\begin{prop}
+  2PR does not guarantee CR.
+\end{prop}
+\begin{prf}
+  Suppose that $H : \{0,1\}^* \to \{0,1\}^n$ is 2PR.
+
+  Consider $\bar H : \{0,1\}^* \to \{0,1\}^n$ defined by $\bar H(x) = H(x)$
+  except $\bar H(1) = H(0)$.
+
+  Then, $\bar H$ is not CR because $(0,1)$ is a collision.
+
+  However, we can show $\bar H$ is 2PR. Suppose $\bar H$ is \emph{not} 2PR.
+  We show $H$ would also not be 2PR.
+
+  Suppose we are given some $x$.
+  Since $\bar H$ is not 2PR, we can find $x' \neq x$ with $\bar H(x') = \bar H(x)$.
+  With almost certain probability, we can assume $x \neq 0,1$.
+  Then, $\bar H(x) = H(x)$.
+  If $x' \neq 1$, we have $\bar H(x') = H(x') = H(x)$.
+  Otherwise, $\bar H(x') = \bar H(1) = H(0) = H(x)$
+  We found a second preimage $x'$ or 0 for $x$, so $H$ is not 2PR.
+
+  Therefore, by contradiction, $\bar H$ is 2PR.
+\end{prf}
+
+\begin{theorem}[relation between PR, 2PR, CR]
+  Summarize:
+  \begin{center}
+    \begin{tabular}{r|ccc}
+      If $H$ is $\downarrow$, then it is $\rightarrow$ & PR        & 2PR         & CR          \\ \hline
+      PR                                               & --        & $\not\Rarr$ & $\not\Rarr$ \\
+      2PR                                              & $\Rarr^*$ & --          & $\not\Rarr$ \\
+      CR                                               & $\Rarr$   & $\Rarr^*$   & --
+    \end{tabular}
+  \end{center}
+  where $\Rarr^*$ means ``implies under somewhat uniformity''
+\end{theorem}
+
+\section{Attacks}
+\lecture{Jan 26}
+
+\begin{defn}[generic attack]
+  An attack which does not exploit any specific properties of a hash function.
+  That is, it works on any generic hash function $H : \{0,1\}^* \to \{0,1\}^n$.
+\end{defn}
+
+To analyze a generic attack, we assume $H$ is a random function
+in the sense that $y = H(x)$ can be treated as $y \randin \{0,1\}^n$.
+
+\begin{attack}[generic attack for preimages]
+  Given $y \randin\{0,1\}^n$, repeatedly select arbitrary $x$ until $H(x) = y$.
+\end{attack}
+
+This will take $2^n$ attempts, so as long as $n \geq 128$ we are safe.
+
+\begin{attack}[generic attack for collisions]
+  Select arbitrary $x \in \{0,1\}^*$ and store $(H(x),x)$ in a table
+  sorted by the first entry. Repeat until a collision is found.
+\end{attack}
+
+By the birthday paradox, the expected number of hash operations is
+$\sqrt{\pi 2^n/2} \approx \sqrt{2^n}$.
+Therefore, the attack is infeasible for $n \geq 256$.
+
+The space complexity is also $\order{\sqrt{2^n}}$.
+This is important since, for example, $n=128$ has a feasible runtime $2^{64}$
+but an infeasible space requirement of 500 million TB.
+
+We can prove that this is the optimal generic collision attack, i.e.,
+no faster generic attack exists.
+
+However, we can improve the space complexity.
+
+Let $N = 2^n$.
+Define a sequence $(x_i)_{i\geq0}$ by $x_0 \randin \{0,1\}^n$
+and $x_i = H(x_{i-1})$.
+
+Since $(x_i) \subseteq \{0,1\}^n$, we will eventually get repetitions.
+Therefore, $(x_i)$ is eventually periodic, i.e.,
+we will eventually get $x_a = x_b$ for $a \neq b$.
+Then, we found a collision $(x_{a-1}, x_{b-1})$.
+
+More formally, let $j$ be the smallest index for which $x_j = x_i$
+for some $i < j$, which must exist.
+Then, $x_{j+\ell} = x_{i+\ell}$ for all $\ell \geq 1$.
+
+By the birthday paradox, $\E[j] \approx \sqrt{\pi N/2} \approx \sqrt{N}$.
+In fact, since $i$ is a random element from before $j$,
+we can say $\E[i] \approx \frac12\sqrt{N}$ and $\E[j-i] \approx \frac12\sqrt{N}$.
+
+We will store only some \term*{distinguished points},
+for example, elements where the top 32 bits are all 0.
+Let $\theta$ be the proportion of distinguished points.
+Here, $\theta = 2^{-32}$.
+
+We can still tell detect a cycle as long as there is a distinguished point in the cycle.
+Once we detect a collision, we work through the sequence near it.
+
+\begin{attack}[van Oorschot--Wiener parallel collision search]
+  We write this attack as two stages:
+  \begin{algorithmic}[1]
+    \State Create a table $T$
+    \Procedure{DetectCollision}{$H$}
+      \State Select $x_0 \randin \{0,1\}^n$
+      \State $T[x_0] \gets (0,-)$ \Comment{store (index, last distinguished point)}
+      \State $c \gets 0$ \Comment{last distinguished point}
+      \For{$d = 1,2,3\dotsc$}
+        \State $x_d \gets H(x_{d-1})$
+        \If{$x_d$ is distinguished}
+          \If{$T[x_d]$ exists as $(b,x_a)$}
+            \State $(a,-) \gets T[x_a]$ \Comment{need the index of $x_a$}
+            \State \Return{\Call{FindCollision}{$x_a,x_c,a,b,c,d$}}
+          \EndIf
+          \State $T[x_d] \gets (d,c)$
+          \State $c \gets d$
+        \EndIf
+      \EndFor
+    \EndProcedure
+    \Procedure{FindCollision}{$x_a,x_c,a,b,c,d$}
+      \State $\ell_1 \gets b-a$, $\ell_2 \gets d-c$
+      \State Suppose $\ell_1 \geq \ell_2$ so $k \gets \ell_1 - \ell_2$
+      \State Compute $x_{a+1},\dotsc,x_{a+k}$
+      \State $m \gets 1$
+      \Repeat
+        \State Compute $x_{a+k+m}, x_{c+m}$
+        \State $m \gets m + 1$
+      \Until{$x_{a+k+m} = x_{c+m}$}
+      \State \Return{$(x_{a+k+m-1}, x_{c+m-1})$} \Comment{the collision is $H(x_{a+k+m-1}) = H(x_{c+m-1})$}
+    \EndProcedure
+  \end{algorithmic}
+\end{attack}
+
+In stage 1, we will call the hash function
+$\sqrt{\pi N/2} + \frac{1}{\theta}$ times.
+
+In stage 2, we perform at most $\frac{3}{\theta}$ hashes.
+
+In total, we expect to take $\sqrt{N}+\frac{4}{\theta}$ time.
+But this time we only need $3n\theta\sqrt{N}$ space.
+
+So for our $n=128$ case with $\theta=2^{-32}$,
+the expected runtime is $2^{64}$ hashes (feasible)
+and the expected storage is 192 GB (negigible).
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}

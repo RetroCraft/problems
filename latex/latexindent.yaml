@@ -43,6 +43,10 @@ specialBeginEnd:
         begin: '\\While\{'
         end: '\\EndWhile'
         lookForThis: 1
+    While:
+        begin: '\\Repeat'
+        end: '\\Until\{'
+        lookForThis: 1
     If:
         begin: '\\If\{'
         middle: 
