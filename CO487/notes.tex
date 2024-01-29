@@ -1,6 +1,6 @@
-\documentclass[class=co487,tikz,notes]{agony}
-\declaretheorem[name=Cryptoscheme,refname={scheme,schemes},style=thmroundpink,sibling=theorem]{scheme}
-\declaretheorem[name=Attack,refname={attack,attacks},style=thmroundpink,sibling=theorem]{attack}
+\documentclass[class=co487,tikz,minted,notes]{agony}
+\declaretheorem[name=Cryptoscheme,refname={scheme,schemes},style=thmroundpink,parent=chapter]{scheme}
+\declaretheorem[name=Attack,refname={attack,attacks},style=thmroundpink,sibling=scheme]{attack}
 
 \title{CO 487 Winter 2024: Lecture Notes}
 \begin{document}
@@ -22,7 +22,7 @@ taught by Alfred Menezes.
 Cryptography is securing communications in the presence of malicious adversaries.
 To simplify, consider Alice and Bob communicating with the eavesdropper Eve.
 Communications should be:
-\begin{itemize}
+\begin{itemize}[noitemsep]
   \item Confidential: Only authorized people can read it
   \item Integral: Ensured that it is unmodified
   \item Origin authenticated: Ensured that the source is in fact Alice
@@ -50,7 +50,7 @@ a \term{certification authority} (CA) signs it using the CA's private key.
 The CA public key comes with Alice's device preinstalled.
 
 Potential vulnerabilities when using TLS:
-\begin{itemize}
+\begin{itemize}[noitemsep]
   \item Weak cryptography scheme or vulnerable to quantum computing
   \item Weak random number generation for the session key
   \item Fraudulent certificates
@@ -62,7 +62,7 @@ These are mostly the purview of cybersecurity,
 of which cryptography is a part.
 Cryptography is not typically the weakest link in the cybersecurity chain.
 
-\chapter{Symmetric Key Encryption}
+\chapter{Symmetric key encryption}
 \lecture{Jan 10}
 
 \section{Basic concepts}
@@ -246,7 +246,7 @@ since one would only recover the already used key.
 \end{convention}
 
 \begin{defn}[bitwise exclusive or]
-  For two bitstrings $x,y \in \{0,1\}^n \cong \Z/2\Z^n$,
+  For two bitstrings $x,y \in \bits{n} \cong \Z/2\Z^n$,
   the bitwise XOR $x \xor y$ is just addition mod 2.
 \end{defn}
 
@@ -427,7 +427,7 @@ This is not always more secure. For example, in the simple substitution cipher,
 permutations can be composed and do not introduce more security.
 
 \begin{scheme}[Double-DES]
-  Pick a secret key $k = (k_1,k_2) \randin \{0,1\}^{112}$.
+  Pick a secret key $k = (k_1,k_2) \randin \bits{112}$.
 
   Then, encrypt $E_{k_2}(E_{k_1}(m))$ where $E$ is DES encryption
 
@@ -439,7 +439,383 @@ However, there is an attack which reduces this to breaking DES.
 
 \textrule{$\downarrow$ Lectures 5, 6, and 7 taken directly from slides $\downarrow$}
 \lecture{Jan 17}
+\begin{attack}[Meet-in-the-middle attack on Double-DES]\label{atk:mitm}
+  The main idea is that $c = E_{k_2}(E_{k_1}(m))$ if and only if
+  $E_{k_2}^{-1}(c) = E_{k_1}(m)$.
+
+  Given three plaintext/ciphertext pairs $(m_1,c_1)$, $(m_2,c_2)$ and $(m_3,c_3)$:
+  \begin{algorithmic}[1]
+    \State Create a table $T$ of pairs sorted by first entry
+    \For{$h_2 \in \bits{56}$} \Comment{$h_2$ is a guess for $k_2$}
+      \State $T.\vv{insert}(E_{h_2}^{-1}(m_1),h_2)$
+    \EndFor
+    \For{$h_1 \in \bits{56}$} \Comment{$h_1$ is a guess for $k_1$}
+      \State Compute $E_{h_1}(m_1)$
+      \State Search for entries in $T$ matching $(E_{h_1}(m_1),-)$
+      \For{each match $(-,h_2)$}
+        \If{$E_{h_2}(E_{h_1}(m_2)) = c_2$}
+          \If{$E_{h_2}(E_{h_1}(m_3)) = c_3$}
+            \State \Return{$(h_1,h_2)$}
+          \EndIf
+        \EndIf
+      \EndFor
+    \EndFor
+  \end{algorithmic}
+\end{attack}
+
+In \cref{atk:mitm}, we use three pairs. Why do we need that many?
+
+Since the key space is smaller than the message space,
+there will be multiple keys that encrypt a message to the same ciphertext.
+
+\begin{lemma}[number of plaintext-ciphertext pairs needed]
+  Let $E$ be a block cipher with $\ell$-bit key space
+  and $L$-bit plaintext/ciphertext space.
+
+  If $E$ is a random bijection, the expected number of
+  \term{false keys} matching $t$ pairs is $\frac{2^\ell-1}{2^{Lt}}$.
+\end{lemma}
+\begin{prf}
+  We assume that $E$ is a random bijection, so we can calculate probabilities.
+
+  Fix the true key $k'$.
+  Let $(m_i,c_i)$ for $i = 1,\dotsc,t$ be known plaintext-ciphertext pairs
+  where each plaintext is distinct.
+
+  For some $k \in K$, $k \neq k'$, the probability that $E_k(m_i) = c_i$
+  for all $i$ is $\underbrace{\frac{1}{2^L}\cdot\frac{1}{2^L}\cdots\frac{1}{2^L}}_{\text{$t$ times}} = \frac{1}{2^{Lt}}$.
+
+  Therefore, across all of $K \setminus \{k'\}$,
+  the expected number of false keys is $\frac{2^\ell-1}{2^{Lt}}$.
+\end{prf}
+
+For Double-DES, $\ell = 112$ and $L = 64$:
+\begin{itemize}
+  \item For $t=1$, $FK \approx 2^{48}$.
+        That is, given $(m,c)$ the number of Double-DES keys $(h_1,h_2)$
+        for which $E_{h_2}(E_{h_1}(m)) = c$ is $\approx 2^{48}$.
+  \item For $t=2$, $FK \approx 2^{-16}$.
+        That is, the number of Double-DES keys $(h_1,h_2)$
+        for which $E_{h_2}(E_{h_1}(m_1)) = c_1$ is $\approx 2^{48}$.
+\end{itemize}
+
+Therefore, we use three plaintext-ciphertext pairs in \cref{atk:mitm}.
+
+The time requirement of the attack is $2^{56} + 2^{57} + 2 \cdot 2^{48} \approx 2^{57}$
+DES encryptions/decryptions.
+The size of the table is $2^{56}(64+56)$ bits or about 1 million TB.
+
+\begin{xca}
+  Modify \cref{atk:mitm} to decrease storage requirements at the expense of time.
+  We can get down to $2^{56+s}$ operations and $2^{56-s}$ rows
+  for $1 \leq s \leq 55$.
+\end{xca}
+
+We can now conclude that the security level of Double-DES is 57 bits,
+not much better than normal DES' 56 bits.
+
+\begin{scheme}[Triple-DES]
+  Pick a secret key $k = (k_1,k_2,k_3) \randin \bits{168}$.
+
+  Then, encrypt $E_{k_3}(E_{k_2}(E_{k_1}(m)))$ where $E$ is DES encryption
+
+  Likewise, decrypt $E^{-1}_{k_3}(E^{-1}_{k_2}(E^{-1}_{k_1}(m)))$
+  where $E^{-1}$ is DES decryption.
+\end{scheme}
+
+As for Double-DES, the 168-bit keys are infeasible to search.
+
+\begin{xca}
+  Show that \cref{atk:mitm} on Triple-DES takes $2^{112}$ operations.
+\end{xca}
+
+This means the security level of Triple-DES is 112 bits.
+We cannot \emph{prove} Triple-DES is more secure than DES,
+just that it empirically feels better.
+
+\section{Substitution-permutation networks}
 \lecture{Jan 19}
+
+\begin{defn}[substitution-permutation network]
+  A \term*{substitution-permutation network} (SPN) is an iterated block cipher
+  where each iteration (\term{round}) is a substitution followed by a permutation.
+
+  Formally, we have:
+  \begin{itemize}[nosep]
+    \item a block length $n$, key length $\ell$
+    \item number of rounds $h$,
+    \item \term{substitution} $S : \bits{b} \to \bits{b}$,
+          an invertible function where $b \mid n$,
+    \item \term{permutation} $P$,
+          an invertible function $\{1,\dotsc,n\} \to \{1,\dotsc,n\}$, and
+    \item \term{key scheduling algorithm} $k_i$ that determines a
+          \term{round key} for each round $i = 1,\dotsc,h+1$ given a key $k$.
+  \end{itemize}
+  Note that $n$, $\ell$, $h$, $S$, $P$, and the key scheduling algorithm are public.
+
+  Then, we can write encryption as
+  \begin{algorithmic}
+    \State $A \gets m$
+    \For{$i = 1,\dotsc,h$}
+      \State $A \gets A \xor k_i$
+      \State $A \gets S(A[1 : b]) \concat S(A[b+1 : 2b]) \concat \dotsb \concat S(A[n-b+1 : n])$
+      \Comment{Apply $S$ to each $b$ bits}
+      \State $A \gets P(A)$
+    \EndFor
+    \State $A \gets A \xor k_{h+1}$
+    \Return{$A$}
+  \end{algorithmic}
+  and decryption is the reverse (since $S$ and $P$ are invertible).
+\end{defn}
+
+The most notable SPN is the Advanced Encryption Standard (AES)
+which was adopted in 2001 as FIPS 197, a U.S. government standard.
+It uses 128-bit blocks and either 128, 192, or 256-bit keys.
+
+As of 2024, there are no known AES attacks
+that are significantly faster than exhaustive key search.
+
+\begin{scheme}[AES]
+  Given a key $k$ and block of plaintext,
+  initialize a $4 \times 4$ byte array $\vv{State}$
+  containing the plaintext.
+
+  Depending on the key size (128, 192, 256), let $h$ be (10, 12, 14).
+  Using the key schedule, generate $h+1$ round keys $k_0,\dotsc,k_h$.
+  We will need three helper functions
+  \Call{SubBytes}{}, \Call{ShiftRows}{}, and \Call{MixColumns}{}.
+
+  Then, encryption is
+  \begin{algorithmic}
+    \State $\vv{State} \gets$ block of plaintext
+    \State $(k_0,\dotsc,k_h) \gets$ round keys from the key schedule
+    \State $\vv{State} \gets \vv{State} \xor k_0$
+    \For{$i = 1,\dotsc,h-1$}
+      \State $\vv{State} \gets \Call{SubBytes}{\vv{State}}$
+      \State $\vv{State} \gets \Call{ShiftRows}{\vv{State}}$
+      \State $\vv{State} \gets \Call{MixColumns}{\vv{State}}$
+      \State $\vv{State} \gets \vv{State} \xor k_i$
+    \EndFor
+    \State $\vv{State} \gets \Call{SubBytes}{\vv{State}}$
+    \Comment{Note: we skip \Call{MixColumns}{} in the last round}
+    \State $\vv{State} \gets \Call{ShiftRows}{\vv{State}}$
+    \State $\vv{State} \gets \vv{State} \xor k_h$
+    \State \Return{$\vv{State}$}
+  \end{algorithmic}
+  To decrypt, do everything backwards
+  (making calls to \Call{InvSubBytes}{}, \Call{InvShiftRows}{}, and \Call{InvMixColumns}{}).
+\end{scheme}
+
+AES does a lot of math over the Galois field $\GF(2^8)$.
+
+\begin{defn*}[$\GF(2^8)$]
+  Consider the field $\Z/2\Z[y]$ of polynomials with coefficients in $\Z$ mod 2.
+
+  The finite field $\GF(2^8) = (\Z/2\Z[y])/(y^8+y^4+y^3+y+1)$
+  contains those polynomials with degree at most 7.
+
+  Addition and multiplication are defined normally (mod $y^8+y^4+y^3+y+1$).
+\end{defn*}
+
+We notate elements $a(y) \in \GF(2^8)$ as the binary string of their coefficients.
+
+\begin{example}
+  The string $a = 11101100 = \x{ec}$
+  is identified with $a(y) = y^7 + y^6 + y^5 + y^3 + y^2$.
+\end{example}
+
+Since polynomial addition is coefficient-wise and $\Z/2\Z$ is isomorphic with XOR,
+we can treat $\GF(2^8)$ addition as binary string XOR.
+
+\begin{example}
+  Let $b = 00111011 = \x{3b}$.
+  Then, $c(y) = a(y) + b(y) = y^7 + y^6 + y^4 + y^2 + y + 1$.
+  We could have instead found $c = 11010111 = \x{d7}$
+  by noticing that $a \xor b = \x{ec} \xor \x{3b} = \x{d7}$.
+\end{example}
+
+Multiplication requires a long division to find the answer mod $y^8 + y^4 + y^3 + y + 1$.
+
+\begin{example}\label{exa:mult}
+  Let $d(y) := a(y) \cdot b(y)$. Calculate:
+  \begin{align*}
+    d(y) & = (y^7 + y^6 + y^5 + y^3 + y^2)(y^5 + y^4 + y^3 + y + 1)                           \\
+         & = y^{12} + 2y^{11} + 3y^{10} + 2y^9 + 3y^8 + 4y^7 + 4y^6 + 2y^5 + y^4 + 2y^3 + y^2 \\
+         & = y^{12} + y^{10} + y^8 + y^4 + y^2
+  \end{align*}
+  Then, do polynomial long division:
+  \[
+    \setlength\arraycolsep{0pt}
+    \setlength\extrarowheight{2pt}
+    \newcolumntype{q}{>{{}}c<{{}}}
+    \begin{array}[t]{rqrqrqrqrqrqrqrqrqrqrqrqrqrqr}
+                                     &   &        &   &        &   &     &   &     &   &     &   &     &   & y^4 &   &     & + & y^2 \\
+      \cline{2-19}
+      y^8 + y^4 + y^3 + y + 1 \bigl) &   & y^{12} & + & y^{10} & + & y^8 & + &     &   &     &   &     &   & y^4 &   &     & + & y^2 \\
+                                     & - & y^{12} &   &        & + & y^8 & + & y^7 &   &     & + & y^5 & + & y^4                     \\
+      \cline{2-15}
+                                     &   &        &   & y^{10} &   &     & + & y^7 &   &     & + & y^5                               \\
+                                     &   &        & - & y^{10} &   &     &   &     & + & y^6 & + & y^5 &   &     & + & y^3 & + & y^2 \\
+      \cline{4-19}
+                                     &   &        &   &        &   &     &   & y^7 & + & y^6 &   &     &   &     & + & y^3
+    \end{array}
+  \]
+  to conclude that the remainder is $y^7 + y^6 + y^3$.
+  Therefore, $\x{ec} \cdot \x{3b} = 11001000 = \x{c8}$.
+\end{example}
+
+But by the XOR trick from addition, we can do this faster using XOR.
+
+\begin{example}
+  First, long multiply $11101100$ by $00111011$ using XOR to reduce:
+  \[
+    \setlength\arraycolsep{0pt}
+    \setlength\extrarowheight{2pt}
+    \begin{array}[t]{rrl}
+               &       & 11101100 \\
+               & 1     & 1101100  \\
+               & 111   & 01100    \\
+               & 1110  & 1100     \\
+      {}\xor{} & 11101 & 100      \\ \hline
+               & 10101 & 00010100
+    \end{array}
+  \]
+  Then, do long division by $f = 100011011$ using XOR to subtract:
+  \[
+    \begin{array}[t]{rrrrr}
+      \setlength\arraycolsep{0pt}
+      \setlength\extrarowheight{2pt}
+                       &    & 1       & 01 & 00 \\ \cline{2-5}
+      100011011 \bigl) & 10 & 1010001 & 01 & 00 \\
+                       & 10 & 0011011 &         \\ \cline{2-3}
+                       & 00 & 1001010 &         \\
+                       &    & 1000110 & 11      \\ \cline{3-4}
+                       &    & 0001100 & 10 & 00
+    \end{array}
+  \]
+  Therefore, $\x{ec} \cdot \x{3b} = 11001000 = \x{c8}$.
+\end{example}
+
+Now, we can define the helper functions.
+The substitution in AES is based on the inverse in $\GF(2^8)$.
+
+\begin{defn*}[AES S-box]
+  Let $p \in \bits8$. We define $S : \bits8 \to \bits8$.
+
+  Considering $p$ as an element of $\GF(2^8)$,
+  let $q = p^{-1}$ (which always exists except if $p = 0$, in which case let $q=0$).
+  Treating $q$ as a bit vector, compute
+  \[
+    S(p) = r = \begin{pmatrix}
+      1 & 0 & 0 & 0 & 1 & 1 & 1 & 1 \\
+      1 & 1 & 0 & 0 & 0 & 1 & 1 & 1 \\
+      1 & 1 & 1 & 0 & 0 & 0 & 1 & 1 \\
+      1 & 1 & 1 & 1 & 0 & 0 & 0 & 1 \\
+      1 & 1 & 1 & 1 & 1 & 0 & 0 & 0 \\
+      0 & 1 & 1 & 1 & 1 & 1 & 0 & 0 \\
+      0 & 0 & 1 & 1 & 1 & 1 & 1 & 0 \\
+      0 & 0 & 0 & 1 & 1 & 1 & 1 & 1
+    \end{pmatrix}q
+    + \mqty(1\\1\\0\\0\\0\\1\\1\\0)
+  \]
+  with scalar arithmetic in $\Z/2\Z$.
+\end{defn*}
+
+Then, \Call{SubBytes}{} just applies $S$ to each byte of $\vv{State}$.
+The decryption call \Call{InvSubBytes}{} just multiplies by the inverse of the matrix.
+
+The permutation takes two steps:
+first, \Call{ShiftRows}{} shifts the $i$\xth row left by $i$ bits.
+Then, \Call{MixColumns}{} treats each column as a polynomial in $\GF(2^8)[x]/(x^4-1)$
+and multiplies it by $c(x) = \x{02} + \x{01}x + \x{01}x^2 + \x{03}x^3$.
+
+\begin{example}\label{exa:mixcolumn}
+  Let $a = \x{d0f112bb}$ be a column.
+  Multiply
+  \begin{align*}
+    a(x) \cdot c(x)
+     & = (\x{d0} + \x{f1}x + \x{12}x^2 + \x{bb}x^3)(\x{02} + \x{01}x + \x{01}x^2 + \x{03}x^3)                                                            \\
+     & = (\x{d0}\cdot\x{02}) + (\x{d0}\cdot\x{01} + \x{f1}\cdot{02})x + (\x{d0}\cdot\x{01} + \x{f1}\cdot\x{01} + \x{12}\cdot\x{02})x^2                   \\
+     & \quad\quad + (\x{d0}\cdot\x{03} + \x{f1}\cdot\x{01} + \x{12}\cdot\x{01} + \x{bb}\cdot\x{02})x^3                                                   \\
+     & \quad\quad + (\x{f1}\cdot\x{03} + \x{12}\cdot\x{01} + \x{bb}\cdot\x{01})x^4 + (\x{12}\cdot\x{03} + \x{bb}\cdot\x{01})x^5 + (\x{bb}\cdot\x{03})x^6 \\
+     & = \x{bb} + \x{29}x + \x{05}x^2 + \x{e5}x^3 + \x{a1}x^4 + \x{8d}x^5 + \x{d6}x^6
+  \end{align*}
+  where coefficient arithmetic is in $\GF(2^8)$.
+  Find the remainder modulo $\x{01}x^4-\x{01}$
+  by replacing $x^4 \mapsto 1$:
+  \begin{align*}
+    r(x) & = \x{bb} + \x{29}x + \x{05}x^2 + \x{e5}x^3 + \x{a1} + \x{8d}x^2 + \x{d6}x^3 \\
+         & = \x{1a} + \x{a4}x + \x{d3}x^2 + \x{e5}x^3
+  \end{align*}
+  Therefore, $\Call{MixColumn}{\x{d0f112bb}} = \x{1aa4d3e5}$.
+\end{example}
+
+Naturally, \Call{InvShiftRows}{} shifts the $i$\xth row right by $i$ bits
+and \Call{InvMixColumns}{} multiplies each column by $c^{-1} = \x{0e09d00b}$.
+
+Finally, we can define the key schedule.
+For 128-bit keys, we need 11 round keys.
+The first round key $k_0 = (r_0,r_1,r_2,r_3)$ is the actual AES key.
+Then, each subsequent round key
+\begin{align*}
+  k_i & = (r_{4i},r_{4i+1},r_{4i+2},r_{4i+3}) = (f(r_{4i-1})\xor r_{4i-4}, r_{4i} \xor r_{4i-3}, r_{4i+1} \xor r_{4i-2}, r_{4i+2} \xor r_{4i-1})
+\end{align*}
+where $f_i$ maps the four bytes $(a,b,c,d)$ to $(S(b) \xor \ell_i, S(c), S(d), s(a))$
+for some round constants $\ell_i$.
+
+\paragraph{Aside: Implementation}
+This section is just me doing nerd shit trying to make Assignment 2 easier.
+The finite fields used in AES can be replicated in Sage or Mathematica.
+In Sage:
+\begin{minted}[autogobble,mathescape]{python}
+  aes.<y> = GF(2^8, modulus=x^8+x^4+x^3+x+1) # define AES field $(\Z/2\Z)[y]/(f(y))$
+  aes_int = aes._cache.fetch_int             # byte to $\GF(2^8)$ element
+  mcf.<x> = aes[]                            # MixColumns field $\GF(2^8)[x]$
+  hex_string = lambda x: bytes(u.integer_representation() for u in x.list()).hex()
+
+  # $\text{\Cref{exa:mult}}$: multiply ec * 3b
+  a, b = aes_int(0xec), aes_int(0x3b)
+  r = a * b
+  print('r(x):', r)
+  print('a*b:', hex(r.integer_representation()))
+  # r(x): $y^7 + y^6 + y^3$
+  # a*b:  0xc8
+
+  # $\text{\Cref{exa:mixcolumn}}$: MixColumn(d0f112bb)
+  a = [0xd0,0xf1,0x12,0xbb]
+  ax = mcf([aes_int(u) for u in a])
+  cx = (y + x + x^2 + (y+1) * x^3)
+  bx = (ax * cx).mod(x^4+1)
+  print('b(x):', bx)
+  print('b:', hex_string(bx))
+  # b(x): $(y^7 + y^6 + y^5 + y^2 + 1)x^3 + (y^7 + y^6 + y^4 + y + 1)x^2 + (y^7 + y^5 + y^2)x + y^4 + y^3 + y$
+  # b:    1aa4d3e5
+\end{minted}
+
+In Mathematica (version 13.3 or later):
+\begin{minted}[autogobble,mathescape]{mathematica}
+  F = FiniteField[2, #^8 + #^4 + #^3 + # + 1 &];
+  GF[hex_] := F[FromDigits[hex, 16]];
+  poly[f_] := Expand@FromDigits[Reverse@f["Coefficients"], y];
+  hex[f_] := IntegerString[f["Index"], 16, 2];
+
+  (* $\text{\Cref{exa:mult}}$: multiply ec * 3b *)
+  a = GF["ec"];
+  b = GF["3b"];
+  poly[a*b]      (* $y^3+y^6+y^7$ *)
+  hex[a*b]       (* c8 *)
+
+  (* $\text{\Cref{exa:mixcolumn}}$: MixColumn(d0f112bb) *)
+  a = GF["d0"] + GF["f1"] x + GF["12"] x^2 + GF["bb"] x^3;
+  c = F[2] + F[1] x + F[1] x^2 + F[3] x^3;
+  b = PolynomialRemainder[a*c, x^4 - 1, x];
+  StringJoin[hex /@ CoefficientList[b, x]] (* 1aa4d3e5 *)
+\end{minted}
+
+
+\section{Block ciphers}
+
+
 
 \chapter{Hash functions}
 
@@ -449,9 +825,9 @@ However, there is an attack which reduces this to breaking DES.
 \begin{defn}[hash function]
   A mapping $H$ such that
   \begin{enumerate}
-    \item $H : \{0,1\}^{\leq L} \to \{0,1\}^n$ maps binary messages
+    \item $H : \bits{\leq L} \to \bits{n}$ maps binary messages
           of arbitrary lengths $\leq L$ to outputs of a fixed length $n$.
-    \item $H(x)$ can be efficiently computed for all $x \in \{0,1\}^{\leq L}$
+    \item $H(x)$ can be efficiently computed for all $x \in \bits{\leq L}$
   \end{enumerate}
   is an \term*{$n$-bit hash function}.
   We call $H(x)$ the \term{hash} or \term{digest} of $x$.
@@ -462,7 +838,7 @@ However, there is an attack which reduces this to breaking DES.
 In a more general context, a hash function is an efficiently computable function.
 
 \begin{example}
-  Let $H : \{0,1\}^{\leq4} \to \{0,1\}^2$
+  Let $H : \bits{\leq4} \to \bits{2}$
   be a hash function mapping a bitstring to its last two digits.
   For example, $H(1101) = 01$.
 
@@ -480,7 +856,7 @@ Generically, we can create a hash function given a block cipher.
 
   Then, to compute $H(x)$,
   \begin{enumerate}[noitemsep]
-    \item Break up $x \| 1$ into $n$-bit blocks $\bar x = x_1,\dotsc,x_t$
+    \item Break up $x \concat 1$ into $n$-bit blocks $\bar x = x_1,\dotsc,x_t$
           (padding $x_t$ with 0s if necessary)
     \item $H_0 \gets \vv{IV}$
     \item $H_i \gets E_{x_i}(H_{i-1}) \xor H_{i-1}$ for all $i=1,\dotsc,t$
@@ -494,8 +870,8 @@ given a good enough hash function, cannot be reversed.
 
 \begin{defn}[preimage resistance]
   A hash function $H = \hash{n}$ is \term*{preimage resistant} (PR) if,
-  given a hash value $y \randin \{0,1\}^n$, it is computationally infeasible
-  to find any $x \in \{0,1\}^*$ with $H(x) = y$ with non-negligible success probability.
+  given a hash value $y \randin \bits{n}$, it is computationally infeasible
+  to find any $x \in \bits{*}$ with $H(x) = y$ with non-negligible success probability.
 \end{defn}
 
 Note that we include disclaimers like ``non-negligible success probability''
@@ -507,8 +883,8 @@ then stealing the system password file does not actually reveal the passwords.
 
 \begin{defn}[2\nd preimage resistance]
   A hash function $H = \hash{n}$ is \term*{2\nd preimage resistant} (2PR) if,
-  given $x \randin \{0,1\}^*$, it is computationally infeasible to find
-  any $x' \in \{0,1\}^*$ with $x' \neq x$ and $H(x') = H(x)$ with non-negligible success probability.
+  given $x \randin \bits{*}$, it is computationally infeasible to find
+  any $x' \in \bits{*}$ with $x' \neq x$ and $H(x') = H(x)$ with non-negligible success probability.
 \end{defn}
 
 This is helpful for ensuring that a message is unchanged
@@ -519,7 +895,7 @@ we can safely assume $m$ is unmodified.
 
 \begin{defn}[collision resistance]
   A hash function $H = \hash{n}$ is \term*{collision resistant} (CR)
-  if it is computationally infeasible to find distinct $x,x' \in \{0,1\}^*$
+  if it is computationally infeasible to find distinct $x,x' \in \bits{*}$
   where $H(x') = H(x)$.
 \end{defn}
 
@@ -554,18 +930,18 @@ especially because most definitions use ``it is not possible''.
 \begin{prf}
   We give a counterexample.
 
-  Suppose that $H : \{0,1\}^* \to \{0,1\}^n$ is CR.
+  Suppose that $H : \bits{*} \to \bits{n}$ is CR.
 
-  Consider the hash function $\bar H = \{0,1\}^* \to \{0,1\}^{n+1}$ defined by
+  Consider the hash function $\bar H = \bits{*} \to \bits{n+1}$ defined by
   \[
     \bar H(x) = \begin{cases}
-      0 \| H(x) & x \not\in \{0,1\}^n \\
-      1 \| x    & x \in \{0,1\}^n
+      0 \concat H(x) & x \not\in \bits{n} \\
+      1 \concat x    & x \in \bits{n}
     \end{cases}
   \]
-  where $\|$ denotes the concatenation operation. Then $\bar H$ is CR because $H$ is.
+  where $\concat$ denotes the concatenation operation. Then $\bar H$ is CR because $H$ is.
 
-  However, $\bar H$ is not PR for at least half of all $y \in \{0,1\}^{n+1}$
+  However, $\bar H$ is not PR for at least half of all $y \in \bits{n+1}$
   we can efficiently find the preimage (i.e., for all the hash values beginning with 1,
   we can just lop off the 1 to get the original).
 \end{prf}
@@ -579,11 +955,11 @@ CR does guarantee PR.
   If $H$ is CR, then $H$ is PR.
 \end{prop}
 \begin{prf}
-  Suppose that $H : \{0,1\}^* \to \{0,1\}^n$ is not PR.
+  Suppose that $H : \bits{*} \to \bits{n}$ is not PR.
   We must show $H$ is not CR.
 
-  Select $x \randin \{0,1\}^*$ and compute $y = H(x)$.
-  Since $H$ is not PR, we can efficiently find $x' \in \{0,1\}^*$ with $H(x') = y$.
+  Select $x \randin \bits{*}$ and compute $y = H(x)$.
+  Since $H$ is not PR, we can efficiently find $x' \in \bits{*}$ with $H(x') = y$.
   Since $H$ is somewhat uniform, we expect that $y$ has many preimages,
   so $x' \neq x$ with very high probability.
 
@@ -594,9 +970,9 @@ CR does guarantee PR.
   PR does not guarantee 2PR.
 \end{prop}
 \begin{prf}
-  Suppose that $H : \{0,1\}^* \to \{0,1\}^n$ is PR.
+  Suppose that $H : \bits{*} \to \bits{n}$ is PR.
 
-  Define $\bar H : \{0,1\}^* \to \{0,1\}^n$ by $\bar H(x_1x_2\dots x_t) = H(0x_2\dots x_t)$.
+  Define $\bar H : \bits{*} \to \bits{n}$ by $\bar H(x_1x_2\dots x_t) = H(0x_2\dots x_t)$.
 
   Then, $\bar H$ is PR but not 2PR.
 \end{prf}
@@ -605,9 +981,9 @@ CR does guarantee PR.
   Suppose $H$ is somewhat uniform. If $H$ is 2PR, then $H$ is PR.
 \end{prop}
 \begin{prf}
-  Suppose that $H : \{0,1\}^* \to \{0,1\}^n$ is not PR and show it is not 2PR.
+  Suppose that $H : \bits{*} \to \bits{n}$ is not PR and show it is not 2PR.
 
-  Suppose we are given $x \{0,1\}^*$.
+  Suppose we are given $x \bits{*}$.
   Compute $y = H(x)$ and then find with our PR-breaking algorithm $x'$ with $H(x') = y$.
   Since $H$ is somewhat uniform, we expect $x \neq x'$.
 
@@ -618,9 +994,9 @@ CR does guarantee PR.
   2PR does not guarantee CR.
 \end{prop}
 \begin{prf}
-  Suppose that $H : \{0,1\}^* \to \{0,1\}^n$ is 2PR.
+  Suppose that $H : \bits{*} \to \bits{n}$ is 2PR.
 
-  Consider $\bar H : \{0,1\}^* \to \{0,1\}^n$ defined by $\bar H(x) = H(x)$
+  Consider $\bar H : \bits{*} \to \bits{n}$ defined by $\bar H(x) = H(x)$
   except $\bar H(1) = H(0)$.
 
   Then, $\bar H$ is not CR because $(0,1)$ is a collision.
@@ -639,7 +1015,7 @@ CR does guarantee PR.
   Therefore, by contradiction, $\bar H$ is 2PR.
 \end{prf}
 
-\begin{theorem}[relation between PR, 2PR, CR]
+\begin{theorem}[relation between PR, 2PR, CR]\label{thm:prcr}
   Summarize:
   \begin{center}
     \begin{tabular}{r|ccc}
@@ -657,20 +1033,20 @@ CR does guarantee PR.
 
 \begin{defn}[generic attack]
   An attack which does not exploit any specific properties of a hash function.
-  That is, it works on any generic hash function $H : \{0,1\}^* \to \{0,1\}^n$.
+  That is, it works on any generic hash function $H : \bits{*} \to \bits{n}$.
 \end{defn}
 
 To analyze a generic attack, we assume $H$ is a random function
-in the sense that $y = H(x)$ can be treated as $y \randin \{0,1\}^n$.
+in the sense that $y = H(x)$ can be treated as $y \randin \bits{n}$.
 
 \begin{attack}[generic attack for preimages]
-  Given $y \randin\{0,1\}^n$, repeatedly select arbitrary $x$ until $H(x) = y$.
+  Given $y \randin\bits{n}$, repeatedly select arbitrary $x$ until $H(x) = y$.
 \end{attack}
 
 This will take $2^n$ attempts, so as long as $n \geq 128$ we are safe.
 
 \begin{attack}[generic attack for collisions]
-  Select arbitrary $x \in \{0,1\}^*$ and store $(H(x),x)$ in a table
+  Select arbitrary $x \in \bits{*}$ and store $(H(x),x)$ in a table
   sorted by the first entry. Repeat until a collision is found.
 \end{attack}
 
@@ -688,10 +1064,10 @@ no faster generic attack exists.
 However, we can improve the space complexity.
 
 Let $N = 2^n$.
-Define a sequence $(x_i)_{i\geq0}$ by $x_0 \randin \{0,1\}^n$
+Define a sequence $(x_i)_{i\geq0}$ by $x_0 \randin \bits{n}$
 and $x_i = H(x_{i-1})$.
 
-Since $(x_i) \subseteq \{0,1\}^n$, we will eventually get repetitions.
+Since $(x_i) \subseteq \bits{n}$, we will eventually get repetitions.
 Therefore, $(x_i)$ is eventually periodic, i.e.,
 we will eventually get $x_a = x_b$ for $a \neq b$.
 Then, we found a collision $(x_{a-1}, x_{b-1})$.
@@ -717,7 +1093,7 @@ Once we detect a collision, we work through the sequence near it.
   \begin{algorithmic}[1]
     \State Create a table $T$
     \Procedure{DetectCollision}{$H$}
-      \State Select $x_0 \randin \{0,1\}^n$
+      \State Select $x_0 \randin \bits{n}$
       \State $T[x_0] \gets (0,-)$ \Comment{store (index, last distinguished point)}
       \State $c \gets 0$ \Comment{last distinguished point}
       \For{$d = 1,2,3\dotsc$}
@@ -746,10 +1122,10 @@ Once we detect a collision, we work through the sequence near it.
   \end{algorithmic}
 \end{attack}
 
-In stage 1, we will call the hash function
+In \Call{DetectCollision}{}, we will call the hash function
 $\sqrt{\pi N/2} + \frac{1}{\theta}$ times.
 
-In stage 2, we perform at most $\frac{3}{\theta}$ hashes.
+In \Call{FindCollision}{}, we perform at most $\frac{3}{\theta}$ hashes.
 
 In total, we expect to take $\sqrt{N}+\frac{4}{\theta}$ time.
 But this time we only need $3n\theta\sqrt{N}$ space.
@@ -758,14 +1134,107 @@ So for our $n=128$ case with $\theta=2^{-32}$,
 the expected runtime is $2^{64}$ hashes (feasible)
 and the expected storage is 192 GB (negigible).
 
+\lecture{Jan 29}
+We can parallelize VW collision search by having each processor
+start on a random point and report discovered distinguished points to a central server.
+
+For $m$ processors, we get an expected time of $\frac{1}{m}\sqrt{N}+\frac{4}{\theta}$ hashes
+and space of $3n\theta\sqrt{N}$ bits.
+That is, we get a speedup of $m$ times.
+
+This is also nice because there is no communication between processors
+and only occasional communication with the central server
+(reducing the chance of race conditions and other parallelism problems).
+
+\section{Iterated hash functions}
+
+\begin{scheme}[Merkle's meta method]
+  Fix an initializing value $\vv{IV} \in \bits{n}$
+  and pick a compression function $f : \bits{n+r} \to \bits{n}$.
+
+  Given a $b$-bit message $x$, to compute $H(x)$:
+  \begin{enumerate}[nosep]
+    \item Break up $x$ into $r$-bit blocks $\bar x = x_1,\dotsc,x_t$ (padding the last block with 0s if necessary)
+    \item Define $x_{t+1}$ to hold the binary representation of $b$ (left-padding with 0s as necessary)
+    \item Define $H_0 = \vv{IV}$
+    \item Compute $H_i = f(H_{i-1} \concat x_i)$ for $i = 1,\dotsc,t+1$
+    \item Return $H(x) = H_{t+1}$
+  \end{enumerate}
+\end{scheme}
+
+Merkle also proved that collision resistance depends on $f$.
+
+\begin{theorem}[Merkle]
+  If the compression function $f$ is collision resistant,
+  then the iterated hash function $H$ is also collision resistant.
+\end{theorem}
+
+Note that by \cref{thm:prcr}, we get PR and 2PR as well.
+
+This feels very circular, but it can be helpful to give a proof of security
+given certain very precise definitions.
+However, the assumptions in the definitions might not be realistic.
+
+\begin{prf}
+  Suppose that $H$ is not CR. We will show that $f$ is not CR.
+
+  Since $H$ is ont CR, we can efficiently find messages $x,x' \in \bits*$
+  with $x \neq x'$ and $H(x) = H(x')$.
+
+  Define $\bar x = x_1,\dotsc,x_t$, $b = \abs{x}$, length block $x_{t+1}$,
+  and $\bar x' = x'_1,\dotsc,x'_{t'}$, $b' = \abs{x'}$, length block $x'_{t'+1}$.
+
+  Then, we can efficiently compute
+  \begin{align*}
+    H_0        & = \vv{IV}            & H_0             & = \vv{IV}                \\
+    H_1        & = f(H_0,x_1)         & H'_1            & = f(H_0,x'_1)            \\
+    H_2        & = f(H_1,x_2)         & H'_2            & = f(H'_1,x'_2)           \\
+    H_3        & = f(H_2,x_1)         & H'_3            & = f(H'_2,x'_3)           \\
+               & \vdotswithin{=}      &                 & \vdotswithin{=}          \\
+    H_{t-1}    & = f(H_{t-2},x_{t-1}) & H'_{t'-1}       & = f(H'_{t'-2},x'_{t'-1}) \\
+    H(x) = H_t & = f(H_{t-1},x_t)     & H(x') = H'_{t'} & = f(H'_{t'-1},x'_{t'})
+  \end{align*}
+  Since $H(x) = H(x')$, we have $H_t = H'_{t'}$.
+
+  Now, if $b \neq b'$, then $x_{t+1} \neq x'_{t'+1}$.
+  Then, $(H_t \concat x_{t+1}, H'_{t'} \concat x'_{t'+1})$ is a collision for $f$.
+
+  Otherwise, if $b = b'$, then $t = t'$ and $x_{t+1} = x'_{t+1}$.
+  Let $i$ be the largest index for which $(H_i \concat x_{i+1}) \neq (H'_i \concat x'_{i+1})$
+  which must exist because $x \neq x'$.
+
+  Then, $H_{i+1} = f(H_i,x_{i+1}) = f(H'_i,x'_{i+1}) = H'_{i+1}$
+  and we have a collision $(H_i\concat x_{i+1}, H'_i \concat x'_{i+1})$.
+
+  Since we found a collision, $f$ is not CR.
+\end{prf}
+
+\paragraph{Aside: MD5 is bad}
+MDx is a family of iterated hash functions.
+MD4 was designed by Rivest in 1990 with a security level against VW of 64 bits
+but broken \emph{by hand} by Wang in 2004 with an attack reducing the security level to 4 bits.
+MD4 preimages can also be found in $2^{102}$ operations, which is infeasible but also still bad.
+
+In 1991, Rivest designed MD5, a strengthened version of MD4.
+The Wang attack reduced the security level of 39 bits,
+but modern attacks can find collisions in $2^{24}$ operations.
+
+In summary, MD5 should not be used if collision resistance is required
+but it's \emph{probably} preimage resistant.
+In fact, the Flame malware used a forged MD5-based Microsoft certificate
+created using an improved version of Wang's attack.
+
+The SHA family of functions are designed by the NSA.
+Wang (our recurring character) attacked SHA (1993) to 39 bits and SHA-1 (1994) to 63 bits.
+
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
 \renewcommand{\listtheoremname}{List of Named Results}
 \phantomsection\addcontentsline{toc}{section}{\listtheoremname}
 \listoftheorems[ignoreall,numwidth=3em,onlynamed={theorem,lemma,corollary,prop}]
-\renewcommand{\listtheoremname}{List of Cryptosystems}
+\renewcommand{\listtheoremname}{List of Cryptoschemes and Attacks}
 \phantomsection\addcontentsline{toc}{section}{\listtheoremname}
-\listoftheorems[ignoreall,onlynamed={scheme}]
+\listoftheorems[ignoreall,onlynamed={scheme,attack}]
 \printindex
 
 
