@@ -487,8 +487,8 @@ We claim that we can arbitrarily scale the numerator.
 Let $c>0$.
 Then, $(\w,b)$ has the same loss as $(c\w,cb)$ because
 $\frac{\ip{\x_i}{c\w}+cb}{\norm{c\w}_2}
-= \frac{c\ip{\x_i}{\w}+cb}{c\norm{\w}_2}
-= \frac{\ip{\x_i}{\w}+b}{\norm{\w}_2}$.
+  = \frac{c\ip{\x_i}{\w}+cb}{c\norm{\w}_2}
+  = \frac{\ip{\x_i}{\w}+b}{\norm{\w}_2}$.
 
 Therefore, we can equivalently write
 \[ \max_{\w,b} \frac{1}{\norm{\w}_2} \qq{s.t.} \min_i \y_i \hat y_i = 1 \qq{where} \hat y_i := \ip{\x_i}{\w} + b \]
@@ -550,5 +550,129 @@ After applying the unknown non-linear mapping, we get
 which we can find \emph{without explicitly applying $\phi$}
 by using the ``kernel trick'' from lecture 7,
 writing the inner product directly as a non-linear function.
+
+\section{Soft-Margin SVM}
+\lecture{Jan 30}
+
+One of the drawbacks of the hard-margin SVM is that the data must be linearly separable.
+That is, there must exist a non-zero margin between the data.
+
+If we have a small number of outliers on the wrong side of the decision boundary,
+we can instead just penalize it in the loss.
+We do this by relaxing the constraint in hard-margin SVM
+and including failures in the objective function.
+
+\begin{defn}[hinge loss]
+  Given label $\y \in \{-1,+1\}$ and score $\hat y := \ip{\x}{\w}+b$,
+  let $\y\hat y$ be the confidence.
+
+  Define $\ell_{\hinge} = (1-\y\hat y)^+ = \begin{cases}
+      1-\y\hat y & \y\hat y < 1     \\
+      0          & \text{otherwise}
+    \end{cases}$
+\end{defn}
+
+In general, notate $x^+$ to mean $\max\{x,0\}$.
+
+Now, we can formulate the soft-margin SVM as
+\[
+  \boxed{
+  \min_{\w,b} \textcolor{blue}{\frac12\norm{\w}^2_2}
+  + \textcolor{orange}{C} \cdot \textcolor{red}{\sum_i(1-\y_i\hat y_i)^+}
+  \qq{s.t.} \hat y_i = \ip{\x_i}{\w}+b
+  }
+\]
+(\textcolor{blue}{margin maximization}, \textcolor{orange}{regularization hyperparameter}, \textcolor{red}{error penalty}).
+Notice that the hard-margin SVM is the limiting behaviour
+of the soft-margin SVM as $C \to \infty$.
+
+\paragraph{Why do we use the hinge loss?}
+Consider the probability that $\Y \neq \sgn(\hat \Y)$
+\begin{align*}
+  \Pr[\Y \neq \sgn(\hat \Y)]
+  = \Pr[\Y\hat\Y \leq 0]
+  = \E[\I[\Y\hat\Y \leq 0]]
+  =: \E[\ell_{0-1}(\Y\hat\Y)]
+\end{align*}
+We want to minimize $\E[\ell_{0-1}(\Y\hat\Y)]$.
+Minimizing this value is hard because $\ell_{0-1}$ is discontinuous at 0
+and has gradient $\vb 0$ almost everywhere.
+
+By Bayes' rule, we can rewrite as
+$\E_{\vv X}\E_{\Y \mid \vv X}[\ell_{0-1}(\Y\hat\Y)]$.
+Then, we can minimize instead
+\[ \eta(\x) = \argmin_{\hat y \in \R} \E_{\Y \mid \vv X=\x}[\ell_{0-1}(\Y\hat y)] \]
+since setting $\Y = \eta(\vv X)$.
+
+\begin{defn}[classification calibrated]
+  We say a loss function $\ell(\y\hat y)$ is \term{classification calibrated}
+  if for all $\x$,
+  \[ \hat\y(\x) := \argmin_{\hat y \in \R}\E_{\Y \mid \vv \X=\x}[\ell(Y\hat y)] \]
+  has the same sign as the Bayes rule $\eta(\x)$.
+\end{defn}
+
+Due to Bartlett, we have a helpful theorem
+\begin{theorem}[characterization under convexity]
+  Any convex loss $\ell$ is classification calibrated if and only if
+  $\ell$ is differentiable at 0 and $\ell'(0) < 0$.
+\end{theorem}
+\begin{corollary}
+  A classifier that minimizes the expected hinge loss
+  also minimizes the expected 0-1 loss.
+\end{corollary}
+
+This theorem is also one of the big reasons why the perceptron
+cannot generalize well.
+
+\begin{remark}
+  The perceptron loss $\ell(\y\hat y) = -\min\{\y\hat y,0\}$
+  is not differentiable at 0,
+  so it is not classification calibrated and cannot generalize.
+\end{remark}
+
+\paragraph{Generating the dual}
+Recall the soft-margin SVM
+\[
+  \min_{\w,b} \frac12\norm{\w}^2_2
+  + C\cdot \sum_i(1-\y_i(\ip{\x_i}{\w}+b))^+
+\]
+Notice that we can write
+$C\cdot(t)^+ = \max\{Ct,0\} = \max_{0 \leq \alpha \leq C} \alpha t$
+to get
+\[
+  \min_{\w,b} \max_{0 \leq \symbf{\alpha} \leq C}
+  \frac12\norm{\w}^2_2
+  + \sum_i\alpha_i(1-\y_i(\ip{\x_i}{\w}+b))
+\]
+As before, swap min with max:
+\[
+  \max_{0 \leq \symbf{\alpha} \leq C} \overbrace{
+    \min_{\w,b} \underbrace{
+      \frac12\norm{\w}^2_2 + \sum_i\alpha_i(1-\y_i(\ip{\x_i}{\w}+b))
+    }_{\Loss(\w,b,\alpha)}
+  }^{\Loss(\alpha)}
+\]
+Now, set our optimality conditions
+\begin{align*}
+  \pdv{\Loss(\w,b,\alpha)}{\w} & = \w - \sum_i \alpha_i \y_i \x_i = \vb 0 &
+  \pdv{\Loss(\w,b,\alpha)}{b}  & = -\sum_i \alpha_i \y_i = 0                \\
+  \w                           & = \sum_i \alpha_i \y_i \x_i              &
+  \sum_i\alpha_i\y_i           & = 0
+\end{align*}
+and substitute into $\Loss(\alpha)$:
+\begin{align*}
+  \Loss(\alpha)
+   & := \frac12\norm{\w}^2_2 + \sum_i\alpha_i(1-\y_i(\ip{\x_i}{\w}+b))                              \\
+   & = \frac12\norm{\sum_i \alpha_i \y_i \x_i}^2_2 + \sum_i\alpha_i - \ip{\sum_i \alpha_i \y_i\x_i} \\
+   & = -\frac12\norm{\sum_i \alpha_i \y_i \x_i}^2_2 + \sum_i \alpha_i
+\end{align*}
+Switching from max to min and expanding the norm, we get
+\[
+  \boxed{
+    \min_{0 \leq \symbf{\alpha} \leq C}
+    \frac12 \sum_i \sum_j \alpha_i \alpha_j y_i y_j \ip{\x_i}{\x_j}
+  }
+\]
+which is identical to the hard-margin SVM dual with an upper bound $C$ on $\symbf\alpha$.
 
 \end{document}
