@@ -1,11 +1,18 @@
 \documentclass[notes]{agony}
 
-\newcommand{\rv}{\mathsf}
-\newcommand{\B}{\mathcal{B}}
 \newcommand{\E}{\mathbb{E}}
-\newcommand{\ind}{\perp}
+\newcommand{\rv}{\mathsf}
+\newcommand{\B}{\rv{B}}
+\newcommand{\X}{\rv{X}}
+\newcommand{\M}{\rv{M}}
+\newcommand{\x}{\vb{x}}
+\newcommand{\y}{\vb{y}}
 \renewcommand{\N}{\mathcal{N}}
+
+\newcommand{\ind}{\perp}
 \newcommand{\stdspace}{(\Omega, \mathcal{F}, \mu)}
+\renewcommand{\ipsep}{;}
+\DeclareMathOperator{\KL}{KL}
 
 \title{CS 886 Winter 2024: Lecture Notes}
 \begin{document}
@@ -53,11 +60,11 @@ This is all very vague.
 	Fix a sample space $\Omega$ equipped with a $\sigma$-algebra $\mathcal{F}$
 	where $\mu : \mathcal{F} \to [0,1]$ assigns probability.
 
-	A \term{random variable} is a function $\rv X : \stdspace \to (\bb S, \B, \rv X_\#\mu)$
+	A \term{random variable} is a function $\rv X : \stdspace \to (\bb S, \mathcal{B}, \rv X_\#\mu)$
 	to the state space $\bb S$ (in this course, always $\R$).
 
 	The \term{distribution} of $\rv X$, notated $\rv X_\#\mu$,
-	is a probability measure on $\B \subseteq 2^{\bb S}$, i.e.,
+	is a probability measure on $\mathcal{B} \subseteq 2^{\bb S}$, i.e.,
 	\[ (\rv X_\#\mu)(S) := \mu(\{\omega : \rv X(\omega) \in S\}) = \mu(\rv X^{-1}(S)) \]
 	so long as $\rv X^{-1}(\mathcal B) \subseteq \mathcal F$.
 	If $\omega \simeq \mu$, then $\rv X(\omega) \simeq \rv X_\#\mu$.
@@ -66,17 +73,17 @@ This is all very vague.
 	Say $\rv X \simeq \N(0,1)$.
 
 	That formally means
-	$\rv X : \stdspace \to (\R, \B)$ and $\rv X_\#\mu = \N(0,1)$.
+	$\rv X : \stdspace \to (\R, \mathcal{B})$ and $\rv X_\#\mu = \N(0,1)$.
 \end{example}
 \begin{example}
 	Say $\rv Y \simeq \chi^2_1$.
 
 	That formally means
-	$\rv Y : \stdspace \to (\R, \B)$ and $\rv Y_\#\mu = \chi^2_1$.
+	$\rv Y : \stdspace \to (\R, \mathcal{B})$ and $\rv Y_\#\mu = \chi^2_1$.
 \end{example}
 
-Consider $f : (\R,\B) \to (\R,\B)$ where $x \mapsto x^2$.
-Compose $f(\rv X) : \stdspace \to (\R,\B)$.
+Consider $f : (\R,\mathcal{B}) \to (\R,\mathcal{B})$ where $x \mapsto x^2$.
+Compose $f(\rv X) : \stdspace \to (\R,\mathcal{B})$.
 Then, $f(\rv X) \simeq \chi^2_1$ by definition of the $\chi^2$ distribution.
 
 Observe that the distribution of $f(\rv X)$ is $(f\circ \rv X)_\#\mu = f_\#[\rv X_\# \mu]$.
@@ -252,7 +259,7 @@ We can apply this by truncating the series to get a Brownian path.
 \paragraph{Ciecielski's construction}
 For Haar wavelets (square waves) $\phi_{k/2^n}(t)$, notice that we can write:
 \[
-	\int_0^1 \rv B_t' \cdot \phi_{k/2^n}(t) \dd t \simeq \rv G_{k/2^n}	
+	\int_0^1 \rv B_t' \cdot \phi_{k/2^n}(t) \dd t \simeq \rv G_{k/2^n}
 \]
 which means we can go the other way to get
 \[
@@ -264,21 +271,417 @@ which is calculable, I guess.
 Initialize points $\rv B_0 = 0$, $\rv B_1 \simeq \N(0,1)$.
 Recursively interpolate between points, adding a Gaussian perturbation
 to each point before saving it.
-In fact, it's possible to prove this is the same as Ciecielski's method.
+In fact, it's possible to prove this is the same as Ciecielski's method,
+but without the weird shenanigans.
 
-\paragraph{Donsker's construction} Take i.i.d.\ random variables $\xi_i \simeq F$
+\paragraph{Donsker's construction} Take $n$ i.i.d.\ random variables $\xi_i \simeq F$
 each with mean 0 and unit variance from literally any distribution.
 Let $S_n = \sum_{i=1}^n \xi_i$ be the cumulative sum.
 Then, $\rv X_t^n := \frac{1}{\sqrt{n}}S_{\floor{nt}}$
 will eventually converge to Brownian motion even though there's no Gaussian.
 In other words, Brownian motion is a sort of limiting behaviour of a random walk.
 
-\begin{defn}
+In fact, this is a weird stronger statement of the central limit theorem.
+The CLT says that at $S_n$, the sum converges to a Gaussian.
+Donsker says the whole path to get to $S_n$ converges.
+
+\lecture{Jan 16}
+
+\chapter{The stochastic integral}
+
+Recall: Brownian motion can be considered as a function of $\omega,t$
+but it's easier to think of it as either:
+\begin{enumerate}
+	\item A distribution $\Omega \to C(\R_+)$ from the sample space to the space of continuous functions of $t$
+	\item A collection of random variables $B(\cdot,t)$ for each time point $t$
+\end{enumerate}
+
+It is hard to define Brownian motion if we just say
+\[ \dd{\rv X_t} = \vb f_t(\rv X_t)\dd{t} + G_t(\rv X_t) \dd{\rv B_t} \]
+since Brownian motion is nowhere differentiable, i.e., $\dd{\rv B_t}$ does not exist.
+Instead, write the integral
+\[ \rv X_T = \rv X_0 + \int_0^T \vb f_T(\rv X_t) \dd{t} + \int_0^T G_t(\rv X_t) \dd{\rv B_t} \]
+where the first term is pretty normal but the second is funny.
+
+How can we define this?
+
+\section{Integration, writ large}
+
+An integral has an integrand $G_t(\X_t)$ living in some space
+and integrator $\rv B_t$ living in some other space.
+The integral is just a pair $\ip{G_t(\X_t)}{\rv B_t}$ that respects some properties.
+
+An integral should have:
+\begin{itemize}[nosep]
+	\item a bilinear form: $\int(\alpha f+\beta g)\dd{\rv B} = \alpha\int f\dd{\rv B} + \beta\int g\dd{\rv B}$
+	      and $\int f \dd{(\alpha\rv B + \beta \rv M)} = \alpha\int f\dd{\rv B} + \beta\int f\dd{\rv M}$
+	\item continuity with respect to integrand and integrator
+	\item generality to a big class of integrators/integrands
+	\item some sort of change of variable formula
+	\item computability
+\end{itemize}
+
+\begin{defn}[Weiner integral]
 	Let $g : [0,T] \to \R$ be of bounded variation where $g(0) = g(T) = 0$.
 	We define the integral
-	\[ \int_0^T g(t) \dd{\rv X_t} = -\int_0^T \rv X_t \dd{g(t)} \]
-	as the integration by parts. 
-	% weird where did g(t)X_t go?
+	\[ \int_0^T g(t) \dd{\rv X_t} = \cancel{\left.g(t)\rv B_t\right|_0^T} -\int_0^T \rv X_t \dd{g(t)} \]
+	as the integration by parts.
 \end{defn}
+This works nicely since $\rv X_t$ is continuous with respect to $t$
+and if we have sufficiently nice $g(t)$, this works.
+But diffusion models won't have nice $g(t)$.
+
+What about $\int_0^T \rv B_t \dd{\rv B_t}$, which is just\dots cursed.
+
+Let's try a Riemann sum from MATH 137.
+
+\begin{defn}[Riemann-Stieltjes approximation]
+	Let $0 = t_0 < t_1 < \dotsb < t_n < t_{n+1} = 1$
+	with $\delta_n := \max_{0\leq k\leq n}\abs{t_{k+1} - t_k} \to 0$.
+
+	Also pick $\tau_k := (1-\lambda)t_k + \lambda t_{k+1}$ for some $\lambda \in [0,1]$.
+
+	Then, define the approximation $R$ of $\int_0^1 \rv B_t \dd{\rv B_t}$
+	\begin{align*}
+		R := R(\delta_n,\lambda)
+		 & = \sum_{k=0}^n \rv B_{\tau_k}[\rv B_{t_{k+1}} - \rv B_{t_k}]                                                 \\
+		 & = \frac{\B_1^2}{2}
+		- \underbrace{\frac12\sum_{k=0}^n[\B_{t_{k+1}}-\B_{t_k}]^2}_{S_n(1)}
+		+ \underbrace{\sum_{k=0}^n[\B_{\tau_k}-\B_{t_k}]^2}_{S_n(\lambda)}
+		+ \underbrace{\sum_{k=0}^n[\B_{t_{k+1}}-\B_{\tau_k}][\B_{\tau_k}-\B_{t_k}]}_{\text{some Gaussians with mean 0}} \\
+		 & = \frac{\B_1^2}{2} -\frac12 + \lambda
+	\end{align*}
+\end{defn}
+
+Claim that $S_n(\lambda) \to \lambda$.
+
+% todo: proof
+
+Now, depending on what we choose for $\lambda$, i.e., what point we pick in
+the Riemann slice, we get different integrals.
+Itô picks $\lambda = 0 \implies R = (\B_1^2-1)/2$
+and Stratonovich picks $\lambda = \frac12 \implies R = (\B_1^2)/2$.
+For this course, we pick Itô's integral.
+
+\section{Itô's integral}
+
+We construct Itô's integral by just wanting simple properties, e.g.,
+the integral over a union should be the sum,
+integration should preserve convergence (i.e., continuity),
+etc.
+
+Recall $\X_t$ is actually $\X(t,\omega)$ a function of two variables.
+Define an indicator $\X(t,\omega) = \vb 1_{(\varsigma,\tau]}(t) \cdot \vb 1_A(\omega)$
+for some $A \subseteq \Omega$ that depends only on information up to time $\varsigma$.
+
+Now, define $\int \X_t \dd{\B_t} := [\B_\tau - \B_\varsigma]\cdot 1_A$.
+This gives us linearity (good!) and integrates out $t$ (better!).
+
+For more complex $\X(t,\omega) = \sum_k c_k\vb 1_{(\varsigma_k,\tau_k]}\cdot A_k$,
+define $\int \X_t \dd{\B_t} := \sum_k c_k [\B_{\tau_k} - \B_{\varsigma_k}]$
+to get more linearity.
+
+Suppose $\X_t \in \mathcal F_t = \sigma(\{\B_s : 0 \leq s \leq t\})$
+is an arbitrary non-anticipating function depending on information up to $t$.
+Also suppose $t \mapsto \X_t$ is left continuous.
+Then, we can discretize $\X_t$ by taking rectangles from the left point:
+\begin{align*}
+	\X_t^n := \X_{(\ceil{t2^n}-1)/2^n} = \sum_{k=0}^\infty \X_{k/2^n}\lBrack k/2^n < t \leq (k+1)/2^n\rBrack
+\end{align*}
+We can approximate this as $\X_{k/2^n}(\omega) \approx \sum_i \frac{i}{2^m} \vb 1_{A_i}(\omega)$
+using indicator functions on the sets $A_i := \{(i-1)/2^m < \X_{k/2^n} \leq i/2^m\}$.
+
+Finally, define $\int \X_t \dd{\B_t} = \lim_n \int \X_t^n \dd{\B_t}$.
+This is the same as defining a Lebesgue integral.
+
+We now try to define an isometry.
+Recall $\X(t,\omega) : \R_+ \times \Omega \to \R$.
+
+\begin{defn}[Doléans measure]
+	$\lambda = \lambda_{\B^2}$ as follows:
+	\begin{align*}
+		\lambda\{(s,t]\times\vb 1_A\}
+		 & := \E[(\B_t^2 - \B_s^2)\vb 1_A] = \E[(\B_t-\B_s)^2\vb 1_A]             \\
+		 & = \E[\E[(\B_t^2 - 2(\B_t-B_s)\B_s - \B_s^2)\vb 1_A \mid \mathcal F_s]] \\
+		 & = \E[\E[(\B_t^2 - 0 )\mid \mathcal F_s]\vb 1_A - \B_s^2\vb 1_A]        \\
+		 & = \E[\B_t^2 - \B_s^2]\mu(A)                                            \\
+		 & = (t-s)\cdot\mu(A)
+	\end{align*}
+\end{defn}
+We can now treat $\X(t,\omega)$ as a random variable from $\mathcal L^2(\R_+\times\Omega,\mathcal P,\lambda)$ to $\R$.
+Then, the integral $\int \X_t\dd{\B_t}$ is a linear map that sends $\X \in \mathcal L^2(\R_+\times\Omega,\mathcal P,\lambda)$ to $\mathcal L^2(\Omega,\mu)$.
+
+Also, we have the isometry
+\[
+	\norm{X}^2_{L^2(\R_+\times\Omega,\mathcal P,\lambda)} = \norm{\int \X_t\dd{\B_t}}_{\mathcal L^2(\Omega,\mu)}
+\]
+This is nice because if we know $\norm{\X^n(t,\omega) - \X(t,\omega)}^2 \to 0$,
+then $\norm{\X^n(t,\omega) - \X^m(t,\omega)}^2 \to 0$.
+That is, given convergence of $\X^n$, we get Cauchy.
+Then, by the definition, the integral exists.
+
+\section{Martingales}
+
+Define $\M_t = \int_0^t \X_\tau\dd{\B_\tau}
+	= \int \vb 1_{(0,t]}\cdot\X_\tau\dd{\B_\tau}$.
+We get these results:
+\begin{itemize}
+	\item If $t \to \X_t$ is continuous, so is $t \to \M_t$
+	\item Defining $\M_0 := 0$, we get $\E[\M_t] = 0$.
+	\item The usual $\int_s^t \X_\tau\dd{\B_\tau} =
+		      \int_0^t \X_\tau\dd{\B_\tau} - \int_0^s \X_\tau\dd{\B_\tau}$
+	\item $\E[\M_t\mid \mathcal F_s] = \E[(\M_t-\M_s)+\M_s\mid \mathcal F_s] = \M_s$
+	\item $\E[\M_t^2 - \M_s^2] = \E[\M_t^2 - 2(\M_t-\M_s)\M_s + \M_s^2] = \E[\M_t-\M_s]^2$
+\end{itemize}
+
+Notice that we never used any properties of Brownian motion other than the
+martingale property. That is, we have defined
+\[ \int \rv Z_t \dd{\M_t} \]
+for \emph{any} $t \mapsto \rv Z_t$ left-continuous/non-anticipating
+and $\M_t$ continuous martingale. Then, we can define
+\[ \int_0^t \X \rv Z \dd{\B} = \int_0^t \rv Z \dd{\M} \qq{where} \M = \int_0^t \X \dd{\B} \]
+as the integral with respect to the integral since the first integral was a martingale.
+
+\section{Differentials}
+
+Define the quadratic variation
+$[\M]_t = \rv S_t^n := \sum_{k=0}^n [\M_{t_{k+1}} - \M_{t_k}]^2$.
+As the sum of non-negative terms, it is increasing.
+Also, for Brownian motion $[\B]_t = t$.
+
+\begin{theorem}[Itô's formula]
+	For all functions $f(\M_t,\rv V_t)$ where $\M_t$ is a continuous martingale
+	and $\rv V_t$ is continuously differentiable in $t$,
+	\[
+		\dd{f(\M_t,\rv V_t)} = f_x(\M_t,\rv V_t)\dd{\M_t} + f_y(\M_t,\rv V_t)\dd{\rv V_t} + \frac12 f_{xx}(\M_t,\rv V_t)\dd{[\M]_t}
+	\]
+\end{theorem}
+Then, we can calculate $[\int_0^t\X\dd{\M}] = \int_0^t \X^2\dd{[\M]}$
+
+\chapter{Stochastic differential equations}
+\lecture{Jan 23}
+
+\chapter{Fokker--Planck--Kolmogorov equation}
+\lecture{Jan 30}
+
+\section{Deriving FPK}
+
+Let $p(s,\x,t,y)$ be a Markov kernel
+such that $p(s,\x,t,y) \geq 0$ and $\int p(s,\x,t,\y) \dd{\y} = 1$.
+We also enforce the Chapman-Kolmogorov equation
+\[ p(s,\x,t,y) = \int p(s,\x,\tau,z)p(\tau,\vb z,t,\y)\dd{\vb z} \]
+for all $s < \tau < t$.
+Also, define an operator $T_{s,t}$ such that
+\[ T_{s,t}f(x) = [T_{s,t}(f)](x) = \int p(s,\x,t,\y)f(\y)\dd{\y} \]
+to integrate out $\y$.
+
+For example, let $f(\y) = \mathbb{1}_{\B}(\y)$.
+Then, $T_{s,t}f(\x) = \int p(s,\x,t\y)\mathbb{1}_{\B}(y)\dd{y} = \Pr[s,\x,t,\B]$.
+
+Now, using $T$ notation, we can write
+\begin{align*}
+	T_{s,t} & = T_{s,\tau}T_{\tau,t}                                        \\
+	        & = \iint p(s,\x,\tau,\vb z)p(\tau,\vb z,t,\y)f(\y)\dd{z}\dd{y} \\
+	        & = \int p(s,\x,\tau,\vb z) T_{\tau,t}f(\vb z) \dd{z}           \\
+	        & = T_{s,\tau}T_{\tau,t} f(\x)
+\end{align*}
+Can we use this to define a derivative?
+What happens if $s \to t$?
+Define the \term{generator} of the Markov process
+\begin{align*}
+	L_t = \lim_{h \downarrow 0} \frac{T_{t,t+h} - T_{t,t}}{h}
+	= \lim_{h\downarrow 0} \frac{T_{t,t+h} - \id}{h}
+\end{align*}
+and claim it exists because proving it rigorously is painful.
+
+Consider a generator that can be written as
+\[ L_t f(\x) = \frac12 A(t,\x) \vdot \nabla^2 f(\x) + \vb b(t,\x) \vdot\nabla f(\x) \]
+which all generators from SDEs can be.
+This holds when
+\begin{enumerate}
+	\item $\lim_{h\downarrow 0} p(t,\x,t+h,B_{\varepsilon}(\x)) = 0$.
+	      That is, for a small timestep $h$, the chance of leaving a small ball $\varepsilon$
+	      around $\x$ is also very small.
+	      Intuitively, we have ``continuity''.
+	\item $\lim_{h\downarrow 0} \int_{B_\varepsilon(\x)} (\y-\x)p(t,\x,t+h,\y)\dd{\y} = \vb b(t,x)$.
+	      That is, $\vb b(t,\x)$ is the expected drift (average movement).
+	\item $\lim_{h\downarrow 0} \int_{B_\varepsilon(\x)} (\y-\x)(\y-\x)\trans p(t,\x,t+h,\y)\dd{\y} = A(t,x)$
+	      That is, $A(t,\x)$ is the expected covariance.
+	      Since the matrix $(\y-\x)(\y-\x)\trans$ is rank 1 and positive semi-definite,
+	      $A(t,x)$ must also be positive semi-definite.
+\end{enumerate}
+Equivalently, we can express this by saying
+\begin{enumerate}
+	\item $\Pr[\norm{\x_{t+h}-\x_t} \geq \varepsilon \mid \x_t] \to 0$ as $h \downarrow 0$.
+	\item $\frac{\E[\x_{t+h}-\x_t \mid \x_t = \x]}{h} \to \vb b(t,\x)$
+	\item $\frac{\E[(\x_{t+h}-\x_t)(\x_{t+h}-\x_t)\trans \mid \x_t = \x]}{h} \to A(t,\x)$
+\end{enumerate}
+Now, let us write $\ip{L_t f}{p}$ for the integral $\int L_t f\cdot p \dd{\y}$.
+We have a useful property that
+\[ \ip{L_t f}{p} = \ip{f}{L_t^* p} \]
+where $L_t^*$ is the adjoint of $L_t$.
+For example, with our generator,
+\begin{align*}
+	\ip{\frac12 A \vdot \nabla^2 f + \vb b \nabla \vdot f}{p}
+	       & = \ip{\nabla^2 f}{\frac12pA} + \ip{\nabla f}{p\vb b}        \\
+	       & = \ip{f}{\nabla^2 \frac12 p A} - \ip{f}{\nabla p \vb b}     \\
+	       & = \ip{f}{\nabla^2 \vdot \frac12 p A - \nabla \vdot p \vb b} \\
+	L_t^*p & = \nabla^2 \frac12 A - \nabla \vb b
+\end{align*}
+using the integration by parts formula $\ip{f'}{g} = -\ip{f}{g'}$.
+
+We can now write the (forward) FPK equation
+\[ \partial_t p(s,\x,t,\y) = L_t^* p(s,\x,t,\y) \]
+and the backward FPK equation
+\[ \partial_s p(s,\x,t,\y) = -L_s^* p(s,\x,t,\y) \]
+\begin{prf}
+	To derive this, take a function $f$ and consider the derivative of the integral
+	\begin{align*}
+		\partial_t \ip{f}{p(s,\x,t,\y)}
+		 & = \partial_t T_{s,t}f(\x)                                        \\
+		 & = \lim_{h\downarrow 0} \frac{T_{s,t+h} - T_{s,t}}{h}f(\x)        \\
+		 & = \lim_{h\downarrow 0} T_{s,t}\frac{T_{t,t+h} - T_{t,t}}{h}f(\x) \\
+		 & = T_{s,t}L_t f(\x)                                               \\
+		 & = \ip{L_t f}{p(s,\x,t,\y)}                                       \\
+		 & = \ip{f}{L_t^* p(s,\x,t,\y)}
+	\end{align*}
+	Then, if $\ip{f}{\partial_t p} = \ip{f}{L_t^* p}$ for all $f$,
+	we must have $\partial_t p = L_t^* p$.
+\end{prf}
+
+\section{Applying to the SDE}
+
+Recall the SDE $\dd{\X_t} = \vb b_t(\X_t) \dd{t} + G_t(\X_t)\dd{\B_t}$.
+
+Claim that it has a generator $L_tf = \vb b_t \vdot \nabla f + \frac12[G_t G_t\trans]\vdot \nabla^2 f$.
+
+Then, the forward FPK equation is $\partial_t p = L_t^* p = -\nabla \vdot (p\vb b_t) + \frac12 \nabla^2 \vdot (pG_tG_t\trans)$
+
+\begin{prf}
+	Take a function $f$. By Îto's formula,
+	\begin{align*}
+		\dd{f(\X_t)}
+		 & = \nabla f(\X_t) \dd{\X_t} + \frac12\nabla^2 f(\X_t) \vdot G_tG_t\trans \dd{t}                         \\
+		 & = \qty[\vb b_t \vdot \nabla f + \frac12 \nabla^2 f + G_tG_t\trans]\dd{t} + \nabla f \vdot G_t \dd{B_t} \\
+		\dd{\ip{f}{p(s,\x,t,\cdot)}}
+		 & = \ip{L_t f}{p(s,\x,t,\cdot)}\dd{t} + 0                                                                \\
+		\ip{f}{\partial_t p(s,\x,t,\cdot)}
+		 & = \ip{f}{L_t^* p(s,\x,t,\cdot)}\dd{t}
+	\end{align*}
+	and as above, since the formula must hold for all $f$,
+	we have what we want.
+\end{prf}
+
+Now, suppose $G = 0$ so that $\dd{\X_t} = \vb b_t(\X_t)\dd{t}$.
+Then, $\partial_t p = -\nabla \vdot (pb)$.
+This is the continuity equation.
+
+Recall the heat equation $\partial_t p = \Delta p = \sum \partial_i^2 p$.
+We recover the heat equation when $G = \sqrt2 I$.
+In other words, the heat equation is the SDE $\dd{\X_t} = \sqrt{2} \dd{\B_t}$.
+
+To solve this, try transforming the PDE into an ODE.
+Let $p(t,x) = p(t,\cdot)$ and consider $p : t \mapsto p(t,\cdot)$
+as a function of just $t$.
+Then, we have $\dv{p_t}{t} = -\nabla f(p_t)$
+with the energy function $f(p) = \frac12\norm{\nabla p}_2^2$.
+
+Running gradient descent on $f$ will find us the solution.
+Consider the derivative
+\begin{align*}
+	\eval{\dv{f(p+\varepsilon q)}{\varepsilon}}_{\varepsilon=0}
+	 & = \dv{\frac12\norm{\nabla(p+\varepsilon q)}}{\varepsilon}                                          \\
+	 & = \dv{\frac12\int\ev{\nabla p + \varepsilon\nabla q, \nabla p + \varepsilon\nabla q}}{\varepsilon} \\
+	 & = \int \ev{\nabla p,\nabla q} \dd{x}                                                               \\
+	 & = \ip{\nabla p}{\nabla q}                                                                          \\
+	 & = -\ip{\Delta p}{q}
+\end{align*}
+Then, $\dv{p_t}{t} = \Delta p_t$.
+
+\section{Score matching}
+
+Consider two densities $p$ and $q$.
+We define the \term{Fisher divergence}
+\[
+	F(p \parallel q)
+	= \E_{\X \sim q}\norm{\nabla \log p(x) - \nabla \log q(x)}_2^2
+	= \E_{\X \sim q} \norm{\vb s_p(x) - \vb s_q(x)}^2
+\]
+Also, define noisy versions $p_t = p \ast \N(0,2t)$ and $q_t = q \ast \N(0,2t)$.
+Then, the KL divergence
+\begin{align*}
+	\dv{t} \operatorname{KL}(p_t \parallel q_t)
+	= \dv{t} \int p_t \log\frac{p_t}{q_t} \dd{x}
+	= -F(p_t \parallel q_t)
+\end{align*}
+\begin{prf}
+	Recall that the standard Gaussian $\N(0,2t)$ will satisfy the heat equation
+	$\partial_t p = \Delta p$.
+	Then, since it is a convolution, $p_t$ also satisfies the heat equation.
+	That is,
+	\[
+		\partial_t(p \ast \N(0,2t))
+		= p \ast \partial_t \N(0,2t)
+		= p \ast \Delta \N(0,2t)
+		= \Delta (p \ast N(0,2t))
+	\]
+	Now,
+	\begin{align*}
+		&\dv{t} \operatorname{KL}(p_t \parallel q_t) \\
+		  =& \int \frac{dp_t}{t} \cdot \log\frac{p_t}{q_t} \dd{x}
+		+ \cancel{\int p_t \cdot \frac{\partial_t p_t}{p_t} \dd{x}}
+		- \int p_t\frac{\partial_t q_t}{q_t}\dd{x}               \\
+		= & \int \Delta p_t \cdot \log p_t \dd{x}
+		- \int \Delta p_t \log q_t \dd{x} 
+		- \int p_t \frac{\Delta q_t}{q_t} \dd{x}
+	\end{align*}
+	The first term 
+	\[
+		\int \Delta p_t \cdot \log p_t \dd{x}
+		= \ip{\Delta p_t}{\log p_t} = \ip{p_t\frac{\Delta p_t}{p_t}}{\log p_t} = -\int p_t\norm{\vb s_{p_t}}^2 \dd{x}
+	\]
+	and the second term
+	\[
+		\int \Delta p_t \log q_t \dd{x} = -\int p_t\ev{\vb s_{p_t}, \vb s_{q_t}}
+	\]
+	and the third term
+	\begin{align*}
+		\int p_t \frac{\Delta q_t}{q_t} \dd{x} 
+		& = \ip{\frac{p_t}{q_t}}{\Delta q_t} \\
+		& = -\ip{\nabla\frac{p_t}{q_t}}{\nabla q_t} \\
+		& = -\int \frac{\nabla p_t \cdot q_t - p_t \cdot \nabla q_t}{q_t^2} \cdot \nabla q_t \\
+		% some shit happens
+		& = -\int \ev{\vb s_{p_t}, \vb s_{q_t}} \cdot p_t - p_t \norm{\vb s_{q_t}}^2
+	\end{align*}
+	Then, we have
+	\begin{align*}
+		-\int p_t\norm{\vb s_{p_t}}^2 \dd{x}
+		+ 2\int p_t\ev{\vb s_{p_t}, \vb s_{q_t}} \dd{x}
+		+ \int p_t \norm{\vb s_{q_t}}^2 \dd{x}
+		= \int \norm{\vb s_{p_t} - \vb s_{q_t}}^2 \dd{x}
+	\end{align*}
+	as desired.
+\end{prf}
+
+Now, given some distributions $p$ and $q$,
+we want to find $T$ such that $q = T_\#^{-1}p$
+(i.e., $p = T_\#q$).
+
+For example, if $x$ is noise, we want to have $T^{-1}(x)$ be data.
+Mathematically, this is the same as taking data and pushing it to noise.
+If we can do one, we can do the other.
+
+We build $T$ over time.
+Let $p_t := (T_t^{-1})_\# p$ and $q_t := (T_t)_\#q$.
+
+We can build $p_t$ as the change in variables formula
+$p_t(x) = p(T_t x) \cdot \abs{\det T_t'(x)}$.
+
+To train, we want to minimize KL-divergence 
+\begin{align*}
+	\min_{T_t} \KL(q \parallel p_t) = \min_{T_t} \int q \log\frac{q}{p_t}
+	= \min_{T_t} -\int q \cdot \log p_t \approx \max_{T_t} \sum_i \log p_t \x_i
+\end{align*}
+we end up with a maximum log-likelihood estimator.
 
 \end{document}
