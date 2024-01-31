@@ -1,0 +1,470 @@
+\section{Strong and weak duality}
+
+\begin{example}
+  Find $\max\qty{(4,-9,2,4)x : \mqty(1&-4&3&0\\-1&7&-5&1)x = \mqty(7\\3), x \geq \zero}$.
+\end{example}
+\begin{sol}
+  Notice that $(6,2,3,10)\trans$ is feasible. Objective value 52.
+
+  $(7,0,0,10)\trans$ is feasible.
+  Objective value 68. Claim this is optimal.
+
+  Notice that:
+  \begin{align*}
+    68 & = 7\cdot8 + 3\cdot4                                  \\
+       & = 8(x_1 - 4x_2 + 3x_3) + 4(-x_1 + 7x_2 - 5x_3 + x_4) \\
+       & = 4x_1 - 4x_2 + 4x_3 + 4x_4                          \\
+       & \geq 4x_1 - 9x_2 + 2x_3 + 4x_4 = c\trans x
+  \end{align*}
+  Since $c\trans x \leq 68$,
+  ny feasible solution has objective value at most 68.
+  As $(7,0,0,10)\trans$ is one such solution, it is optimal.
+\end{sol}
+
+In general, consider $y$. Then, $y\trans b = y\trans A x \stackrel{?}{\geq} c\trans x$.
+This works when $y\trans A \geq c\trans$ or equivalently $A\trans y \geq c\trans$.
+Then, $y\trans b$ is an upper bound on the objective value.
+If $y\trans b$ is the lowest upper bound, it is the optimal objective value.
+
+To find $y$, we can solve the dual LP.
+
+\begin{defn}[dual LP]
+  Given an LP (P) in SEF
+  $\max\{c\trans x : Ax = b, x \geq \zero\}$, construct the dual (D)
+  $\min\{b\trans y : A\trans y \geq c\}$
+\end{defn}
+
+Each constraint $a_i x_i = b_i$ in (P) corresponds to a variable $y_i$ in (D).
+Each variable $x_j$ in (P) corresponds to a constraint $(a^j)\trans y_j \leq c_j$ in (D).
+
+\lecture{June 20}
+
+Notice that the feasible objective values of the dual are at most the
+feasible objective values of the primal.
+
+Then, the highest (optimal) value of the primal is bounded above by
+the lowest (optimal) value of the dual.
+In fact, they meet only at optimality.
+
+\begin{theorem}[weak duality]
+  For an LP in SEF (P) $\max\{c\trans x : Ax = b, x \geq \zero\}$
+  and its dual (D) $\min\{b\trans y : A\trans y \geq c\}$,
+  if $\bar x$ and $\bar y$ are feasible,
+  then $c\trans\bar x \leq b\trans\bar y$.
+
+  Moreover, if $c\trans\bar x = b\trans\bar y$,
+  then $\bar x$ and $\bar y$ are optimal.
+\end{theorem}
+\begin{prf}
+  We have $b\trans \bar y = (A\bar x)\trans \bar y =\bar x\trans A\trans \bar y \geq \bar x\trans c = c\trans \bar x$,
+  as desired.
+
+  Suppose $c\trans \bar x = b\trans \bar y$.
+  Let $x$ be arbitrary.
+  Then, $c\trans x \leq b\trans \bar y = c\trans \bar x$.
+  This is what it means for $\bar x$ to be optimal.
+  Argue symmetrically for $y$.
+\end{prf}
+
+\begin{corollary}
+  To certify $\bar x$ is optimal for (P), it suffices to show that:
+  $\bar x$ is feasible, $\bar y$ is feasible, and $c\trans \bar x = b\trans \bar y$.
+\end{corollary}
+
+\begin{corollary}
+  If (P) is unbounded, then (D) must be infeasible.
+  Similarly, if (D) is unbounded, then (P) is infeasible.
+  Finally, if both (P) and (D) are feasible,
+  then they must have optimal solutions.
+\end{corollary}
+\begin{prf}
+  Any feasible solution to (D) is an upper bound to the
+  objective values of (P). Likewise in the other direction.
+\end{prf}
+
+\begin{theorem}[strong duality]
+  If (P) has an optimal solution,
+  then (D) has an optimal solution with the same optimal values.
+\end{theorem}
+\begin{prf}
+  Perform simplex on (P) to get a basic optimal solution $\bar x$ with basis $B$.
+  The objective function in canonical form for $B$
+  is $(c\trans - \bar y\trans A)x + b\trans \bar y$
+  where $\bar y = A_B^{-\intercal}c_B$.
+
+  Since $B$ is optimal, $c\trans - \bar y\trans A \leq \zero\trans$
+  which gives $A\trans y \geq c$, i.e., $\bar y$ is feasible.
+  Also, the objective value of $\bar x$ is $c\trans x = b\trans y$.
+\end{prf}
+
+\lecture{June 22}
+
+Summarize the weak duality theorem results:
+\begin{center}
+  \begin{tabular}{rccc}
+    Dual \textbackslash{} Primal & Optimal      & Unbounded    & Infeasible               \\ \hline
+    Optimal                      & $\checkmark$ & $\times$     & $\times$                 \\
+    Unbounded                    & $\times$     & $\times$     & $\checkmark$             \\
+    Infeasible                   & $\times$     & $\checkmark$ & $\checkmark$ (edge case) \\
+  \end{tabular}
+\end{center}
+
+\begin{prop}[dual of inequality]
+  Dual of $\max\{c\trans x : Ax \leq b, x \geq \zero\}$
+  is $\min\{b\trans y : A\trans y \geq c, y \geq \zero\}$.
+\end{prop}
+\begin{prf}
+  Turn into SEF by adding slack variables:
+  $\max\{c\trans x + \zero\trans x' : Ax + Ix' = b, x \geq \zero\}$.
+
+  Get the dual of that which is
+  $\min\{b\trans y : A\trans y \geq c, y \geq \zero\}$.
+
+  Likewise, the dual of $\max\{c\trans x : Ax \geq b, x \geq \zero\}$
+  is $\min\{b\trans y : A\trans y \geq c, y \leq \zero\}$
+\end{prf}
+
+\begin{prop}[dual with free variables]
+  Dual of $\max\{c\trans x : Ax = b\}$ is $\min\{b\trans y : A\trans y = c\}$.
+\end{prop}
+\begin{prf}
+  Turn into SEF:
+  $\max \{c\trans x^+ - c\trans x^- : Ax^+ - Ax^- = b, x^+ \geq \zero, x^- \geq \zero\}$.
+
+  Dual is
+  $\min\{b\trans y : A\trans y \geq c, -A\trans y \geq -c\}
+    = \min\{b\trans y : A\trans y = c\}$.
+
+  In fact, having $x \geq \zero$ will give $A\trans y \geq c$ and
+  $x \leq \zero$ will give $A\trans y \leq c$.
+\end{prf}
+
+\begin{prop}[dual of min]
+  Dual of the minimization LP (P*) is the maximization LP (D*) whose dual is (P*).
+\end{prop}
+\begin{prf}
+  From max to min: constraints (swapped) $\to$ variables, variables $\to$ constraints.
+
+  From min to max: constraints $\to$ variables, variables (swapped) $\to$ constraints.
+\end{prf}
+
+\begin{example}
+  Find the dual: Maximize $(3,1,4,1)x$ such that
+  $\mqty(1&2&3&4\\4&3&2&1\\2&2&2&2)x\mathrel{\mqty{\geq\\\leq\\=}}\mqty(3\\4\\5)$
+  with $x_1, x_2 \geq 0$, $x_3 \leq 0$, and $x_4$ free.
+\end{example}
+\begin{sol}
+  Minimize $(3,4,5)y$ such that:
+  \begin{itemize}[nosep]
+    \item Dual constraints max $\to$ min kept:
+          $\mqty(1&4&2\\2&3&2\\3&2&2\\4&1&2)y\mathrel{\mqty{\geq\\\geq\\\leq\\=}}\mqty(3\\1\\4\\1)$.
+    \item Dual variables max $\to$ min flipped: $y_1 \leq 0$, $y_2 \geq 0$, $y_3$ free.
+  \end{itemize}
+\end{sol}
+
+\begin{theorem}[general weak duality]
+  Let (P) be a maximization LP with dual (D).
+  If $\bar x$ and $\bar y$ are feasible for (P) and (D),
+  respectively, then the objective value of $\bar x$ in (P)
+  is at most the objective value of $\bar y$ in (D).
+
+  If they are the same value, then they are both optimal.
+\end{theorem}
+
+\begin{theorem}[general strong duality]
+  Let (P) be an LP with dual (D).
+  If (P) has an optimal solution,
+  then (D) has an optimal solution with the same optimal value.
+\end{theorem}
+
+\section{Complementary slackness}
+
+\begin{defn}[complementary slackness conditions]
+  For $(A\trans y)\trans x \geq c\trans x$ to hold with equality,
+  we have $A\trans_i y x_i = c_i x_i$.
+  Equivalently, either $A\trans_i y = c_i$ or $x_i = 0$.
+\end{defn}
+
+CS conditions are satisfied by feasible $\bar x$ and $\bar y$ if and
+only if $\bar x$ and $\bar y$ are optimal.
+
+\lecture{June 27}
+
+For an LP in SEF, the CS conditions are
+``either $x_i = 0$ or the $i$-th dual constraint is tight''.
+Equivalently, ``if $x_i > 0$, then the $i$-th dual constraint is tight''
+and ``if the $i$-th dual constraint is not tight, $x_i = 0$''.
+
+In general, given primal (P) and dual (D), their CS conditions are:
+(1) either $x_i = 0$ or the $i$-th constraint of (D) is tight and
+(2) either $y_j = 0$ or the $j$-th constraint of (P) is tight.
+If there are equality constraints,
+we can ignore that set of CS conditions since all constraints are tight.
+
+\begin{theorem}[complementary slackness]
+  Let (P) and (D) be a primal-dual pair with feasible solutions $\bar x$ and $\bar y$, respectively.
+  Then, $\bar x$ and $\bar y$ are optimal if and only if all CS conditions hold.
+\end{theorem}
+
+To show $\bar x$ is optimal for (P), we can provide $\bar y$ and check that
+(1) $\bar x$ is feasible, (2) $\bar y$ is feasible, (3) CS conditions.
+
+\begin{example}
+  Find an optimal solution for
+  $\max\qty{(1,-2)x : \mqty(1&-1\\2&1\\0&1)x\mathrel{\mqty{=\\\geq\\\leq}}\mqty(2\\1\\4), x_1 \geq 0}$
+  with dual
+  $\min\qty{(2,1,4)y : \mqty(1&2&0\\-1&1&1)y\mathrel{\mqty{\geq\\=}}\mqty(1\\-2) : y_2 \leq 0, y_3 \geq 0}$
+\end{example}
+\begin{sol}
+  CS conditions:
+  \begin{itemize}[nosep]
+    \item $x_1 = 0$ or $y_1 + 2y_2 = 1$
+    \item (always true) $x_2 = 0$ or $\boxed{-y_1 + y_2 + y_3 = -2}$
+    \item (always true) $y_1 = 0$ or $\boxed{x_1 - x_2 = 2}$
+    \item $y_2 = 0$ or $2x_1 + x_2 = 1$
+    \item $y_3 = 0$ or $x_2 = 4$
+  \end{itemize}
+  Suppose we think that $\bar x = (1,-1)\trans$ is optimal.
+  By inspection, $\bar x$ feasible.
+  Since $\bar x_1 \neq 0$, we require $\bar y_1 + 2\bar y_2 = 1$.
+  The second condition is satisfied.
+  Also, $\bar x_2 \neq 4$, so $\bar y_3 = 0$.
+
+  Adding on the requirement that $\bar y$ feasible, we can solve for
+  $\bar y = (\frac53, -\frac13,0)\trans$.
+
+  Then, $\bar y$ is feasible and satisfies CS conditions, so
+  $\bar x$ and $\bar y$ are optimal.
+\end{sol}
+
+If we try the above example with $\bar x = (4,2)\trans$, we get CS
+conditions implying $\bar y = (1,0,0)\trans$, but this is not feasible.
+Therefore, $\bar x$ is not optimal.
+
+The above example with simplex gives first
+\[ \max\qty{(3,-2,0,0,0)x : \mqty(\mqty{4&-1\\3&-3\\-2&2}&\mqty{\imat{3}})x=\mqty(8\\9\\1), x \geq \zero} \]
+and ends with
+\[ \max\qty{(0,-\frac54,-\frac14,0,0)x + 6 : \mqty(1&-\frac14&\frac14&0&0\\0&-\frac94&-\frac34&1&0\\0&\frac32&\frac12&0&1)x=\mqty(2\\3\\5), x \geq \zero} \]
+
+For each variable $i$, either $x_i = 0$ (it is non-basic) or $c_i = 0$ (it is basic).
+Recall: objective coefficients are $c' = c - y\trans A$ where $y = A_B^{-\intercal}c_B$ is the dual solution.
+
+Then, $c'_i = 0$ implies $c_i - y\trans A_i = 0$ or $y\trans A_i = c_i$ or $A_i\trans y = c_i$.
+That is, the $i$\xth constraint in the dual is tight.
+
+That is, either $x_i = 0$ or the $i$-th constraint is tight,
+so all simplex BFS's satisfy the CS conditions.
+
+Also, when picking $c_e > 0$ for the next iteration,
+$A_e\trans y < c_e$, i.e., we picked an infeasible $y$ to the dual
+(since the dual constraint is $Ay \leq c$)
+
+That is, whenever positive coefficients exist, $y$ is infeasible
+for the dual. Once the coefficients are non-positive, $y$ is
+feasible and we have an optimal solution.
+
+\section{Geometry of the dual}
+
+\begin{example}
+  For arbitrary $c$,
+  $\max\qty{c\trans x : \mqty(\mqty{\imat{2}}\\\mqty{1&2\\-1&0\\0&-1})x \leq \mqty(4\\3\\8\\0\\0)}$.
+\end{example}
+\begin{sol}
+  (imagine polyhedron bounded by $(0,0)$, $(0,3)$, $(2,3)$, $(4,2)$, and $(4,0)$)
+
+  $(4,2)\trans$ is the optimal solution whenever the slope is between
+  the two constraints defining $(4,2)\trans$, i.e.,
+  $-\infty \leq m \leq -\frac12$.
+
+  Formally, any $c$ in the \term{cone} of $(1,0)\trans$ and $(1,2)\trans$ (the tight constraints).
+\end{sol}
+
+\begin{defn*}[cone (generated by $x$)]
+  The set $\{\lambda\trans x : \lambda \geq \zero\}$
+\end{defn*}
+
+\begin{lemma}[cone of tight constraints]
+  $c$ is in the cone of tight constraints for $\bar x$
+  if and only if $\bar x$ is optimal for $c$.
+\end{lemma}
+
+\lecture{June 29}
+
+\begin{example}
+  Consider the primal-dual pair
+  $\max\qty{(c_1,c_2)x : \mqty(\imat{2}\\1&2\\-1&0\\0&-1)x \leq \mqty(4\\3\\8\\0\\0)}$
+  and
+  $\min\qty{(4,3,8,0,0)y : \mqty(1&0&1&-1&0\\0&1&2&0&-1)y = \mqty(c_1\\c_2), y \geq \zero}$
+\end{example}
+\begin{sol}
+  Suppose $c$ makes $\bar x = (4,2)\trans$ optimal.
+  Let $y$ be the correponding optimal dual solution.
+  The dual constraints are
+  \[ \mqty(1\\0)y_1 + \mqty(0\\1)y_2 + \mqty(1\\2)y_3 + \mqty(-1\\0)y_4 + \mqty(0\\-1)y_5 = \mqty(c_1\\c_2) \]
+
+  CS conditions: either $y_j = 0$ or the $j$-th primal constraint
+  is tight. Here, constraints 1 and 3 are tight.
+  Then, $y_2 = y_4 = y_5 = 0$ and we have
+  \[ \mqty(1\\0)y_1 + \mqty(1\\2)y_3 = \mqty(c_1\\c_2) \]
+  with $y_1, y_3 \geq 0$.
+
+  That is, $c$ is in the cone formed by the tight constraints for $\bar x$.
+\end{sol}
+
+\begin{lemma}[Farkas' lemma]
+  Given $A$ and $b$, either there exists $x$
+  such that $Ax = b$ and $x \geq \zero$,
+  or there exists $y$ such that $y\trans A \geq \zero\trans$ and $y\trans b < 0$.
+
+  Equivalently, either a solution or certificate of infeasibility exists.
+\end{lemma}
+\begin{prf}
+  First, notice that having a certificate of
+  infeasibility proves that there cannot be a solution to $Ax = b$
+  with $x \geq \zero$. Thus, both cannot hold.
+
+  Now, suppose the first condition is false.
+  Consider $\max\{\zero\trans x : Ax = b, x \geq \zero\}$.
+
+  This is infeasible by supposition.
+  The dual is $\min\{b\trans y : A\trans y \geq \zero\}$
+  which is trivially feasible since it admits $y = \zero$, so it
+  must be unbounded.
+
+  Then, there must exist a solution $\bar y$ with negative objective value,
+  i.e., $b\trans \bar y < 0$ and $A\trans y \geq \zero$, as desired.
+\end{prf}
+
+Geometrically, consider the cone of column vectors.
+That is, all $b$ such that $Ax = b$, $x \geq \zero$.
+
+If $b$ is in the cone, we are done.
+If $b$ is not in the cone, then there must exist a hyperplane with normal $y$
+between the cone and $b$.
+Such a $y$ will give by definition $y\trans b < 0$ and $y\trans A > \zero\trans$.
+
+\section{Shortest paths, revisited}
+\lecture{July 4}
+
+Recall the formulation for shortest path problems:
+$\min\{c\trans x : \sum_{e \in \delta(S)}x_e \geq 1, x_e \geq 0, x_e \in \Z\}$
+
+Since there are $O(2^n)$ constraints and it is an IP, this is hard to solve.
+
+Instead, ignore integrality and take the dual:
+$\max\{\mathbb1\trans y : \sum_{e \in \delta(S)}y_S \leq c, y \geq \zero\}$.
+
+There are dual variables $y_S$ corresponding to each $s,t$-cut
+and dual constraints for each edge.
+The objective function is the sum of all $y$ variables.
+
+Dual constraints: One constraint for each edge $e$, coefficient
+of $y_S$ is 1 if $e$ is in the cut $\delta(S)$. That is, sum
+of $y$ values is at most the length of $e$
+
+Interpret a dual solution $y$ as assigning a value $y_S$ to each
+cut so that the ``sum of cuts'' across an edge is at most the edge's weight.
+
+Since an $s,t$-path must cross all $s,t$-cuts, this means that
+the ``sum of cuts'' is at most the sum of weights of the edges in
+the path, i.e., the sum of cuts is at most the length of the path.
+
+Equivalently, by weak duality, the objective value of the primal
+(length of the path) is at least the objective value of the dual
+(sum of all cuts)
+
+Imagine $y_S$ as the width of a barrier that a path must cross, so
+that a complete path must pass all barriers. This is the width
+assignment.
+
+Since we are maximizing, the barriers will expand to fill the path.
+
+Take the dual and consider CS conditions:
+\begin{itemize}[noitemsep]
+  \item If $e$ is in the path, then the sum of width of all cuts
+        containing $e$ is equal to its length and $e$ is tight
+  \item If $y_S$ has positive width, then exactly one edge in
+        $\delta(S)$ is in the path
+\end{itemize}
+Therefore, we can construct an algorithm to raise the $y$-value of $\delta(U)$
+to create a tight edge.
+
+\lecture{July 6}
+\begin{example}
+  $E = \{sa, sb, ab, at, bt\}$ with weights $w = \{50,30,30,40,70\}$.
+\end{example}
+\begin{sol}
+  Walk through our ``algorithm'':
+  \begin{itemize}
+    \item Initialize $y = \zero$, $U = \{s\}$, $T = \varnothing$
+    \item Iteration 1: $U = \{s\}$, $\delta(U) = \{sa,ab\}$.
+          Can increase by 30 until $sb$ becomes tight, so set
+          $y_{\{s\}} = 30$. Append $b$ to $U$.
+    \item Iteration 2: $U = \{s, b\}$, $\delta(U) = \{sa,ab,bt\}$.
+          Can increase by 20 until $sa$ becomes tight, so set
+          $y_{\{s,b\}} = 20$. Append $a$ to $U$.
+    \item Iteration 3: $U = \{s,b,a\}$, $\delta(U) = \{at, bt\}$.
+          Can increase by 40 until $at$ becomes tight, so set
+          $y_{\{s,b,a\}} = 40$. Append $t$ to $U$.
+  \end{itemize}
+  Tight edges $T = \{sb,sa,at\}$ so select path $x_{sa}=x_{at}=1$
+  with $y_{\{s\}}=30$, $y_{\{s_b\}}=20$, $y_{\{s,a,b\}}=40$.
+\end{sol}
+
+Now, formalize the algorithm.
+
+\begin{defn}[slack]
+  The length of $e$ minus width of all cuts through $e$, i.e.,
+  $\operatorname{slack}(e) = c_e - \sum_{\{S : e \in \delta(S)\}}y_S$
+\end{defn}
+
+\begin{algorithm}
+  \caption{Shortest path algorithm}
+  \begin{algorithmic}[1]
+    \State Set $y = \zero$, $U = \{s\}$, $T = \varnothing$
+    \While{$t \not\in U$}
+    \State Calculate slack of all edges in $\delta(U)$
+    \State Pick edge $uv$ with minimum slack where $u \in U$, $v \not\in U$
+    \State Set $y_U := \operatorname{slack}(uv)$
+    \State $U := U \cup \{v\}$, $T := T \cup \{uv\}$
+    \EndWhile
+    \State Output an $s,t$-path in $T$. Use $y$ as an optimal dual solution.
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{example}
+  $V = \{s,a,b,c,t\}$,
+  $E = \{sa,sb,sc,ab,bc,at,bt,ct\}$ with
+  $w = \{20,50,30,20,10,50,40,40\}$.
+\end{example}
+\begin{sol}
+  Perform the algorithm:
+  \begin{enumerate}
+    \item $U = \{s\}$, $T = \varnothing$, $\delta(U) = \{sa,sb,sc\}$.
+
+          Slacks are 20, 50, and 30, so set $y_{\{s\}} = 20$ to get tight $sa$.
+
+    \item $U = \{s,a\}$, $T = \{sa\}$, $\delta(U) = \{at,ab,sb,sc\}$.
+
+          Slacks are 50, 20, 50, and 10, so set $y_{\{s,a\}} = 10$ to get tight $sc$.
+    \item $U = \{s,a,c\}$, $T = \{sa, sc\}$, $\delta(U) = \{at,ab,sb,bc,ct\}$.
+
+          Slacks are 40, 10, 20, 10, 40, so set $y_{\{s,a,c\}}=10$ to get
+          tight $ab$ and $bc$. Arbitrarily pick $ab$.
+    \item $U = \{s,a,b,c\}$, $T = \{sa,sc,ab\}$, $\delta(U) = \{at,bt,ct\}$.
+
+          Slacks are 30, 40, and 30, so set $y_{\{s,a,b,c\}}=30$ to get
+          tight $at$ and $ct$. Arbitrarily pick $ct$.
+    \item $U = \{s,a,b,c,t\}$, $T = \{sa,sc,ab,ct\}$.
+
+          Conclude with path $\{sc,ct\}$.
+  \end{enumerate}
+\end{sol}
+
+Claim (proof omitted) that the algorithm produces a path that
+satisfies the second CS condition (i.e., every cut with positive width
+crosses only one edge in the path)
+
+Sketch: To cross a cut more than once, must go back and forth. To go
+back, must select an edge going ``backwards'', i.e., selecting a
+node already in $U$ to append to $U$. Contradiction.

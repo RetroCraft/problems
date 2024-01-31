@@ -1,0 +1,98 @@
+We cannot apply fundamental theorem of LPs to IPs, since some IPs may be
+feasible, bounded, and still lack an optimal solution.
+
+\begin{example}
+  $\max\{x_1-\sqrt2x_2 : x_1-\sqrt2x_2 \leq 0, x \geq \one, x \in \Z^2\}$
+  has a feasible solution $x = (1,1)\trans$,
+  is bounded since $(1,-\sqrt2)\trans x \leq 0$,
+  but has no optimal solution.
+\end{example}
+
+\begin{defn}[convex hull]
+  The smallest convex set that contains all
+  points in a set. Formally,
+  $\operatorname{conv}(x^1,\dotsc,x^k) = \{\sum \lambda_i x^i : \sum \lambda_i = 1, \lambda \geq \zero \}$
+\end{defn}
+
+\begin{theorem}[Fundamental Theorem of Integer Programming]
+  Given a polyhedron $P = \{x \in \R^n : Ax \leq b\}$ with $A,b \in \textbf{M}(\Q)$,
+  the convex hull $\operatorname{conv}(\Z^n \cap P)$ is another polyhedron
+  $Q = \{x \in \R^n : A'x \leq b'\}$ with $A',b' \in \textbf{M}(\Q)$.
+\end{theorem}
+
+This reduces solving an IP to solving a related LP, since the
+extreme points of $Q$ are just integer points in $P$.
+
+\lecture{July 11}
+\begin{theorem}
+  Given (IP) $\max\{c\trans x : Ax \leq b : x \in \Z^n\}$,
+  let $\{x : A' x \leq b'\}$ be the convex hull of solutions of (IP).
+  Let (LP) be $\max\{c\trans x : A'x \leq b'\}$. Then:
+  \begin{itemize}[nosep]
+    \item (IP) infeasible if and only if (LP) infeasible
+    \item (IP) unbounded if and only if (LP) unbounded
+    \item Every optimal solution of (IP) is an optimal solution of (LP)
+    \item Every optimal solution of (LP) that is an extreme point is an optimal solution of (IP)
+  \end{itemize}
+\end{theorem}
+
+Not a great idea in general because finding the convex hull is hard.
+
+We need to find feasible solutions in order to define the convex hull anyways
+and the number of constraints to define convex hull is $O(2^n)$ in the original constraints.
+
+There is no finite convex hull if coefficients are irrational.
+
+\begin{defn}[LP relaxation]
+  An IP without the integer constraint.
+\end{defn}
+
+\begin{example}
+  Find $\max\qty{\mqty(0&1\\3&-1\\-5.5&-4)x \leq \mqty(5.5\\10.5\\-22) : x \in \Z^3}$
+\end{example}
+\begin{sol}
+
+  The optimal solution of the relaxation is
+  $(\frac{128}{35},\frac{33}{70})\trans$.
+
+  To make a cutting plane, need (1) current non-integral optimal
+  solution outside of halfspace and (2) all integral feasible
+  solutions inside halfspace.
+
+  For example, shrink the feasible region with $x_2 \geq 2$ to get
+  new optimal solution $(\frac{28}{11},2)\trans$ which is ``better''
+
+  To find cutting plane, note that simplex BFS
+  $\bar x = (\frac{128}{35}, \frac{33}{70}, \frac{176}{35},0,0)^t$
+  with objective value $-\frac{289}{70}$.
+
+  Take floor of coefficients on LHS, change $=$ to $\leq$:
+  $x_1 + \floor{\frac{8}{35}}x_4 + \floor{-\frac{2}{35}}x_5 = x_1 - x_5 \leq \frac{128}{35}$
+
+  Since $x \geq \zero$, LHS only decreases and all solutions are preserved.
+
+  Take floor of RHS constant: $x_1 - x_5 \leq \floor{\frac{128}{35}} \leq 3$.
+
+  Since $x$ integral, coefficients integral, we can take floor
+  without losing integral solutions.
+  This also eliminates $\bar x$ since it satisfied the original
+  constraint with equality.
+
+  Then, we have $x_1 - x_5 \leq 3$ a cutting plane.
+\end{sol}
+
+\lecture{July 13}
+
+Summarize the algorithm:
+
+\begin{algorithm}
+  \caption{Cutting plane algorithm}
+  \begin{algorithmic}[1]
+    \State Relax the IP by removing the integrality constraint
+    \State Run simplex on the resulting LP to get non-integral BFS $\bar x$
+    \State Select a constraint $\sum a_i x_i = b_j$ where $b_j \not\in \Z$
+    \State Construct cutting plane $\sum \floor{a_i} x_i \leq \floor{b_j}$
+    \State Add slack variable to turn into equality and append to LP
+    (will have to run either two-phase simplex or dual simplex to find a new BFS)
+  \end{algorithmic}
+\end{algorithm}

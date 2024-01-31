@@ -1,0 +1,206 @@
+\begin{defn}[non-linear program]
+  $\min\{f(x) : g_i(x) \leq 0\}$ where $f, g_i : \R^n \to \R$
+\end{defn}
+
+IPs are just NLPs, so general NLP problem is even harder.
+The feasible regions of NLPs can be disjoint and just all around awful.
+
+To solve, we try to limit functions to being convex.
+Limiting the feasible region to be convex to removes some of the awfulness.
+Local optimal solutions of convex regions are still globally optimal.
+We can apply simplex to some sort of reduction of the region.
+
+We construct halfspaces of non-linear tight constraints based on gradients.
+For example, $g(x) \leq 0$ becomes $\nabla g(\bar x) \leq 0$.
+
+\begin{defn}[convex function]
+  For all $a,b \in \R^n$ and $0 \leq \lambda \leq 1$,
+  $f(\lambda a + (1-\lambda)b) \leq \lambda f(a) + (1-\lambda) f(b)$.
+  Equivalently, the line between points $f(a)$ and $f(b)$ lies above the curve.
+\end{defn}
+
+\lecture{July 18}
+
+\begin{example}
+  Show $f : \R \to \R : x \mapsto x^2$ is convex.
+\end{example}
+\begin{prf}
+  Let $a,b \in \R$ and $0 \leq \lambda \leq 1$.
+
+  Then,
+  $f(\lambda a + (1-\lambda)b)
+    = (\lambda a + (1-\lambda)b)^2
+    = \lambda^2 a^2 + 2\lambda(1-\lambda)ab + (1-\lambda)^2b^2$.
+
+  But $(a-b)^2 = a^2 - 2ab + b^2 \geq 0$, so $2ab \geq a^2 + b^2$.
+
+  So we have
+  $f(\lambda a + (1-\lambda)b) \leq \lambda^2 a^2 + \lambda(1-\lambda)(a^2 + b^2) + (1-\lambda)^2b^2
+    = \lambda a^2 + (1-\lambda)b^2
+    = \lambda f(a) + (1-\lambda) f(b)$
+  as desired
+\end{prf}
+
+\begin{lemma}
+  The following are convex functions:
+  \begin{itemize}[nosep]
+    \item $kx^n$ for even $n$ and positive $k$
+    \item Affine functions $c\trans x + \bar z$
+    \item Positive linear combinations of convex functions $\sum a_i f_i(x)$
+          with $a \geq \zero$
+  \end{itemize}
+\end{lemma}
+
+\begin{defn}[epigraph]
+  The set $\{(x,r)\trans : x \in \R^n, r \in \R, r \geq f(x)\}$ of points
+  ``above'' the function.
+\end{defn}
+
+\begin{lemma}
+  $f$ is convex function if and only if the epigraph of $f$ is a convex set.
+\end{lemma}
+
+Since constraints in NLPs have the form $g_i(x) \leq 0$, we can use convexity.
+
+\begin{prop}
+  If $g : \R^n \to \R$ is a convex function,
+  $S=\{x \in \R^n : g(x) \leq 0\}$ is a convex set
+\end{prop}
+\begin{prf}
+  Let $a,b\in S$ and $0 \leq \lambda \leq 1$. Then
+  $g(a) \leq 0$ and $g(b) \leq 0$. Since $g$ is convex,
+  $g(\lambda a + (1-\lambda)b) = \lambda g(a) + (1-\lambda)g(b) \leq \lambda\cdot 0 + (1-\lambda)\cdot 0 = 0$
+  so the convex combination is in $S$ and $S$ is convex.
+\end{prf}
+
+In a convex NLP (i.e. all constraints $g_i$ are convex),
+the feasible region is the intersection of convex sets,
+which is itself convex.
+
+\begin{defn}[relaxation]
+  Enlargement of a feasible region, i.e.,
+  if $R$ feasible region and $R'$ relaxation, $R \subset R'$.
+\end{defn}
+
+If optimal solution $\bar x \in R'$, then it must be optimal for $R$.
+
+Similar to IPs, we define halfspaces that relax the feasible region.
+
+\begin{defn}[subgradient]
+  $s \in \R^n$ normal vector to the
+  boundary at a point, i.e., $g(\bar x) + s\trans(x-\bar x) \leq g(x)$
+  for all $x \in \R^n$
+\end{defn}
+Since the LHS is just an affine function, this is a hyperplane
+beneath $g(x)$ with equality at $x = \bar x$
+
+\begin{defn}[supporting halfspace]
+  $\{s\trans x \leq 0 : x \in \R^n\} \supseteq \{g(x) \leq 0 : x \in \R^n\}$
+  for subgradient $s$
+\end{defn}
+
+Note: Supporting halfspaces only work with convex sets
+
+\lecture{July 20}
+
+\begin{example}
+  Consider $g : \R^2 \to \R : x \mapsto \frac14 x_1^2 + \frac14 x_2^2 - 1$ with
+  $\bar x = (2,0)\trans$.
+
+  $s = (2,0)\trans$ is a (unique) subgradient.
+  The plane is $s\trans (x - \bar x) = 2x_1 - 4 = 0$.
+\end{example}
+
+\begin{example}
+  Consider $g : \R^2 \to \R : x \mapsto \abs{x_1} + \abs{x_2} - 2$ with
+  $\bar x = (2,0)\trans$.
+
+  Multiple subgradients exist because $\bar x$ is on a sharp edge.
+
+  One is $s = (1,0)\trans$ with $s\trans(x - \bar x) = x_1 - 2 = 0$.
+  Another is $s = (1,\frac12)^t$ with $s\trans(x - \bar x) = x_1 + \frac12 x_2 - 2 = 0$.
+
+  In fact, $s = (1,t)\trans$ is a subgradient for $-1 \leq t \leq 1$.
+\end{example}
+
+\begin{defn}[supporting halfspace]
+  For convex set $C \subseteq\R^n$
+  and $\bar x \in C$, $F = \{x \in \R^n : s\trans x \leq \beta\}$ is a
+  supporting halfspace of $C$ at $\bar x$ if $C \subseteq F$ and
+  $s\trans \bar x = \beta$
+  ($\bar x$ is on the boundary of the halfspace)
+\end{defn}
+
+Note: subgradients are normal vectors of supporting halfspaces.
+
+\begin{theorem}
+  For convex function $g : \R^n \to \R$, $g(\bar x) = 0$
+  with $s$ a subgradient of $g$ at $\bar x$ and $C = \{g(x) \leq 0\}$,
+  $F = \{s\trans(x-\bar x)\leq 0\}$ is a supporting halfspace of $C$ at $\bar x$
+\end{theorem}
+\begin{prf}
+  ($C \subseteq F$) If $g(x') \leq 0$, then by definition of subgradients,
+  $\underbrace{g(\bar x)}_{=0} + s\trans(x' - \bar x) \leq g(x') \leq 0$.
+  That is, $x' \in F$.
+
+  (boundary) Plug in $x = \bar x$ in $F$, $x\trans (\bar x - \bar x) = 0$.
+\end{prf}
+
+\begin{defn}[gradient]
+  For differentiable function $f : \R^n \to \R$,
+  $\nabla f(x) = (\pdv{f}{x_1},\dotsc,\pdv{f}{x_n})\trans$.
+\end{defn}
+
+\begin{lemma}
+  $\nabla f(\bar x)$ is a subgradient of $f$ at
+\end{lemma}
+
+\begin{example}
+  $\min\{-x_1 - x_2 : x_1^2 - 2x_2 - 4 \leq 0, -7x_1 + x_2^2 - 8 \leq 0, -x_1 - x_2 + 1 \leq 0\}$
+\end{example}
+\begin{sol}
+  Propose $\bar x = (4,6)\trans$ is optimal.
+
+  Replace tight constraints (1) and (2) by supporting halfspaces:
+  \begin{itemize}
+    \item $g_1(x) = x_1^2 - 2x_2 - 4$ so
+          $\nabla g_1(x) = (2x_1, -2)\trans$ and
+          $\nabla g_1(\bar x) = (8,-2)\trans$. 
+          
+          Supporting halfspace $8x_1 - 2x_2 - 20 \leq 0$.
+    \item $g_2(x) = -7x_1 + x_2^2 - 8$, so
+          $\nabla g_2(x) = (-7, 2x_2)\trans$ and
+          $\nabla g_1(\bar x) = (-7, 12)\trans$.
+          
+          Supporting halfspace $-7x_1 + 12x_2 - 44 \leq 0$.
+  \end{itemize}
+
+  Consider the LP
+  $\max\qty{(1,1)x : \mqty(8&-2\\-7&12)x\leq\mqty(20\\44)}$.
+  Optimal if $(1,1)\trans$ in cone of tight constraints, which it is.
+  
+  Since LP is a relaxation and it is optimal,
+  $\bar x$ is optimal for the original NLP.
+\end{sol}
+
+\begin{prop}
+  For a convex NLP $\min\{c\trans x : g_i(x) \leq 0\}$ and
+  a feasible solution $\bar x$, if $-c$ is in the cone generated by
+  the subgradients at $\bar x$ of the tight constraints for
+  $\bar x$, then $\bar x$ is optimal.
+\end{prop}
+
+The converse is almost true. Need extra condition and differentiability
+
+\begin{defn}[Slater point]
+  $x'$ where $g_i(x') < 0$, i.e., points in the interior of feasible region.
+\end{defn}
+
+\begin{theorem}[Karush--Kuhn--Tucker]
+  For NLP $\min\{f(x) : g_i(x) \leq 0\}$ and feasible point $\bar x$,
+  if $f$, $g_i$ are all convex and differentiable at $\bar x$
+  and a Slater point exists,
+  then $\bar x$ is optimal if and only if
+  $-\nabla f(\bar x)$ is in the cone generated by
+  $\nabla g_i(\bar x)$ over tight constraints $g_i$
+\end{theorem}

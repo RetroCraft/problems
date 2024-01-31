@@ -1,0 +1,589 @@
+\section{Preparation}
+\lecture{May 23}
+
+\begin{example}
+  $\max{} (0,-2,-3,0)x+7$ subject to $\mqty(1&3&-5&0\\0&-1&2&1)x=\mqty(6\\9)$ and $x \geq \mathbb 0$
+\end{example}
+
+\begin{sol}
+  Trivial solution: $\bar x = (6,0,0,9)\trans$ gives objective value 7
+
+  Claim: $\bar x$ is optimal
+
+  Proof: the term $(0,-2,-3,0)x \leq 0$ since $x \geq \mathbb 0$.
+  Its highest value is then 0, so the highest objective value is 7.
+  Since the objective value of $\bar x$ is 7, it is optimal.
+\end{sol}
+
+\begin{theorem}[Fundamental Theorem of Linear Programming]
+  For a linear program $P$, exactly one of the following holds:
+  \begin{itemize}[nosep]
+    \item $P$ is infeasible
+    \item $P$ is unbounded
+    \item $P$ has an optimal solution
+  \end{itemize}
+\end{theorem}
+
+This does not apply to non-linear programs: e.g., $\max x$ subject
+to $x < 1$. This NLP is feasible (consider $\bar x = 0$) and
+bounded ($x < 1$), but has no optimal solution (given $\bar x$ a
+solution, $\frac{\bar x+1}{2}$ is a better solution)
+
+\begin{defn}[standard equality form]
+  A linear program of the form
+  $\max \{c\trans x + \bar z : Ax = b, x \geq \mathbb 0\}$
+
+  Requires maximization, equality constraint, and non-negative
+  variables
+\end{defn}
+
+Simplex requires SEF, so must convert LPs into equivalent SEF LP.
+
+\begin{defn}[equivalence]
+  $P$ and $P'$ are equivalent if
+  (1) $P$ infeasible iff $P'$ infeasible,
+  (2) $P$ unbounded iff $P'$ unbounded, and
+  (3) optimal solutions of $P$ can be constructed from $P'$ and vice versa
+\end{defn}
+
+Find an equivalent SEF by:
+
+\begin{itemize}[nosep]
+  \item Given a minimization LP $\min f(x)$, just take $\max -f(x)$
+  \item Given an inequality $x \leq k$, define a slack variable
+        $x + x' = k$ with $x' \geq 0$
+  \item Given a free variable $x$, define two non-negative variables
+        $x^+$ and $x^-$ so that we can replace $x = x^+ - x^-$
+\end{itemize}
+
+
+\begin{example}
+  Find an equivalent LP in SEF
+  \begin{align*}
+    \min         & (-1,2,-3)x             \\
+    \text{s.t. } & \mqty(1        & 5 & 3 \\2&-1&2\\1&2&-1)\mqty(x_1\\x_2\\x_3)\mqty{\leq\\\geq\\=}\mqty(5\\4\\2) \\
+                 & x_1,x_2 \geq 0
+  \end{align*}
+\end{example}
+\begin{sol}
+  Switch $\min$ to $\max$ with new objective function $(1,-2,3)x$
+
+  Divide $x_3 = x_3^+ - x_3^-$ giving $\mqty(1&5&3&-3\\2&-1&2&-2\\1&2&-1&1)\mqty(x_1\\x_2\\x_3^+\\x_3^-)$
+
+  Add slack variables $x_4$, $x_5$ giving new rows $(1,5,3,1,0)x=5$
+  and $(2,-1,2,0,1)x=4$
+
+  Let $x = (x_1,x_2,x_3^+,x_3^-,x_4,x_5)\trans$
+  and combine to get the SEF
+  \[\max \qty{ (1,-2,3,-3,0,0)x : \mqty(1&5&3&-3&1&0\\2&-1&2&-2&0&1\\1&2&-1&1&0&0)x=\mqty(5\\4\\2), x \geq \mathbb 0}\]
+  Suppose simplex solves this and gives optimal solution
+  $(\frac{11}{4},0,\frac34,0,0,3)\trans$ with optimal value $5$. Then, the
+  original LP is solved by
+  $(\frac{11}{4},0,\frac34-0)\trans =(\frac{11}{4},0,\frac34)$ with optimal
+  value $-5$.
+\end{sol}
+
+\lecture{May 25}
+\begin{example}
+  $\max (3,-2,0,0,0)x$ such that $x \geq \mathbb 0$
+  and $\mqty(4&-1&1&0&0\\3&-3&0&1&0\\-2&2&0&0&1)x=\mqty(8\\9\\1)$
+\end{example}
+\begin{sol}
+  Feasible solution: $\bar x = (0,0,8,9,1)\trans$ with objective value
+  $(3,-2,0,0,0)(0,0,8,9,1)\trans = 0$
+
+  To increase objective value, must increase $x_1$ (the only one
+  with a positive coefficient in the objective function)
+
+  Change $x_1 \mapsto t$, keep $x_2 = 0$, and set
+  $x_3 \mapsto 8-4t$, $x_4 \mapsto 9-3t$, and $x_5 \mapsto 1+2t$
+  to maintain feasibility
+
+  But we still have non-negativity, giving us $t \leq 2$, i.e.,
+  $\bar{\bar x} = (2,0,0,3,5)\trans$
+\end{sol}
+
+This example worked because we had (1) the identity matrix embedded
+in columns, (2) those columns have zero coefficients in the
+objective function.
+Equivalent strategies will exist if the matrix's rows are
+independent.
+
+\begin{notation}
+  Given a matrix $A$, notate the column $j = 1,\dotsc,n$ of $A$ by
+  $A_j$ and then the submatrix formed by columns
+  $J \subseteq \{1,\dotsc,n\}$ by $A_J$
+\end{notation}
+
+\begin{prop}
+  \Tfae: $B \subseteq \{1,\dotsc,n\}$ is a basis;
+  $A_B$ is invertible; and
+  $\abs{B} = m$ and the columns $A_B$ are linearly independent
+\end{prop}
+
+\begin{defn}
+  Given a basis $B$, a \term{non-basis}
+  $N = \{1,\dotsc,n\}\setminus B$.
+
+  The variables $x_B$ where $B$ a basis are \term{basic variables};
+  conversely, $x_N$ are \term{non-basic variables}.
+  This lets us write $Ax = A_Bx_B + A_Nx_N$.
+
+  A \term{basic solution} (with respect to $B$) is a solution $x$ where $x_N = 0$.
+\end{defn}
+
+To find a basic solution $x_B$, multiply both sides of the
+constraint $Ax = b$ on the left by $A_B^{-1}$. Then,
+$A_B^{-1}Ax = A_B^{-1}b$ and we can read the basic solution
+$x_B = A_B^{-1}b$.
+
+\begin{defn}[basic feasible solution]
+  A value $\bar x$ such that $\bar x_B \geq \zero$.
+\end{defn}
+
+\begin{defn}[canonical form]
+  SEF $\max\{c\trans x+\bar z:Ax=b,x\geq\mathbb0\}$ if $A_B=I$ and
+  $c_B=\mathbb 0$
+\end{defn}
+
+\lecture{May 30}
+
+\begin{example}
+  Write the canonical form for $B=\{2,3\}$ of
+  $\max (3,-1,4,0,-1)x + 2$ s.t. $x \geq \mathbb 0$ and
+  $\mqty(2&1&-2&5&-4\\-1&0&-1&-3&2)x = \mqty(3\\-2)$
+\end{example}
+
+\begin{sol}
+  Multiply the constraint on the left by
+  $A_B^{-1} = \mqty(1&-2\\0&-1)$ to get new constraint
+  $\mqty(4&1&0&11&-8\\1&0&1&3&-2)x=\mqty(7\\2)$ which is equivalent
+
+  Then, we need to set the entries in the objective function vector
+  $c_B = \mathbb 0$
+
+  To find an expression for $-c_B\trans x_B$ which can cancel, take
+  $-c_B\trans Ax = -c_B b$ to get
+  $(0,1,-4,-1,0)x = -1 \implies (0,1,-4,-1,0)x + 1 = 0$
+
+  Add this to $c\trans x + \bar z$ to get the new objective function
+  $\max (3,0,0,-1,-1)x + 3$
+\end{sol}
+
+In general, to convert from SEF to canonical form given a basis $B$:
+
+\begin{enumerate}[1.,nosep]
+  \item Amend the constraint: $Ax = b \mapsto A_B^{-1} A x = A_B^{-1} b$
+  \item Calculate $y = (A_B^{-1})\trans c_B$
+        (this will be used later as a certificate)
+  \item Amend the objective function:
+        $c\trans x + \bar z \mapsto (c\trans - y\trans A)x + (\bar z - y\trans b)$
+\end{enumerate}
+
+\section{Simplex}
+
+Main idea: go between feasible bases, attempting to raise the objective value
+\begin{enumerate}
+  \item Start with a feasible basis $B$.
+
+        Use ``2-phase simplex'' to find one if there is not a trivial feasible basis
+  \item Convert the LP to canonical form with respect to $B$.
+
+        If $c_N \leq \mathbb 0$, then the optimal solution is the basic
+        feasible solution. \textbf{Stop}.
+  \item Pick a non-basic entering variable $x_k$ where $c_k > 0$.
+
+        (Bland's rule) Pick the variable with lowest index $k$.
+
+        If $A_k \leq \mathbb 0$, then the linear program is
+        unbounded. \textbf{Stop}.
+
+        Increase $x_k = t$ while reducing $x_B$
+        to increase the objective value, i.e., maximize $t$ subject to
+        $x_B = b - A_k t$ and $x \geq \mathbb 0$.
+        That is,
+        $t = \min\{\frac{b_i}{A_{ik}} : A_{ik} > 0\}$
+  \item Pick a leaving variable $x_\ell$.
+
+        Let $x_\ell$ be the index used for the minimum
+        above. Then, $x_\ell = 0$ after setting $x_k = t$ making $x_\ell$
+        non-basic.
+
+        Repeat step 2 with the new basis
+        $B = B \cup \{k\} \setminus\{\ell\}$
+\end{enumerate}
+
+\begin{example}
+  Maximize $(0,2,1,0,0,0)x$ such that
+  $x \geq \mathbb 0$ and
+  \[\mqty(\mqty{1&-1&1\\-2&1&0\\0&1&-2}&\mqty{\imat{3}})x = \mqty(5\\3\\5)\]
+\end{example}
+\begin{sol}
+  Perform simplex:
+  \begin{enumerate}
+    \item Entering variable $x_2$ since $c_2 = 2 > 0$
+
+          Set $x_2 = t = \min\{-,\frac{3}{1},\frac{5}{1}\} = 3$
+
+          Leaving variable is $x_5$, new basis $B = \{2,4,6\}$
+
+          New canonical form $\max(4,0,1,0,-2,0)x + 6$ with
+          $x \geq \mathbb 0$ and
+          \[\mqty(-2&1&0&0&1&0\\-1&0&1&1&1&0\\2&0&2&0&-1&1)x = \mqty(3\\8\\2)\]
+
+    \item Entering variable $x_1$.
+          Set $x_1 = t = \min\{-,-,\frac{2}{2}\}=1$.
+
+          Leaving variable $x_6$. New basis $B = \{1,2,4\}$
+
+          New canonical form $\max(0,0,5,0,0,-2)x + 10$ with
+          $x \geq \mathbb 0$ and
+          \[\mqty(1&0&-1&0&-\frac12&\frac12\\0&1&-2&0&0&1\\0&0&0&1&\frac12&\frac12)x = \mqty(1\\5\\9)\]
+
+    \item Entering variable $x_3$.
+          Set $x_3 = t = \min\{-,-,-\} = \infty$.
+          No bound on $t$, so this LP is unbounded.
+  \end{enumerate}
+  \lecture{June 1}
+  Iteration 3 entered $x_3$, and $A_3 \leq 0$.
+  Then, $t$ had no bounds, so the LP is unbounded.
+  Find a certificate of unboundedness:
+
+  Current basic feasible solution: $\bar x = (1,5,0,9,0,0)\trans$
+
+  Set $x_3 = t$.
+  New solution is $x(t) = (1+t,5+2t,t,9,0,0)\trans = \bar x + td$
+  where $d = (1,2,1,0,0,0)\trans$.
+
+  Then, $x(t)$ is feasible for all $t \geq 0$ and
+  $c\trans x(t) = 5t - 10 \to \infty$.
+  This is all we need to show that $(\bar x, t)$
+  form a certificate of unboundedness.
+\end{sol}
+
+
+Recall: simplex iterates over feasible bases to optimize one variable
+at a time and set coefficients to zero, eventually finding an optimal
+solution or showing unboundedness
+
+Does simplex always terminate? Intuitively it should, since each
+iteration increases the objective value. However, this is not true in
+general
+
+\begin{defn}[degenerate iteration]
+  Iteration where the objective value is held constant.
+  That is, only the basis is changed.
+\end{defn}
+
+\begin{example}
+  Maximize $(1,0,0,0)x$ subject to $x \geq \mathbb0$
+  and $\mqty(3&2&1&0\\1&1&0&1)x = (0,2)\trans$.
+
+  The start basis is clearly $\{1,4\}$
+  The only entering variable is $x_1$. Let $t = x_1$ and
+  $t = \min\{\frac21,\frac03\} = 0$
+  We pick $x_4$ for a leaving variable, giving $B' = \{1,4\}$,
+  which is the same.
+\end{example}
+
+\begin{defn}[cycling]
+  Repeating bases with the same basic feasible solution.
+\end{defn}
+
+This happens when there is a series of degenerate iterations that repeat bases already used.
+Bland's Rule, when applied, prevents cycling and guarantees simplex terminates.
+That is, when there is a choice for the entering or leaving variable,
+pick the one with the lowest index.
+
+\paragraph{\term{Tableau method} \rm (easier to perform by hand)}
+Use a matrix to encode the entire state of the algorithm, allowing
+row reductions to replace taking inverses
+
+\begin{example}
+  Maximize $z = (3,-2,0,0,0)x+0$ subject to
+  $x \geq \mathbb0$ and
+  \[\mqty(\mqty{4&-1\\3&-3\\-2&2}&\mqty{\imat{3}})x = \mqty(8\\9\\1)\]
+\end{example}
+\begin{sol}
+  Create a tableau
+  $\qty(\begin{array}{c|c|c}1 & -c& \bar z \\ \hline \mathbb0 & A & B\end{array}) = \qty(\begin{array}{c|ccccc|c}1&-3&2&0&0&0&0 \\\hline 0&4&-1&1&0&0&8 \\ 0&3&-3&0&1&0&9 \\ 0&-2&2&0&0&1&1 \end{array})$
+
+  Entering variable: look for negative coefficient in objective row
+  $x_k$ (in this case $x_1$)
+
+  Leaving variable: look at ratio between $b$ and $A_k$ to find
+  row with $x_\ell$ (in this case $A^1$)
+
+  Take the entry in column of $x_k$ and the row of $x_\ell$
+  (in this case $A_{11}$).
+  Use row operations to make it 1 and the rest of the column 0.
+
+  In this case $\frac14R_2$, $R_1 + 3R_2$, $R_3 - 3R_2$,
+  $R_4 + 2R_2$, to yield
+  $\qty(\begin{array}{c|ccccc|c}1&0&\frac54&\frac34&0&0&6 \\\hline 0&1&-\frac14&\frac14&0&0&2 \\ 0&0&-\frac94&-\frac34&1&0&3 \\ 0&0&\frac32&\frac12&0&1&5 \end{array})$
+
+  Since top row is all positive, this means that $c$ is all
+  negative, so we have an optimal solution with optimal
+  objective value 6
+\end{sol}
+
+Since tableau method involves iterative dividing of decimals,
+computers will lose precision after each iteration. With canonical
+form, calculations are always done from the original LP, so no
+compounded error.
+
+If no obvious basic feasible solution to start simplex, do two-stage
+simplex.
+
+\section{Two-phase simplex}
+
+Main idea: Form an auxiliary LP with an obvious BFS, then solve with simplex to
+help find a BFS or prove that no BFS exists
+\begin{itemize}[nosep]
+  \item Negate constraints with negative right-hand sides
+  \item Arbitrarily add auxiliary variables to append an identity matrix
+        to $A$
+  \item Apply simplex to the new LP: there is a solution to the original
+        LP if and only if this LP has solutions with the auxiliary
+        variables set to zero
+\end{itemize}
+
+\begin{example}
+  Maximize $(-3,2,0,0,0)x$ subject to
+  $x \geq \mathbb0$ and
+  \[\mqty(\mqty{-1&1\\-1&-2\\0&1}&\mqty{\imat{3}})x = \mqty(-1\\-4\\4)\]
+\end{example}
+\begin{sol}
+  Notice that $B = \{3,4,5\}$ is a basis.
+  However, the trivial basic solution $(0,0,-1,-4,4)\trans$ is not feasible.
+
+  Negate constraints to get
+  $\mqty(\mqty{1&-1&-1&0&0\\1&2&0&-1&0\\0&1&0&0&1})x = \mqty(1\\4\\4)$.
+
+  Add auxiliary variables to get
+  $\mqty(\mqty{1&-1&-1&0&0\\1&2&0&-1&0\\0&1&0&0&1}&\mqty{\imat{3}})x = \mqty(1\\4\\4)$.
+
+  This LP has a BFS $(0,0,0,0,0,1,4,4)\trans$.
+
+  \lecture{June 6}
+  Start with $B = \{6,7,8\}$ with BFS
+  $\bar x = (0,0,0,0,0,1,4,4)\trans$.
+
+  Minimize the sum of auxiliary variables:
+  $\min{(0,0,0,0,0,1,1,1)x}$ subject to same constraints.
+
+  Same as saying $\max{(0,0,0,0,0,-1,-1,-1)x}$, which we can solve
+  with simplex.
+
+  If optimal value is 0, then auxiliary variables must be 0.
+  If optimal value is negative, no feasible solution exists.
+
+  Based on canonical form, multiply constraint on left by $(1,1,1)$
+  to get $(2,1,-1,-1,1,1,1,1)x-9=0$.
+
+  Add to objective function to get new objective function
+  $(2,1,-1,-1,1,0,0,0)x-9$.
+
+  Run simplex to get basis $\{1,3,5\}$ and BFS
+  $(4,0,3,0,4,0,0,0)\trans$.
+
+  Now that we have a BFS $(4,0,3,0,4)\trans$, run simplex.
+\end{sol}
+
+If auxiliary LP does not have a solution, then $y = A_B^{-T}x_B$ is
+a certificate of infeasibility for the original LP.
+
+Optimal solution must exist: it is feasible by construction and not
+unbounded because the objective value cannot exceed 0.
+
+Therefore, two-phase simplex will always work.
+
+\section{Geometry of simplex}
+Consider $\max{(1,1)x}$ subject to
+$x \geq \mathbb0$ and $\mqty(1&0\\0&1\\2&1)x \leq \mqty(4\\3\\4)$.
+
+Equivalently, $\max{(1,1,0,0,0)x}$ subject to $x \geq \mathbb0$ and
+$\mqty(\mqty{\imat2\\2&1}&\mqty{\imat3})x = \mqty(4\\3\\4)$.
+
+Equalities define lines, inequalities define halfspaces:
+\lecture{June 8}
+\begin{itemize}[noitemsep]
+  \item Non-negativity bounds $(x_1, x_2) \in \R^2$ to the first quadrant.
+  \item Constraints bound $x_1 \leq 4$, $x_2 \leq 3$, and $x_1 + 2x_2 \leq 8$.
+\end{itemize}
+All feasible solutions are thus contained in the convex polygon bounded by
+$(0,0)$, $(0,3)$, $(2,3)$, $(4,2)$, $(4,0)$.
+
+Consider contours of the objective function $x_1 + x_2 = k$ starting at $k=0$.
+Imagine dragging the objective function line ``up'' along the normal
+vector $(1,1)\trans$ maintaining the slope.
+Last point $(4,2)\trans$ which touches the highest contour $k=6$ is
+the optimal solution.
+
+Notice that $(4,2)\trans$ is generated by $x_1=4$ and $x_1 + 2x_2 = 8$,
+i.e., setting constraints (1) and (3) to equality.
+Then, in SEF, $(4,2)\trans \mapsto (4,2,0,1,0)\trans$ is a BFS.
+
+Likewise, consider the extreme point $(4,0)\trans$
+generated by $x_1 = 4$ and $x_2 = 0$, i.e.,
+constraints (1) and (5) to equality.
+In SEF, $(4,0)\trans \mapsto (4,0,0,3,4)\trans$ which is a BFS.
+
+We can make some observations.
+
+\begin{defn}[boundary]
+  A point $p \in S$ is on the \term*{boundary of $S$}
+  if every open neighbourhood of $p$
+  contains a point in $S$ and a point not in $S$.
+\end{defn}
+
+\begin{remark}
+  Optimal solutions must always be on the boundary.
+\end{remark}
+
+\begin{defn}[tight constraint]
+  An inequality satisfied with equality by a feasible solution $\bar x$.
+\end{defn}
+
+\begin{theorem}
+  If an optimal solution exists and the rows of $A$ are linearly independent,
+  then there is at least one optimal ``corner''.
+\end{theorem}
+\begin{prf}
+  Setting inequality to equality means setting a slack variable in SEF to 0.
+  Every corner point is defined by $n$ linear equalities in $\R^n$,
+  i.e., $n$ (or more) tight constraints.
+  Therefore, a corner point's canonical form solution will have
+  $n$ slack variables set to zero, creating a BFS.
+\end{prf}
+
+Geometrically, simplex walks along extreme points (BFSs) until it finds an optimal solution.
+Two-phase simplex is required when the origin is not available as a corner to start from.
+Each iteration picks an adjacent extreme point,
+because it swaps one tight constraint for another one and maintains the other $n-1$ constraints.
+
+\begin{defn}[degenerate]
+  $\bar x$ with more than $n$ tight constraints, i.e., some basic variables are 0.
+\end{defn}
+
+This means an iteration may bounce endlessly between degenerate BFSs.
+Degenerate iterations are avoided by Bland's rule.
+
+Finally, simplex requires that the feasible region be convex.
+It always is because it is the convex hull generated by the extreme points.
+
+\lecture{June 13}
+
+Formalize some basic geometric ideas from last lecture.
+
+\begin{defn*}[geometry]
+  A \term{hyperplane} is an equation of the form $a\trans x = \beta$ with
+  \term{normal vector} $a$.
+
+  A \term{halfspace} is an inequality of the form $a\trans x \leq \beta$
+  with \term*{normal vector} $a$. Note: the halfspace is always on the
+  opposite side of the normal vector.
+
+  A \term{polyhedron} is a set of points
+  $\{x \in \R^n : Ax \leq b\}$, i.e., the intersection of $m$
+  halfspaces for a polytope with $m$ facets.
+\end{defn*}
+
+\begin{defn}[convexity]
+  Subset $S \subseteq \R^n$ such that for all
+  $x^1, x^2 \in S$ and $\lambda \in [0,1]$,
+  $\lambda x^1 + (1-\lambda)x^2 \in S$.
+  This expression is a \term{convex combination}.
+\end{defn}
+
+\begin{prop}
+  A halfspce is convex.
+\end{prop}
+\begin{prf}
+  Let $H = \{x \in \R^n : a\trans x \leq \beta\}$ be a halfspace and $x^1, x^2 \in H$.
+  Then, with arbitrary $\lambda \in [0,1]$, let $x = \lambda x^1 + (1-\lambda)x^2$.
+
+  We have $a\trans x = \lambda a\trans x^1 + (1-\lambda) a\trans x^2$.
+  But since $x^1, x^2 \in H$, we get
+  $a\trans x \leq \lambda \beta + (1-\lambda)\beta = \beta$ as desired.
+\end{prf}
+
+\begin{prop}
+  The intersection of convex sets is convex.
+\end{prop}
+\begin{prf}
+  If two points are in the intersection, they are in each convex set.
+  The line segment joining them is then also in each convex set,
+  meaning it is in the intersection.
+\end{prf}
+
+\begin{corollary}
+  A polyhedron is convex.
+\end{corollary}
+
+\begin{defn}[extreme point]
+  Point $\bar x \in C$ a convex set such that $x$ is not
+  a convex combination of two distinct points in $C$ distinct from $\bar x$.
+\end{defn}
+
+\lecture{June 15}
+
+\begin{theorem}[characterization of extreme points in polyhedra]\label{thm:xp-r}
+  For $\bar x \in P = \{x \in \R^n : Ax \leq b\}$ a polyhedron
+  where $A^=x = b^=$ is the set of tight constraints for $\bar x$,
+  $\bar x$ is an extreme point of $P$ if and only if $\rank(A^=) = n$.
+\end{theorem}
+\begin{prf}
+  Proceed by the contrapositive.
+
+  ($\Larr$) Suppose $\bar x$ is not an extreme point.
+  Then, there exist distinct $x^1, x^2 \in P$ such that
+  $\bar x = \lambda x^2 + (1-\lambda)x^2$ for some $0 < \lambda < 1$.
+
+  We have
+  \[ A^= \bar x = A^=(\lambda x^1 + (1-\lambda)x^2) = \lambda(A^= x^1) + (1-\lambda)(A^= x^2) \leq b^=. \]
+  That is, there is equality throughout the line $A^= x^1 = A^= x^2 = b^=$.
+
+  Then, since $A^= x = b^=$ has at least three solutions $(x^1, x^2, \bar x)$,
+  we cannot have $\rank(A^=) = n$.
+
+  ($\Rarr$) Suppose $\rank(A^=) < n$.
+  Then, there exists non-zero $d$ such that $A^= d = \mathbb 0$.
+
+  Let $x^1 = \bar x + \varepsilon d$ and $x^2 = \bar x - \varepsilon d$
+  for some small positive $\varepsilon$.
+  By construction, $\bar x$ is properly contained in the line segment from $x^1$ to $x^2$.
+
+  Then, we can write
+  \[ A^= x^1 = A^=(\bar x + \varepsilon d) = A^= \bar x + \varepsilon A^= d = A^= \bar x = b^= \]
+  which means $x^1$ (and likewise $x^2$) satisfy the tight constraints.
+
+  For other non-tight constraints $a\trans x \leq \beta$, we have
+  \[ a\trans \bar x + \varepsilon(a\trans d) < \beta + \varepsilon(a\trans d) \leq \beta \]
+  for sufficiently small $\varepsilon$.
+  Therefore, $x^1$ and $x^2$ are in $P$ and $\bar x$ is not an extreme point.
+\end{prf}
+
+\begin{theorem}[characterization of extreme points in SEF]
+  Let $P = \{x \in \R^n : Ax = b, x \geq \mathbb0\}$
+  where $A$ has full row rank and let $\bar x \in P$.
+
+  Then, $\bar x$ is an extreme point of $P$ if and only if
+  $\bar x$ is a BFS of $Ax = b$.
+\end{theorem}
+\begin{prf}
+  Construct a polyhedron
+  $\qty(\begin{array}{c}A \\\hline -A \\\hline -I\end{array})x
+    \leq \qty(\begin{array}{c}b \\\hline -b \\\hline \zero\end{array})x$.
+
+  Suppose $A\bar x = b$.
+  By \cref{thm:xp-r}, $\bar x$ and extreme point if and only if
+  the tight constraints have rank $n$.
+  The top two submatrices are always tight,
+  so we automatically get rank at least $m$.
+  We need at least $n-m$ tight constraints in $-I\bar x \leq \mathbb0$.
+  That is, $n-m$ entries of $\bar x$ are zero.
+  
+  Then, $\bar x$ is a basic feasible solution
+  with $m$ basic variables and $n-m$ non-basic variables.
+\end{prf}
