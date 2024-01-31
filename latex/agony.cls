@@ -206,6 +206,7 @@
 % Functions
 \DeclareMathOperator{\sgn}{sgn}
 \DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\id}{id}
 \DeclareMathOperator{\lcm}{lcm}
 \DeclareMathOperator{\cis}{cis}
 

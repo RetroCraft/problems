@@ -1224,8 +1224,68 @@ but it's \emph{probably} preimage resistant.
 In fact, the Flame malware used a forged MD5-based Microsoft certificate
 created using an improved version of Wang's attack.
 
+\lecture{Jan 31}
+For another example of why this is a problem,
+consider the fact that Crowdmark uses MD5 hashes to verify
+that a submitted file is the same (in case of an upload error).
+A student could change their answer and submit the ``same''
+file after looking at the solutions after the deadline.
+
 The SHA family of functions are designed by the NSA.
 Wang (our recurring character) attacked SHA (1993) to 39 bits and SHA-1 (1994) to 63 bits.
+The SHA-2 family, a variable-length output version of SHA-1, has no known weaknesses.
+The 224-, 256-, 384-, and 512-bit lengths are chosen so that the security levels
+(against VW collision finding) line up with the security levels of
+Triple-DES, AES-128, AES-192, and AES-256.
+
+\begin{scheme}[SHA-256]
+  SHA-256 is an iterated hash function with block length $r=512$,
+  hash length $n = 256$, and compression function $f : \bits{256+512}\to\bits{256}$.
+
+  The design principles are classified, so we can treat it as a black box.
+
+  Define $h_1,\dotsc,h_8$ as the fractional parts of the
+  square roots of the first eight primes
+  and $y_0,\dotsc,y_{63}$ as the fractional parts of the
+  cube roots of the first 64 primes.
+  Finally, let
+  \begin{align*}
+    f(A,B,C) & = AB \xor \overline{BC}                                                         & g(A,B,C) & = AB \xor AC \xor BC                                                            \\
+    r_1(A)   & = (A \hookrightarrow 2) \xor (A \hookrightarrow 13) \xor (A \hookrightarrow 22) & r_2(A)   & = (A \hookrightarrow 6) \xor (A \hookrightarrow 11) \xor (A \hookrightarrow 25) \\
+    r_3(A)   & = (A \hookrightarrow 7) \xor (A \hookrightarrow 18) \xor (A \gg 3)              & r_4(A)   & = (A \hookrightarrow 17) \xor (A \hookrightarrow 19) \xor (A \gg 10)
+  \end{align*}
+  To find the hash of a $b$-bit message $x$ made of 32-bit words $x_0,x_1\dotsc$:
+  \begin{algorithmic}[1]
+    \State pad $x$ with 1 followed by 0s until the bitlength is $-64 \pmod{512}$.
+    \State append a 64-bit representation of $b \pmod{2^{64}}$
+    \State initialize $(H_1,\dotsc,H_8) \gets (h_1,\dotsc,h_8)$
+    \For{$i = 0,\dotsc,m-1$}
+      \State $X_j \gets x_{16i+j}$ \textbf{for} $0 \leq j \leq 15$
+      \Comment{copy $i$\xth 16-word block into temp storage}
+      \State $X_j \gets r_4(X_{j-2}) + X_{j-7} + r_3(X_{j-15}) + X_{j-16}$ \textbf{for} $16 \leq j \leq 63$
+      \Comment{expand $X$ to 64 words}
+      \State $(A,B,\dotsc,G,H) \gets (H_1,H_2,\dotsc,H_7,H_8)$
+      \Comment{initialize working variables}
+      \For{$j = 0,\dotsc,63$}
+        \Comment{weird random shuffling}
+        \State $T_1 \gets H + r_2(E) + f(E,F,G) + y_j + X_j$
+        \State $T_2 \gets r_1(A) + g(A,B,C)$
+        \State $(H,G,F,E,D,C,B,A) \gets (F,G,E,D+T_1,C,B,A,T_1+T_2)$
+      \EndFor
+      \State $(H_1,\dotsc,H_8) \gets (H_1 + A,\dotsc,H_8 + H)$
+      \Comment{update working variables}
+    \EndFor
+    \State \Return{$H_1 \concat H_2 \concat \dotsb \concat H_8$}
+  \end{algorithmic}
+\end{scheme}
+
+It would be very profitable to crack SHA-256 since it is used to
+verify proof of work for Bitcoin mining.
+Finding messages with arbitrary numbers of 0s at the starts of hashes would print money.
+
+Just to be sure Wang can't come back and break SHA-2 (since it is still a Merkle design).
+SHA-3 (Keecak, based on ``sponge construction'') was selected in 2012,
+but nobody really uses it because SHA-256 is still better.
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
