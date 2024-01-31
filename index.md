@@ -190,6 +190,14 @@ My [lecture notes](./CS341/notes.pdf){:.l#CS341--Notes--James} are available, ta
 
 [Lecture notes](./CS480/notes.pdf){:.l#CS480--Notes--James}, updated after each lecture.
 
+#### CS 886 (W2024) <small>Advanced Topics in Artificial Intelligence</small>
+
+On the topic of "diffusion models for generation, inference and optimization".
+[Seminar notes](./CS886/audit.pdf){:.l#CS886--Notes--James}
+from my audit of the course.
+I am _very_ not qualified to understand what's going on,
+so these are really just a personal, public commitment to trying to learn.
+
 ### Math
 
 #### MATH 135 (F2020) <small>Algebra for Honours Mathematics</small>

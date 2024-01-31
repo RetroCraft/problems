@@ -798,8 +798,6 @@ is a nightmare, so we need a better way.
 In general, bifurcation theory is the study of how a family of curves
 can change when a defining parameter is changed.
 
-\section{Quadratic family}
-
 Consider the \term{quadratic family}:
 \[ Q_C(x) = x^2 + C \]
 defined by the parameter $C \in \R$.
@@ -852,6 +850,406 @@ and if $C = -\frac34$, $Q'_C(p_-) = -1$.
           \end{enumerate}
   \end{enumerate}
 \end{theorem}
+
+\lecture{Jan 24}
+
+\begin{defn}[bifurcation]
+  We say a family of functions $F_\lambda(x)$ undergoes a \term*{bifurcation at $\lambda_0$}
+  if there is a change in fixed point structure at $\lambda_0$.
+\end{defn}
+
+\begin{example}
+  The quadratic family $Q_C(x) = x^2 + C$ undergoes a bifurcation at $\lambda_0 = \frac14$.
+\end{example}
+
+\begin{defn}[tangent bifurcation]
+  A family $F_\lambda(x)$ undergoes a \term*{tangent bifurcation at $\lambda_0$}
+  if there is an open interval $I$ and an $\varepsilon>0$ such that:
+  \begin{enumerate}[nosep]
+    \item for $\lambda_0-\varepsilon<\lambda<\lambda_0$, $F_\lambda(x)$ has no fixed points on $I$;
+    \item for $\lambda = \lambda_0$, $F_\lambda(x)$ has one fixed point and it is neutral; and
+    \item for $\lambda_0<\lambda<\lambda_0+\varepsilon$, $F_\lambda(x)$ has two fixed points in $I$,
+          one of which is attracting and the other repelling.
+  \end{enumerate}
+  (or with all inequalities flipped)
+\end{defn}
+
+Visually, you have situations like
+\begin{center}
+  TODO: graphs
+\end{center}
+for $\lambda<\lambda_0$, $\lambda = \lambda_0$, and $\lambda > \lambda_0$.
+
+\begin{example}
+  Consider the exponential family $E_\lambda(x) = e^x + \lambda$ at $\lambda_0=-1$.
+\end{example}
+
+This is a tangent bifurcation.
+
+\begin{example}
+  $F_\lambda(x) = \lambda x(1-x), \lambda_0 = 1$
+\end{example}
+
+Here, we have two fixed points on one side of $\lambda_0$
+and one fixed point on the other.
+So this is a bifurcation but not a tangent bifurcation.
+
+\chapter{Cantor set}
+
+Recall the quadratic family $Q_C(x) = x^2+C$ for $C < -2$.
+Then, $p_+ = \frac{1+\sqrt{1-4C}}{2} > 2$ and $-p_+ < -2$.
+Consider the interval/region $I = [-p_+,p_+]$ and $I\times I$.
+
+Draw the picture of \textcolor{green!70!black}{$y=x$},
+\textcolor{blue}{$y=Q_C(x)$}, and the box \textcolor{red}{$I \times I$}:
+\begin{center}
+  \begin{tikzpicture}
+    \begin{axis}[domain=-4:4,xmin=-4,xmax=4,ymin=-4,ymax=4,hide axis]
+      \addplot[green!70!black] {x};
+      \addplot[blue] {x^2-3};
+      \addplot[domain=-0.835:0.835,violet,ultra thick] {x^2-3};
+      \draw[red] (2.303,2.303) rectangle (-2.303,-2.303);
+    \end{axis}
+  \end{tikzpicture}
+\end{center}
+Let \textcolor{violet}{$J_1 \subseteq I$} be the interval such that $Q_C(x) \not\in I$ for all $x \in J_1$.
+
+For $x \in J_1$, $Q_C^n(x) \to \infty$.
+Moreover, if there exists $n$ such that $Q_C^n(x) \in J_1$,
+then $Q_C^n(x) \to \infty$.
+
+Consider the set of points $\Lambda = \{x \in I : \forall n, Q_C^n(x) \in I\}$
+with ``interesting'' orbits staying inside $I$.
+
+Now, let $J_2 = \{x \in I : Q_C(x) \in J_1\} = \{x \in I : Q_C^2(x) \not\in I\}$
+and define higher $J_n$ likewise.
+
+Then, $\Lambda = I \setminus (J_1 \cup J_2 \cup \dotsb)$
+is a \term*{Cantor set}, that is, a fractal. {\tiny (roll credits!)}
+
+Drawing $\Lambda$ on the $x$-axis, we get something that looks like
+\begin{center}
+  \begin{tikzpicture}
+    \draw[|-|] (0,0) -- (9,0);
+    \draw[(-)] (3,0) -- node[below] {$J_1$} (6,0);
+    \draw[(-)] (1,0) -- node[below] {$J_2$} (2,0);
+    \draw[(-)] (7,0) -- node[below] {$J_2$} (8,0);
+    \draw[(-)] (0.33,0) -- node[below] {$J_3$} (0.67,0);
+    \draw[(-)] (2.33,0) -- node[below] {$J_3$} (2.67,0);
+    \draw[(-)] (6.33,0) -- node[below] {$J_3$} (6.67,0);
+    \draw[(-)] (8.33,0) -- node[below] {$J_3$} (8.67,0);
+  \end{tikzpicture}
+\end{center}
+
+\textrule{$\downarrow$ Lecture 9 adapted from Imaad $\downarrow$}
+\lecture{Jan 26}
+
+\begin{defn*}[Cantor middle thirds set]
+  Let $C_0 = [0,1]$. Remove the open middle third interval each time.
+
+  That is, $C_1 = [0,\frac13] \cup [\frac23,1]$,
+  $C_2 = [0,\frac19] \cup [\frac29,\frac13] \cup [\frac23,\frac79] \cup [\frac89,1]$,
+  and so on.
+
+  The set $K = \bigcap_{n=1}^\infty C_n$ is the \term[Cantor set]{Cantor (middle thirds) set}.
+\end{defn*}
+
+\begin{prop}
+  Suppose a bunch of sets $A_n \subseteq \R$ are closed.
+  Then, $\bigcap A_n$ is also closed.
+\end{prop}
+\begin{prf}
+  Let $(a_k) \subseteq \cap A_n$ where $(a_k) \to a$.
+
+  Note that for all $n$, $(a_k) \subseteq A_n \implies a \in A_n \implies a \in \bigcap A_n$
+\end{prf}
+
+\begin{prop}
+  Let $A,B \subseteq \R$ be closed.
+  Then, $A \cup B$ is closed.
+\end{prop}
+\begin{prf}
+  Let $(a_n) \subseteq A \cup B$ where $a_n \to a$.
+
+  \WLOG, $\{n : a_n \in A\}$ is infinite.
+  This allows us to construct $(b_n) \subseteq A$ such that $b_n \to a$.
+
+  Since $A$ is closed, $a \in A \subseteq A \cup B$.
+\end{prf}
+
+\begin{theorem}[Cantor sets are closed]
+  Any Cantor set, in particular $K$, is closed.
+\end{theorem}
+
+\begin{theorem}
+  $K$ contains no non-empty open intervals.
+\end{theorem}
+\begin{prf}
+  Consider $I \subseteq K$. Then $\forall n, I \subseteq C_n$.
+  Then $\ell(I) \leq \frac{1}{3^n} \implies \ell(I)=0 \implies I=\varnothing$, contradiction.
+
+\end{prf}
+
+Now, let's consider the base-3 expansion of $x \in [0,1]$.
+$x=0.s_1s_2s_3, \cdots, s_i \in \{0, 1, 2\}$
+
+Consider $\underbrace{[0,1/3]}_{s_1=0}$ and $\underbrace{[2/3, 1]}_{s_1=2}$ and
+$\underbrace{[0, 1/9]}_{s_1=0, s_2=0} \ [2/9, 1/3] \ [2/3, 7/9] \ [8/9, 1]$.
+
+\begin{remark}
+  $x \in K$ if and only if $x$ can be written in base 3 using only 0s and 2s
+\end{remark}
+
+\begin{example}
+  $\frac{1}{3} \in K$. $\frac{1}{3} = 0.1_3 = 0.02222\dots_3$
+\end{example}
+
+\begin{theorem}
+  $K$ is uncountable and $\abs{K} = \abs{\R}$.
+\end{theorem}
+
+\textrule{$\uparrow$ Lecture 9 adapted from Imaad $\uparrow$}
+
+\chapter{Symbolic dynamics}
+\lecture{Jan 29}
+
+Recall the construction of the Cantor set from the quadratic family:
+\begin{quote}
+  Fix $C < -2$ and consider $Q_C(x) = x^2 + C$.
+  Define an interval $I = [-p_+,p_+]$
+  for a fixed point $p_+ = \frac{1+\sqrt{1-4C}}{2}$.
+  Then, let
+  \begin{align*}
+    J_1 & = \{x \in I : Q_C(x) \not\in I\} \\
+    J_2 & = \{x \in I : Q_C(x) \in J_1\}   \\
+    J_3 & = \{x \in I : Q_C(x) \in J_2\}   \\
+        & \vdotswithin{=}
+  \end{align*}
+  and define $\Lambda = I \setminus (\bigcup J_i) = \{x \in I : \forall n, Q^n_C(x) \in I\}$.
+\end{quote}
+We proceed to do some analysis of $\Lambda$ by translating into
+some sort of sequence space, doing analysis, and then going back to the Cantor set.
+
+\begin{notation}
+  Define closed intervals $I_0 \cup I_1 := I \setminus J_1$ on the left/right of $J_1$:
+  \begin{center}
+    \begin{tikzpicture}
+      \draw[|-|] (0,0) -- (9,0);
+      \draw[(-)] (3,0) -- node[below] {$J_1$} (6,0);
+      \draw[{[-]}] (0,0) -- node[below] {$I_0$} (3,0);
+      \draw[{[-]}] (6,0) -- node[below] {$I_1$} (9,0);
+    \end{tikzpicture}
+  \end{center}
+\end{notation}
+
+\begin{defn}
+  For $x \in \Lambda$, the \term{itinerary} of $x$ is
+  the sequence $S(x) = (x_0x_1x_2x_3\cdots)$ with $x_i \in \{0,1\}$
+  where $x_i = 0 \iff Q_C^i(x) \in I_0$
+  and $x_i = 1 \iff Q_C^i(x) \in I_1$.
+\end{defn}
+
+Our goal is to understand $S(x)$ better so that we can glean information about $\Lambda$.
+
+\begin{notation}
+  Let $\Sigma = \{(x_0x_1x_2\cdots) : x_i \in \{0,1\}\}$ be the sequence space.
+  Write elements of $\Sigma$ as binary strings.
+  Then, $S : \Lambda \to \Sigma$ is a function.
+\end{notation}
+
+It would be helpful to define some PMATH 351/topology shit.
+
+\section{Intro to topology}
+
+\begin{defn}[metric space]
+  Let $X$ be a set.
+  A function $d : X \times X \to [0,\infty)$ is a \term{metric} if
+  \begin{enumerate}[nosep]
+    \item $d(x,y) = 0 \iff x = y$ (positive definiteness),
+    \item $d(x,y) = d(y,x)$ (symmetry), and
+    \item $d(x,y) \leq d(x,z) + d(z,y)$ (triangle inequality).
+  \end{enumerate}
+  The pair $(X,d)$ is a \term{metric space}.
+\end{defn}
+
+Once we have a metric space with a notion $d$ of distance,
+we can adapt all our definitions from real analysis to an abstract space.
+
+\begin{example}
+  The following are all metrics:
+  \begin{itemize}
+    \item $X = \R$, $d(x,y) = \abs{x-y}$
+    \item $X = \R^n$, $d(\vb x, \vb y) = \sqrt{(x_1-y_1)^2 + \dotsb + (x_n-y_n)^2}$
+    \item For any set $X$, the discrete metric $d(x,y) = [x\neq y]$
+          (but is not particularly useful).
+    \item For a subset $A \subseteq R$, $d(x,y) = \abs{x-y}$ is a metric.
+  \end{itemize}
+\end{example}
+
+Extremely helpfully, we can define a metric on the sequence space.
+
+\begin{defn}[Cantor space]
+  Let $X = \Sigma$.
+  Define $d(x,y) = \sum_{i=0}^\infty 2^{-i}\abs{x_i-y_i}$.
+
+  This is well-defined (converges) since $\abs{x_i-y_i} \leq 1$ and $\sum 2^{-i}$ converges.
+\end{defn}
+
+\begin{example}
+  Let $x = (1111\cdots)$ and $y = (1010\cdots)$.
+  Calculate $d(x,y)$.
+\end{example}
+\begin{sol}
+  By definition,
+  \begin{align*}
+    d(x,y) & = \sum_{i=0}^\infty \frac{x_i-y_i}{2^i}                                                \\
+           & = \sum_{i=0}^\infty \frac{1}{2^{2i+1}} \tag{even indices cancel}                       \\
+           & = \frac12\sum_{i=0}^\infty \frac{1}{4^i}                                               \\
+           & = \frac12\qty(\frac{1}{1-\frac14}) = \frac12\qty(\frac43) = \frac46 = \frac23 \qedhere
+  \end{align*}
+\end{sol}
+
+We don't want to do this manual calculation every time.
+
+\begin{prop}\label{prop:bsd}
+  Let $x,y \in \Sigma$.
+  \begin{enumerate}[nosep]
+    \item If $x_i = y_i$ for $i \leq n$, then $d(x,y) \leq \frac{1}{2^n}$.
+    \item If $d(x,y) < \frac{1}{2^n}$, then $x_i = y_i$ for $i \leq n$.
+  \end{enumerate}
+\end{prop}
+\begin{prf}
+  Suppose $x_i = y_i$ for $i \leq n$.
+  Then, $d(x,y) \leq \sum_{k=n+1}^\infty \frac{1}{2^k}$
+  since the first $n$ terms will be 0 and $\abs{x_i-y_i} \leq 1$.
+  That is, $d(x,y) \leq \frac{1/2^{n+1}}{1-\frac12} = \frac{1}{2^n}$.
+
+  Conversely, suppose $d(x,y) < \frac{1}{2^n}$
+  and for a contradiction that there exists $k \leq n$ where $x_k \neq y_k$.
+  Then, there will be a $\frac{1}{2^k}$ term in the sum,
+  so $d(x,y) \geq \frac{1}{2^k} \geq \frac{1}{2^n}$. Contradiction.
+\end{prf}
+
+\begin{example}
+  Let $x = (0000\cdots)$ and $y = (1000\cdots)$.
+  Then, the distance is $\frac{1}{2^0} = 1$.
+  However, $x_0 \neq y_0$.
+\end{example}
+
+\begin{defn}[shift map]
+  The map $\sigma : \Sigma \to \Sigma : (x_0x_1x_2\cdots) \mapsto (x_1x_2x_3\cdots)$
+  that shifts a bitstring one bit to the left.
+\end{defn}
+
+\begin{remark}
+  $\sigma^k(x_0x_1x_2\cdots) = x_k x_{k+1}x_{k+2} \cdots$
+\end{remark}
+
+\lecture{Jan 31}
+\begin{defn*}[continuity in metric spaces]
+  Suppose $(X,d)$ and $(Y,d')$ are (possibly distinct) metric spaces.
+
+  A function $f : X \to Y$ is \term[metric space!continuity]{continuous at $y \in X$}
+  if for all $\varepsilon > 0$, there exists a $\delta > 0$
+  such that for all $x \in X$,
+  \[ d(x,y) < \delta \implies d'(f(x),f(y)) < \varepsilon \]
+
+  We say $f$ is \term*{continuous} if it is continuous at every $y \in X$
+\end{defn*}
+
+\begin{prop}
+  The shift map $\sigma : \Sigma \to \Sigma$ is continuous.
+\end{prop}
+\begin{prf}
+  Fix $y = (y_0y_1y_2\cdots) \in \Sigma$ and let $\varepsilon > 0$.
+  Take $n \in \N$ such that $\frac{1}{2^n} < \varepsilon$.
+
+  Consider $\delta = \frac{1}{2^{n+1}}$.
+  Let $x = (x_0x_1x_2\cdots) \in \Sigma$ such that $d(x,y) < \delta$.
+
+  Therefore, by \cref{prop:bsd}, $x_i = y_i$ for $i = 0,1,\dotsc,n+1$.
+  Then, $\sigma(x) = (x_1x_2x_3\cdots)$ and $\sigma(y) = (y_1y_2y_3\cdots)$
+  agree for the first $n$ terms.
+
+  Again by \cref{prop:bsd}, $d(\sigma(x),\sigma(y)) \leq \frac{1}{2^n} < \varepsilon$.
+\end{prf}
+
+\begin{defn*}[convergence in metric spaces]
+  Let $(X,d)$ be a metric space, $(x_n) \subseteq X$, and $x \in X$.
+
+  We say $(x_n)$ \term[metric space!convergence]{converges to $x$}
+  ($x_n \to x$) if for all $\varepsilon > 0$, there exists $N \in \N$
+  such that \[ n \geq N \implies d(x_n,x) < \varepsilon. \]
+\end{defn*}
+
+\begin{prop}[sequential characterization of continuity in metric spaces]
+  Let $(X,d)$ and $(Y,d')$ be metric spaces and $f : X \to Y$.
+  Then, $f$ is continuous if and only if $f(x_n) \to f(x)$
+  whenever $x_n \to x$.
+\end{prop}
+
+\begin{defn}[homeomorphism]
+  Let $(X,d)$ and $(Y,d')$ be metric spaces.
+  A function $f : X \to Y$ is a \term{homeomorphism} if
+  \begin{enumerate}[nosep]
+    \item $f$ is injective,
+    \item $f$ is surjective,
+    \item $f$ is continuous, and
+    \item $f^{-1}$ is continuous.
+  \end{enumerate}
+\end{defn}
+
+Suppose $f : X \to Y$ is a homeomorphism.
+Then, if $(x_n) \subseteq X$ with $x_n \to x$,
+then $f(x_n) \to f(x)$.
+
+Likewise, suppose $(y_n) \subseteq Y$ with $y_n \to y$.
+Say $y_n = f(x_n)$ and $y = f(x)$.
+Then, $f(x_n) \to f(x)$,
+so $f^{-1}(f(x_n)) \to f^{-1}(f(x))$
+and $x_n \to x$.
+
+That is, $f$ is a \emph{relabelling} of $X$ to $Y$.
+We think of $X$ and $Y$ as the ``same metric space''.
+
+\section{Revisiting the itinerary}
+
+\begin{remark}
+  Suppose we have $x \in \Lambda$ with $S(x) = (x_0x_1\cdots)$.
+  Then, by definition, $x \in I_{x_0}$, $Q_c(x) \in I_{x_1}$, $Q_c^2(x) \in I_{x_2}$, etc.
+  Therefore, $S(Q_c(x)) = (x_1x_2\cdots) = \sigma(S(x))$.
+
+  Iterating, $S(Q_c^n(x)) = \sigma^n(x)$.
+\end{remark}
+
+\begin{theorem}
+  $S: \Lambda \to \Sigma$ is a homeomorphism.
+\end{theorem}
+
+We will prove this with some more tools. Recall from MATH 137:
+
+\begin{theorem}[monotone convergence theorem]\label{thm:mct}
+  If $(a_n) \subseteq \R$ is increasing/decreasing and bounded,
+  then $(a_n)$ converges.
+\end{theorem}
+
+Instead of using this directly, we use a lemma:
+
+\begin{lemma}[nested intervals lemma]\label{lem:nil}
+  If $I_1 \supseteq I_2 \supseteq I_3 \supseteq \cdots$ are closed intervals,
+  then $\bigcap_{i=1}^\infty I_n \neq \varnothing$.
+\end{lemma}
+\begin{prf}
+  Let $I_k = [a_k, b_k]$.
+
+  That is, $[a_1,b_1] \supseteq [a_2,b_2] \supseteq [a_3,b_3] \cdots$.
+
+  Then, $(a_n)$ is increasing and $(a_n) \subseteq [a_1,b_1]$.
+  Likewise, $(b_n)$ is decreasing and $(b_n) \subseteq [a_1,b_1]$.
+  By the \nameref{thm:mct}, $a_n \to a$ and $b_n \to b$ for some limit points $a$ and $b$.
+
+  Therefore (handwavey), $\varnothing \neq [a,b] \subseteq \bigcap_{n=1}^\infty I_n$.
+\end{prf}
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}

@@ -627,38 +627,39 @@ Then, the KL divergence
 	\]
 	Now,
 	\begin{align*}
-		&\dv{t} \operatorname{KL}(p_t \parallel q_t) \\
-		  =& \int \frac{dp_t}{t} \cdot \log\frac{p_t}{q_t} \dd{x}
+		  & \dv{t} \operatorname{KL}(p_t \parallel q_t)          \\
+		= & \int \frac{dp_t}{t} \cdot \log\frac{p_t}{q_t} \dd{x}
 		+ \cancel{\int p_t \cdot \frac{\partial_t p_t}{p_t} \dd{x}}
 		- \int p_t\frac{\partial_t q_t}{q_t}\dd{x}               \\
 		= & \int \Delta p_t \cdot \log p_t \dd{x}
-		- \int \Delta p_t \log q_t \dd{x} 
+		- \int \Delta p_t \log q_t \dd{x}
 		- \int p_t \frac{\Delta q_t}{q_t} \dd{x}
 	\end{align*}
-	The first term 
+	The first term
 	\[
 		\int \Delta p_t \cdot \log p_t \dd{x}
 		= \ip{\Delta p_t}{\log p_t} = \ip{p_t\frac{\Delta p_t}{p_t}}{\log p_t} = -\int p_t\norm{\vb s_{p_t}}^2 \dd{x}
 	\]
 	and the second term
 	\[
-		\int \Delta p_t \log q_t \dd{x} = -\int p_t\ev{\vb s_{p_t}, \vb s_{q_t}}
+		-\int \Delta p_t \log q_t \dd{x} = \int p_t\ev{\vb s_{p_t}, \vb s_{q_t}} \dd{x}
 	\]
 	and the third term
 	\begin{align*}
-		\int p_t \frac{\Delta q_t}{q_t} \dd{x} 
-		& = \ip{\frac{p_t}{q_t}}{\Delta q_t} \\
-		& = -\ip{\nabla\frac{p_t}{q_t}}{\nabla q_t} \\
-		& = -\int \frac{\nabla p_t \cdot q_t - p_t \cdot \nabla q_t}{q_t^2} \cdot \nabla q_t \\
-		% some shit happens
-		& = -\int \ev{\vb s_{p_t}, \vb s_{q_t}} \cdot p_t - p_t \norm{\vb s_{q_t}}^2
+		-\int p_t \frac{\Delta q_t}{q_t} \dd{x}
+		 & = -\ip{\frac{p_t}{q_t}}{\Delta q_t}                                                            \\
+		 & = \ip{\nabla\frac{p_t}{q_t}}{\nabla q_t}                                                       \\
+		 & = \int \frac{\nabla p_t \cdot q_t - p_t \cdot \nabla q_t}{q_t^2} \cdot \nabla q_t \dd{x}       \\
+		 & = \int \frac{\nabla p_t}{p_t}\cdot\frac{\nabla q_t}{q_t} p_t - p_t \norm{\vb s_{q_t}}^2 \dd{x} \\
+		 & = \int \ev{\vb s_{p_t}, \vb s_{q_t}} \cdot p_t - p_t \norm{\vb s_{q_t}}^2 \dd{x}
 	\end{align*}
 	Then, we have
 	\begin{align*}
 		-\int p_t\norm{\vb s_{p_t}}^2 \dd{x}
 		+ 2\int p_t\ev{\vb s_{p_t}, \vb s_{q_t}} \dd{x}
-		+ \int p_t \norm{\vb s_{q_t}}^2 \dd{x}
-		= \int \norm{\vb s_{p_t} - \vb s_{q_t}}^2 \dd{x}
+		- \int p_t \norm{\vb s_{q_t}}^2 \dd{x}
+		= -\int p_t\norm{\vb s_{p_t} - \vb s_{q_t}}^2 \dd{x}
+		= -F(p_t \parallel q_t)
 	\end{align*}
 	as desired.
 \end{prf}
@@ -677,7 +678,7 @@ Let $p_t := (T_t^{-1})_\# p$ and $q_t := (T_t)_\#q$.
 We can build $p_t$ as the change in variables formula
 $p_t(x) = p(T_t x) \cdot \abs{\det T_t'(x)}$.
 
-To train, we want to minimize KL-divergence 
+To train, we want to minimize KL-divergence
 \begin{align*}
 	\min_{T_t} \KL(q \parallel p_t) = \min_{T_t} \int q \log\frac{q}{p_t}
 	= \min_{T_t} -\int q \cdot \log p_t \approx \max_{T_t} \sum_i \log p_t \x_i
