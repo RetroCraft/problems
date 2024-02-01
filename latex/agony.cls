@@ -146,7 +146,7 @@
 
 % Links
 \usepackage{imakeidx,bookmark,hyperref}
-\RequirePackage[capitalise]{cleveref}
+\RequirePackage{cleveref}
 \hypersetup{
   colorlinks,
   linkcolor=RoyalBlue,

@@ -1,4 +1,7 @@
 \documentclass[class=cs480,notes,tikz]{agony}
+\counterwithin{equation}{section}
+\renewcommand{\theequation}{\thesection.\alph{equation}}
+\creflabelformat{equation}{#2\textup{#1}#3}
 
 \title{CS 480/680 Winter 2024: Lecture Notes}
 \begin{document}
@@ -406,7 +409,7 @@ If we redefine $\y'_i = \frac{\y_i+1}{2}$, i.e., $\y' \in \{\pm1\}$,
 then we get the \term{logistic loss}
 \[ \min_{\w} \sum_{i=1}^n \log[1+\exp(-\y'_i\ip{\x}{\w})] \]
 There is no closed form solution for this problem,
-so we use the gradient descent algorithm (covered in lecture 8).
+so we use the gradient descent algorithm (covered in \cref{ch:gd}).
 
 Suppose we have found an optimal $\w$.
 Then, we can set $\hat y = 1 \iff p(\x;\w) = \Pr[\Y=1\mid\vv X=\x] > \frac12$.
@@ -546,10 +549,10 @@ use a non-linear mapping $\x \xto{\phi} \phi(\x)$
 to transform non-linearly separable data $\x$
 into linearly separable $\phi(\x)$.
 After applying the unknown non-linear mapping, we get
-\[ \min_{\symbf\alpha\geq0} {-\sum_i \alpha_i} + \frac12 \sum_i\sum_j \alpha_i\alpha_j\y_i\y_j\boxed{\ip{\phi(\x_i)}{\phi(\x_j)}} \qq{s.t.} \sum_i \alpha_i\y_i = 0 \]
+\[ \min_{\symbf\alpha\geq0} {-\sum_i \alpha_i} + \frac12 \sum_i\sum_j \alpha_i\alpha_j\y_i\y_j\textcolor{blue}{\ip{\phi(\x_i)}{\phi(\x_j)}} \qq{s.t.} \sum_i \alpha_i\y_i = 0 \]
 which we can find \emph{without explicitly applying $\phi$}
-by using the ``kernel trick'' from lecture 7,
-writing the inner product directly as a non-linear function.
+by using the ``kernel trick'' from \cref{ch:kernel},
+writing the \textcolor{blue}{inner product} directly as a non-linear function.
 
 \section{Soft-Margin SVM}
 \lecture{Jan 30}
@@ -575,13 +578,13 @@ and including failures in the objective function.
 In general, notate $x^+$ to mean $\max\{x,0\}$.
 
 Now, we can formulate the soft-margin SVM as
-\[
+\begin{equation}\label{eq:ssvm}
   \boxed{
-  \min_{\w,b} \textcolor{blue}{\frac12\norm{\w}^2_2}
-  + \textcolor{orange}{C} \cdot \textcolor{red}{\sum_i(1-\y_i\hat y_i)^+}
-  \qq{s.t.} \hat y_i = \ip{\x_i}{\w}+b
+    \min_{\w,b} \textcolor{blue}{\frac12\norm{\w}^2_2}
+    + \textcolor{orange}{C} \cdot \textcolor{red}{\sum_i(1-\y_i\hat y_i)^+}
+    \qq{s.t.} \hat y_i = \ip{\x_i}{\w}+b
   }
-\]
+\end{equation}
 (\textcolor{blue}{margin maximization}, \textcolor{orange}{regularization hyperparameter}, \textcolor{red}{error penalty}).
 Notice that the hard-margin SVM is the limiting behaviour
 of the soft-margin SVM as $C \to \infty$.
@@ -667,12 +670,168 @@ and substitute into $\Loss(\alpha)$:
    & = -\frac12\norm{\sum_i \alpha_i \y_i \x_i}^2_2 + \sum_i \alpha_i
 \end{align*}
 Switching from max to min and expanding the norm, we get
-\[
+\begin{equation}\label{eq:ssvmd}
   \boxed{
     \min_{0 \leq \symbf{\alpha} \leq C}
+    -\sum_i \alpha_i +
     \frac12 \sum_i \sum_j \alpha_i \alpha_j y_i y_j \ip{\x_i}{\x_j}
+    \qq{s.t.}
+    \sum_i \alpha_i \y_i = 0
   }
-\]
+\end{equation}
 which is identical to the hard-margin SVM dual with an upper bound $C$ on $\symbf\alpha$.
+
+\lecture{Feb 1}
+
+Suppose we solve the dual (\cref{eq:ssvmd}) with optimal solution $\symbf\alpha^*$.
+Then,
+\begin{equation}\label{eq:ssvmw}
+  \w^* = \sum \alpha^*_i \y_i \x_i.
+\end{equation}
+If we have a point on $H_{\pm 1}$, i.e., $\y\hat y = 1$,
+we can recover $b^*$ as $\y - \ip{\x}{\w^*}$.
+
+\paragraph{Training by gradient descent}
+Suppose we have a minimization problem $\min_{\x} f(\x)$.
+Then, to make a guess $\x$ better, set $\x \gets \x - \eta \cdot \nabla_{\x} f(\x)$
+for some \term{learning rate} $\eta > 0$.
+
+Given the problem
+\[
+  \min_{\w,b} \frac{1}{2\lambda} \norm{\w}_2^2 + \frac1n \sum_i \ell(\y_i\hat y_i)
+  \qq{where}
+  \hat y_i = \ip{\x_i,\w} + b
+\]
+with loss function $\ell$, the gradient descent steps are
+\begin{align*}
+  \w & \gets \w - \eta \cdot \nabla_{\w}\qty(\frac{1}{2\lambda} \norm{\w}_2^2 + \frac1n \sum_i \ell(\y_i\hat y_i)) \\
+     & = \w - \eta \qty[\frac{\w}{\lambda} + \frac1n \sum_i \ell'(\y_i\hat y_i)\y_i\x_i]                           \\
+  b  & \gets b - \eta \cdot \nabla_b\qty(\frac{1}{2\lambda} \norm{\w}_2^2 + \frac1n \sum_i \ell(\y_i\hat y_i))     \\
+     & = b - \eta \qty[\frac1n\sum_i \ell'(\y_i \hat y_i)\y_i]
+\end{align*}
+because $\nabla_{\w} \ell(\y_i\hat y_i) = \ell'(\y_i\hat y_i)\cdot\y_i\nabla_{\w}(\hat y_i) = \ell'(\y_i\hat y_i)\y_i\x_i$
+and $\nabla_b \ell(\y_i\hat y_i) = \ell'(\y_i\hat y_i)\cdot\y_i \nabla_b(\hat y_i) = \ell'(\y_i\hat y_i)\cdot \y_i$.
+
+\section{Reproducing Kernels}\label{ch:kernel}
+\newcommand{\phix}[1]{\mqty[\vec{#1#1\trans} \\ \sqrt{2}#1 \\ 1]}
+
+We have dealt with data that is perfectly linearly separable (hard-margin SVM)
+and mostly linearly separable (soft-margin SVM).
+
+\begin{problem}
+  How can we use our existing techniques to classify
+  a fully non-linearly separable dataset?
+\end{problem}
+
+In the linear classifier, we used an affine function $\ip{\w}{\x}+b$.
+Now, we define a quadratic classifier.
+
+\begin{defn}[quadratic classifier]
+  A function $f : \R^d \to \R^d$ of the form $f(\x) = \ip{\x}{Q\x} + \sqrt{2}\ip{\x}{\p} + b$
+  where the weights to be learned are $Q \in \R^{d\times d}$, $\p \in \R^d$, and $b \in \R$.
+\end{defn}
+
+Recall from linear algebra that for all $A$, $B$, $C$, $\ip{AB}{C} = \ip{B}{A\trans C}$
+and $\ip{A}{BC} = \ip{AB\trans}{C}$.
+
+\begin{defn}[matrix vectorization]
+  Given a matrix $\vb{A} \in \R^{m\times n}$,
+  let $\vec{\vb{A}} \in \R^{mn}$ be its vectorization.
+  That is,
+  \[
+    \vb A = \mqty[a_{11} & a_{12} & \cdots & a_{1n} \\ a_{21} & a_{22} & \cdots & a_{2n} \\ \vdots & \vdots & \ddots & \vdots \\ a_{m1} & a_{m2} & \cdots & a_{mn}]
+    \implies
+    \vec{\vb A} = \mqty[a_{11} \\ a_{12} \\ \vdots \\ a_{1n} \\ \vdots \\ a_{mn}]
+  \]
+\end{defn}
+
+Then, we can write the quadratic classifier as:
+\begin{align*}
+  f(\x) & =  \ip{\x}{Q\x} + \sqrt{2}\ip{\x}{\p} + b       \\
+        & =  \ip{\x\x\trans}{Q} + \ip{\sqrt{2}\x}{\p} + b \\
+        & = \ip{\phix{\x}}{\bmqty{\vec{Q}                 \\\p\\b}}
+\end{align*}
+If we write $\phi(\x) = (\vec{\x\x\trans}, \sqrt{2}\x, 1)\trans$
+and $\w = (\vec{Q}, \p, b)\trans$,
+then we can write $f$ as
+\[ f(\x) = \ip{\phi(\x)}{\w} \]
+but this really blows up the dimension to $\R^{d^2+d+1}$.
+Recall that in the dual forms of SVM,
+all we need is to know the inner product $\ip{\phi(\x)}{\phi(\w)}$.
+With our new $\phi$, we get
+\begin{align*}
+  k(\x,\z) := \ip{\phi(\x)}{\phi(\z)}
+   & = \ip{\phix{\x}}{\phix{\z}}                                             \\
+   & = \ip{\vec{\x\x\trans}}{\vec{\z\z\trans}} + \ip{\sqrt2\x}{\sqrt2\z} + 1 \\
+   & = \ip{\x}{\z}^2 + 2\ip{\x}{\z} + 1                                      \\
+   & = (\ip{\x}{\z} + 1)^2
+\end{align*}
+
+This process is easily reproducable for a given $\phi$.
+What about the other direction?
+
+\begin{defn}[reproducing kernel]
+  We call $k : \mathcal{X} \times \mathcal{X} \to \R$
+  a \term{reproducing kernel} if there exists some $\phi : \mathcal{X} \to \mathcal{H}$
+  so that $\ip{\phi(\x)}{\phi(\z)} = k(\x,\z)$.
+\end{defn}
+
+\begin{remark}
+  When such a kernel exists, it may not be unique.
+
+  For example, the kernels $\phi(\x) = [x_1^2,\sqrt2 x_1x_2,x_2^2] \in \R^3$
+  and $\psi(\x) = [x_1^2,x_1x_2,x_1x_2,x_2^2] \in \R^4$
+  have the same inner product $\ip{\phi(\x)}{\phi(\z)} = \ip{\psi(\x)}{\psi(\z)}$.
+\end{remark}
+
+\begin{theorem}[Mercer's theorem]
+  $k : \mathcal{X} \times \mathcal{X} \to \R$ is a kernel if and only if
+  for any $n \in \N$ and any $\x_1,\dotsc,\x_n \in \mathcal{X}$,
+  the \term{kernel matrix} $K_{ij} := k(\x_i,\x_j)$ is symmetric and positive semi-definite.
+\end{theorem}
+
+Recall from linear algebra: $K$ is \term{symmetric} if $K_{ij} = K_{ji}$ for all indices,
+and \term{positive semi-definite} if $\ip{\symbf\alpha}{K\symbf\alpha} \geq 0$ for all vectors $\symbf\alpha$.
+
+The proof is extremely convoluted and well beyond the scope of the course.
+
+\begin{example}
+  The following are kernels:
+  \begin{itemize}
+    \item the polynomial kernel $k(\x,\z) = (\ip{\x}{\z} + 1)^p$ for hyperparameter $p$,
+    \item the Gaussian kernel $k(\x,\z) = \exp(-\norm{\x-\z}_2^2/\sigma)$ for hyperparameter $\sigma$, and
+    \item the Laplace kernel $k(\x,\z) = \exp(-\norm{\x-\z}_2/\sigma)$ for hyperparameter $\sigma$
+  \end{itemize}
+\end{example}
+
+Now, we can substitute our expression for the inner product to \cref{eq:ssvm,eq:ssvmd},
+the primal and dual of the soft-margin SVM:
+\begin{gather*}
+  \min_{\w,b} \frac12\norm{\w}_2^2 + C\cdot\sum_i(1-\y_i\hat y_i)^+
+  \qq{s.t.} \hat y_i = \ip{\phi(\x_i)}{\w} \\
+  \min_{0 \leq \symbf{\alpha} \leq C}
+  -\sum_i \alpha_i + \frac12 \sum_i \sum_j \alpha_i \alpha_j y_i y_j k(\x_i,\x_j)
+  \qq{s.t.} \sum_i \alpha_i \y_i = 0
+\end{gather*}
+
+Once we solve $\symbf\alpha^*$, we can try to recover $\w^*$ as in \cref{eq:ssvmw}
+\[ \w^* = \sum \alpha_i^*\y_i \phi(\x_i) \]
+but this will not work since we do not know $\phi$ explicitly.
+Instead, we only need to compute the score function
+\begin{align*}
+  f(\x) & := \ip{\phi(\x)}{\w^*}                          \\
+        & = \ip{\phi(\x)}{\sum \alpha_i^*\y_i \phi(\x_i)} \\
+        & = \sum \alpha_i^*\y_i \ip{\phi(\x)}{\phi(\x_i)} \\
+        & = \sum \alpha_i^*\y_i k(\x,\x_i)
+\end{align*}
+and return $\sgn(f(\x))$.
+
+\section{Gradient Descent}\label{ch:gd}
+
+% \chapter{Neural Networks}
+
+% \chapter{Modern Machine Learning}
+
+% \chapter{Trustworthy Machine Learning}
 
 \end{document}
