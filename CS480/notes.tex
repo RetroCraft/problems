@@ -58,43 +58,43 @@ training, prediction, and evaluation.
 
 \begin{defn}[dataset]
   A \term{dataset} consists of a list of \term[feature]{features}
-  $\vb x_1,\dotsc, \vb x_n, \vb x_1', \dotsc, \vb x_m' \in \R^d$
+  $\x_1,\dotsc, \x_n, \x_1', \dotsc, \x_m' \in \R^d$
   which are $d$-dimensional vectors and a label vector $\vb y\trans \in \R^n$.
 
-  Each \term{training sample} $\vb x_i$ is associated with a \term{label} $y_i$.
-  A \term{test sample} $\vb x'_i$ may or may not be labelled.
+  Each \term{training sample} $\x_i$ is associated with a \term{label} $y_i$.
+  A \term{test sample} $\x'_i$ may or may not be labelled.
 \end{defn}
 
 \begin{example}[email filtering]
   Suppose we have a list $D$ of $d$ English words.
 
-  Define the training set $X = [\vb x_1,\dotsc,\vb x_n] \in \R^{d\times n}$ and $\vb y = [y_1,\dotsc,y_n] \in \{\pm1\}^n$
-  such that $\vb x_{ij} = 1$ if the word $j \in D$ appears in email $i$
+  Define the training set $X = [\x_1,\dotsc,\x_n] \in \R^{d\times n}$ and $\vb y = [y_1,\dotsc,y_n] \in \{\pm1\}^n$
+  such that $\x_{ij} = 1$ if the word $j \in D$ appears in email $i$
   (this is the \term{bag-of-words representation}):
 
   \begin{center}
     \begin{tabular}{cCCCCCC|C}
-              & \vb x_1 & \vb x_2 & \vb x_3 & \vb x_4 & \vb x_5 & \vb x_6 & \vb x' \\ \hline
-      and     & 1       & 0       & 0       & 1       & 1       & 1       & 1      \\
-      viagra  & 1       & 0       & 1       & 0       & 0       & 0       & 1      \\
-      the     & 0       & 1       & 1       & 0       & 1       & 1       & 0      \\
-      of      & 1       & 1       & 0       & 1       & 0       & 1       & 0      \\
-      nigeria & 1       & 0       & 0       & 0       & 1       & 0       & 0      \\ \hline
-      $y$     & +       & -       & +       & -       & +       & -       & ?
+              & \x_1 & \x_2 & \x_3 & \x_4 & \x_5 & \x_6 & \x' \\ \hline
+      and     & 1    & 0    & 0    & 1    & 1    & 1    & 1   \\
+      viagra  & 1    & 0    & 1    & 0    & 0    & 0    & 1   \\
+      the     & 0    & 1    & 1    & 0    & 1    & 1    & 0   \\
+      of      & 1    & 1    & 0    & 1    & 0    & 1    & 0   \\
+      nigeria & 1    & 0    & 0    & 0    & 1    & 0    & 0   \\ \hline
+      $y$     & +    & -    & +    & -    & +    & -    & ?
     \end{tabular}
   \end{center}
 
-  Then, given a new email $\vb x'_1$, we must determine if it is spam or not.
+  Then, given a new email $\x'_1$, we must determine if it is spam or not.
 \end{example}
 
 \begin{example}[OR dataset]
   We want to train the OR function:
   \begin{center}
     \begin{tabular}{cCCCC}
-          & \vb x_1 & \vb x_2 & \vb x_3 & \vb x_4 \\ \hline
-          & 0       & 1       & 0       & 1       \\
-          & 0       & 0       & 1       & 1       \\ \hline
-      $y$ & -       & +       & +       & +
+          & \x_1 & \x_2 & \x_3 & \x_4 \\ \hline
+          & 0    & 1    & 0    & 1    \\
+          & 0    & 0    & 1    & 1    \\ \hline
+      $y$ & -    & +    & +    & +
     \end{tabular}
   \end{center}
   This can be represented graphically by finding a line dividing the points:
@@ -118,37 +118,37 @@ training, prediction, and evaluation.
   is the sum of the element-wise product $\sum_j a_j b_j$.
 
   A \term{linear function} is a function $f : \R^d \to \R^d$
-  such that for all $\alpha,\beta \in \R$, $\vb x, \vb z \in \R^d$,
-  $f(\alpha\vb x + \beta\vb z) = \alpha f(\vb x) + \beta f(\vb z)$.
+  such that for all $\alpha,\beta \in \R$, $\x, \vb z \in \R^d$,
+  $f(\alpha\x + \beta\vb z) = \alpha f(\x) + \beta f(\vb z)$.
 \end{defn}
 \begin{theorem}[linear duality]
-  A function is linear if and only if there exists $\vb w \in \R^d$
-  such that $f(\vb x) = \ip{\vb x}{\vb w}$.
+  A function is linear if and only if there exists $\w \in \R^d$
+  such that $f(\x) = \ip{\x}{\w}$.
 \end{theorem}
 \begin{prf}
   ($\Rarr$) Suppose $f$ is linear.
-  Let $\vb w := [f(\vb e_1), \dotsc, f(\vb e_d)]$
+  Let $\w := [f(\vb e_1), \dotsc, f(\vb e_d)]$
   where $\vb e_i$ are coordinate vectors. Then:
   \begin{align*}
-    f(\vb x) & = f(x_1\vb e_1 + \dotsb + x_d \vb e_d)     \\
-             & = x_1 f(\vb e_1) + \dotsb + x_d f(\vb e_d) \\
-             & = \ip{\vb x}{\vb w}
+    f(\x) & = f(x_1\vb e_1 + \dotsb + x_d \vb e_d)     \\
+          & = x_1 f(\vb e_1) + \dotsb + x_d f(\vb e_d) \\
+          & = \ip{\x}{\w}
   \end{align*}
   by linearity of $f$.
 
-  ($\Larr$) Suppose there exists $\vb w$ such that $f(\vb x) = \ip{\vb x}{\vb w}$.
+  ($\Larr$) Suppose there exists $\w$ such that $f(\x) = \ip{\x}{\w}$.
   Then: \begin{align*}
-    f(\alpha\vb x + \beta\vb z)
-     & = \ip{\alpha\vb x+\beta\vb z,\vb w}                \\
-     & = \alpha\ip{\vb x}{\vb w} + \beta\ip{\vb x}{\vb w} \\
-     & = \alpha f(\vb x) + \beta f(\vb z)
+    f(\alpha\x + \beta\vb z)
+     & = \ip{\alpha\x+\beta\vb z,\w}          \\
+     & = \alpha\ip{\x}{\w} + \beta\ip{\x}{\w} \\
+     & = \alpha f(\x) + \beta f(\vb z)
   \end{align*}
   since inner products are linear in the first argument.
 \end{prf}
 
 \begin{defn}[affine function]
-  A function $f(\vb x)$ where there exist $\vb w \in \R^d$
-  and \term{bias} $b \in \R$ such that $f(\vb x) = \ip{\vb x}{\vb w} + b$.
+  A function $f(\x)$ where there exist $\w \in \R^d$
+  and \term{bias} $b \in \R$ such that $f(\x) = \ip{\x}{\w} + b$.
 \end{defn}
 
 \begin{defn}[sign function]
@@ -162,10 +162,10 @@ training, prediction, and evaluation.
 \end{defn}
 
 \begin{defn}[linear classifier]
-  $\hat y = \sgn(\ip{\vb x}{\vb w} + b)$
+  $\hat y = \sgn(\ip{\x}{\w} + b)$
 \end{defn}
 
-The parameters $\vb w$ and $b$ will uniquely determine the linear classifier.
+The parameters $\w$ and $b$ will uniquely determine the linear classifier.
 
 \begin{example}[geometric interpretation]
   We can interpret $\hat y > 0$ as a halfspace (see CO 250).
@@ -186,21 +186,21 @@ The parameters $\vb w$ and $b$ will uniquely determine the linear classifier.
         \addplot[ForestGreen, mark=*] coordinates {(0,1)};
         \addplot[ForestGreen, mark=*] coordinates {(1,0)};
         \addplot[ForestGreen, mark=*] coordinates {(1,1)};
-        \draw[line width=2pt,blue,-stealth](0,0)--(0.75,0.5) node[anchor=south west]{$\vb w$};
+        \draw[line width=2pt,blue,-stealth](0,0)--(0.75,0.5) node[anchor=south west]{$\w$};
       \end{axis}
     \end{tikzpicture}
   \end{center}
 \end{example}
 
 \begin{prop}
-  The vector $\vb w$ is orthogonal to the decision boundary $H$.
+  The vector $\w$ is orthogonal to the decision boundary $H$.
 \end{prop}
 \begin{prf}
-  Let $\vb x, \vb x' \in H$ be vectors on the boundary $H = \{x : \ip{\vb w}{\vb x} + b = 0\}$.
-  Then, we must show $\vb x' - \vb x = \overrightarrow{\vb{xx'}} \perp \vb w$.
+  Let $\x, \x' \in H$ be vectors on the boundary $H = \{x : \ip{\w}{\x} + b = 0\}$.
+  Then, we must show $\x' - \x = \overrightarrow{\vb{xx'}} \perp \w$.
 
-  We can calculate $\ip{\vb w}{\vb x' - \vb x}
-    = \ip{\vb w}{\vb x} - \ip{\vb w}{\vb x'}
+  We can calculate $\ip{\w}{\x' - \x}
+    = \ip{\w}{\x} - \ip{\w}{\x'}
     = -b - (-b) = 0$.
 \end{prf}
 
@@ -210,46 +210,177 @@ He was (obviously) wrong.
 \begin{algorithm}[H]
   \caption{Training Perceptron}
   \begin{algorithmic}
-    \Require Dataset $(\vb x_i, y_i) \in \R^d \times \{\pm 1\}$,
-    initialization $\vb w_0 \in \R^d$, $b_0 \in \R$.
-    \Ensure $\vb w$ and $b$ for linear classifier $\sgn(\ip{\vb x}{\vb w} + b)$
+    \Require Dataset $(\x_i, \y_i) \in \R^d \times \{\pm 1\}$,
+    initialization $\w_0 \in \R^d$, $b_0 \in \R$.
+    \Ensure $\w$ and $b$ for linear classifier $\sgn(\ip{\x}{\w} + b)$
     \For{$t=1,2,\dotsc$}
       \State receive index $I_t \in \{1,\dotsc,n\}$
-      \If{$y_{I_t}\qty(\ip{\vb x_{I_t}}{\vb w} + b) \leq 0$}
-        \State $\vb w \gets \vb w + y_{I_t}\vb x_{I_t}$
-        \State $b \gets b + y_{I_t}$
+      \If{$\y_{I_t}\qty(\ip{\x_{I_t}}{\w} + b) \leq 0$}
+        \State $\w \gets \w + \y_{I_t}\x_{I_t}$
+        \State $b \gets b + \y_{I_t}$
       \EndIf
     \EndFor
   \end{algorithmic}
 \end{algorithm}
 
-In a perceptron, we train by adjusting $\vb w$ and $b$
+In a perceptron, we train by adjusting $\w$ and $b$
 whenever a training data feature is classified ``wrong''
-(i.e., $\vv{score}_{\vb w,b}(\vb x) := y\hat y < 0 \iff$ the signs disagree).
+(i.e., $\vv{score}_{\w,b}(\x) := \y\hat y < 0 \iff$ the signs disagree).
 
 The perceptron solves the feasibility problem
 \begin{center}
-  Find $\vb w \in \R^d$, $b \in \R$ such that $\forall i, y_i(\ip{\vb x_i}{\vb w} + b) > 0$
+  Find $\w \in \R^d$, $b \in \R$ such that $\forall i, \y_i(\ip{\x_i}{\w} + b) > 0$
 \end{center}
 by iterating one-by-one.
 It will converge ``faster'' (with fewer $t$-iterations) if the data is ``easy''.
 
 Consider what happens when there is a ``wrong'' classification.
-Let $w_{k+1} = w_k + yx$ and $b_{k+1} = b_k + y$.
+Let $\w_{k+1} = w_k + \y\x$ and $b_{k+1} = b_k + \y$.
 Then, the updated score is:
 \begin{align*}
-  \vv{score}_{\vb w_{k+1},b_{k+1}}(\vb x)
-   & = y \cdot (\ip{\vb x}{\vb w_{k+1}} + b_{k+1})                                                                 \\
-   & = y \cdot (\ip{\vb x}{\vb w_k + y\vb x} + b_k + y)                                                            \\
-   & = y \cdot (\ip{\vb x}{\vb w_k} + b_k) + \ip{\vb x}{\vb x} + 1                                                 \\
-   & = y \cdot (\ip{\vb x}{\vb w_k} + b_k) + \underbrace{\norm{\vb x}_2^2 + 1}_{\mathclap{\text{always positive}}}
+  \vv{score}_{\w_{k+1},b_{k+1}}(\x)
+   & = \y \cdot (\ip{\x}{\w_{k+1}} + b_{k+1})                                                              \\
+   & = \y \cdot (\ip{\x}{\w_k + \y\x} + b_k + \y)                                                          \\
+   & = \y \cdot (\ip{\x}{\w_k} + b_k) + \ip{\x}{\x} + 1                                                    \\
+   & = \y \cdot (\ip{\x}{\w_k} + b_k) + \underbrace{\norm{\x}_2^2 + 1}_{\mathclap{\text{always positive}}}
 \end{align*}
 which is always an increase over the previous ``wrong'' score.
 
 \textrule{$\downarrow$ Lectures 3 and 4 taken slides and Neysa since I was sick $\downarrow$}
 \lecture{Jan 16}
 
-TODO: ...remaining slides
+Instead of writing the affine function $\ip{\x}{\w} + b$,
+write $\ip{\x}{\w} = \ip{\mqty(\x\\1)}{\mqty(\w\\b)}$.
+
+Then, the update rule becomes $\w \gets \w + \y\x$.
+
+\begin{theorem}[convergence theorem]
+  Suppose there exists $\w^*$ such that $\y_i\ip{\x_i,\w^*} > 0$ for all $i$.
+  Assume that $\norm{\x_i}_2 \leq C$ for all $i$, and we normalize the $\w^*$
+  such that $\norm{\w^*}_2 = 1$.
+  Define the margin $\gamma := \min_i\abs{\ip{\x_i}{\w^*}}$.
+
+  Then, the perceptron algorithm converges after $C^2/\gamma^2$ mistakes.
+\end{theorem}
+\begin{prf}
+  Recall the update on the mistake $(\x,\y)$ is $\w \gets \w + \y\x$.
+
+  Then, the inner product $\ip{\w}{\w^*}$ is
+  \begin{align*}
+    \ip{\w+\y\x}{\w^*} & = \ip{\w}{\w^*} + \y\ip{\x}{\w^*}     \\
+                       & = \ip{\w}{\w^*} + \abs{\ip{\x}{\w^*}} \\
+                       & \geq \ip{\w}{\w^*} + \gamma
+  \end{align*}
+  because $\y\ip{\x}{\w^*}$ must be positive if $\w^*$ is optimal.
+  So for each update, $\ip{\w}{\w^*}$ grows by at least $\gamma > 0$.
+  That is, after $M$ updates, $\ip{\w}{\w^*} \geq M\gamma$.
+
+  Likewise, the inner product $\ip{\w}$ is
+  \begin{align*}
+    \ip{\w+\y\x} & = \ip{\w}
+    + \underbrace{2\y\ip{\w}{\x}}_{\mathclap{\text{$<0$ because an update means it's wrong}}}
+    + \overbrace{\y^2\ip{\w}}^{\mathclap{\text{$\in [0,C^2]$ by construction}}} \\
+                 & \leq \ip{\w} + C^2
+  \end{align*}
+  so each update grows $\ip{\w}$ by at most $C^2$,
+  meaning that after $M$ updates, $\ip{\w} \leq MC^2$.
+
+  Finally, recall from linear algebra that
+  $1 \geq \cos(\w,\w^*) = \frac{\ip{\w}{\w^*}}{\norm{\w}_2\norm{\w^*}_2}$.
+  Then,
+  \begin{align*}
+    1 & \geq \frac{\ip{\w}{\w^*}}{\norm{\w}_2 \cdot \norm{\w^*}_2} \\
+      & \geq \frac{M\gamma}{\sqrt{MC^2} \cdot 1}                   \\
+      & = \sqrt{M}\frac{\gamma}{C}
+  \end{align*}
+  which implies $M \leq C^2/\gamma^2$.
+\end{prf}
+
+Therefore, the larger the margin $\gamma$ is, the more linearly separable the data is,
+and the faster the perceptron algorithm will converge.
+
+\paragraph{Optimization perspective}
+We can equivalently characterize the perceptron algorithm as an optimization problem.
+Given the linear classifier $\hat y = \sgn(\ip{\w}{\x})$,
+we want to minimize the perceptron loss
+\begin{align*}
+  \ell(\w,\x_t,\y_t) & = -\y_t\ip{\w}{\x_t} \cdot \I[\text{mistake on $\x_t$}]                            \\
+                     & = -\min\{\y_t\ip{\w}{\x_t},0\}                                                     \\
+  L(\w)              & = -\frac1n \sum_{t=1}^n \qty(\y_t\ip{\w}{\x_t} \cdot \I[\text{mistake on $\x_t$}])
+\end{align*}
+Then, the gradient descent update (see \cref{ch:gd}) is
+\begin{align*}
+  \w_{t+1} & = \w_t - \eta_t \nabla_{\w} \ell(\w_t,\x_t,\y_t)             \\
+           & = \w_t + \eta_t \y_t \x_t \cdot \I[\text{mistake on $\x_t$}]
+\end{align*}
+With step size $\eta_t = 1$, we recover the update rule $\w_{t+1} = \w_t + \y_t\x_t$.
+
+\begin{remark}
+  The solution to perceptron is not unique,
+  since there are many possible lines separating the data.
+\end{remark}
+
+To pick the ``best'' line, we can maximize the margin $\gamma$.
+This leads to support vector machines (see \cref{ch:hsvm,ch:ssvm}).
+
+\begin{example}[XOR dataset]
+  Consider the XOR function
+  \begin{center}
+    \begin{tabular}{cCCCC}
+           & \x_1 & \x_2 & \x_3 & \x_4 \\ \hline
+           & 0    & 1    & 0    & 1    \\
+           & 0    & 0    & 1    & 1    \\ \hline
+      $\y$ & -    & +    & +    & +
+    \end{tabular}
+  \end{center}
+  There is no separating hyperplane.
+\end{example}
+\begin{prf}
+  Suppose there exist $\w$ and $b$ such that $\y(\ip{\x}{\w} + b) > 0$.
+  Then,
+  \begin{align*}
+    x_1 = (0,0),\y_1 = {-} & \implies b < 0                                   \\
+    x_2 = (1,0),\y_2 = {+} & \implies w_1 + b > 0                             \\
+    x_3 = (0,1),\y_3 = {+} & \implies w_1 + b > 0 \implies w_1 + w_2 + 2b > 0 \\
+    x_4 = (1,1),\y_4 = {-} & \implies w_1 + w_2 + b < 0 \implies b > 0
+  \end{align*}
+  which is a contradiction.
+\end{prf}
+
+This leads us to a theorem.
+
+\begin{theorem}
+  If there is no perfect separating hyperplane, then the perceptron algorithm cycles.
+\end{theorem}
+
+The proof is really complicated, and we will not cover it.
+
+In this case, we can allow some wrong answers by setting a reasonable
+loss $\ell$ and regularizer $\operatorname{reg}$:
+\[ \min_{\w} \hat{\E}[\ell(\y\hat y) + \operatorname{reg}(\w)] \qq{s.t.} \hat y := \ip{\x}{\w} + b \]
+
+We stop running perceptron when either:
+\begin{itemize}[nosep]
+  \item the maximum number of iterations is reached (i.e., we keep a constant $\vv{maxiter}$),
+  \item the maximum allowed runtime is reached,
+  \item the training error stops changing, or
+  \item the validation error stops decreasing.
+\end{itemize}
+
+If we have multiple classes ($c$ of them),
+we can run perceptron as either one-vs.-all or one-vs.-one.
+
+In \term{one-vs.-all perceptron}, for each class $k$,
+let it be positive, and all others be negative.
+We train weights $\vb w_k$ to get $c$ imbalanced perceptrons.
+Then, predict according to the highest score
+\[ \hat\y := \argmax_k \ip{\x}{\w_k}. \]
+
+In \term{one-vs.-one perceptron}, for each pair of classes $(k,l)$,
+let $k$ be positive, $l$ be negative, and ignore all other classes.
+Then, train weights $\w_{k,l}$ for a total of $\binom{c}{2}$ balanced perceptrons.
+We predict by majority vote
+\[ \hat\y := \argmax_k \sum_{l:l\neq k} \ip{\x}{\w_{k,l}}. \]
 
 \section{Linear Regression}
 
@@ -433,7 +564,7 @@ To train, we use the MLE again
 To predict, pick the index of the highest softmax value
 \[ \hat{\y} = \argmax_k \Pr[\Y = k \mid \vv X = \x; \W = [\w_1,\dotsc,\w_c]] \]
 
-\section{Hard-Margin Support Vector Machines}
+\section{Hard-Margin Support Vector Machines}\label{ch:hsvm}
 
 \lecture{Jan 25}
 
@@ -554,7 +685,7 @@ which we can find \emph{without explicitly applying $\phi$}
 by using the ``kernel trick'' from \cref{ch:kernel},
 writing the \textcolor{blue}{inner product} directly as a non-linear function.
 
-\section{Soft-Margin SVM}
+\section{Soft-Margin Support Vector Machines}\label{ch:ssvm}
 \lecture{Jan 30}
 
 One of the drawbacks of the hard-margin SVM is that the data must be linearly separable.
@@ -686,7 +817,7 @@ which is identical to the hard-margin SVM dual with an upper bound $C$ on $\symb
 Suppose we solve the dual (\cref{eq:ssvmd}) with optimal solution $\symbf\alpha^*$.
 Then,
 \begin{equation}\label{eq:ssvmw}
-  \w^* = \sum \alpha^*_i \y_i \x_i.
+  \w^* = \sum_i \alpha^*_i \y_i \x_i.
 \end{equation}
 If we have a point on $H_{\pm 1}$, i.e., $\y\hat y = 1$,
 we can recover $b^*$ as $\y - \ip{\x}{\w^*}$.
@@ -698,19 +829,31 @@ for some \term{learning rate} $\eta > 0$.
 
 Given the problem
 \[
-  \min_{\w,b} \frac{1}{2\lambda} \norm{\w}_2^2 + \frac1n \sum_i \ell(\y_i\hat y_i)
+  \min_{\w,b} \frac{1}{2\lambda} \norm{\w}_2^2 + C\sum_i \ell(\y_i\hat y_i)
   \qq{where}
   \hat y_i = \ip{\x_i,\w} + b
 \]
 with loss function $\ell$, the gradient descent steps are
 \begin{align*}
-  \w & \gets \w - \eta \cdot \nabla_{\w}\qty(\frac{1}{2\lambda} \norm{\w}_2^2 + \frac1n \sum_i \ell(\y_i\hat y_i)) \\
-     & = \w - \eta \qty[\frac{\w}{\lambda} + \frac1n \sum_i \ell'(\y_i\hat y_i)\y_i\x_i]                           \\
-  b  & \gets b - \eta \cdot \nabla_b\qty(\frac{1}{2\lambda} \norm{\w}_2^2 + \frac1n \sum_i \ell(\y_i\hat y_i))     \\
-     & = b - \eta \qty[\frac1n\sum_i \ell'(\y_i \hat y_i)\y_i]
+  \w & \gets \w - \eta \cdot \nabla_{\w}\qty(\frac{1}{2\lambda} \norm{\w}_2^2 + C\sum_i \ell(\y_i\hat y_i)) \\
+     & = \w - \eta \qty[\frac{\w}{\lambda} + C\sum_i \ell'(\y_i\hat y_i)\y_i\x_i]                           \\
+  b  & \gets b - \eta \cdot \nabla_b\qty(\frac{1}{2\lambda} \norm{\w}_2^2 + C\sum_i \ell(\y_i\hat y_i))     \\
+     & = b - \eta \qty[C\sum_i \ell'(\y_i \hat y_i)\y_i]
 \end{align*}
 because $\nabla_{\w} \ell(\y_i\hat y_i) = \ell'(\y_i\hat y_i)\cdot\y_i\nabla_{\w}(\hat y_i) = \ell'(\y_i\hat y_i)\y_i\x_i$
 and $\nabla_b \ell(\y_i\hat y_i) = \ell'(\y_i\hat y_i)\cdot\y_i \nabla_b(\hat y_i) = \ell'(\y_i\hat y_i)\cdot \y_i$.
+
+If $\ell$ is hinge loss, we define the derivative $\ell'(t) = \begin{cases}
+    -1 & t \leq 1 \\
+    0  & t > 1
+  \end{cases}$.
+
+If $\ell$ is perceptron loss, we define $\ell'(t) = \begin{cases}
+    -1 & t \leq 0 \\
+    0  & t > 1
+  \end{cases}$.
+
+All other common loss functions are easily differentiable.
 
 \section{Reproducing Kernels}\label{ch:kernel}
 \newcommand{\phix}[1]{\mqty[\vec{#1#1\trans} \\ \sqrt{2}#1 \\ 1]}
