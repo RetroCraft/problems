@@ -986,8 +986,8 @@ Drawing $\Lambda$ on the $x$-axis, we get something that looks like
 \end{theorem}
 \begin{prf}
   Consider $I \subseteq K$. Then $\forall n, I \subseteq C_n$.
-  Then $\ell(I) \leq \frac{1}{3^n} \implies \ell(I)=0 \implies I=\varnothing$, contradiction.
 
+  Then $\ell(I) \leq \frac{1}{3^n} \implies \ell(I)=0 \implies I=\varnothing$, contradiction.
 \end{prf}
 
 Now, let's consider the base-3 expansion of $x \in [0,1]$.
@@ -1222,7 +1222,7 @@ We think of $X$ and $Y$ as the ``same metric space''.
   Iterating, $S(Q_c^n(x)) = \sigma^n(x)$.
 \end{remark}
 
-\begin{theorem}
+\begin{theorem}\label{thm:Shom}
   $S: \Lambda \to \Sigma$ is a homeomorphism.
 \end{theorem}
 
@@ -1249,6 +1249,91 @@ Instead of using this directly, we use a lemma:
   By the \nameref{thm:mct}, $a_n \to a$ and $b_n \to b$ for some limit points $a$ and $b$.
 
   Therefore (handwavey), $\varnothing \neq [a,b] \subseteq \bigcap_{n=1}^\infty I_n$.
+\end{prf}
+
+\lecture{Feb 2}
+We will now prove \cref{thm:Shom}.
+It is true for $c < -2$, but we will show it for $c < -\frac{5+2\sqrt5}{4}$.
+
+\begin{prf}
+  (injective) Suppose $x,y \in \Lambda$ with $S(x) = S(y)$ but $x \neq y$.
+  Then, for all $n$, $Q_c^n(x)$ and $Q_c^n(y)$ live in the same $I_0$ or $I_1$.
+  Recall from Assignment 2 that for all $x \in I \setminus J_1 = I_0 \cup I_1$,
+  we have $\abs{Q_c'(x)} \geq \mu > 1$.
+  By the mean value theorem,
+  \[ \abs{Q_c(x) - Q_c(y)} \geq \mu\abs{x-y}. \]
+  Since $Q_c$ is injective on $I_0$ and $I_1$,
+  we have that $Q_c(x) \neq Q_c(y)$. Thus,
+  \begin{align*}
+    \abs{Q^2_c(x) - Q_c^2(y)} & \geq \mu^2\abs{x-y} \\
+                              & \vdotswithin{\geq}  \\
+    \abs{Q^n_c(x) - Q_c^n(y)} & \geq \mu^n\abs{x-y}
+  \end{align*}
+  Since $\mu > 1$, we have $\mu^n\abs{x-y} \to \infty$.
+  However, $\abs{Q_c^n(x) - Q_c^n(y)} \leq \max\{\ell(I_0),\ell(I_1)\}$,
+  so it cannot blow up to infinity.
+  Contradiction, so we have injectivity.
+
+  (surjective) Let $y = (y_0y_1\cdots) \in \Sigma$.
+  For $n \in \N$, define
+  \[ I_{y_0y_1\cdots y_n} := \{x \in I : x \in I_{y_0}, Q_c(x) \in I_{y_1}, \dotsc, Q_c^n(x) \in I_{y_n}\}. \]
+  It is enough to show there exists
+  \[ x \in \bigcap_{n=1}^\infty I_{y_0y_1\cdots y_n} \]
+  which would imply $S(x) = y$.
+  Clearly, by definition, $I_{y_0} \supseteq I_{y_0y_1} \supseteq I_{y_0y_1y_2} \supseteq \dotsb$
+
+  We claim that each $I_{y_0y_1\cdots y_n}$ is a closed interval.
+  Proceed by induction.
+
+  First, $I_{y_0} \in \{I_0,I_1\}$ so it is closed.
+  Assume $I_{y_0y_1\cdots y_n}$ is closed for some $n \geq 0$.
+  Note:
+  \begin{align*}
+         & x \in I_{y_0y_1\cdots y_{n+1}}                                                                                             \\
+    \iff & x \in I_{y_0}, Q_c(x) \in I_{y_1}, Q_c(Q_c(x)) \in I_{y_2}, Q_c(Q_c^2(x)) \in I_{y_3},\dotsc,Q_c(Q_c^n(x)) \in I_{y_{n+1}} \\
+    \iff & x \in I_{y_0} \cap Q_c^{-1}(I_{y_1y_2\cdots y_{n+1}}) \tag{$\star$}
+  \end{align*}
+  By the inductive hypothesis, $I_{y_1y_2\cdots y_{n+1}}$ is a closed interval (the subscript has length $n$).
+
+  We have
+  \begin{center}
+    \begin{tikzpicture}
+      \begin{axis}[domain=-4:4,xmin=-4,xmax=4,ymin=-4,ymax=4,hide axis]
+        \addplot[dotted,green!70!black] {x};
+        \addplot[dotted,blue] {x^2-3};
+        \addplot[domain=-2.303:-0.835,blue] {x^2-3} node[above,pos=0] {$I_0$};
+        \addplot[domain=0.835:2.303,blue] {x^2-3} node[above,pos=1] {$I_1$};
+        \addplot[domain=-2.121:-1.414,purple,ultra thick] {x^2-3};
+        \addplot[domain=1.414:2.121,purple,ultra thick] {x^2-3};
+        \addplot[orange] {1.5};
+        \addplot[orange] {-1};
+        \draw[red,dotted] (2.303,2.303) rectangle (-2.303,-2.303);
+        \draw[orange,decorate,decoration=brace] (-3,-1) -- node[midway,left,orange]{\rotatebox{90}{$I_{y_1y_2\cdots y_{n+1}}$}} (-3,1.5);
+      \end{axis}
+    \end{tikzpicture}
+  \end{center}
+  That is, $Q_c^{-1}(\textcolor{orange}{I_{y_1y_2\cdots y_{n+1}}})$
+  is a union of \textcolor{purple}{two disjoint closed intervals}, one in $I_0$ and one in $I_1$.
+
+  In particular, returning to ($\star$),
+  $I_{y_0y_1\cdots y_{n+1}} = I_{y_0} \cap Q_c^{-1}(I_{y_1y_2\cdots y_{n+1}})$
+  is one of these closed intervals.
+
+  By the \nameref{lem:nil}, there must exist $x \in \bigcap_{n=1}^\infty I_{y_0y_1\cdots y_n}$.
+  Hence, $S(x) = y$ and we have surjectivity.
+
+  (continuous) Fix $y \in \Lambda$ and say $S(y) = (y_0y_1y_2\cdots)$.
+  Let $\varepsilon > 0$ and choose $n$ such that $\frac{1}{2^n} < \varepsilon$.
+
+  Consider the $2^{n+1}$ disjoint, closed intervals $I_{t_0t_1\cdots t_n}$.
+
+  Pick $\delta > 0$ such that $(y-\delta,y+\delta)$ only overlaps with $I_{y_0y_1\cdots y_n}$.
+  We know $\delta$ exists since we have a finite set of disjoint closed intervals.
+
+  For $x \in \Lambda$ with $\abs{x-y} < \delta$,
+  $x \in I_{y_0y_1\cdots y_n}$ and so $d(S(x), S(y)) \leq \frac{1}{2^n} < \varepsilon$.
+
+  (continuous inverse) Similar.
 \end{prf}
 
 \pagebreak
