@@ -1,5 +1,11 @@
 \documentclass[class=co487,tikz,minted,notes]{agony}
-\declaretheorem[name=Cryptoscheme,refname={scheme,schemes},style=thmroundpink,parent=chapter]{scheme}
+\declaretheoremstyle[
+	headfont=\bfseries\color{MidnightBlue},
+	mdframed={style=mdround,linecolor=RoyalBlue,backgroundcolor=CornflowerBlue!5},
+	headpunct={\\[3pt]},
+	postheadspace={0pt}
+]{thmroundblue}
+\declaretheorem[name=Cryptoscheme,refname={scheme,schemes},style=thmroundblue,parent=chapter]{scheme}
 \declaretheorem[name=Attack,refname={attack,attacks},style=thmroundpink,sibling=scheme]{attack}
 
 \title{CO 487 Winter 2024: Lecture Notes}
@@ -134,14 +140,15 @@ For the interaction:
 And for the goal:
 \begin{itemize}[nosep]
   \item Recovering the secret key $k$
-  \item Systematically decrypt arbitrary ciphertexts without knowing $k$ (\term{total security})
-  \item Learn partial information about the plaintext (other than the length) (\term{semantic security})
+  \item Systematically decrypt arbitrary ciphertexts without knowing $k$ (\term[security!total]{total security})
+  \item Learn partial information about the plaintext (other than the length) (\term[security!semantic]{semantic security})
 \end{itemize}
 
-\begin{defn}[security]
-  An SKES is \term{secure} if it is semantically secure against a chosen-plaintext attack
+\begin{defn*}[security]
+  An SKES is \term[symmetric-key encryption scheme!security]{secure}
+  if it is semantically secure against a chosen-plaintext attack
   by a computationally bounded adversary.
-\end{defn}
+\end{defn*}
 
 Equivalently, an SKES is \term{broken} if:
 \begin{enumerate}[nosep]
@@ -1286,6 +1293,131 @@ Finding messages with arbitrary numbers of 0s at the starts of hashes would prin
 Just to be sure Wang can't come back and break SHA-2 (since it is still a Merkle design).
 SHA-3 (Keecak, based on ``sponge construction'') was selected in 2012,
 but nobody really uses it because SHA-256 is still better.
+
+\chapter{Message authentication codes}
+\lecture{Feb 2}
+
+\section{Definitions}
+
+\begin{defn}[message authentication code]
+  A family of functions $\MAC_k : \hash{n}$ paramaterized by an $\ell$-bit key $k$
+  where each function $\MAC_k$ can be efficiently computed.
+
+  The \term{MAC} or \term{tag} of a message $x$ is denoted $t = \MAC_k(x)$.
+\end{defn}
+
+We use MAC schemes to provide data integrity and origin verification.
+To do this:
+\begin{enumerate}[nosep]
+  \item Alice and Bob establish a secret key $k \in \bits{\ell}$.
+  \item Alice computes the tag $t = \MAC_k(x)$ of a message $x$ and sends $(x,t)$ to Bob.
+  \item Bob verifies that $t = \MAC_k(x)$.
+\end{enumerate}
+To avoid a \term[attack!replay]{replay attack}
+(Eve saves a copy of a message and resends it later),
+add a timestamp or sequence number.
+
+Like with encryption, we have to formulate a security definition.
+
+\begin{defn*}[MAC security]
+  A MAC scheme is \term[message authentication code!security]{secure}
+  if it is \term{existentially unforgeable} under a chosen-message attack.
+
+  That is, for chosen messages $x_i$ and their MACs $t_i$,
+  it is computationally infeasible to find with non-negligible success probability
+  a valid message-MAC pair $(x,t)$ for a new message $x$.
+\end{defn*}
+
+Realistically, the messages $x_i$ will have to be ``harmless'' messages
+that Alice is ordinarily willing to tag
+and the forgery $x$ is a ``harmful'' message that Alice would ordinarily
+be unwilling to tag.
+
+\begin{defn}
+  An \term[message authentication code!ideal]{ideal} MAC scheme
+  is one where for each key $k \in \bits{\ell}$,
+  the function $\MAC_k : \hash{n}$ is a random function.
+\end{defn}
+
+The naive generic attack is to just guess.
+
+\begin{attack}[generic attack for tags]
+  Select $y \randin \bits{n}$ and guess that $\MAC_k(x) = y$.
+  Keep guessing.
+\end{attack}
+
+Assuming an ideal scheme, the success probability is $\frac{1}{2^n}$.
+
+\begin{attack}[generic attack for keys]
+  Perform the same attack as on an SKES.
+\end{attack}
+
+Assuming an ideal scheme, the expected number of keys for which $r$ messages
+verify is $1+\vv{FK} = 1+(2^\ell -1)/2^r$.
+If $\vv{FK}$ is negligible, the expected number of operations is $2^{\ell-1}$.
+
+\section{Specific MACs}
+
+\begin{scheme}[CBC-MAC]
+  Let $E$ be an $n$-bit block cipher with key space $\bits{\ell}$.
+  We assume that plaintext messages all have lengths that are multiples of $n$.
+  To compute $\CBCMAC_k(x)$:
+  \begin{algorithmic}[1]
+    \State Divide $x$ into $n$-bit blocks $x_1,\dotsc,x_r$.
+    \State $H_1 \gets E_k(x_1)$
+    \For{$i = 2,\dotsc,r$}
+      \State $H_i \gets E_k(H_{i-1} \xor x_i)$
+    \EndFor
+    \State \Return{$H_r$}
+  \end{algorithmic}
+\end{scheme}
+
+It was proven in 1994 that CBC-MAC with fixed-length messages is secure
+if $E$ is ideal (i.e., $E_k : \bits{n} \to \bits{n}$ is random).
+
+However, it is totally broken for variable-length messages.
+\begin{prf}
+  Select an arbitrary 3-block message $x = (x_1,x_2,x_3)$.
+  Obtain $t_1 = \CBCMAC_k(x_1) = E_k(x_1)$.
+  Obtain $t_2 = \CBCMAC_k((t_1 \xor t_2) \concat x_3) = E_k(E_k(t_1 \xor x_2) \xor x_3)$.
+  Then, $(x,t_2)$ is a forgery.
+\end{prf}
+
+One way to fix this is to add one more encryption round.
+
+\begin{scheme}[Encrypted CBC-MAC (EMAC)]
+  Given a second key $s$ for $E$,
+  let $\operatorname{EMAC}_{k,s}(x) = E_s(\CBCMAC_k(x))$.
+\end{scheme}
+
+Again, it has been proven that EMAC is secure if $E$ is ideal.
+
+Now, consider creating a MAC based on a hash function.
+Let $H$ be an iterated $n$-bit hash function
+with compression function $f : \bits{n+r} \to \bits{n}$.
+Pick $k \randin \bits{n}$ and let $K \in \bits{r}$ be $k$ padded with 0s.
+
+We might propose $\MAC_k(x) = H(K \concat x)$.
+However, this is insecure under a \term[attack!length extension]{length extension attack}
+since if we know $(x,\MAC_k(x))$,
+we can calculate $\MAC_k(x \concat y)$ for arbitrary $y$
+by resuming the hash process with the last block of $x$
+(i.e., computing $f(t \concat y_1)$, etc.).
+
+\begin{xca}
+  Show that this is also insecure if messages are of arbitrary length
+  and a length block is added to $K \concat x$.
+\end{xca}
+
+Securing against this attack is as simple as adding the key to each step,
+giving us a secure hash-based MAC (``HMAC'')
+
+\begin{scheme}[HMAC]
+  Let $H$ be a hash function.
+  Define $r$-bit constants $\vv{opad} = \x{3636\cdots 36}$ and $\vv{ipad} = \x{5c5c\cdots 5c}$.
+  
+  Then, $\HMAC_k(x) = H(K \oplus \vv{opad}, H(K \oplus \vv{ipad}, x))$.
+\end{scheme}
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
