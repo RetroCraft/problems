@@ -1336,6 +1336,131 @@ It is true for $c < -2$, but we will show it for $c < -\frac{5+2\sqrt5}{4}$.
   (continuous inverse) Similar.
 \end{prf}
 
+\chapter{Chaos}
+\lecture{Feb 5}
+
+\section{Defining chaos}
+
+\begin{defn}[density]
+  Let $(X,d)$ be a metric space.
+  We say $A \subseteq X$ is \term*{dense in $X$}
+  if for all $x \in X$ and $\varepsilon > 0$,
+  there exists $a \in A$ such that $d(a,x) < \varepsilon$.
+\end{defn}
+
+Informally, there is always something ``that close'' to any point.
+
+\begin{example}
+  $\Q$ is dense in $\R$.
+  Given a real number, there is always a decimal approximation with arbitrary accuracy.
+
+  $\Z$ is not dense in $\R$.
+  Given $x = \frac12 \in \R$, there are no integers within $\varepsilon = \frac14$.
+\end{example}
+
+\begin{example}
+  Let $A = \{x \in \Sigma : \exists N, \forall i > N, x_i = 0\}$,
+  i.e., the sequences which are eventually constant 0s.
+  This is dense in $\Sigma$.
+\end{example}
+\begin{prf}
+  Let $x = (x_0x_1x_2\cdots) \in \Sigma$ and let $\varepsilon > 0$.
+  As usual, take $n \in \N$ such that $\frac1{2^n} < \varepsilon$.
+
+  Consider $y = (x_0x_1x_2\cdots x_n0000\cdots) \in A$.
+  Then, by \cref{prop:bsd}, $d(x,y) \leq \frac{1}{2^n} < \varepsilon$.
+\end{prf}
+
+\begin{xca}\label{xca:dense}
+  Let $A = \{x \in \Sigma : \text{$x$ is periodic}\}$.
+  Show that this is dense in $\Sigma$.
+\end{xca}
+
+\begin{remark}
+  $A$ in \cref{xca:dense} is exactly the set of periodic points for
+  the shift map $\sigma : \Sigma \to \Sigma$.
+\end{remark}
+
+\begin{prop}\label{prop:Sdense}
+  There exists $z \in \Sigma$ such that $\{\sigma^k(z) : K \in \N \cup \{0\}\}$
+  is dense in $\Sigma$.
+\end{prop}
+\begin{prf}
+  Take $z = (0\ 1\ 00\ 01\ 10\ 11\ 000\ 001\ \cdots)$
+  to contain all possible blocks of increasing sizes.
+
+  Let $x \in \Sigma$ and $\varepsilon > 0$.
+  Again, let $\frac{1}{2^n} < \varepsilon$.
+
+  For some $k$, $\sigma^k(z)$ and $x$ agree on the first $n$ terms.
+  This must exist because $z$ has \emph{every possible} sequence of $n$ terms.
+  That is, by \cref{prop:bsd}, $d(\sigma^k(z),x) \leq \frac1{2^n} < \varepsilon$.
+\end{prf}
+
+Warning: \cref{def:dynsys} is not the normal definition from applied math textbooks,
+but it is what we will use in the course.
+
+\begin{defn}[dynamical system]
+  A metric space $(X,d)$ together with a continuous function $f : X \to X$.
+  \label{def:dynsys}
+\end{defn}
+
+This is an abstract space in which we can do orbit analysis and all our fun stuff.
+
+\begin{example}
+  $\sigma : \Sigma \to \Sigma$ is a dynamical system (see \cref{thm:Shom}).
+\end{example}
+
+\begin{defn}[transitivity]
+  We say a dynamical system $f : X \to X$ is \term*{transitive}
+  if for all $x,y \in X$ and $\varepsilon > 0$,
+  there exists $z \in X$ and $n,m \in \N \cup \{0\}$
+  such that $d(x,f^n(z)) < \varepsilon$ and $d(y,f^m(z)) < \varepsilon$.
+\end{defn}
+
+Informally, given any two points, there is a special point whose orbit
+gets arbitrarily close to both points.
+
+\begin{prop}
+  $\sigma : \Sigma \to \Sigma$ is transitive.
+\end{prop}
+\begin{prf}
+  Take $z$ from \cref{prop:Sdense} such that the orbit is dense in $\Sigma$.
+
+  Then, for all $\varepsilon > 0$ and $x,y \in \Sigma$,
+  there must exist by the definition of density $n$ and $m$ such that
+  $d(x,\sigma^n(z)) < \varepsilon$ and $d(y,\sigma^m(z)) < \varepsilon$.
+\end{prf}
+
+\begin{defn*}[sensitive dependence on initial conditions]
+  Let $f : X \to X$ be a dynamical system.
+  
+  We say $f$ is \term*{sensitively dependent on initial conditions}
+  (or just \term{sensitive}) if
+  \[ \exists \beta > 0,\ \forall \varepsilon > 0,\ \forall x \in X,\ \exists y \in X,\ \exists k \in \N \]
+  such that $d(x,y) < \varepsilon$ and $d(f^k(x),f^k(y)) \geq \beta$.
+\end{defn*}
+
+Informally, there exists a ``wrongness'' $\beta$ that can always be 
+achieved in the orbit no matter how close two starting points are.
+
+\begin{prop}
+  $\sigma : \Sigma \to \Sigma$ is sensitive.
+\end{prop}
+\begin{prf}
+  Take $\beta = 1$.
+
+  Let $\varepsilon > 0$ and let $x \in \Sigma$.
+  Say $\frac1{2^n} < \varepsilon$ and pick $y \in \Sigma$
+  such that $0 < d(x,y) < \frac1{2^n}$.
+  That is, $x$ and $y$ must agree on the first $n$ terms by \cref{prop:bsd},
+  but they are not equal.
+
+  Therefore, there exists $k \geq n$ such that $x_k \neq y_k$.
+
+  In the distance $d(\sigma^k(x),\sigma^k(y)) \geq \frac{\abs{x_k-y_k}}{2^0} \geq 1 = \beta$. 
+\end{prf}
+
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
 \renewcommand{\listtheoremname}{List of Named Results}
