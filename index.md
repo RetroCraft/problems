@@ -193,8 +193,8 @@ My [lecture notes](./CS341/notes.pdf){:.l#CS341--Notes--James} are available, ta
 #### CS 886 (W2024) <small>Advanced Topics in Artificial Intelligence</small>
 
 On the topic of "diffusion models for generation, inference and optimization".
-[Seminar notes](./CS886/audit.pdf){:.l#CS886--Notes--James}
-from my audit of the course.
+[Seminar notes](https://github.com/RetroCraft/etudes/blob/main/machine-learning/CS886/audit.pdf)
+from my audit of the course have been moved to the `etudes` repository.
 I am _very_ not qualified to understand what's going on,
 so these are really just a personal, public commitment to trying to learn.
 
@@ -297,7 +297,8 @@ Work in progress: [porting the lecture notes](./CO250/reformatted-notes.pdf){:.l
 
 #### CO 485/685 (F2022) <small>Mathematics of Public-Key Cryptography</small>
 
-More [lecture notes](./CO485/notes.pdf){:.l#CO485--Notes--James} with the caveat that
+More [lecture notes](https://github.com/RetroCraft/etudes/blob/main/cryptography/CO485/notes.pdf)
+with the caveat that
 (1) I am not actually enrolled in the course and just sit in it for fun
 and (2) I am missing two levels of prerequisites and do not fully understand the content.
 
