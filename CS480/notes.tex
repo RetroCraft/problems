@@ -111,7 +111,7 @@ training, prediction, and evaluation.
   \end{center}
 \end{example}
 
-\section{Perceptron}
+\section{Perceptron}\label{ch:p}
 
 \begin{defn}
   The \term{inner product} of vectors $\ip{\vb a}{\vb b}$
@@ -538,7 +538,9 @@ If we return now to the MLE we defined earlier, we get
 \end{align*}
 If we redefine $\y'_i = \frac{\y_i+1}{2}$, i.e., $\y' \in \{\pm1\}$,
 then we get the \term{logistic loss}
-\[ \min_{\w} \sum_{i=1}^n \log[1+\exp(-\y'_i\ip{\x}{\w})] \]
+\begin{equation}\label{eq:lgr}
+  \min_{\w} \sum_{i=1}^n \log[1+\exp(-\y'_i\ip{\x}{\w})]
+\end{equation}
 There is no closed form solution for this problem,
 so we use the gradient descent algorithm (covered in \cref{ch:gd}).
 
@@ -627,7 +629,9 @@ $\frac{\ip{\x_i}{c\w}+cb}{\norm{c\w}_2}
 Therefore, we can equivalently write
 \[ \max_{\w,b} \frac{1}{\norm{\w}_2} \qq{s.t.} \min_i \y_i \hat y_i = 1 \qq{where} \hat y_i := \ip{\x_i}{\w} + b \]
 or even better:
-\[ \min_{\w,b} \norm{\w}_2^2 \qq{s.t.} \forall i,\y_i(\ip{\x_i}{\w} + b) \geq 1 \]
+\begin{equation}\label{eq:hsvm}
+  \min_{\w,b} \norm{\w}_2^2 \qq{s.t.} \forall i,\y_i(\ip{\x_i}{\w} + b) \geq 1
+\end{equation}
 
 Finally, consider the points that are closest to the boundary.
 \begin{defn*}
@@ -970,11 +974,182 @@ Instead, we only need to compute the score function
 and return $\sgn(f(\x))$.
 
 \section{Gradient Descent}\label{ch:gd}
+\lecture{Feb 6}
+
+All of our machine learning models so far have been expressed as optimization problems
+(\cref{eq:lgr,eq:hsvm,eq:ssvm}).
+\begin{remark}
+  Optimization problems are identical up to constants.
+  That is,
+  \[ \min_{\x} f(\x) = \min_{\x} c\cdot f(x) \]
+  if $c$ has no $\x$-dependence.
+\end{remark}
+We can consider now a generic optimization problem $\min\limits_{\x} f(\x)$.
+
+Assume that $f(\x)$ is differentiable with gradient $\nabla_{\x} f(\x)$.
+\begin{notation}
+  Given the generic optimization problem,
+  write $f^* := \min_{\x} f(x)$ for the optimal value
+  and $x^* := \argmin_{\x} f(x)$ for the optimal parameter.
+\end{notation}
+Then, we can define gradient descent.
+\begin{definition}[gradient descent]
+  Choose an initial point $\x^{(0)} \in \R^d$ and repeat
+  \[ x^{(k)} = x^{(k-1)} - \underbrace{t}_{\mathclap{\text{step size}}} \cdot \nabla f(x^{(k-1)}) \]
+  $k = 1,2,\dotsc$ for some step size $t > 0$ until satisfied.
+\end{definition}
+Intuitively, we are walking ``down'' the function by checking
+for a downwards slope and taking a $t$-sized step down that slope.
+
+For example, the perceptron (\cref{ch:p}) with optimization problem
+\[
+  \min_{\w}f(\w) = \min_{\w} -\frac1n\sum_i\y_i\ip{\w}{\x_i}\I[\text{mistake on $\x_i$}]
+\]
+with gradient
+\[
+  \nabla_{\w} f(\w) = -\frac1n\sum_i\y_i\x_i\I[\text{mistake on $\x_i$}]
+\]
+leads us to the gradient descent update
+\[
+  \w \gets \w + t\qty[\frac1n\sum_i\y_i\x_i\I[\text{mistake on $\x_i$}]]
+\]
+This is very expensive, since we need to iterate over our entire training data
+for each update.
+Since the gradient is just a sample mean, we can make an estimation
+\[
+  \widetilde{\nabla_{\w}f(\w)} = \y_I\x_I\I[\text{mistake on $\x_I$}]
+\]
+after picking a random index $I \in_{\vv R} \{1,\dotsc,n\}$.
+This is an unbiased estimator of the sample mean.
+Doing this, i.e.,
+\[ \w \gets \w + t\y_I\x_I\I[\text{mistake on $\x_I$}] \]
+is called \term{stochastic gradient descent}.
+Since it is (very) inaccurate, it will take many more iterations to converge.
+
+For a more complex example, consider the soft-margin SVM (\cref{ch:ssvm})
+with optimization problem
+\[
+  \min_{\w,b} \frac12\norm{\w}^2_2 + C\sum_i \ell_{\vv{hinge}}(1-\y_i\hat y_i)
+  \qq{s.t.} \hat y_i = \ip{\x_i}{\w}+b
+\]
+We calculate two gradients $\nabla_{\w}$ and $\nabla_b$ to get
+\begin{align*}
+  \w & \gets \w - t\qty[\w + C\sum_i \ell'_{\vv{hinge}}(\y_i\hat y_i)\y_i\x_i] \\
+  b  & \gets b - t\qty[C\sum_i \ell'_{\vv{hinge}}(\y_i\hat y_i)\y_i]
+\end{align*}
+
+\paragraph{Motivating gradient descent}
+Suppose we take the Taylor expansion of $f$ at the current iterate $\x$.
+Then, we can say
+\[ f(\vb y) \approx f(\x) + \nabla f(\x)\trans(\vb y-\x) + \frac1{2t}\norm{\vb y-\x}_2^2 \]
+and take the minimization with respect to $\vb y$ on both sides
+\[
+  \min_{\vb y} f(\vb y) \approx
+  \min_{\vb y}\qty[\underbrace{f(\x) + \nabla f(\x)\trans(\vb y-\x) + \frac1{2t}\norm{\vb y-\x}_2^2}_{g(\vb y)}]
+\]
+so that we can write
+\begin{align*}
+  \pdv{g}{\vb y} = 0 + \nabla f(\x) + \frac1t(y-x) & = 0                  \\
+  t\nabla f(\x) + \vb y- \x                        & = 0                  \\
+  \vb y                                            & = \x - t\nabla f(\x)
+\end{align*}
+which is our gradient descent formula.
+
+\paragraph{Applying gradient descent}
+We cannot set the step size too large (it will diverge)
+or too small (it will be too slow). How do we choose the step size?
+
+\begin{defn}[convexity]
+  A function $f$ is \term*{convex} if $f(\vb y) \geq f(\x) + \nabla f(\x)\trans(\vb y-\x)$
+  for any $\x,\vb y \in \R^d$.
+\end{defn}
+We also want to characterize the smoothness.
+\begin{defn}[Lipschitz continuity]
+  Given convex and differentiable $f$, we say $f$ is \term*{$L$-smooth}
+  or \term*{$L$-Lipschitz continuous} for $L > 0$ if the matrix
+  \[ LI - \nabla^2f(\x) \]
+  is positive semi-definite for every $x$ (we write $LI \succeq \nabla^2 f(x)$).
+\end{defn}
+Then, we can characterize the convergence rate.
+\begin{theorem}[convergence rate for convex case]
+  Gradient descent with fixed step size $t \leq 1/L$ satisfies
+  \[
+    f(\x^{(k)}) - f^* \leq \frac{\norm{\x^{(0)} - \x^*}_2^2}{2tk}
+  \]
+  We say gradient descent has convergence rate $\order{1/k}$
+  (i.e., a bound of $f(\x^{(k)}) - f(\x^*) \leq \varepsilon$
+  takes $\order{1/\varepsilon}$ iterations).
+\end{theorem}
+\begin{prf}
+  Recall the mean value theorem allows us to write the Lagrangian
+  \[
+    f(\vb y) = f(\x) + \nabla f(\x)\trans(\vb y - \x) + \frac12(\vb y - \x)\trans\nabla^2 f(\vb a)(\vb y-\x)
+  \]
+  where $\vb a$ is on the line between $\vb x$ and $\vb y$.
+  Then, since $LI \succeq \nabla^2 f(\vb a)$, we have
+  \begin{align*}
+    f(\vb y)
+     & \leq f(\x) + \nabla f(\x)\trans(\vb y - \x) + \frac{L}2(\vb y - \x)\trans(\vb y-\x) \\
+     & \leq f(\x) + \nabla f(\x)\trans(\vb y - \x) + \frac{L}2\norm{\vb y - \x}_2^2
+  \end{align*}
+  Now, plug in $\vb y = \x^+ := \x - t\nabla f(\x)$ (i.e., do the gradient update) to get
+  \begin{align*}
+    f(\x^+)
+     & \leq f(\x) + \nabla f(\x)\trans(\x - t\nabla f(\x) - \x) + \frac{L}2\norm{\x - t(\nabla f(\x)) - \x}_2^2 \\
+     & = f(\x) - t\norm{\nabla f(\x)}_2^2 + \frac{Lt^2}2\norm{\nabla f(\x)}_2^2                                 \\
+     & = f(\x) - (1-\frac12 Lt)t\norm{\nabla f(\x)}_2^2
+  \end{align*}
+  Since $t \leq \frac1L$, we have $(1-\frac12Lt) \geq \frac12$ and we can conclude that
+  \[
+    f(\x^+) \leq f(\x) - \frac12t\norm{\nabla f(\x)}^2_2 \tag{$\star$}
+  \]
+  which means that we have decreased the function value by at least $\frac{t}{2}\norm{\nabla f(\x)}_2^2$.
+
+  Recall that $f$ is convex.
+  Then, by definition, $f(\x^*) \geq f(\x) + \nabla f(\x)\trans(\x^* - \x)$.
+  Equivalently,
+  \[ f(\x) \leq f(\x^*) + \nabla f(\x)\trans(\x-\x^*) \]
+  and by ($\star$) we can say
+  \begin{align*}
+    f(\x^+)           & \leq f(\x^*) + \nabla f(\x)\trans(\x-\x^*) - \frac{t}{2}\norm{\nabla f(\x)}_2^2                                          \\
+    f(\x^+) - f(\x^*) & \leq \nabla f(\x)\trans(\x-\x^*) - \frac{t}{2}\norm{\nabla f(\x)}_2^2                                                    \\
+                      & = \frac1{2t}\qty(2t\nabla f(\x)\trans(\x-\x^*) - t^2\norm{\nabla f(\x)}_2^2)                                             \\
+                      & = \frac1{2t}\qty((2t\nabla f(\x)\trans(\x-\x^*) - t^2\norm{\nabla f(\x)}_2^2 - \norm{\x-\x^*}_2^2) + \norm{\x-\x^*}_2^2) \\
+                      & = \frac1{2t}\qty(-\norm{\x-t\nabla f(\x)-\x^*} + \norm{\x-\x^*}_2^2)                                                     \\
+                      & = \frac1{2t}\qty(\norm{\x-\x^*}_2^2 - \norm{\x^+ - \x^*}_2^2)
+  \end{align*}
+  If we define $\x^+ := \x^{(i)}$ and $\x := \x^{(i-1)}$, we have
+  \begin{align*}
+    f(\x^{(i)}) - f(\x^*)
+     & \leq \frac{1}{2t}\qty(\norm{\x^{(i-1)}-\x^*}_2^2 - \norm{\x^{(i)} - \x^*}_2^2)              \\
+    \sum_{i=1}^k \qty[f(\x^{(i)}) - f(\x^*)]
+     & \leq \sum_{i=1}^k \frac{1}{2t}\qty(\norm{\x^{(i-1)}-\x^*}_2^2 - \norm{\x^{(i)} - \x^*}_2^2) \\
+    \sum_{i=1}^k f(\x^{(i)}) - k f(\x^*)
+     & \leq \frac{1}{2t}\qty(\norm{\x^{(0)}-\x^*}_2^2 - \norm{\x^{(k)} - \x^*}_2^2)                \\
+     & \leq \frac{1}{2t}\qty(\norm{\x^{(0)}-\x^*}_2^2)                                             \\
+    \frac1k\sum_{i=1}^k f(\x^{(i)}) - f(\x^*)
+     & \leq \frac{1}{2tk}\qty(\norm{\x^{(0)}-\x^*}_2^2)
+  \end{align*}
+  Finally, because each step decreases, we must have $f(\x^{(k)}) \leq \frac1k\sum_{i=1}^k f(\x^{(i)})$.
+  That is,
+  \begin{align*}
+    f(\x^{(k)}) - f^* \leq \frac1k\sum_{i=1}^k f(\x^{(i)}) - f(\x^*) \leq \frac{1}{2tk}\qty(\norm{\x^{(0)}-\x^*}_2^2)
+  \end{align*}
+  as desired.
+\end{prf}
+
 
 % \chapter{Neural Networks}
 
 % \chapter{Modern Machine Learning}
 
 % \chapter{Trustworthy Machine Learning}
+
+\pagebreak
+\phantomsection\addcontentsline{toc}{chapter}{Back Matter}
+\renewcommand{\listtheoremname}{List of Named Results}
+\phantomsection\addcontentsline{toc}{section}{\listtheoremname}
+\listoftheorems[ignoreall,numwidth=3em,onlynamed={theorem,lemma,corollary,prop}]
+\printindex
 
 \end{document}
