@@ -1339,7 +1339,7 @@ It is true for $c < -2$, but we will show it for $c < -\frac{5+2\sqrt5}{4}$.
 \chapter{Chaos}
 \lecture{Feb 5}
 
-\section{Defining chaos}
+\section{Prerequisites to chaos}
 
 \begin{defn}[density]
   Let $(X,d)$ be a metric space.
@@ -1421,7 +1421,7 @@ This is an abstract space in which we can do orbit analysis and all our fun stuf
 Informally, given any two points, there is a special point whose orbit
 gets arbitrarily close to both points.
 
-\begin{prop}
+\begin{prop}\label{prop:Strans}
   $\sigma : \Sigma \to \Sigma$ is transitive.
 \end{prop}
 \begin{prf}
@@ -1434,17 +1434,17 @@ gets arbitrarily close to both points.
 
 \begin{defn*}[sensitive dependence on initial conditions]
   Let $f : X \to X$ be a dynamical system.
-  
+
   We say $f$ is \term*{sensitively dependent on initial conditions}
   (or just \term{sensitive}) if
   \[ \exists \beta > 0,\ \forall \varepsilon > 0,\ \forall x \in X,\ \exists y \in X,\ \exists k \in \N \]
   such that $d(x,y) < \varepsilon$ and $d(f^k(x),f^k(y)) \geq \beta$.
 \end{defn*}
 
-Informally, there exists a ``wrongness'' $\beta$ that can always be 
+Informally, there exists a ``wrongness'' $\beta$ that can always be
 achieved in the orbit no matter how close two starting points are.
 
-\begin{prop}
+\begin{prop}\label{prop:Ssense}
   $\sigma : \Sigma \to \Sigma$ is sensitive.
 \end{prop}
 \begin{prf}
@@ -1458,8 +1458,79 @@ achieved in the orbit no matter how close two starting points are.
 
   Therefore, there exists $k \geq n$ such that $x_k \neq y_k$.
 
-  In the distance $d(\sigma^k(x),\sigma^k(y)) \geq \frac{\abs{x_k-y_k}}{2^0} \geq 1 = \beta$. 
+  In the distance $d(\sigma^k(x),\sigma^k(y)) \geq \frac{\abs{x_k-y_k}}{2^0} \geq 1 = \beta$.
 \end{prf}
+
+\section{Defining chaos}
+\textrule{$\downarrow$ Lecture 14 adapted from Imaad $\downarrow$}
+\lecture{Feb 7}
+
+\begin{defn}[chaos]
+  A dynamical system $f: X \to X$ is \term*{chaotic} if
+  \begin{enumerate}[nosep]
+    \item the periodic points for $f$ are dense in $X$,
+    \item $f$ is transitive, and
+    \item $f$ is sensitive.
+  \end{enumerate}
+\end{defn}
+
+\begin{theorem}
+  $\sigma: \Sigma \to \Sigma$ is chaotic.
+\end{theorem}
+\begin{prf}
+  By \cref{prop:Sdense,prop:Strans,prop:Ssense}.
+\end{prf}
+
+\begin{prop}\label{prop:dense}
+  Let $(X, d), (Y, d')$ be metric spaces.
+
+  Suppose $f: X \to Y$ is continuous and surjective.
+  If $A \subseteq X$ is dense in $X$, then $f(A)$ is dense in $Y$.
+\end{prop}
+\begin{prf}
+  Let $y \in Y$ and say $y = f(x)$.
+
+  Let $\epsilon > 0$.
+  Since $f$ is continuous at $x$, there exists $\delta > 0$ such that
+  \[ d(z, x) < \delta \implies d'(f(z), f(x)) < \epsilon \]
+  for any $z$. In particular, since $A$ is dense in $X$, we may find $a \in A$ such that
+  \[ d(a, x) < \delta \implies d'(f(a), f(x)) = d'(f(a), y) < \epsilon \]
+  as desired.
+\end{prf}
+
+\begin{theorem}
+  Let $c < \frac{-(5+2\sqrt{5})}{4}$.
+  Then, $Q_c: \Lambda \to \Lambda$ is chaotic.
+\end{theorem}
+\begin{prf}
+  (periodic point density)
+  Note that $Q_c^n(x)=x \iff S(Q_c^n(x)) = S(x) \iff \sigma^n(S(x)) = S(x)$.
+
+  By \cref{prop:dense} applied to $S^{-1}: \Sigma \to \Lambda$,
+  the periodic points for $Q_c$ are dense in $\Lambda$.
+
+  (transitivity)
+  Take $z \in \Sigma$ from \cref{prop:Sdense}
+  such that $\{\sigma^K(z): K \in \N \cup \{0\}\}$ is dense in $\Sigma$.
+  Again by \cref{prop:dense}, $\{S^{-1}(\sigma^K(z)): K \in \N \cup \{0\}\}$
+  is dense in $\Lambda$.
+
+  Note: Say $S(x)=z$, we know $(S(Q_c^K(x))) = \sigma^K(S(x))$ $\iff$ $Q_c^K(x) = S^{-1}(\sigma^K(S(x)))$
+
+  This, $\{Q_c^K(x): K \in \N \cup \{0\}\}$ is dense in $\Lambda$.
+  As in \cref{prop:Strans}, we have that $Q_c$ is transitive.
+
+  (sensitivity)
+  Recall that $\Lambda \subseteq I \setminus J_1 = I_0 \cup I_1$.
+  Let $\beta > 0$ be less than the gap between $I_0$ and $I_1$.
+
+  For $x, y \in \Lambda$ with $x \neq y$, supppose $S(x) \neq S(y)$.
+  Then, there must exist a $k$ where $k$\xth term of $S(x)$
+  does not equal the $k$\xth term of $S(y)$.
+
+  Hence, $|Q_c^k(x) - Q_c^k(y)| > \beta$ and $Q_c$ is sensitive.
+\end{prf}
+\textrule{$\uparrow$ Lecture 14 adapted from Imaad $\uparrow$}
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
