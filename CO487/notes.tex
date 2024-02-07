@@ -294,7 +294,7 @@ Now, we introduce ChaCha20, a stream cipher actually uesd in the real world.
 The algorithm works entirely on words (32-bit numbers).
 It has no known flaws (other than people bungling the implementation).
 
-\begin{scheme}[ChaCha20]
+\begin{scheme}[ChaCha20]\label{s:chacha20}
   First, define a helper function $QR(a,b,c,d)$ on 32-bit words:
   \begin{enumerate}[nosep]
     \item $a \gets a \modplus b$, $d \gets d \xor a$, $d \gets d \lll 16$
@@ -615,7 +615,7 @@ that are significantly faster than exhaustive key search.
 
 AES does a lot of math over the Galois field $\GF(2^8)$.
 
-\begin{defn*}[$\GF(2^8)$]
+\begin{defn*}[$\GF(2^8)$]\label{def:gf28}
   Consider the field $\Z/2\Z[y]$ of polynomials with coefficients in $\Z$ mod 2.
 
   The finite field $\GF(2^8) = (\Z/2\Z[y])/(y^8+y^4+y^3+y+1)$
@@ -820,9 +820,9 @@ In Mathematica (version 13.3 or later):
 \end{minted}
 
 
-\section{Block ciphers}
+\section{Block cipher modes of operation}
 
-
+TODO
 
 \chapter{Hash functions}
 
@@ -1415,9 +1415,182 @@ giving us a secure hash-based MAC (``HMAC'')
 \begin{scheme}[HMAC]
   Let $H$ be a hash function.
   Define $r$-bit constants $\vv{opad} = \x{3636\cdots 36}$ and $\vv{ipad} = \x{5c5c\cdots 5c}$.
-  
+
   Then, $\HMAC_k(x) = H(K \oplus \vv{opad}, H(K \oplus \vv{ipad}, x))$.
 \end{scheme}
+
+\lecture{Feb 5}
+The security analysis of HMAC is hard, but we can prove a theorem.
+
+\begin{theorem}
+  Suppose that the $f$ compression function used in $H$ is a secure MAC
+  with fixed-length messages and a secret IV as the key.
+  Then, HMAC is a secure MAC scheme.
+\end{theorem}
+
+Usually, HMAC uses SHA-256. It is widely used for internet security.
+
+HMAC is also widely used as a \term{key derivation function}.
+If Alice has $k$ and needs multiple session keys $sk_i$,
+she can compute $sk_1 = \HMAC_k(1)$, $sk_2 = \HMAC_k(2)$, etc.
+Then, since HMAC is secure, Eve can intercept individual session keys
+and still know nothing about either the actual key $k$ or the other session keys.
+
+\section{GSM}
+
+TODO
+
+\chapter{Authenticated encryption}
+
+\section{Generic schemes}
+We have established ways to encrypt data (e.g., AES-CBC)
+and ways to authenticate data (i.e., MACs)
+but what if we need both?
+
+\begin{scheme}[Encrypt-and-MAC]
+  Alice sends $(c,t) = (E_{k_1}(m), \MAC_{k_2}(m))$ to Bob,
+  where $m$ is the plaintext and $(k_1,k_2)$ is a secret key shared with Bob.
+
+  Then, Bob first decrypts $c$ to obtain $m = E_{k_1}^{-1}(c)$
+  and then verifies $t = \MAC_{k_2}(m)$.
+\end{scheme}
+
+This is insecure because $\MAC_{k_2}(m)$ might leak information about $m$
+(MACs are generally not semantically secure).
+
+\begin{scheme}[Encrypt-then-MAC]
+  Alice sends $(c,t) = (E_{k_1}(m), \MAC_{k_2}(c))$ to Bob,
+  where $m$ is the plaintext and $(k_1,k_2)$ is a secret key shared with Bob.
+
+  Then, Bob first verifies that $t = \MAC_{k_2}(c)$ and decrypts $c$ to obtain
+  $m = E_{k_1}^{-1}(c)$.
+\end{scheme}
+
+This has been proven to be secure given that $E_{k_1}$ and $\MAC_{k_2}$
+are secure.
+
+\begin{defn*}[authentication encryption security]
+  An authentication encryption scheme is
+  \term[authentication encryption scheme!security]{secure} if
+  \begin{enumerate}[nosep]
+    \item it is semantically secure against chosen-plaintext attacks, and
+    \item has \term{ciphertext integrity}, i.e., given $(m_1,c_1,t_1),\dotsc,(m_\ell,c_\ell,t_\ell)$,
+          an attacker cannot forge a valid $(m,c,t)$.
+  \end{enumerate}
+\end{defn*}
+
+\lecture{Feb 7}
+\section{AES-GCM}
+The most popular AE scheme is AES-GCM which uses AES-CTR and GMAC.
+
+Recall how ChaCha20 (\cref{s:chacha20})
+used a key, nonce, and counter to generate a keystream.
+AES-CTR uses AES in a similar stream cipher paradigm.
+
+\begin{scheme}[AES-CTR]
+  Let $k \randin \bits{128}$ be a shared secret
+  and $M = (M_1,\dotsc,M_u)$ be a message of 128-bit blocks.
+  To encrypt:
+  \begin{algorithmic}[1]
+    \State Select a nonce $\vv{IV} \in \bits{96}$,
+    \State $J_0 \gets \vv{IV} \concat 0^{31} \concat 1$,
+    \For{$i = 1,\dotsc,u$}
+      \State $J_i \gets J_{i-1} + 1$
+      \State $C_i \gets \AES_k(J_i) \xor M_i$
+    \EndFor
+    \State \Return{$(\vv{IV}, C_1, \dotsc, C_u)$}
+  \end{algorithmic}
+  To decrypt, generate the keystream and XOR.
+\end{scheme}
+
+Since it is a counter, CTR encryption is parallelizable.
+We also require, as with other IV-containing schemes, that the IV be unique
+and never reused.
+
+To define GMAC, recall \cref{def:gf28}.
+
+\begin{defn*}[$\GF(2^{128})$]
+  The field $\Z/2\Z[x]$ modulo $f(x) = 1 + x + x^2 + x^7 + x^{128}$.
+
+  We associate a 128-bit block $a = a_0\cdots a_{127}$
+  with the polynomial $a(x) = a_0 + a_1x + \dotsb + a_{127}x^{127}$.
+
+  As in $\GF(2^8)$, we define $a \vdot b = a(x)\cdot b(x) \pmod{f(x)}$.
+\end{defn*}
+
+Then, we can describe GMAC:
+
+\begin{scheme}[Galois Message Authentication Code (GMAC)]
+  Let $A = (A_1,\dotsc,A_v)$ be the message in 128-bit blocks,
+  $L$ be the bitlength of $A$ as a 128-bit block,
+  and $k$ be a secret key.
+  \begin{algorithmic}[1]
+    \State $J_0 \gets \vv{IV} \concat 0^{31} \concat 1$
+    \State $H \gets \AES_k(0^{128})$
+    \State Define $f_A(y) = A_1 y^{v+1} + A_2y^v + \dotsb + A_{v-1}y^3 + A_v y^2 + Ly \in \GF(2^{128})[y]$
+    \State $t \gets \AES_k(J_0) \oplus f_A(H)$
+    \State \Return{$(\vv{IV}, A, t)$}
+  \end{algorithmic}
+\end{scheme}
+
+\begin{prop}
+  GMAC is secure.
+\end{prop}
+\begin{prf}[outline]
+  Consider the simplified tag $t' = f_A(H)$.
+
+  Then, the adversary can guess with probability $\frac{1}{2^{128}}$.
+
+  She can also guess $t'$ by making a guess $H'$ and computing $f_A(H')$
+  with success probability $\frac{v+1}{2^{128}}$.
+
+  But if Eve sees a single valid message-tag pair $(A,t')$,
+  she can solve $f_A(H) = t'$ for $H$.
+
+  To avoid this attack, we add a one-time pad $\AES_k(J_0) \oplus t$.
+\end{prf}
+
+Finally, we can define AES-GCM.
+The scheme will encrypt/authenticate a message
+and also authenticate (but not encrypt) an \term{encryption context}.
+
+\begin{scheme}[AES-GCM]
+  Let $M = (M_1,\dotsc,M_u)$ for $u \leq 2^{32}-2$ be the message,
+  $A = (A_1,\dotsc,A_v)$ be the encryption context,
+  and $k \randin \bits{128}$ be a shared secret.
+
+  To encrypt/sign:
+  \begin{algorithmic}[1]
+    \State $L \gets \abs{A} \concat \abs{M}$
+    \State $J_0 \gets \vv{IV} \concat 0^{31} \concat 1$ for unique $\vv{IV} \in \bits{96}$
+    \For{$i = 1,\dotsc,u$} \Comment{Encryption with AES-CTR}
+      \State $J_i \gets J_{i-1} + 1$
+      \State $C_i \gets \AES_k(J_i) \xor M_i$
+    \EndFor
+    \State $H \gets \AES_k(0^{128})$ \Comment{Authentication with GMAC}
+    \State Define $f_{A,C}(x) = A_1x^{u+v+2} + \dotsb + A_v x^{u+2} + C_1 x^{u+1} + \dotsb + C_u x^2 + Lx$
+    \State $t \gets \AES_k(J_0) \xor f_{A,C}(H)$
+    \State \Return{$(\vv{IV},A,C,t)$}
+  \end{algorithmic}
+  To decrypt/authenticate:
+  \begin{algorithmic}[1]
+    \State
+  \end{algorithmic}
+\end{scheme}
+
+AES-GCM does both authentication and encryption,
+but it can be used to do just authentication by passing $M = \varepsilon$.
+
+There are very fast hardware implementations of AES and multiplication under $\GF(2^{128})$.
+If we use Horner's rule, we can evaluate an $n$-degree polynomial in $\GF(2^{128})[x]$
+with $n$ PCLMUL instructions and $n-1$ XOR instructions.
+
+We can also parallelize since we can assign blocks to other processors
+and split up the polynomial $f_{A,C}$ into multiple parts for evaluation.
+
+The scheme can be used in streaming mode, which is helpful.
+
+This is also proven to be secure.
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
