@@ -204,6 +204,7 @@
 \newcommand{\F}{\ensuremath{\mathbb{F}}}
 
 % Functions
+\newcommand{\fn}{\operatorname}
 \DeclareMathOperator{\sgn}{sgn}
 \DeclareMathOperator{\im}{im}
 \DeclareMathOperator{\id}{id}
@@ -256,6 +257,21 @@
     {\left\langle{#2}\ipsep{#2}\right\rangle}
     {\left\langle{#2}\ipsep{#3}\right\rangle}
   }}
+
+% Category Theory
+\newcommand{\cat}[1]{\symsf{#1}}
+\renewcommand{\op}{^{\cat{op}}} % overrides physics.sty \op for \outerproduct
+\DeclareMathOperator{\Obj}{Obj}
+\newcommand{\Hom}[1][]{\ifthenelse{\isempty{#1}}{\operatorname{Hom}}{\operatorname{Hom}_{\cat{#1}}}}
+\newcommand{\End}[1][]{\ifthenelse{\isempty{#1}}{\operatorname{End}}{\operatorname{End}_{\cat{#1}}}}
+\newcommand{\mono}{\rightarrowtail}
+\newcommand{\epi}{\twoheadrightarrow}
+\newcommand{\into}{\hookrightarrow}
+\newcommand{\toto}{\rightrightarrows}
+\newcommand{\tofrom}{\rightleftarrows}
+
+% Group Theory
+\DeclareMathOperator{\Aut}{Aut}
 
 % Class-specific macros
 % Files are named agony-[class].sty and placed in this directory

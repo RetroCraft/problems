@@ -11,6 +11,8 @@ lookForAlignDelims:
         delims: 1
     lp:
         delims: 1
+    tikzcd:
+        delims: 1
 verbatimEnvironments:
     rcode: 1
     outcode: 1
@@ -32,7 +34,7 @@ noAdditionalIndent:
 specialBeginEnd:
     specialBeforeCommand: 1
     Procedure:
-        begin: '\\Procedure\{'
+        begin: '\\Procedure'
         end: '\\EndProcedure'
         lookForThis: 1
     For:
@@ -40,15 +42,15 @@ specialBeginEnd:
         end: '\\EndFor'
         lookForThis: 1
     While:
-        begin: '\\While\{'
+        begin: '\\While'
         end: '\\EndWhile'
         lookForThis: 1
-    While:
+    Repeat:
         begin: '\\Repeat'
-        end: '\\Until\{'
+        end: '\\Until'
         lookForThis: 1
     If:
-        begin: '\\If\{'
+        begin: '\\If'
         middle: 
           - '\\ElsIf'
           - '\\Else'

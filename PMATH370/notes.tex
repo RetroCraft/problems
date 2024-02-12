@@ -1462,7 +1462,7 @@ achieved in the orbit no matter how close two starting points are.
 \end{prf}
 
 \section{Defining chaos}
-\textrule{$\downarrow$ Lecture 14 adapted from Imaad $\downarrow$}
+\textrule{$\downarrow$ Lectures 14 and 15 adapted from Imaad $\downarrow$}
 \lecture{Feb 7}
 
 \begin{defn}[chaos]
@@ -1530,7 +1530,167 @@ achieved in the orbit no matter how close two starting points are.
 
   Hence, $|Q_c^k(x) - Q_c^k(y)| > \beta$ and $Q_c$ is sensitive.
 \end{prf}
-\textrule{$\uparrow$ Lecture 14 adapted from Imaad $\uparrow$}
+
+\chapter{Sarkovskii's Theorem}
+\section{Period 3 points}
+\lecture{Feb 9}
+\begin{theorem}[period 3]\label{thm:p3}
+  Let $f: \R \to \R$ be continuous.
+  If $f$ has a point with period 3,
+  then $f$ has a point with period $n$ for all $n \in \N$.
+\end{theorem}
+
+\begin{prop}\label{prop:1}
+  Let $I \subseteq J$ be closed intervals and suppose $f: \R \to \R$ is continuous.
+  If $f(I) \supseteq J$, then $f(x)$ has a fixed point in $I$.
+\end{prop}
+
+\begin{prop}\label{prop:2}
+  Let $I, J$ be closed intervals, $f: \R \to \R$ be continuous, and $f(I) \supseteq J$.
+  Then, there exists a closed interval $I' \subseteq I$ such that $f(I') = J$.
+\end{prop}
+
+We can now prove \cref{thm:p3}.
+\begin{prf}
+  Let $a \in \R$ be a period 3 point for $f(x)$. Say $f(a)=b, f(b)=c, f(c)=a$.
+  \WLOG, suppose $a < b$ and $a < c$.
+
+  Suppose $a < b < c$. The case where $a < c < b$ is left as an exercise.
+
+  Let $I = [a, b]$ and $J = [b, c]$.
+  Then, $f(a)=b$ and $f(b)=c$ imply by IVT that $[b,c] = J \subseteq f(I)$.
+  Likewise, $f(b)=c$ and $f(c)=a$ imply by IVT that $[a,c] = I \cup J \subseteq f(J)$.
+
+  Since $J \subseteq f(J)$, there exists a closed interval $A_1 \subseteq J$
+  such that $f(A_1) = J$ by \cref{prop:2}.
+  Again, $A_1 \subseteq J = f(A_1)$,
+  so there exists a closed interval $A_2 \subseteq A_1$ such that $f(A_2)=A_1$.
+
+  Now, fix $n > 3$.
+  Repeating the above process,
+  we can find $A_{n-2} \subseteq A_{n-3} \subseteq \dotsb \subseteq A_2 \subseteq A_1 \subseteq J$
+  such that $f(A_i) = A_{i-1}$.
+  Now, $f(I) \supseteq J \supseteq A_{n-2}$ means there exists a closed interval
+  $A_{n-1} \subseteq I$ such that $f(A_{n-1}) = A_{n-2}$.
+
+  Moreover, $f(J) \supseteq I \supseteq A_{n-1}$
+  which means there exists a closed interval $A_n \subseteq J$
+  such that $f(A_n)=A_{n-1}$.
+
+  We have $f^n(A_n)=J$ and $A_n \subseteq J$.
+  By \cref{prop:1}, there exists $x_0 \in A_n$ such that $f^n(x_0)=x_0$.
+
+  Note: for $x_0 \in A_n$, $f(x_0) \in A_{n-1} \subseteq I$, $f^i(x_0) \in J$ for $i=2, 3, \dotsc, n$.
+
+  For contradiction, suppose $f^i(x_0)=x_0$ for $i < n$.
+
+  Then, $\overbrace{f(x_0)}^{\in I} = \overbrace{f^{i+1}(x_0)}^{\in J} = b$
+  so $f(x_0) = b$, $f^2(x_0)=c$, and $f^3(x_0) = a$,
+  which is a contradiction because $f^3(x_0) \in J$ but $a \not\in J$.
+  Hence, $x_0$ has period $n$.
+
+  That is, $f$ has a periodic point with period $n$ for all $n > 3$.
+
+  Further, $f(J) \supseteq J$ and so by \cref{prop:1},
+  $f$ has a fixed point (aka period 1) in $J$.
+
+  Finally, $f(I) \supseteq J$ means $J=f(I')$ and $f(J) \supseteq I'$ means $f(J')=I'$.
+  This implies $f^2(j') = f(I') = J \sup J'$.
+  Therefore, we know there exists $x \in J'$ such that $f^2(x)=x$.
+
+  If $f(x)=x$, then $x \in J'$ and $f(x) \in I'$, meaning $x=b$.
+  But, $f(b) \neq b = c$, contradiction.
+
+  Hence, $x$ has period 2.
+
+  Therefore, since we already supposed $f$ has a period 3 point,
+  $f$ has a period $n$ point for all $n$.
+\end{prf}
+
+\begin{xca}
+  Complete the proof for the case where $a < c < b$.
+\end{xca}
+
+\textrule{$\uparrow$ Lectures 14 and 15 adapted from Imaad $\uparrow$}
+
+\lecture{Feb 12}
+Draw the continuous function
+\begin{center}
+  \begin{tikzpicture}
+    \begin{axis}[xmin=-0.5,xmax=6.5,ymin=0.5,ymax=5.5]
+      \draw (1,3) -- (2,5) -- (5,1);
+      \addplot[domain=-1:1] {3};
+      \addplot[domain=5:7] {1};
+    \end{axis}
+  \end{tikzpicture}
+\end{center}
+Then, the orbit of 1 is $1 \mapsto 3 \mapsto 4 \mapsto 2 \mapsto 5 \mapsto 1$
+and 1 has period 5.
+
+\begin{claim}
+  $f$ has no point with period 3.
+\end{claim}
+\begin{prf}
+  Suppose that $f$ has a point $x$ with period 3.
+  Then, $1 \leq x \leq 5$.
+
+  Suppose $x \in [1,2]$.
+  Then, $x \in [1,2] \cap f^3([1,2])$ since $x = f^3(x)$.
+  But $f^3([1,2]) = [2,5]$, so $x = 2$.
+  However, 2 has period 5 since it is on the same 5-cycle given above.
+  
+  Suppose instead that $x \in [2,3]$.
+  Then, $x \in [2,3] \cap f^3([2,3]) = [2,3] \cap [3,5] = \{3\}$
+  which is also on the 5-cycle.
+
+  If $x \in [4,5]$, then $x \in [4,5] \cap f^3([4,5]) = [4,5] \cap [1,4] = \{4\}$
+  which is, again, on the 5-cycle.
+
+  Finally, suppose that $x \in [3,4]$.
+  Then, $f([3,4]) = [2,4]$ and it is strictly decreasing.
+  Further, $f([2,4]) = [2,5]$ and it is also strictly decreasing.
+  Once more, $f([2,5]) = [1,5]$ and it is again strictly decreasing.
+  Since $f^3$ is strictly decreasing, it has a unique fixed point in $[3,4]$,
+  but it is just the fixed point of $f$.
+
+  Since we have covered the entire interval $[1,5]$, $x$ must not exist.
+\end{prf}
+
+\begin{example}
+  The function $f(x) = \begin{cases}
+    1 & x < -1 \\ -x & -1 \leq x \leq 1 \\ 1 & x > 1
+  \end{cases}$
+  has a period 1 point at $x=0$, period 2 points $[-1,1] \setminus \{0\}$,
+  and no other periodic points.
+\end{example}
+
+\begin{defn}[Sarkovskii ordering]
+  Start by ordering the odd numbers $3 \prec 5 \prec 7 \prec 9 \prec \dotsb$
+
+  Then, all those are $\dotsb \prec 2\cdot 3 \prec 2\cdot5 \prec 2\cdot7 \prec \dotsb$
+
+  All those are $\dotsb \prec 2^2\cdot3 \prec 2^2\cdot5 \prec 2^2\cdot7 \prec \dotsb$
+
+  Complete the ordering as $\dotsb \prec 2^n \prec 2^{n-1} \prec \dotsb \prec 2^2 \prec 2 \prec 1$.
+
+  This is a total order on the natural numbers.
+\end{defn}
+
+\begin{example}
+  \leavevmode
+  \begin{itemize}[nosep]
+    \item $26 = 2\cdot 13 \prec 2^2\cdot 5 = 40$ because the exponent of 2 is smaller.
+    \item $3072 = 2^{10}\cdot 3 \prec 2^5 = 32$ because powers of 2 are big.
+    \item $n \preccurlyeq 1$ for all $n$.
+    \item $2^{15} \prec 2^3$ since the powers of 2 are ordered backwards.
+  \end{itemize}
+\end{example}
+
+\begin{theorem}[Sarkovskii's theorem]
+  Let $f : \R \to \R$ be continuous.
+  Suppose $n \prec m$ in the Sarkovskii ordering.
+  Then, if $f$ has a point with period $n$, then it has a point with period $m$.
+\end{theorem}
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
