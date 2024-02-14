@@ -1079,7 +1079,7 @@ we can adapt all our definitions from real analysis to an abstract space.
   The following are all metrics:
   \begin{itemize}
     \item $X = \R$, $d(x,y) = \abs{x-y}$
-    \item $X = \R^n$, $d(\vb x, \vb y) = \sqrt{(x_1-y_1)^2 + \dotsb + (x_n-y_n)^2}$
+    \item $X = \R^n$, $d(\x, \y) = \sqrt{(x_1-y_1)^2 + \dotsb + (x_n-y_n)^2}$
     \item For any set $X$, the discrete metric $d(x,y) = [x\neq y]$
           (but is not particularly useful).
     \item For a subset $A \subseteq R$, $d(x,y) = \abs{x-y}$ is a metric.
@@ -1532,7 +1532,6 @@ achieved in the orbit no matter how close two starting points are.
 \end{prf}
 
 \chapter{Sarkovskii's Theorem}
-\section{Period 3 points}
 \lecture{Feb 9}
 \begin{theorem}[period 3]\label{thm:p3}
   Let $f: \R \to \R$ be continuous.
@@ -1638,7 +1637,7 @@ and 1 has period 5.
   Then, $x \in [1,2] \cap f^3([1,2])$ since $x = f^3(x)$.
   But $f^3([1,2]) = [2,5]$, so $x = 2$.
   However, 2 has period 5 since it is on the same 5-cycle given above.
-  
+
   Suppose instead that $x \in [2,3]$.
   Then, $x \in [2,3] \cap f^3([2,3]) = [2,3] \cap [3,5] = \{3\}$
   which is also on the 5-cycle.
@@ -1658,8 +1657,8 @@ and 1 has period 5.
 
 \begin{example}
   The function $f(x) = \begin{cases}
-    1 & x < -1 \\ -x & -1 \leq x \leq 1 \\ 1 & x > 1
-  \end{cases}$
+      1 & x < -1 \\ -x & -1 \leq x \leq 1 \\ 1 & x > 1
+    \end{cases}$
   has a period 1 point at $x=0$, period 2 points $[-1,1] \setminus \{0\}$,
   and no other periodic points.
 \end{example}
@@ -1691,6 +1690,165 @@ and 1 has period 5.
   Suppose $n \prec m$ in the Sarkovskii ordering.
   Then, if $f$ has a point with period $n$, then it has a point with period $m$.
 \end{theorem}
+
+\chapter{Fractals}
+\lecture{Feb 14}
+
+\begin{defn}
+  Define a few things from topology.
+  \begin{itemize}[nosep]
+    \item For $\x \in \R^n$, the \term{norm} $\norm{\x} = \sqrt{x_1^2+x_2+\dotsb+x_n^2}$
+    \item $d(\x,\y) = \norm{\x - \y}$ is our default metric on $\R^n$
+    \item For $\x \in \R^n$, $\varepsilon > 0$, the \term{open ball} of radius $\varepsilon$ centered at $x$
+          is $B_\varepsilon(\x) = \{\y \in \R^n : \norm{\x - \y < \varepsilon}\}$
+    \item We say $U \in \R^n$ is \term{open} if for all $\x \in U$,
+          there exists $\varepsilon > 0$ such that $B_\varepsilon(\x) \subseteq U$.
+    \item The \term{boundary} $\delta(A)$ of a set $A \subseteq \R^n$
+          is the closure of $A$ without the interior of $A$.
+  \end{itemize}
+\end{defn}
+
+\begin{defn*}[topological dimension (zero case)]
+  We say $S \subseteq \R^n$ has \term{topological dimension} $\dim_t S = 0$
+  if for all $\x \in S$, there exists arbitrarily small open sets $U \ni \x$
+  such that $\delta(U) \cap S = \varnothing$.
+\end{defn*}
+
+\begin{example}
+  Let $X = \begin{tikzpicture}[scale=0.3]
+      \draw[fill=black] (-1,-1) circle (3 pt);
+      \draw[fill=black] (0,1) circle (3 pt);
+      \draw[fill=black] (1,-1) circle (3 pt);
+    \end{tikzpicture}$.
+  Then, since we can draw balls
+  \begin{tikzpicture}[scale=0.3]
+    \draw[fill=none,dashed] (-1,-1) circle (0.6);
+    \draw[fill=black] (-1,-1) circle (3 pt);
+    \draw[fill=none,dashed] (0,1) circle (0.6);
+    \draw[fill=black] (0,1) circle (3 pt);
+    \draw[fill=none,dashed] (1,-1) circle (0.6);
+    \draw[fill=black] (1,-1) circle (3 pt);
+  \end{tikzpicture}
+  separating each point, $\dim_t X = 0$.
+\end{example}
+
+\begin{example}
+  $X = \{\frac1n : n \in \N\} \cup \{0\}$
+  has topological dimension 0.
+\end{example}
+
+\begin{defn*}[topological dimension (non-zero case)]
+  A set $S \subseteq \R^n$ has \term{topological dimension} $k \in \N$
+  if for all $\x \in S$, there exists arbitrarily small
+  $U \ni \x$ such that $\delta(U) \cap S$ has topological dimension $k-1$,
+  where $k$ is minimal with this property.
+\end{defn*}
+
+\begin{example}
+  Consider a line $X = \begin{tikzpicture}
+      \draw[fill=black] (0,0) circle (1 pt);
+      \draw (0,0) -- (1,0.7);
+      \draw[fill=black] (1,0.7) circle (1 pt);
+    \end{tikzpicture}$.
+  Then, since any ball's boundary
+  \begin{tikzpicture}
+    \draw[fill=black] (0,0) circle (1 pt);
+    \draw (0,0) -- (1,0.7);
+    \draw[fill=none,dashed] (0.5,0.35) circle (0.2);
+    \draw[fill=black] (1,0.7) circle (1 pt);
+  \end{tikzpicture}
+  creates an intersection of two points (i.e., a set with topological dimension 0),
+  we know that $\dim_t X = 1$.
+\end{example}
+
+\begin{example}
+  Let $X$ be a circle \tikz{\draw[fill=none] (0,0) circle (0.5);}.
+  Again, any ball's boundary
+  \begin{tikzpicture}
+    \draw[fill=none] (0,0) circle (0.5);
+    \draw[fill=none,dashed] (0.353,0.353) circle (0.2);
+  \end{tikzpicture}
+  still only has two intersecting points, so $\dim_t X = 1$.
+\end{example}
+
+\begin{example}
+  Let $X$ be a filled 2D region.
+  \begin{center}
+    \begin{tikzpicture}[use Hobby shortcut,closed=true,scale=0.5]
+      % [tex.se/603127] stolen blob shape
+      \fill (-3.5,0.5) .. (-3,2.5) .. (-1,3.5).. (1.5,3).. (4,3.5).. (5,2.5).. (5,0.5) ..(2.5,-2).. (0,-0.5).. (-3,-2).. (-3.5,0.5);
+      \draw[fill=none,white] (0.353,0.353) circle (0.4);
+      \draw[dashed] (-3.5,1) arc(90:270:1);
+      \draw[white] (-3.5,-1) arc(-90:90:1);
+    \end{tikzpicture}
+  \end{center}
+  Then, the intersection of a ball's boundary
+  will give either a circle or an arc, which have topological dimension 1,
+  so the region has topological dimension 2.
+\end{example}
+
+\begin{example}
+  Let $X$ be a non-filled sphere.
+  \begin{center}
+    \begin{tikzpicture}
+      \shade[ball color = gray!40, opacity = 0.4] (0,0) circle (1cm);
+      \draw (0,0) circle (1cm);
+    \end{tikzpicture}
+  \end{center}
+  Then, the intersection of a 3D ball's boundary
+  will give a circle, which has topological dimension 1,
+  so $\dim_t X = 2$.
+\end{example}
+
+\begin{example}
+  Let $X$ be a filled sphere.
+
+  Then, a 3D ball's boundary's intersection is either a hollow sphere
+  or a spherical cap, which each have topological dimension 2,
+  so $\dim_t X = 3$.
+\end{example}
+
+\begin{defn}[fractal dimension]
+  We say $S \subseteq \R^n$ is \term{self-similar} if $S$ may be divided into
+  $K$ congruent subsets, each of which may be magnified by a fixed $M$
+  to yield $S$ itself.
+
+  The \term*{fractal dimension} of $S$ is given by $\dim_f S = \frac{\ln K}{\ln M}$.
+\end{defn}
+
+\begin{defn}[fractal]
+  A \term*{fractal} is a self-similar $S \subseteq \R^n$
+  such that $\dim_f S > \dim_t S$.
+\end{defn}
+
+\begin{example}
+  Let $X = \tikz{
+      \draw[fill=black] (0,0) circle (1 pt);
+      \draw (0,0) -- (1,0);
+      \draw[fill=black] (1,0) circle (1 pt);
+    }$ be a line.
+  Then, since we can divide it into $n$ smaller lines each of size $\frac1n$,
+  it has fractal dimension $\dim_f X = \frac{\ln n}{\ln n} = 1$.
+  The topological dimension is $\dim_t X = 1$.
+
+  So this is not a fractal, and is indeed just \term*{boring} (not a fractal).
+\end{example}
+
+\begin{example}[Sierpinski triangle]
+  Let $X$ be the Sierpinski triangle, i.e., the limiting point of the process
+  \begin{center}
+    \multido{\iA=1+1}{4}{%
+      \begin{pspicture}(2,1.4)\psSier(0,0){2cm}{\iA}\end{pspicture}\quad}
+  \end{center}
+  Then, the topological dimension is $\dim_t X = 1$ because,
+  in the limit, any ball will touch only single points.
+  In particular, we can imagine balls touching the three points of a triangle.
+
+  However, the fractal dimension is
+  $\dim_f X = \frac{\ln 3}{\ln 2} \approx 1.58 > 1$
+  because each step is consisted of 3 previous steps scaled by $\frac12$.
+  so $X$ is a fractal!
+\end{example}
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
