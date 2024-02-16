@@ -1692,6 +1692,8 @@ and 1 has period 5.
 \end{theorem}
 
 \chapter{Fractals}
+
+\section{Definitions and dimensions}
 \lecture{Feb 14}
 
 \begin{defn}
@@ -1757,7 +1759,8 @@ and 1 has period 5.
     \draw[fill=none,dashed] (0.5,0.35) circle (0.2);
     \draw[fill=black] (1,0.7) circle (1 pt);
   \end{tikzpicture}
-  creates an intersection of two points (i.e., a set with topological dimension 0),
+  creates an intersection made of two distinct points
+  (i.e., a set with topological dimension 0),
   we know that $\dim_t X = 1$.
 \end{example}
 
@@ -1776,14 +1779,15 @@ and 1 has period 5.
   \begin{center}
     \begin{tikzpicture}[use Hobby shortcut,closed=true,scale=0.5]
       % [tex.se/603127] stolen blob shape
-      \fill (-3.5,0.5) .. (-3,2.5) .. (-1,3.5).. (1.5,3).. (4,3.5).. (5,2.5).. (5,0.5) ..(2.5,-2).. (0,-0.5).. (-3,-2).. (-3.5,0.5);
-      \draw[fill=none,white] (0.353,0.353) circle (0.4);
+      \draw[blue,fill=blue!30] (-3.5,0.5) .. (-3,2.5) .. (-1,3.5).. (1.5,3).. (4,3.5).. (5,2.5).. (5,0.5) ..(2.5,-2).. (0,-0.5).. (-3,-2).. (-3.5,0.5);
+      \draw[fill=none,orange] (0.353,0.353) circle (0.4);
       \draw[dashed] (-3.5,1) arc(90:270:1);
-      \draw[white] (-3.5,-1) arc(-90:90:1);
+      \draw[red] (-3.5,-1) arc(-90:90:1);
     \end{tikzpicture}
   \end{center}
   Then, the intersection of a ball's boundary
-  will give either a circle or an arc, which have topological dimension 1,
+  will give either a \textcolor{orange}{circle} or an \textcolor{red}{arc},
+  which have topological dimension 1,
   so the region has topological dimension 2.
 \end{example}
 
@@ -1821,6 +1825,8 @@ and 1 has period 5.
   such that $\dim_f S > \dim_t S$.
 \end{defn}
 
+\section{Fractal gallery}
+
 \begin{example}
   Let $X = \tikz{
       \draw[fill=black] (0,0) circle (1 pt);
@@ -1835,7 +1841,7 @@ and 1 has period 5.
 \end{example}
 
 \begin{example}[Sierpinski triangle]
-  Let $X$ be the Sierpinski triangle, i.e., the limiting point of the process
+  Let $X$ be the Sierpinski triangle, i.e., the limiting point of the process:
   \begin{center}
     \multido{\iA=1+1}{4}{%
       \begin{pspicture}(2,1.4)\psSier(0,0){2cm}{\iA}\end{pspicture}\quad}
@@ -1849,6 +1855,64 @@ and 1 has period 5.
   because each step is consisted of 3 previous steps scaled by $\frac12$.
   so $X$ is a fractal!
 \end{example}
+
+\lecture{Feb 16}
+\begin{example}[Cantor set]
+  Let $K$ be a middle-thirds Cantor set, i.e., the limiting point of the process:
+  \begin{center}
+    \begin{pspicture}(10,-2)\psCantor\end{pspicture}
+  \end{center}
+  For any point in the Cantor set, we can find a small empty region around it
+  since we keep cutting away from the sides.
+  That is, $\dim_t K = 0$. However, $\dim_f K = \frac{\ln 2}{\ln 3} > 0$.
+\end{example}
+
+\begin{example}[Koch curve]
+  Let $X$ be the Koch curve, where each line segment is replaced by a bump:
+  \begin{center}
+    \begin{tikzpicture}[decoration=Koch snowflake]
+      \draw (0,0) -- (3,0);
+      \draw decorate{ (4,0) -- (7,0) };
+      \draw decorate{ decorate{ (8,0) -- (11,0) }};
+      \draw decorate{ decorate{ decorate{ (12,0) -- (15,0) }}};
+    \end{tikzpicture}
+  \end{center}
+  As a continuous line, intersection with a ball boundary gives points,
+  so $\dim_t X = 1$. We have four copies scaled by $\frac13$, so $\dim_t X = \frac{\ln 4}{\ln 3} > 1$.
+\end{example}
+
+\begin{example}[box fractal]
+  Let $X$ be a box fractal, where we delete edge pieces of a 3x3 grid:
+  \begin{center}
+    \begin{tikzpicture}
+      \fill (0,0) l-system [l-system={box fractal, axiom=F+F+F+F, order=0, anchor=south west, step=2cm}];
+      \fill (3,0) l-system [l-system={box fractal, axiom=F+F+F+F, order=1, anchor=south west, step=0.67cm}];
+      \fill (6,0) l-system [l-system={box fractal, axiom=F+F+F+F, order=2, anchor=south west, step=0.22cm}];
+      \fill (9,0) l-system [l-system={box fractal, axiom=F+F+F+F, order=3, anchor=south west, step=0.074cm}];
+    \end{tikzpicture}
+  \end{center}
+  Then, since the squares are solid, we have topological dimension 1
+  but fractal dimension $\dim_f X = \frac{\ln 5}{\ln 3} > 1$.
+\end{example}
+
+\begin{example}[Minkowski sausage]
+  Let $X$ be the Minkowski sausage, where each line segment is replaced by a square wave:
+  \begin{center}
+    \begin{tikzpicture}[decoration=Koch curve type 2]
+      \draw (0,0) -- (3,0);
+      \draw decorate{ (4,0) -- (7,0) };
+      \draw decorate{ decorate{ (8,0) -- (11,0) }};
+      \draw decorate{ decorate{ decorate{ (12,0) -- (15,0) }}};      
+    \end{tikzpicture}
+  \end{center}
+  Then, as a continuous line, $\dim_t X = 1$,
+  but we have $\dim_f X = \frac{\ln 8}{\ln 4} = \frac32 > 1$.
+\end{example}
+
+There is a hidden connection between iterated systems and fractals!
+For example, playing around with the website
+\href{http://www.shodor.org/interactivate/activities/TheChaosGame/}{http://www.shodor.org/interactivate/activities/TheChaosGame/}
+has a process where each iteration moves a point halfway to one of the vertices.
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}

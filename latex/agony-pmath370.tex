@@ -20,5 +20,9 @@
 \newcommand{\x}{\vb{x}}
 \newcommand{\y}{\vb{y}}
 
-\usetikzlibrary{hobby}
-\RequirePackage{pstricks,pst-fractal}
+\usetikzlibrary{hobby,decorations.fractals,lindenmayersystems}
+\RequirePackage{pstricks,pst-fractal} % for Sierpinski
+
+\pgfdeclarelindenmayersystem{box fractal}{
+  \rule{F -> F+F-F-F+F}
+}
