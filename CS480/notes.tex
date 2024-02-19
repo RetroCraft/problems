@@ -1,4 +1,6 @@
 \documentclass[class=cs480,notes,tikz]{agony}
+\usetikzlibrary{matrix}
+\counterwithout{section}{chapter}
 \counterwithin{equation}{section}
 \renewcommand{\theequation}{\thesection.\alph{equation}}
 \creflabelformat{equation}{#2\textup{#1}#3}
@@ -323,7 +325,7 @@ With step size $\eta_t = 1$, we recover the update rule $\w_{t+1} = \w_t + \y_t\
 To pick the ``best'' line, we can maximize the margin $\gamma$.
 This leads to support vector machines (see \cref{ch:hsvm,ch:ssvm}).
 
-\begin{example}[XOR dataset]
+\begin{example}[XOR dataset]\label{exa:xor}
   Consider the XOR function
   \begin{center}
     \begin{tabular}{cCCCC}
@@ -349,7 +351,7 @@ This leads to support vector machines (see \cref{ch:hsvm,ch:ssvm}).
 
 This leads us to a theorem.
 
-\begin{theorem}
+\begin{theorem}\label{thm:perceptron-fail}
   If there is no perfect separating hyperplane, then the perceptron algorithm cycles.
 \end{theorem}
 
@@ -1138,8 +1140,371 @@ Then, we can characterize the convergence rate.
   as desired.
 \end{prf}
 
+\lecture{Feb 8}
+We have a stronger sense of convexity that gives a stronger convergence rate.
 
-% \chapter{Neural Networks}
+\begin{defn}[$m$-strong convexity]
+  For some $m > 0$, $f$ is \term*{$m$-strong convex}
+  if $f(\x) - m\norm{\x}_2^2$ is convex.
+  We write $LI \succeq \nabla^2f(\x) \succeq mI$.
+\end{defn}
+
+\begin{theorem}[convergence rate for strong convexity]
+  Let $f$ be differentiable, $m$-strong convex, and $L$-smooth.
+  Then, gradient descent with fixed step size $t \leq 2/(m+L)$ satisfies
+  \[ f(\x^{(k)}) - f^* \leq \gamma^k\frac{L}{2}\norm{\x^{(0)}-\x^*}_2^2 \]
+  where $0 < \gamma < 1$.
+\end{theorem}
+
+The rate here is $\order{\gamma^k}$ which is exponentially fast.
+That is, a bound $f(\x^{(k)}) - f(\x^*) < \varepsilon$
+can be achieved using only $\order{\log_{1/\gamma}(1/\varepsilon)}$ iterations,
+much better than before.
+
+Alternatively, we can make a weaker assumption and ask for a weaker result.
+In a non-convex function, there are (potentially many) local minima.
+Instead of asking for small $\norm{f(\x^{(k)}) - f(\x^*)}_2$,
+we only need $\norm{\nabla f(\x)}$.
+
+\begin{theorem}[convergence rate for non-convex case]
+  Suppose $f$ is differentiable, $L$-smooth, and non-convex.
+  Then, gradient descent with fixed step size $t \leq 1/L$ satisfies
+  \[ \min_{i=0,\dotsc,k} \norm{\nabla f(\x^{(i)})}_2 \leq \sqrt{\frac{2(f(\x^{(0)}) - f^*)}{t(k+1)}} \]
+\end{theorem}
+
+The rate $\order{1/\sqrt{k}}$ for finding stationary points cannot be improved
+by any deterministic algorithm.
+
+However, all these require that the gradient $\nabla f(\x)$ is known to us.
+
+\paragraph{Stochastic gradient descent}
+Recall that we introduced the case for perceptron where we update using one data point
+instead of the full dataset.
+
+Consider some decomposable optimization with unreasonably large $n$
+\[ \min_{\w} \frac1n\sum_i f_i(\w) \]
+where we assume $\nabla f_i(\w)$ exists for all $i$.
+Then, the two gradient descent updates
+\begin{align*}
+  \w & \gets \w - t\frac1n\sum_i \nabla f_i(\w) \\
+  \w & \gets \w - t \cdot \nabla f_I(\w)
+\end{align*}
+(where $I$ is a uniformly random index) have the same expected value.
+Notice that the ``full'' gradient descent will have true time complexity
+$\order{n/\varepsilon}$ because each step takes $\order{n}$ time to calculate.
+
+The stochastic version takes just $\order{1/\varepsilon^2}$ time.
+
+To summarize these theorems:
+\begin{center}
+  \begin{tabular}{r|CCC}
+    Case              & \text{Hessian assumption}            & \text{Iterations for $\varepsilon$ error} & \text{Step size} \\ \hline
+    Non-convex        & LI \succeq \nabla^2 f(\x)            & \order{1/\varepsilon^2}                   & t \leq 1/L       \\
+    Convex            & LI \succeq \nabla^2 f(\x)            & \order{1/\varepsilon}                     & t \leq 1/L       \\
+    $m$-strong convex & LI \succeq \nabla^2 f(\x) \succeq mI & \order{\log(1/\varepsilon)}               & t \leq 2/(m+L)   \\
+    Stochastic convex & LI \succeq \nabla^2 f(\x)            & \order{1/\varepsilon^2}                   & t = 1/k
+  \end{tabular}
+\end{center}
+
+In general, we will want to use stochastic gradient descent when $n > C_1/\varepsilon$
+and full gradient descent when $n < C_2/\varepsilon$ for some constants $C_1$, $C_2$.
+
+\chapter{Neural Networks}
+
+We can finally progress from 30- to 60-year old algorithms to stuff people actually use now.
+Recall the XOR dataset (\cref{exa:xor}).
+We showed that it is not linearly separable, so it cannot be learned by perceptron (\cref{thm:perceptron-fail}).
+
+One way to deal with this is to use a richer model (e.g., a quadratic classifier)
+or to lift the data through some feature map $\phi$.
+These two approaches are equivalent due to reproducing kernels.
+
+A neural network tries to learn the feature map \emph{and} the linear classifier simultaneously.
+
+\section{Multilayer Perceptron}
+
+We can set up the following layers:
+\begin{itemize}[nosep]
+  \item \term{input layer} $\vb x \in \R^2$
+  \item \term{linear layer} $\z = \U\x + \vb c$ for learnable parameters $\U \in \R^{2\times 2}$ and $\vb c \in \R^2$
+  \item \term{hidden layer} $\h = \sigma(\z)$ for some non-linear $\sigma$
+  \item \term{prediction layer} $\hat y = \ip{\h}{\w} + b$ for learnable parameters $\w \in \R^2$ and $b \in \R$
+  \item \term{output layer} $\sgn(\hat y)$ or $\sigmoid(\hat y)$
+\end{itemize}
+In total, we need to learn $\U$, $\vb c$, $\vb w$, and $b$ (here, 9 parameters).
+
+\begin{example}
+  XOR dataset is learnable with a 2-layer neural network. Let
+  \[ \U = \mqty[1&1\\1&1] \qc \vb c = \mqty[0\\-1] \qc \w = \mqty[2\\-4] \qc b = -1 \]
+  and let $\sigma(t) = \max\{t,0\}$ (the ReLU activation function).
+
+  Then, $\sgn(\ip{\sigma(\U\x+\vb c)}{\w} + b)$ works.
+\end{example}
+
+To do a multi-class classification, simply have a bunch of $\hat y$'s in a vector
+$\hat{\vb y} = \W\h + \vb b$ and make a prediction vector $\hat{\p} = \softmax(\hat{\vb y})$.
+
+\begin{remark}
+  The hidden layer $\sigma$ \emph{must} be non-linear.
+  Otherwise, the composition of linear layers is just a linear layer and we gain nothing.
+\end{remark}
+
+There are a lot of options for $\sigma$:
+\begin{itemize}[nosep]
+  \item $\xx{relu}(t) = t_+$
+  \item $\xx{elu}(t) = t_+ + t_-(\exp(t)-1)$
+  \item $\xx{sgm}(t) = 1/(1+\exp(-t))$
+  \item $\tanh(t) = 1-2\xx{sgm}(t)$
+\end{itemize}
+
+We can also stack several layers together,
+repeating the pattern of linear layer + non-linear layer.
+
+To train, we need a loss function $\ell$ and a dataset $\mathcal D = \{ (\x_i,\y_i) \}$
+
+\begin{notation}
+  Write $[\ell \circ f](\x_i,\y_i,\w)$ to mean $\ell[f(\x_i,\w),\y_i]$.
+\end{notation}
+
+We can express the neural network as a minimization problem
+\begin{equation}
+  \min_{\w} \frac1n \sum_i [\ell \circ f](\x_i,\y_i,\w)
+\end{equation}
+which gives the gradient descent rule
+\[
+  \w \gets \w - \eta \cdot \frac1n \sum_i \nabla[\ell \circ f](\x_i,\y_i,\w)
+\]
+for learning rate $\eta$.
+This requires a full pass over the dataset for each step.
+
+Instead of doing ordinary stochastic gradient descent,
+we can \term{minibatch} by picking a random subset $B \subseteq \{1,\dotsc,n\}$:
+\[
+  \w \gets \w - \eta \cdot \frac{1}{\abs{B}} \sum_{i \in B} \nabla[\ell \circ f](\x_i,\y_i,\w)
+\]
+which trades off variance and computation cost.
+
+\lecture{Feb 13}
+
+The learning rate has diminishing returns.
+Instead of keeping a constant $\eta$, we can paramaterize $\eta_t$
+and say something like
+\[
+  \eta_t = \begin{cases}
+    \eta_0     & t \leq t_0       \\
+    \eta_0/10  & t_0 < t \leq t_1 \\
+    \eta_0/100 & t_1 < t
+  \end{cases}
+\]
+for an initial $\eta_0$ and specific epochs $t_0,t_1$.
+Alterntaively, we can use \term{sublinear decay} $\eta_t = \eta_0/(1+ct)$
+or $\eta_t = \eta_0/\sqrt{1+ct}$ for some constant $c$.
+
+We need to calculate a lot of partial derivatives with respect to matrices.
+\begin{defn}
+  Let $y(\X) \in \R$ and $\X = [X_{ij}] \in \R^{m \times n}$.
+  Then, we define the \term*{partial derivative of $y$ w.r.t.~$\X$} as
+  \[
+    \pdv{y}{\X} = \qty[\pdv{y}{X_{ij}}] = \begin{bmatrix}
+      \pdv{y}{X_{11}} & \pdv{y}{X_{12}} & \cdots & \pdv{y}{X_{1n}} \\
+      \pdv{y}{X_{21}} & \pdv{y}{X_{22}} & \cdots & \pdv{y}{X_{2n}} \\
+      \vdots          & \vdots          &        & \vdots          \\
+      \pdv{y}{X_{m1}} & \pdv{y}{X_{m2}} & \cdots & \pdv{y}{X_{mn}}
+    \end{bmatrix} \in \R^{m \times n}
+  \]
+  as a matrix.
+\end{defn}
+The best way to do this is to just ``guess'' analogous to scalar calculus,
+then check that the dimension is right (i.e., $\fn{dim} \pdv{y}{\X} = \fn{dim} \X$)
+
+Consider the forward pass for NN width $k$ and output dimension $c$:
+\begin{align*}
+  \x    & = \text{input}                   &  & \x \in \R^{d\times 1}                                    \\
+  \z    & = \W\x + \vb b_1                 &  & \W \in \R^{k \times d},\ \z,\vb b_1 \in \R^{k \times 1}  \\
+  \vb h & = \ReLU(\z)                      &  & \vb h \in \R^{k \times 1}                                \\
+  \vth  & = \U\h + \vb b_2                 &  & \U \in \R^{c\times k},\ \vth,\vb b_2 \in \R^{c \times 1} \\
+  J     & = \frac12\norm{\vth - \vb y}_2^2 &  & \y \in \R^{c \times 1},\ J \in \R
+\end{align*}
+
+Now, we can apply the chain rule to find our desired gradients:
+\begin{align*}
+  \pdv{J}{\vth}    & = \vth - \vb y                                                                                                                                                                 \\
+  \pdv{J}{\U}      & = \pdv{J}{\vth} \circ \pdv{\vth}{\U} = \underbrace{(\vth - \vb y)}_{c \times 1}\underbrace{\vb h\trans}_{1 \times k} \tag{to get $c\times k$}                                  \\
+  \pdv{J}{\vb b_2} & = \pdv{J}{\vth} \circ \pdv{\vth}{\vb b_2} = \underbrace{\vth - \vb y}_{c \times 1} \tag{already has right dimensions}                                                          \\
+  \pdv{J}{\vb h}   & = \pdv{J}{\vth} \circ \pdv{\vth}{\vb h} = \underbrace{\U\trans}_{k \times c}\underbrace{(\vth - \vb y)}_{c \times 1} \tag{to get $k \times 1$}                                 \\
+  \pdv{J}{\vb z}   & = \pdv{J}{\vb h} \circ \pdv{\vb h}{\z} = \underbrace{\U\trans(\vth - \vb y)}_{k \times 1} \odot \underbrace{\ReLU'(\z)}_{k \times 1} \tag{using $\odot$ to keep the dimension} \\
+  \pdv{J}{\W}      & = \pdv{J}{\z} \circ \pdv{\z}{\W} = \underbrace{(\U\trans(\vth - \vb y)\odot\ReLU'(\z))}_{k \times 1}\underbrace{\x\trans}_{1 \times d} \tag{to get $k \times d$}               \\
+  \pdv{J}{\vb b_1} & = \pdv{J}{\z} \circ \pdv{\z}{\vb b_1} = \underbrace{(\U\trans(\vth - \vb y)\odot\ReLU'(\z))}_{k \times 1} \tag{already has right dimensions}
+\end{align*}
+where $\odot$ is the Hadamard (element-wise) product, i.e.,
+\[
+  \mqty[a_1\\a_2\\\vdots\\a_d] \odot \mqty[b_1\\b_2\\\vdots\\b_d] = \mqty[a_1b_1\\a_2b_2\\\vdots\\a_db_d]
+\]
+for two matrices of identical dimension.
+
+Existing frameworks like TensorFlow will automatically do this.
+
+\begin{theorem}[universal approximation theorem by 2-layer NNs]
+  For any continuous function $f : \R^d \to \R^c$ and any $\varepsilon > 0$,
+  there exists $k \in \N$, $\W \in \R^{k \times d}$, $\vb b \in \R^k$,
+  and $\U \in \R^{c \times k}$ such that
+  \[ \sup_{\x}\norm{f(\x) - g(\x)}_2 < \varepsilon \]
+  where $g(\x) = \U(\sigma(\W\x + \vb b))$ and $\sigma$ is element-wise ReLU.
+\end{theorem}
+
+Informally, a 2-layer NN can approximate any continuous function arbitrarily closely
+provided it is wide enough with a large number of parameters.
+
+However, it's not very efficient.
+In the worst case, a 2-layer MLP needs $k = \exp(1/\varepsilon)$
+but a 3-layer MLP can get away with $k = \fn{poly}(1/\varepsilon)$.
+Deeper networks will have even smaller dimensionality requirements.
+
+To help avoid overfitting, we can apply \term{dropout}.
+For each minibatch, randomly select some hidden neurons to be active with probability $q$
+(and pretend the rest of them don't exist).
+Then, each training minibatch gets a ``different'' network,
+so it's harder for neurons to ``collude'' to get overfitting.
+To make sure that dropout does not affect the overall expectation,
+multiply each $\h$ by $1/q$ during the back-propagation.
+
+We can also do \term{batch normalization}
+to ensure that the mean and variance of all the minibatches are the same.
+
+\section{Convolutional Neural Networks}
+\lecture{Feb 15}
+
+An MLP has a lot of parameters to learn.
+Instead of densely connecting every node in the input layer to the hidden layer,
+only connect some of them (i.e., make $\W$ sparse).
+
+Also, to reduce the number of parameters even more, make a bunch of the weights the same.
+Following a certain pattern, we get a convolution.
+These are useful for image processing/classification/segmentation
+but not for NLP.
+
+The layers of CNN are roughly:
+\begin{itemize}[nosep]
+  \item \term{feature extraction}: a series of convolutions + ReLUs.
+        We use a sliding window to reduce the dimensions of the input
+        while \term{pooling} inputs together to increase width to make up for decreased size.
+  \item \term{vectorization}: convert the matrix into a vector
+  \item classification: a fully connected layer (i.e., MLP)
+  \item probabilistic distribution: a softmax activation function
+\end{itemize}
+
+To process an image, split into sepraate channels for RGB values,
+then treat as a matrix of values.
+We will learn a \term{kernel} for the convolution with stochastic gradient descent.
+
+\begin{example}
+  To calculate the convolution
+  \begin{equation*}
+    \left[\begin{tikzpicture}[vertalign]
+        \matrix (conv) [matrix of math nodes] {
+        1 & 1 & 1 & 0 & 0 \\
+        0 & |[Red]|1 & |[orange]|1 & |[Dandelion]|1 & 0 \\
+        0 & |[LimeGreen]|0 & |[Green]|1 & |[RoyalBlue]|1 & 1 \\
+        0 & |[Periwinkle]|0 & |[Orchid]|1 & |[magenta]|1 & 0 \\
+        0 & 1 & 1 & 0 & 0 \\
+        };
+      \end{tikzpicture}\right] \ast \begin{bmatrix}
+      1 & 0 & 1 \\
+      0 & 1 & 0 \\
+      1 & 0 & 1
+    \end{bmatrix} = \begin{bmatrix}
+      \textcolor{Red}{4}        & \textcolor{orange}{3} & \textcolor{Dandelion}{4} \\
+      \textcolor{LimeGreen}{2}  & \textcolor{Green}{4}  & \textcolor{RoyalBlue}{3} \\
+      \textcolor{Periwinkle}{2} & \textcolor{Orchid}{3} & \textcolor{magenta}{4}
+    \end{bmatrix}
+  \end{equation*}
+  we can find each coloured value by taking the tensor inner product
+  (i.e., the inner product of the vectorization) of the kernel
+  with the kernel-sized region around a value:
+  \begin{equation*}
+    \left[\begin{tikzpicture}[vertalign]
+        \matrix (conv) [matrix of nodes] {
+          1 & 1 & 1 & 0 & 0 \\
+          0 & |[bold,Red]|1 & 1 & 1 & 0 \\
+          0 & 0 & |[bold,Green]|1 & 1 & 1 \\
+          0 & 0 & 1 & |[bold,magenta]|1 & 0 \\
+          0 & 1 & 1 & 0 & 0 \\
+        };
+        \draw[thick,Red] (conv-1-1.north west) rectangle (conv-3-3.south east);
+        \draw[thick,Green] (conv-2-2.north west) rectangle (conv-4-4.south east);
+        \draw[thick,magenta] (conv-3-3.north west) rectangle (conv-5-5.south east);
+      \end{tikzpicture}\right]
+    \quad
+    \left[\begin{tikzpicture}[vertalign]
+        \matrix (conv) [matrix of nodes] {
+          1 & 1 & 1 & 0 & 0 \\
+          0 & 1 & |[bold,orange]|1 & 1 & 0 \\
+          0 & 0 & 1 & |[bold,RoyalBlue]|1 & 1 \\
+          0 & |[bold,Periwinkle]|0 & 1 & 1 & 0 \\
+          0 & 1 & 1 & 0 & 0 \\
+        };
+        \draw[thick,orange] (conv-1-2.north west) rectangle (conv-3-4.south east);
+        \draw[thick,RoyalBlue] (conv-2-3.north west) rectangle (conv-4-5.south east);
+        \draw[thick,Periwinkle] (conv-3-1.north west) rectangle (conv-5-3.south east);
+      \end{tikzpicture}\right]
+    \quad
+    \left[\begin{tikzpicture}[vertalign]
+        \matrix (conv) [matrix of nodes] {
+          1 & 1 & 1 & 0 & 0 \\
+          0 & 1 & 1 & |[bold,Dandelion]|1 & 0 \\
+          0 & |[bold,LimeGreen]|0 & 1 & 1 & 1 \\
+          0 & 0 & |[bold,Orchid]|1 & 1 & 0 \\
+          0 & 1 & 1 & 0 & 0 \\
+        };
+        \draw[thick,Dandelion] (conv-1-3.north west) rectangle (conv-3-5.south east);
+        \draw[thick,LimeGreen] (conv-2-1.north west) rectangle (conv-4-3.south east);
+        \draw[thick,Orchid] (conv-3-2.north west) rectangle (conv-5-4.south east);
+      \end{tikzpicture}\right]
+  \end{equation*}
+\end{example}
+
+Convolutions have been shown to represent human visual cognition.
+Traditional image processing also uses convolutions.
+For example, edge detection and Gaussian smoothing.
+
+For multi-channel input, ``stack'' the channels and use a ``cube'' (tensor) kernel.
+We can also apply a bias term $b \in \R$ to the output tensor
+(add $b$ to every element).
+
+In a CNN layer, we increase channels to account for decreased resolution.
+For example, with 3 RGB input channels,
+we might learn 5 different $3\times 3 \times 3$ kernels.
+Then, we will end up with 5 output channels.
+
+We can also control the size of the step taken during convolution.
+Instead of always moving 1-left and 1-down, we can have a larger \term{stride}.
+However, we want overlap between windows,
+so always make sure that the stride is less than the kernel size.
+We can also control the \term{padding},
+adding 0s as necessary to keep boundary information.
+
+Suppose we have input size
+$\overbrace{m \times n}^{\mathclap{\text{typical $m=n=224$}}} \times c_{in}$,
+kernel size $\overbrace{a \times b}^{\mathclap{\text{typical $a=b=5$}}} \times c_{in}$,
+stride $\overbrace{s \times t}^{\mathclap{\text{typical $s=t=1,2$}}}$,
+and padding $\overbrace{p \times q}^{\mathclap{\text{typical $p=q$}}}$
+so that the preprocesssed input looks like
+\begin{center}
+  \begin{tikzpicture}
+    \draw (0,0) rectangle (5,3);
+    \draw (1,0.5) rectangle (4,2.5);
+    \draw[decorate,decoration=brace] (5.1,3) -- node[midway,right]{\rotatebox{90}{$m+2p$}} (5.1,0);
+    \draw[decorate,decoration=brace] (5,-0.1) -- node[midway,below]{$n+2q$} (0,-0.1);
+    \draw[decorate,decoration=brace] (4.1,2.5) -- node[midway,right]{$m$} (4.1,0.5);
+    \draw[decorate,decoration=brace] (4,0.4) -- node[midway,below]{$n$} (1,0.4);
+    \draw[decorate,decoration=brace] (1.1,2.95) -- node[midway,right]{$p$} (1.1,2.55);
+    \draw[decorate,decoration=brace] (0.95,2.4) -- node[midway,below]{$q$} (0.05,2.4);
+  \end{tikzpicture}
+\end{center}
+Then, the output size will be
+\[ \floor*{1+\frac{m+2p-a}{s}} \times \floor*{1+\frac{n+2q-b}{t}} \]
+If we want the input and output to have the ``same'' size, set
+\[ p = \ceil*{\frac{m(s-a)+a-s}{2}} \qq{and} q = \ceil*{\frac{n(t-1)+b-t}{2}} \]
 
 % \chapter{Modern Machine Learning}
 

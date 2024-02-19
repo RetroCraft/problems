@@ -101,6 +101,7 @@
     vertalign/.style = {
         baseline={([yshift=-.8ex]current bounding box.center)}
       },
+    bold/.style = {font=\bfseries},
     annotate equations/text/.style={font=\footnotesize},
   }
 \fi
