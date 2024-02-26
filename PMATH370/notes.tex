@@ -876,7 +876,26 @@ and if $C = -\frac34$, $Q'_C(p_-) = -1$.
 
 Visually, you have situations like
 \begin{center}
-  TODO: graphs
+  \begin{tikzpicture}[scale=0.8]
+    \begin{axis}[domain=0:1]
+      \addplot[green!70!black] {x};
+      \addplot[blue] {x^2+0.1};
+    \end{axis}
+  \end{tikzpicture}
+  \quad
+  \begin{tikzpicture}[scale=0.8]
+    \begin{axis}[domain=0:1]
+      \addplot[green!70!black] {x};
+      \addplot[blue] {x^2+0.25};
+    \end{axis}
+  \end{tikzpicture}
+  \quad
+  \begin{tikzpicture}[scale=0.8]
+    \begin{axis}[domain=0:1]
+      \addplot[green!70!black] {x};
+      \addplot[blue] {x^2+0.3};
+    \end{axis}
+  \end{tikzpicture}
 \end{center}
 for $\lambda<\lambda_0$, $\lambda = \lambda_0$, and $\lambda > \lambda_0$.
 
@@ -1881,7 +1900,7 @@ and 1 has period 5.
   so $\dim_t X = 1$. We have four copies scaled by $\frac13$, so $\dim_t X = \frac{\ln 4}{\ln 3} > 1$.
 \end{example}
 
-\begin{example}[box fractal]
+\begin{example}[box fractal]\label{ex:box}
   Let $X$ be a box fractal, where we delete edge pieces of a 3x3 grid:
   \begin{center}
     \begin{tikzpicture}
@@ -1902,7 +1921,7 @@ and 1 has period 5.
       \draw (0,0) -- (3,0);
       \draw decorate{ (4,0) -- (7,0) };
       \draw decorate{ decorate{ (8,0) -- (11,0) }};
-      \draw decorate{ decorate{ decorate{ (12,0) -- (15,0) }}};      
+      \draw decorate{ decorate{ decorate{ (12,0) -- (15,0) }}};
     \end{tikzpicture}
   \end{center}
   Then, as a continuous line, $\dim_t X = 1$,
@@ -1913,6 +1932,124 @@ There is a hidden connection between iterated systems and fractals!
 For example, playing around with the website
 \href{http://www.shodor.org/interactivate/activities/TheChaosGame/}{http://www.shodor.org/interactivate/activities/TheChaosGame/}
 has a process where each iteration moves a point halfway to one of the vertices.
+
+\lecture{Feb 26}
+\textrule{...one reading week later...}
+
+Recall the chaos game:
+\begin{enumerate}[nosep]
+  \item Start with the vertices $(v_1,v_2,v_3)$ of an equilateral triangle.
+  \item Pick $p \in_{\symsf{R}} \R^2$.
+  \item Pick $v_i \in_{\symsf{R}} \{v_1,v_2,v_3\}$.
+  \item Replace $p$ with the midpoint of $p$ and $v_i$.
+  \item Iterate.
+\end{enumerate}
+Where does the orbit of $p$ end up?
+Somehow, exactly in the Sierpinski triangle.
+Our goal is to formalize this.
+
+\section{Iterated function systems}
+
+Fix some $\p_0 = \mqty[x_0\\y_0]$ and contraction factor $0 < \beta < 1$. Consider
+\[
+  F : \R^2 \to \R^2 \qc F\qty(\mqty[x\\y]) = \beta\mqty[x-x_0\\y-y_0] + \mqty[x_0\\y_0]
+\]
+i.e., $F(\vb p) = \beta(\p - \p_0) + \p_0$. Then,
+\begin{enumerate}[nosep]
+  \item $F(\p_0) = \p_0$
+  \item $\norm{F(\p) - F(\p_0)} = \norm{\beta(\p-\p_0)} = \beta\norm{\p-\p_0}$
+  \item $\norm{F^n(\p) - \p_0} = \beta^n\norm{\p-\p_0} \to \vb 0$ so $F^n(\p) \to \p_0$
+\end{enumerate}
+
+\begin{defn}
+  Let $0 < \beta < 1$ and $\p_1,\dotsc,\p_n \in \R^2$. For each $i = 1,\dotsc,n$, let
+  \[ F_i(\p) = \beta(\p-\p_i) + \p_i \]
+  Then, $\{F_1,\dotsc,F_n\}$ is an \term{iterated function system} (IFS).
+
+  Fix $\q_0 \in \R^2$. Randomly select an $F_i$. Let $\q_1 = F_i(\q_0)$. Repeat.
+  The set of points in which the orbit $\q_1,\q_2,\q_3,\dotsc$ lives
+  is the \term{attractor} for the IFS.
+\end{defn}
+
+\begin{example}
+  Formalize the chaos game. Let $\p_1 = v_1$, $\p_2 = v_2$, $\p_3 = v_3$, and $\beta = \frac12$.
+  Then, $F_i(\p) = \frac12(\p-\p_i) + \p_i = \frac12(\p+\p_i)$ is the midpoint.
+
+  The set $\{F_1,F_2,F_3\}$ is an iterated function system whose attractor
+  is the Sierpinski triangle.
+\end{example}
+
+Note that we can construct pathologically unlucky sequences of $F_i$'s
+that give us point sequences that never reach the attractor.
+However, we ignore those :)
+
+\begin{example}
+  Let $\p_0 = (0,0)\trans$, $\p_1 = (1,0)\trans$, $\p_2 = (0,1)\trans$,
+  $\p_3 = (1,1)\trans$, $\p_4 = (\frac12,\frac12)\trans$, and $\beta = \frac13$.
+
+  What fractal does this produce?
+\end{example}
+\begin{sol}
+  Draw the points:
+  \begin{center}
+    \begin{tikzpicture}
+      \fill[blue!20] (0,0) rectangle (3,3);
+      \fill (0,0) circle [radius=2pt] node [label=below:{$\p_0$}] {};
+      \fill (0,3) circle [radius=2pt] node [label={$\p_1$}] {};
+      \fill (3,0) circle [radius=2pt] node [label=below:{$\p_2$}] {};
+      \fill (3,3) circle [radius=2pt] node [label={$\p_3$}] {};
+      \fill (1.5,1.5) circle [radius=2pt] node [label={$\p_4$}] {};
+    \end{tikzpicture}
+  \end{center}
+  Divide the square into thirds (since we are using $\beta=\frac13$).
+  Then, colour in the images of the square under each $F_i$:
+  \begin{center}
+    \begin{tikzpicture}
+      \fill[blue!20] (0,0) rectangle (1,1) node[black,pos=0.5] {$F_0$};
+      \fill[blue!20] (0,3) rectangle (1,2) node[black,pos=0.5] {$F_1$};
+      \fill[blue!20] (3,0) rectangle (2,1) node[black,pos=0.5] {$F_2$};
+      \fill[blue!20] (3,3) rectangle (2,2) node[black,pos=0.5] {$F_3$};
+      \fill[blue!20] (1,1) rectangle (2,2) node[pos=0.5,pin={[black]right:$F_4$}] {};
+      \fill (0,0) circle [radius=2pt] node [label=below:{$\p_0$}] {};
+      \fill (0,3) circle [radius=2pt] node [label={$\p_1$}] {};
+      \fill (3,0) circle [radius=2pt] node [label=below:{$\p_2$}] {};
+      \fill (3,3) circle [radius=2pt] node [label={$\p_3$}] {};
+      \fill (1.5,1.5) circle [radius=2pt] node [label={$\p_4$}] {};
+    \end{tikzpicture}
+  \end{center}
+  This is going to produce the \nameref{ex:box}.
+\end{sol}
+
+\begin{example}
+  Repeat with $\p_0 = (0,0)\trans$, $\p_1 = (1,0)\trans$, $\p_2 = (0,1)\trans$,
+  and $\beta = \frac12$.
+\end{example}
+\begin{sol}
+  Again, draw the points:
+  \begin{center}
+    \begin{tikzpicture}
+      \fill[blue!20] (0,0) -- (2,0) -- (0,2) -- cycle;
+      \fill (0,0) circle [radius=2pt] node [label=below:{$\p_0$}] {};
+      \fill (2,0) circle [radius=2pt] node [label=below:{$\p_1$}] {};
+      \fill (0,2) circle [radius=2pt] node [label={$\p_2$}] {};
+    \end{tikzpicture}    
+  \end{center}
+  Shrink the right triangle by a factor of $\beta = \frac12$ around each point:
+  \begin{center}
+    \begin{tikzpicture}
+      \fill[blue!20] (0,0) -- (1,0) -- (0,1) -- cycle;
+      \fill[blue!20] (0,2) -- (0,1) -- (1,1) -- cycle;
+      \fill[blue!20] (1,0) -- (1,1) -- (2,0) -- cycle;
+      \node at (0.3,0.3) {$F_0$};
+      \node at (0.3,1.3) {$F_2$};
+      \node at (1.3,0.3) {$F_1$};
+      \fill (0,0) circle [radius=2pt] node [label=below:{$\p_0$}] {};
+      \fill (2,0) circle [radius=2pt] node [label=below:{$\p_1$}] {};
+      \fill (0,2) circle [radius=2pt] node [label={$\p_2$}] {};
+    \end{tikzpicture}    
+  \end{center}
+  This will generate a Sierpinski-like triangle.
+\end{sol}
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
