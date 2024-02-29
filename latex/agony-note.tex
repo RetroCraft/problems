@@ -111,7 +111,7 @@
 	bodyfont=\normalfont,
 	mdframed={style=mdquote,linecolor=ForestGreen,backgroundcolor=ForestGreen!5},
 ]{thmquotegreen}
-\declaretheorem[refname={definition,definitions},style=thmsquaregreen,sibling=theorem]{definition}
+\declaretheorem[refname={def.,defs.},Refname={Definition,Definitions},style=thmsquaregreen,sibling=theorem]{definition}
 \NewDocumentEnvironment{defn}{oO{#1}}{\IfNoValueTF{#1}{\definition}{\definition[#1]\index{#2}}}{\enddefinition}
 \NewDocumentEnvironment{defn*}{o}{\IfNoValueTF{#1}{\definition}{\definition[#1]}}{\enddefinition}
 \declaretheorem[refname={notation,notations},style=thmquotegreen,unnumbered]{notation}

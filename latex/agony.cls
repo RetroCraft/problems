@@ -36,6 +36,7 @@
   \setmathfont{latinmodern-math.otf}
   % fixes because latinmodern-math is dumb
   \setmathfont[range=\mathbb]{texgyrepagella-math.otf}[AutoFakeBold=3] % restore nice-looking ℝ 
+  \setmathfont[range={\mathscr,\mathbfscr}]{XITS Math} % restore different script font
   \AtBeginDocument{
     \renewcommand\setminus{\smallsetminus} % ∖ should be small to look like an operator
     \renewcommand\varnothing{\diameter} % ∅ should obviously be

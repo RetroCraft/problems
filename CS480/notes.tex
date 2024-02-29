@@ -1424,11 +1424,11 @@ We will learn a \term{kernel} for the convolution with stochastic gradient desce
   \begin{equation*}
     \left[\begin{tikzpicture}[vertalign]
         \matrix (conv) [matrix of nodes] {
-          1 & 1 & 1 & 0 & 0 \\
-          0 & |[bold,Red]|1 & 1 & 1 & 0 \\
-          0 & 0 & |[bold,Green]|1 & 1 & 1 \\
-          0 & 0 & 1 & |[bold,magenta]|1 & 0 \\
-          0 & 1 & 1 & 0 & 0 \\
+        1 & 1 & 1 & 0 & 0 \\
+        0 & |[bold,Red]|1 & 1 & 1 & 0 \\
+        0 & 0 & |[bold,Green]|1 & 1 & 1 \\
+        0 & 0 & 1 & |[bold,magenta]|1 & 0 \\
+        0 & 1 & 1 & 0 & 0 \\
         };
         \draw[thick,Red] (conv-1-1.north west) rectangle (conv-3-3.south east);
         \draw[thick,Green] (conv-2-2.north west) rectangle (conv-4-4.south east);
@@ -1437,11 +1437,11 @@ We will learn a \term{kernel} for the convolution with stochastic gradient desce
     \quad
     \left[\begin{tikzpicture}[vertalign]
         \matrix (conv) [matrix of nodes] {
-          1 & 1 & 1 & 0 & 0 \\
-          0 & 1 & |[bold,orange]|1 & 1 & 0 \\
-          0 & 0 & 1 & |[bold,RoyalBlue]|1 & 1 \\
-          0 & |[bold,Periwinkle]|0 & 1 & 1 & 0 \\
-          0 & 1 & 1 & 0 & 0 \\
+        1 & 1 & 1 & 0 & 0 \\
+        0 & 1 & |[bold,orange]|1 & 1 & 0 \\
+        0 & 0 & 1 & |[bold,RoyalBlue]|1 & 1 \\
+        0 & |[bold,Periwinkle]|0 & 1 & 1 & 0 \\
+        0 & 1 & 1 & 0 & 0 \\
         };
         \draw[thick,orange] (conv-1-2.north west) rectangle (conv-3-4.south east);
         \draw[thick,RoyalBlue] (conv-2-3.north west) rectangle (conv-4-5.south east);
@@ -1450,11 +1450,11 @@ We will learn a \term{kernel} for the convolution with stochastic gradient desce
     \quad
     \left[\begin{tikzpicture}[vertalign]
         \matrix (conv) [matrix of nodes] {
-          1 & 1 & 1 & 0 & 0 \\
-          0 & 1 & 1 & |[bold,Dandelion]|1 & 0 \\
-          0 & |[bold,LimeGreen]|0 & 1 & 1 & 1 \\
-          0 & 0 & |[bold,Orchid]|1 & 1 & 0 \\
-          0 & 1 & 1 & 0 & 0 \\
+        1 & 1 & 1 & 0 & 0 \\
+        0 & 1 & 1 & |[bold,Dandelion]|1 & 0 \\
+        0 & |[bold,LimeGreen]|0 & 1 & 1 & 1 \\
+        0 & 0 & |[bold,Orchid]|1 & 1 & 0 \\
+        0 & 1 & 1 & 0 & 0 \\
         };
         \draw[thick,Dandelion] (conv-1-3.north west) rectangle (conv-3-5.south east);
         \draw[thick,LimeGreen] (conv-2-1.north west) rectangle (conv-4-3.south east);
@@ -1505,6 +1505,71 @@ Then, the output size will be
 \[ \floor*{1+\frac{m+2p-a}{s}} \times \floor*{1+\frac{n+2q-b}{t}} \]
 If we want the input and output to have the ``same'' size, set
 \[ p = \ceil*{\frac{m(s-a)+a-s}{2}} \qq{and} q = \ceil*{\frac{n(t-1)+b-t}{2}} \]
+
+\textrule{...one reading week later...}
+\lecture{Feb 27}
+
+Recall the convolution of $\X = \mqty[\Xmat*{x}{2}{2}]$
+and $\W = \mqty[\Xmat*{w}{1}{1}]$:
+\[
+  \W \ast \X = \begin{bmatrix}
+    w_{00}x_{00} + w_{01}x_{01} + w_{10}x_{10} + w_{11}x_{11}
+     & w_{00}x_{01} + w_{01}x_{02} + w_{10}x_{11} + w_{11}x_{12} \\
+    w_{00}x_{10} + w_{01}x_{11} + w_{10}x_{20} + w_{11}x_{21}
+     & w_{00}x_{11} + w_{01}x_{12} + w_{10}x_{21} + w_{11}x_{22}
+  \end{bmatrix}
+\]
+such that the vectorization is
+\[
+  \Vector(\W \ast \X) = \mqty[
+  w_{00}x_{00} + w_{01}x_{01} + w_{10}x_{10} + w_{11}x_{11} \\
+  w_{00}x_{01} + w_{01}x_{02} + w_{10}x_{11} + w_{11}x_{12} \\
+  w_{00}x_{10} + w_{01}x_{11} + w_{10}x_{20} + w_{11}x_{21} \\
+  w_{00}x_{11} + w_{01}x_{12} + w_{10}x_{21} + w_{11}x_{22}
+  ]
+\]
+This is a linear transformation.
+Therefore, we can design a \term{circulant matrix} $\W_\cir$
+such that $\W_\cir\Vector(\X) = \Vector(\W \ast \X)$. Define
+\[
+  \W_\cir = \begin{bmatrix}
+    w_{00} & w_{01} & 0      & w_{10} & w_{11} & 0      & 0      & 0      & 0      \\
+    0      & w_{00} & w_{01} & 0      & w_{10} & w_{11} & 0      & 0      & 0      \\
+    0      & 0      & 0      & w_{00} & w_{01} & 0      & w_{10} & w_{11} & 0      \\
+    0      & 0      & 0      & 0      & w_{00} & w_{01} & 0      & w_{10} & w_{11}
+  \end{bmatrix}
+\]
+and it is clear that $\W_\cir\Vector(\X) = \Vector(\W\ast\X)$.
+
+Now, notice that we only need to learn $\abs{\W} = 4$ weights
+instead of $\abs{\W_\cir} = 9 \times 4 = 36$ weights.
+
+We can also down-sample the input size using \term{pooling}.
+Just like convolution, we take a sliding window with some fixed size and stride
+and apply a transformation.
+Instead of the inner product, we can do \term[pooling!max]{max-pooling}
+(take the max of the window) or \term[pooling!average]{average-pooling}
+(take the mean of the window).
+\term[pooling!global]{Global pooling} is where the window is the whole input,
+so we output a single scalar.
+
+\subsection*{Architecture Examples}
+
+\paragraph{LeNet} Given an input of size $32^2$,
+\begin{itemize}[nosep]
+  \item Convolve with six $5^2$ kernels to 6 @ $28^2$
+  \item Subsample down by half to 6 @ $14^2$
+  \item Convolve with sixteen $5^2$ kernels to 16 @ $10^2$
+  \item Subsample down by half to 16 @ $5^5$
+  \item Fully connect to a 120-wide layer
+  \item Fully connect to an 84-wide layer
+  \item Gaussian connect to a 10-wide output
+\end{itemize}
+
+\paragraph{AlexNet} Given an input of size 3 @ $224 \times 224$:
+\begin{itemize}[nosep]
+  \item Convolve with 96 kernels to 96 @ $55 \times 55$
+\end{itemize}
 
 % \chapter{Modern Machine Learning}
 

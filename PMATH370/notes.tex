@@ -2,7 +2,6 @@
 \usetikzlibrary{external}
 \tikzexternalize[prefix=figures-cache/]
 \tikzset{external/only named=true}
-\declaretheorem[name=Cryptoscheme,refname={scheme,scheme},style=thmroundpink]{scheme}
 
 \title{PMATH 370 Winter 2024: Lecture Notes}
 \begin{document}
@@ -963,7 +962,7 @@ Drawing $\Lambda$ on the $x$-axis, we get something that looks like
 \textrule{$\downarrow$ Lecture 9 adapted from Imaad $\downarrow$}
 \lecture{Jan 26}
 
-\begin{defn*}[Cantor middle thirds set]
+\begin{defn*}[Cantor middle thirds set]\label{def:cantor}
   Let $C_0 = [0,1]$. Remove the open middle third interval each time.
 
   That is, $C_1 = [0,\frac13] \cup [\frac23,1]$,
@@ -1015,7 +1014,7 @@ $x=0.s_1s_2s_3, \cdots, s_i \in \{0, 1, 2\}$
 Consider $\underbrace{[0,1/3]}_{s_1=0}$ and $\underbrace{[2/3, 1]}_{s_1=2}$ and
 $\underbrace{[0, 1/9]}_{s_1=0, s_2=0} \ [2/9, 1/3] \ [2/3, 7/9] \ [8/9, 1]$.
 
-\begin{remark}
+\begin{remark}\label{rem:ternary}
   $x \in K$ if and only if $x$ can be written in base 3 using only 0s and 2s
 \end{remark}
 
@@ -2032,7 +2031,7 @@ However, we ignore those :)
       \fill (0,0) circle [radius=2pt] node [label=below:{$\p_0$}] {};
       \fill (2,0) circle [radius=2pt] node [label=below:{$\p_1$}] {};
       \fill (0,2) circle [radius=2pt] node [label={$\p_2$}] {};
-    \end{tikzpicture}    
+    \end{tikzpicture}
   \end{center}
   Shrink the right triangle by a factor of $\beta = \frac12$ around each point:
   \begin{center}
@@ -2046,9 +2045,127 @@ However, we ignore those :)
       \fill (0,0) circle [radius=2pt] node [label=below:{$\p_0$}] {};
       \fill (2,0) circle [radius=2pt] node [label=below:{$\p_1$}] {};
       \fill (0,2) circle [radius=2pt] node [label={$\p_2$}] {};
-    \end{tikzpicture}    
+    \end{tikzpicture}
   \end{center}
   This will generate a Sierpinski-like triangle.
+\end{sol}
+
+\lecture{Feb 28}
+\begin{example}
+  Let $\p_0 = (0,0)\trans$, $\p_1 = (1,0)\trans$, $\beta = \frac13$.
+  Repeat.
+\end{example}
+\begin{sol}
+  Write the functions explicitly
+  \[
+    F_0(\x) = \frac13\mqty[x\\y] = \mqty[\frac13x\\\frac13y]
+    \qq{and}
+    F_1(\x) = \frac13\mqty[x-1\\y] + \mqty[1\\0] = \mqty[\frac13x + \frac23\\\frac13y]
+  \]
+  and pick a point $\q_0 = (x_0,y_0)\trans \in \R^2$.
+  We say that the orbit of $q_0$ under $\{F_0,F_1\}$
+  is $q_0,q_1,q_2,\dotsc$ with random selections $s_1,s_2,s_3,\dotsc \in \{0,1\}$
+  where $q_i = F_{s_i}(q_{i-1})$.
+
+  First, notice that no matter which one we choose, $y_i = \frac13y_{i-1}$.
+  Therefore, $y_n = \frac{1}{3^n}y_0 \to 0$.
+
+  For the $x$-coordinate, we can write it out explicitly to find the pattern:
+  \begin{align*}
+    x_1 & = \frac13x_0 + \frac{2s_1}{3}                                                          \\
+    x_2 & = \frac{1}{3^2}x_0 + \frac{2s_1}{3^2} + \frac{2s_2}{3}                                 \\
+        & \vdotswithin{=}                                                                        \\
+    x_n & = \frac{1}{3^n}x_0 + \frac{2s_1}{3^n} + \frac{2s_2}{3^{n-1}} + \dotsb + \frac{2s_n}{3}
+  \end{align*}
+  As $n \to \infty$, the first term disappears.
+  The remaining term looks like a funny ternary expansion.
+  Therefore, $x_n$ gets arbitrarily close to points of the form
+  $\sum_{i=1}^\infty \frac{t_i}{3^i}$ where $t_i \in \{0,2\}$.
+
+  However, the set of points whose ternary expansion uses only 0s and 2s
+  is exactly the Cantor set from \cref{def:cantor} (see \cref{rem:ternary}).
+
+  Therefore, the attractor of the IFS $\{F_0,F_1\}$
+  is $\{(x,0)\trans : x \in \text{Cantor set}\}$.
+\end{sol}
+
+\section{Generated iterated function systems}
+
+We want to generalize our definition of IFSs and fractals
+so that we can play with things that look exactly like fractals
+(for example, where the scaling factor differs for each piece).
+
+\begin{defn}[affine transformation]
+  A function $F : \R^n \to \R^n$ given by $F(\x) = A\x + \vb b$
+  where $A \in M_n(\R)$ and $\vb b \in \R^n$.
+  If $\vb b = \vb 0$, we recover the linear transformations.
+
+  We call $F$ a \term{linear contraction} if there exists $0 < \lambda < 1$
+  such that $\norm{F(\x) - \F(\y)} < \lambda\norm{\x - \y}$.
+\end{defn}
+
+In general, ``affine'' just means linear but shifted. 
+
+\begin{example}
+  Let $A = \mqty[\cos\theta & -\sin\theta \\ \sin\theta & \cos\theta]$ and $0 < \beta < 1$.
+
+  Then, $F : \R^2 \to \R^2$, $F(\x) = (\beta A\x + \vb b)$ is a linear contraction.
+\end{example}
+
+This linear contraction (1) scales by $\beta$,
+(2) rotates counter-clockwise by $\theta$,
+and (3) translates by $\vb b$.
+
+\begin{defn}[compactness]
+  A subset $A \subseteq \R^n$ is \term*{compact} if $A$ is closed and bounded.
+
+  Write $\K_n$ for the set of all compact subsets of $\R^n$.
+\end{defn}
+
+\begin{defn}[generalized iterated function system]
+  Let $F_1,\dotsc,F_k : \R^n \toto \R^n$ be linear contractions.
+  We call $F : \K_n \to \K_n$ given by
+  \[ F(A) = F_1(A) \cup F_2(A) \cup F_3(A) \cup \dotsb \cup F_k(A) \]
+  a \term*{(generalized) iterated function system}.
+\end{defn}
+
+This is well-defined since finite unions and the $F_i$'s continuity
+preserve closure and compactness.
+
+We will now:
+\begin{enumerate}[nosep]
+  \item Equip $\K_n$ with a metric.
+  \item Show $F$ has a unique fixed point $A^*$ and for all $A \in \K_n$, $F^n(A) \to A^*$.
+        The point $A^*$ is the \term*{attractor} of $F$ (and is a fractal!).
+\end{enumerate}
+
+\begin{example}
+  Let $F_1(\x) = \frac1{\sqrt2}\mqty[\frac1{\sqrt2} & -\frac1{\sqrt2} \\ \frac1{\sqrt2} & \frac1{\sqrt2}]\x$
+  and $F_2(\x) = \frac1{\sqrt2}\mqty[-\frac1{\sqrt2} & -\frac1{\sqrt2} \\ \frac1{\sqrt2} & -\frac1{\sqrt2}]\x + \mqty[1\\0]$.
+
+  Find the attractor.
+\end{example}
+\begin{sol}
+  Notice that $F_1$ will (1) scale by $\frac1{\sqrt2}$ and
+  (2) rotate by $\frac\pi4$.
+  Then, $F_2$ will (1) scale by $\frac1{\sqrt2}$,
+  (2) rotate by $\frac{3\pi}{4}$, and (3) shift one unit left.
+
+  Consider the line $L$ from $(0,0)$ to $(1,0)$.
+
+  Then, we can draw:
+  \begin{center}
+    \tikz{\draw l-system [l-system={rule set={X -> X+YF+,Y->-FX-Y}, axiom=FX, angle=90, order=0, step=5pt}];} \quad
+    \tikz{\draw l-system [l-system={rule set={X -> X+YF+,Y->-FX-Y}, axiom=FX, angle=90, order=1, step=5pt}];} \quad
+    \tikz{\draw l-system [l-system={rule set={X -> X+YF+,Y->-FX-Y}, axiom=FX, angle=90, order=2, step=5pt}];} \quad
+    \tikz{\draw l-system [l-system={rule set={X -> X+YF+,Y->-FX-Y}, axiom=FX, angle=90, order=3, step=5pt}];} \quad
+    \tikz{\draw l-system [l-system={rule set={X -> X+YF+,Y->-FX-Y}, axiom=FX, angle=90, order=4, step=5pt}];} \quad
+    \tikz{\draw l-system [l-system={rule set={X -> X+YF+,Y->-FX-Y}, axiom=FX, angle=90, order=5, step=5pt}];} \quad
+    \tikz{\draw l-system [l-system={rule set={X -> X+YF+,Y->-FX-Y}, axiom=FX, angle=90, order=6, step=5pt}];} \quad
+    \tikz{\draw l-system [l-system={rule set={X -> X+YF+,Y->-FX-Y}, axiom=FX, angle=90, order=7, step=5pt}];} \quad
+    \tikz{\draw l-system [l-system={rule set={X -> X+YF+,Y->-FX-Y}, axiom=FX, angle=90, order=8, step=5pt}];}
+  \end{center}
+  This fractal, the \term{dragon fractal} tiles the space.
 \end{sol}
 
 \pagebreak

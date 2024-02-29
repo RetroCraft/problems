@@ -27,5 +27,35 @@
 \DeclareMathOperator{\sigmoid}{sigmoid}
 \DeclareMathOperator{\softmax}{softmax}
 \DeclareMathOperator{\ReLU}{ReLU}
+\DeclareMathOperator{\Vector}{Vector}
 \newcommand{\bit}{\{0,1\}}
 \newcommand{\score}{\vv{score}}
+\newcommand{\cir}{\vv{circ}}
+
+% Redefine xmat to begin indexing at 0
+\DeclareDocumentCommand\Xmatrix{ s m m m }
+{
+    {
+        \newtoks\matrixtoks
+        \global\matrixtoks = {}
+        \newcount\rowcount
+        \newcount\colcount
+        \rowcount = -1
+        \loop
+        \colcount = -1
+        \advance \rowcount by 1
+        {
+            \loop
+            \advance \colcount by 1
+            \edef\addtoks{\ifnum \colcount = 0 \else & \fi #2 \IfBooleanTF{#1}{_{\ifnum #3 > 0 \the\rowcount \fi \ifnum #4 > 0 \the\colcount \fi}}{}}
+            \global\matrixtoks = \expandafter{\the\expandafter\matrixtoks\addtoks}
+            \ifnum \colcount < #4
+            \repeat
+        }
+        \ifnum \rowcount < #3
+            \global\matrixtoks = \expandafter{\the\matrixtoks \\ }
+            \repeat
+    }
+    \the\matrixtoks
+}
+\DeclareDocumentCommand\Xmat{}{\Xmatrix}
