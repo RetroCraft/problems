@@ -163,6 +163,10 @@ I don't implement the full design recipe in exercises, for obvious reasons (I'm 
 | [Module 15 Exercises](/.src/CS135/E15.rkt){:.a#CS135--Practice-Problems--James--Module-15} | :white_check_mark: |
 | [Module 16 Exercises](/.src/CS135/E16.rkt){:.a#CS135--Practice-Problems--James--Module-16} | :white_check_mark: |
 
+#### CS 136 (W2024) <small>Elementary Algorithm Design and Data Abstraction </small>
+
+Examples and explanations for how Pointers in C work. See [pointers guide](https://github.com/Eurphus/C-Guides/blob/main/pointers.c){:.a#CS136--Notes--Mac}
+
 #### CS 245 (F2021) <small>Logic and Computation</small>
 
 My own version of the [reference sheet](./CS245/ref.pdf){:.l#CS245--Reference-Sheet--James} is a bit more compact.
