@@ -165,7 +165,7 @@ I don't implement the full design recipe in exercises, for obvious reasons (I'm 
 
 #### CS 136 (W2024) <small>Elementary Algorithm Design and Data Abstraction </small>
 
-Examples and explanations for how Pointers in C work. See [pointers guide](https://github.com/Eurphus/C-Guides/blob/main/pointers.c){:.a#CS136--Notes--Mac}
+Examples and explanations for how pointers in C work. [Examples and explanations](https://github.com/Eurphus/C-Guides/blob/main/pointers.c){:.a#CS136--Notes--Mac}
 
 #### CS 245 (F2021) <small>Logic and Computation</small>
 
