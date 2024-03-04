@@ -2104,7 +2104,7 @@ so that we can play with things that look exactly like fractals
   such that $\norm{F(\x) - \F(\y)} < \lambda\norm{\x - \y}$.
 \end{defn}
 
-In general, ``affine'' just means linear but shifted. 
+In general, ``affine'' just means linear but shifted.
 
 \begin{example}
   Let $A = \mqty[\cos\theta & -\sin\theta \\ \sin\theta & \cos\theta]$ and $0 < \beta < 1$.
@@ -2167,6 +2167,152 @@ We will now:
   \end{center}
   This fractal, the \term{dragon fractal} tiles the space.
 \end{sol}
+
+\lecture{Mar 4}
+\begin{remark}
+  For all $A \in \K_n$, $F_i(A) \in \K_n$.
+  This is because the continuous image of a compact set is compact
+  (beyond the scope of this course).
+\end{remark}
+
+We can now equip $\K_n$ with a metric.
+We will consider $F : \K_n \to \K_n : A \mapsto F_1(A) \cup \dotsb \cup F_k(A)$.
+This is well-defined since we already showed that the finite union of closed sets are closed,
+and it is trivial to show that the finite union of bounded sets is bounded.
+
+We will then show that $F$ has a unique fixed point $A^* \in \K_n$
+and that for all $A \in \K_n$, $F^n(A) \to A^*$.
+
+\begin{example}
+  Let $F_1(\x) = \frac12\x$, $F_2(\x) = \frac12\x + \mqty[\frac12\\0]$,
+  and $F_3(\x) = \frac12\x + \mqty[\frac14\\\frac{\sqrt{3}}4]$.
+
+  Find the attractor.
+\end{example}
+\begin{sol}
+  Let $A$ be the filled triangle with vertices $(0,0)\trans$, $(1,0)\trans$, $(\frac12,\frac{\sqrt3}{2})\trans$:
+  \begin{center}
+    \begin{tikzpicture}[vertalign]
+      \fill[blue!20] (0,0) -- (2,0) -- (1,1.73) -- cycle;
+    \end{tikzpicture}
+    $\longrightarrow$
+    \begin{tikzpicture}[vertalign]
+      \fill[blue!20] (0,0) -- (0.5,0.865) -- (1,0) -- cycle;
+      \fill[blue!20] (1,0) -- (1.5,0.865) -- (2,0) -- cycle;
+      \fill[blue!20] (0.5,0.865) -- (1,1.73) -- (1.5,0.865) -- cycle;
+    \end{tikzpicture}
+    $\longrightarrow \dotsb \longrightarrow A^*$
+  \end{center}
+  This is the Sierpinski triangle.
+
+  Alternatively, we could have started with a square:
+  \begin{center}
+    \begin{tikzpicture}[vertalign]
+      \fill[blue!20] (0,0) rectangle (2,2);
+    \end{tikzpicture}
+    $\longrightarrow$
+    \begin{tikzpicture}[vertalign]
+      \fill[blue!20] (0,0) rectangle (1,1);
+      \fill[blue!20] (1,0) rectangle (2,1);
+      \fill[blue!20] (0.5,1) rectangle (1.5,2);
+    \end{tikzpicture}
+    $\longrightarrow$
+    \begin{tikzpicture}[vertalign]
+      \fill[blue!20] (0,0) rectangle (0.5,0.5);
+      \fill[blue!20] (0.5,0) rectangle (1,0.5);
+      \fill[blue!20] (0.25,0.5) rectangle (0.75,1);
+      \fill[blue!20] (1,0) rectangle (1.5,0.5);
+      \fill[blue!20] (1.5,0) rectangle (2,0.5);
+      \fill[blue!20] (1.25,0.5) rectangle (1.75,1);
+      \fill[blue!20] (0.5,1) rectangle (1,1.5);
+      \fill[blue!20] (1,1) rectangle (1.5,1.5);
+      \fill[blue!20] (0.75,1.5) rectangle (1.25,2);
+    \end{tikzpicture}
+    $\longrightarrow \dotsb \longrightarrow A^*$
+  \end{center}
+  or with a goose:
+  \begin{center}
+    TODO
+  \end{center}
+  but these all converge to the same attractor.
+\end{sol}
+
+\begin{example}
+  Repeat with $F_1(\x) = \frac13\x$,
+  $F_2(\x) = \frac13\mqty[\frac12&-\frac{\sqrt3}2\\\frac{\sqrt3}2&\frac12]\x + \mqty[\frac13\\0]$,
+  $F_3(\x) = \frac13\mqty[\frac12&\frac{\sqrt3}2\\-\frac{\sqrt3}2&\frac12]\x + \mqty[\frac12\\\frac{\sqrt3}{6}]$,
+  and $F_4(\x) = \frac13\x + \mqty[\frac23\\0]$.
+\end{example}
+\begin{sol}
+  Let $L$ be the line segment from $(0,0)\trans$ to $(1,0)\trans$. Then:
+  \[
+    \tikz[decoration=Koch snowflake,vertalign]{\draw (0,0) -- (3,0);}
+    \longrightarrow
+    \tikz[decoration=Koch snowflake,vertalign]{\draw decorate {(0,0) -- (3,0)};}
+    \longrightarrow
+    \tikz[decoration=Koch snowflake,vertalign]{\draw decorate { decorate {(0,0) -- (3,0)} };}
+    \longrightarrow
+    \dotsb
+    \longrightarrow
+    A^*
+  \]
+  The attractor converges to the Koch curve.
+\end{sol}
+
+\begin{example}
+  Let $A = [0,1] \times [0,1]$ (i.e., the filled square).
+
+  Repeat with $F_1(\x) = \x$, $F_2(\x) = \frac12\x + \mqty[0\\1]$, $F_3(\x) = \frac12\x + \mqty[1\\0]$.
+\end{example}
+
+\begin{remark}
+  Since $F_1$ is not a linear contraction, $\lim\limits_{n\to\infty}F^n(A)$
+  will depend on $A$.
+\end{remark}
+
+\begin{sol}
+  Draw the $[0,1]\times[0,1]$ square and iterate:
+  \begin{center}
+    \[
+      \tikz[vertalign]{\fill[blue!20] (0,0) rectangle (1,1);}
+      \longrightarrow
+      \tikz[vertalign]{
+        \fill[blue!20] (0,0) rectangle (1,1);
+        \fill[blue!20] (0,1) rectangle (0.5,1.5);
+        \fill[blue!20] (1,0) rectangle (1.5,0.5);
+      }
+      \longrightarrow
+      \tikz[vertalign]{
+        \fill[blue!20] (0,0) rectangle (1,1);
+        \fill[blue!20] (0,1) rectangle (0.5,1.5);
+        \fill[blue!20] (0,1.5) rectangle (0.25,1.75);
+        \fill[blue!20] (0.5,1) rectangle (0.75,1.25);
+        \fill[blue!20] (1,0) rectangle (1.5,0.5);
+        \fill[blue!20] (1.5,0) rectangle (1.75,0.25);
+        \fill[blue!20] (1,0.5) rectangle (1.25,0.75);
+      }
+      \longrightarrow \dotsb \longrightarrow A^*
+    \]
+  \end{center}
+  This is not a fractal by our strict definition
+  (it is not even self-similar),
+  but in our eyes and our hearts it's a fractal.
+\end{sol}
+
+\begin{defn}[Hausdorff metric]
+  Let $\v \in \R^n$, $A,B \in \K_n$. First, define
+  \[ d(\v,B) := \min\{\norm{\v - \vb b} : \vb b \in B\} \]
+  (this should be an $\inf\{\cdots\}$ but since $B$ is compact,
+  the extreme value theorem gives us $\min\{\cdots\}$ instead)
+
+  Then, define
+  \[ d(A,B) := \max\{d(\vb a,B) : \vb a \in A\} \]
+  i.e., the length of the longest direct path between points in $A$ and $B$.
+
+  Finally, define
+  \[ D(A,B) := \max\{d(A,B), d(B,A)\} \]
+  to fix the fact that $d$ is not symmetric.
+\end{defn}
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
