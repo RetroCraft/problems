@@ -556,10 +556,10 @@ Everything is meaningless if it is not.
 \paragraph{Extending to the multiclass case}
 Suppose we instead have $\y \in \{1,\dotsc,c\}$ and we need to learn $\w_i$ for each class.
 The sigmoid function becomes the \term{softmax} function
-\[
+\begin{equation}\label{eq:softmax}
   \Pr[\Y = k \mid \vv X = \x; \W = [\w_1,\dotsc,\w_c]]
   = \frac{\exp\ip{\x}{\w_k}}{\sum_{l=1}^c\exp\ip{\x}{\w_l}}
-\]
+\end{equation}
 This maps the real-valued vector $\x$ to a probability vector.
 Notice that the softmax values for each class are all non-negative and sum to 1.
 
@@ -1571,7 +1571,270 @@ so we output a single scalar.
   \item Convolve with 96 kernels to 96 @ $55 \times 55$
 \end{itemize}
 
-% \chapter{Modern Machine Learning}
+\lecture{Mar 5}
+\section{Transformers}
+
+TODO: up to slide 11
+
+\begin{center}
+  \begin{tikzpicture}
+    \definecolor{emb_color}{RGB}{252,224,225}
+    \definecolor{multi_head_attention_color}{RGB}{252,226,187}
+    \definecolor{add_norm_color}{RGB}{242,243,193}
+    \definecolor{ff_color}{RGB}{194,232,247}
+    \definecolor{softmax_color}{RGB}{203,231,207}
+    \definecolor{linear_color}{RGB}{220,223,240}
+    \definecolor{gray_bbox_color}{RGB}{243,243,244}
+    \draw[fill=gray_bbox_color, line width=0.046875cm, rounded corners=0.300000cm] (-0.975000, 6.455000) -- (2.725000, 6.455000) -- (2.725000, 1.305000) -- (-0.975000, 1.305000) -- cycle;
+    \draw[fill=gray_bbox_color, line width=0.046875cm, rounded corners=0.300000cm] (3.775000, 9.405000) -- (7.475000, 9.405000) -- (7.475000, 1.305000) -- (3.775000, 1.305000) -- cycle;
+    \draw[line width=0.046875cm, fill=emb_color, rounded corners=0.100000cm] (0.000000, 0.000000) -- (2.500000, 0.000000) -- (2.500000, -0.900000) -- (0.000000, -0.900000) -- cycle;
+      \node[text width=2.500000cm, align=center] at (1.250000,-0.450000) {Input \vspace{-0.05cm} \linebreak Embedding};
+    \draw[line width=0.046875cm, fill=emb_color, rounded corners=0.100000cm] (4.000000, 0.000000) -- (6.500000, 0.000000) -- (6.500000, -0.900000) -- (4.000000, -0.900000) -- cycle;
+      \node[text width=2.500000cm, align=center] at (5.250000,-0.450000) {Output \vspace{-0.05cm} \linebreak Embedding};
+    \draw[line width=0.046875cm, fill=add_norm_color, rounded corners=0.100000cm] (0.000000, 3.680000) -- (2.500000, 3.680000) -- (2.500000, 3.180000) -- (0.000000, 3.180000) -- cycle;
+      \node[text width=2.500000cm, align=center] at (1.250000,3.430000) {Add \& Norm};
+    \draw[line width=0.046875cm, fill=multi_head_attention_color, rounded corners=0.100000cm] (0.000000, 3.030000) -- (2.500000, 3.030000) -- (2.500000, 2.130000) -- (0.000000, 2.130000) -- cycle;
+      \node[text width=2.500000cm, align=center] at (1.250000,2.580000) {Multi-Head \vspace{-0.05cm} \linebreak Attention};
+    \draw[line width=0.046875cm] (1.250000, 3.030000) -- (1.250000, 3.180000);
+    \draw[line width=0.046875cm, fill=add_norm_color, rounded corners=0.100000cm] (4.000000, 6.630000) -- (6.500000, 6.630000) -- (6.500000, 6.130000) -- (4.000000, 6.130000) -- cycle;
+      \node[text width=2.500000cm, align=center] at (5.250000,6.380000) {Add \& Norm};
+    \draw[line width=0.046875cm, fill=multi_head_attention_color, rounded corners=0.100000cm] (4.000000, 5.980000) -- (6.500000, 5.980000) -- (6.500000, 5.080000) -- (4.000000, 5.080000) -- cycle;
+      \node[text width=2.500000cm, align=center] at (5.250000,5.530000) {Multi-Head \vspace{-0.05cm} \linebreak Attention};
+    \draw[line width=0.046875cm] (5.250000, 5.980000) -- (5.250000, 6.130000);
+    \draw[line width=0.046875cm, fill=add_norm_color, rounded corners=0.100000cm] (4.000000, 4.080000) -- (6.500000, 4.080000) -- (6.500000, 3.580000) -- (4.000000, 3.580000) -- cycle;
+      \node[text width=2.500000cm, align=center] at (5.250000,3.830000) {Add \& Norm};
+    \draw[line width=0.046875cm, fill=multi_head_attention_color, rounded corners=0.100000cm] (4.000000, 3.430000) -- (6.500000, 3.430000) -- (6.500000, 2.130000) -- (4.000000, 2.130000) -- cycle;
+      \node[text width=2.500000cm, align=center] at (5.250000,2.780000) {Masked \vspace{-0.05cm} \linebreak Multi-Head \vspace{-0.05cm} \linebreak Attention};
+    \draw[line width=0.046875cm] (5.250000, 3.430000) -- (5.250000, 3.580000);
+    \draw[line width=0.046875cm, fill=add_norm_color, rounded corners=0.100000cm] (0.000000, 6.230000) -- (2.500000, 6.230000) -- (2.500000, 5.730000) -- (0.000000, 5.730000) -- cycle;
+      \node[text width=2.500000cm, align=center] at (1.250000,5.980000) {Add \& Norm};
+    \draw[line width=0.046875cm, fill=ff_color, rounded corners=0.100000cm] (0.000000, 5.580000) -- (2.500000, 5.580000) -- (2.500000, 4.680000) -- (0.000000, 4.680000) -- cycle;
+      \node[text width=2.500000cm, align=center] at (1.250000,5.130000) {Feed \vspace{-0.05cm} \linebreak Forward};
+    \draw[line width=0.046875cm] (1.250000, 5.580000) -- (1.250000, 5.730000);
+    \draw[line width=0.046875cm, fill=add_norm_color, rounded corners=0.100000cm] (4.000000, 9.180000) -- (6.500000, 9.180000) -- (6.500000, 8.680000) -- (4.000000, 8.680000) -- cycle;
+      \node[text width=2.500000cm, align=center] at (5.250000,8.930000) {Add \& Norm};
+    \draw[line width=0.046875cm, fill=ff_color, rounded corners=0.100000cm] (4.000000, 8.530000) -- (6.500000, 8.530000) -- (6.500000, 7.630000) -- (4.000000, 7.630000) -- cycle;
+      \node[text width=2.500000cm, align=center] at (5.250000,8.080000) {Feed \vspace{-0.05cm} \linebreak Forward};
+    \draw[line width=0.046875cm] (5.250000, 8.530000) -- (5.250000, 8.680000);
+    \draw[line width=0.046875cm, fill=linear_color, rounded corners=0.100000cm] (4.000000, 10.280000) -- (6.500000, 10.280000) -- (6.500000, 9.780000) -- (4.000000, 9.780000) -- cycle;
+      \node[text width=2.500000cm, align=center] at (5.250000,10.030000) {Linear};
+    \draw[line width=0.046875cm, fill=softmax_color, rounded corners=0.100000cm] (4.000000, 11.380000) -- (6.500000, 11.380000) -- (6.500000, 10.880000) -- (4.000000, 10.880000) -- cycle;
+      \node[text width=2.500000cm, align=center] at (5.250000,11.130000) {Softmax};
+    \draw[line width=0.046875cm] (1.250000, 0.600000) circle (0.200000);
+    \draw[line width=0.046875cm] (1.410000, 0.600000) -- (1.090000, 0.600000);
+    \draw[line width=0.046875cm] (1.250000, 0.760000) -- (1.250000, 0.440000);
+    \draw[line width=0.046875cm] (5.250000, 0.600000) circle (0.200000);
+    \draw[line width=0.046875cm] (5.410000, 0.600000) -- (5.090000, 0.600000);
+    \draw[line width=0.046875cm] (5.250000, 0.760000) -- (5.250000, 0.440000);
+    \draw[line width=0.046875cm] (0.350000, 0.600000) circle (0.400000);
+    \draw[line width=0.046875cm] (-0.030000, 0.600000) -- (-0.014490, 0.629156) -- (0.001020, 0.657833) -- (0.016531, 0.685561) -- (0.032041, 0.711884) -- (0.047551, 0.736369) -- (0.063061, 0.758616) -- (0.078571, 0.778258) -- (0.094082, 0.794973) -- (0.109592, 0.808486) -- (0.125102, 0.818576) -- (0.140612, 0.825077) -- (0.156122, 0.827883) -- (0.171633, 0.826946) -- (0.187143, 0.822284) -- (0.202653, 0.813971) -- (0.218163, 0.802145) -- (0.233673, 0.786999) -- (0.249184, 0.768783) -- (0.264694, 0.747796) -- (0.280204, 0.724382) -- (0.295714, 0.698925) -- (0.311224, 0.671845) -- (0.326735, 0.643584) -- (0.342245, 0.614608) -- (0.357755, 0.585392) -- (0.373265, 0.556416) -- (0.388776, 0.528155) -- (0.404286, 0.501075) -- (0.419796, 0.475618) -- (0.435306, 0.452204) -- (0.450816, 0.431217) -- (0.466327, 0.413001) -- (0.481837, 0.397855) -- (0.497347, 0.386029) -- (0.512857, 0.377716) -- (0.528367, 0.373054) -- (0.543878, 0.372117) -- (0.559388, 0.374923) -- (0.574898, 0.381424) -- (0.590408, 0.391514) -- (0.605918, 0.405027) -- (0.621429, 0.421742) -- (0.636939, 0.441384) -- (0.652449, 0.463631) -- (0.667959, 0.488116) -- (0.683469, 0.514439) -- (0.698980, 0.542167) -- (0.714490, 0.570844) -- (0.730000, 0.600000);
+    \draw[line width=0.046875cm] (6.150000, 0.600000) circle (0.400000);
+    \draw[line width=0.046875cm] (5.770000, 0.600000) -- (5.785510, 0.629156) -- (5.801020, 0.657833) -- (5.816531, 0.685561) -- (5.832041, 0.711884) -- (5.847551, 0.736369) -- (5.863061, 0.758616) -- (5.878571, 0.778258) -- (5.894082, 0.794973) -- (5.909592, 0.808486) -- (5.925102, 0.818576) -- (5.940612, 0.825077) -- (5.956122, 0.827883) -- (5.971633, 0.826946) -- (5.987143, 0.822284) -- (6.002653, 0.813971) -- (6.018163, 0.802145) -- (6.033673, 0.786999) -- (6.049184, 0.768783) -- (6.064694, 0.747796) -- (6.080204, 0.724382) -- (6.095714, 0.698925) -- (6.111224, 0.671845) -- (6.126735, 0.643584) -- (6.142245, 0.614608) -- (6.157755, 0.585392) -- (6.173265, 0.556416) -- (6.188776, 0.528155) -- (6.204286, 0.501075) -- (6.219796, 0.475618) -- (6.235306, 0.452204) -- (6.250816, 0.431217) -- (6.266327, 0.413001) -- (6.281837, 0.397855) -- (6.297347, 0.386029) -- (6.312857, 0.377716) -- (6.328367, 0.373054) -- (6.343878, 0.372117) -- (6.359388, 0.374923) -- (6.374898, 0.381424) -- (6.390408, 0.391514) -- (6.405918, 0.405027) -- (6.421429, 0.421742) -- (6.436939, 0.441384) -- (6.452449, 0.463631) -- (6.467959, 0.488116) -- (6.483469, 0.514439) -- (6.498980, 0.542167) -- (6.514490, 0.570844) -- (6.530000, 0.600000);
+    \draw[line width=0.046875cm, -latex] (1.250000, 3.680000) -- (1.250000, 4.680000);
+    \draw[line width=0.046875cm, -latex] (5.250000, 6.630000) -- (5.250000, 7.630000);
+    \draw[line width=0.046875cm, -latex] (5.250000, 9.180000) -- (5.250000, 9.780000);
+    \draw[line width=0.046875cm, -latex] (5.250000, 10.280000) -- (5.250000, 10.880000);
+    \draw[line width=0.046875cm, -latex] (1.250000, 0.000000) -- (1.250000, 0.400000);
+    \draw[line width=0.046875cm, -latex] (1.250000, 0.800000) -- (1.250000, 2.130000);
+    \draw[line width=0.046875cm, -latex] (5.250000, 0.800000) -- (5.250000, 2.130000);
+    \draw[line width=0.046875cm, -latex] (5.250000, 0.000000) -- (5.250000, 0.400000);
+    \draw[line width=0.046875cm] (0.750000, 0.600000) -- (1.050000, 0.600000);
+    \draw[line width=0.046875cm] (5.450000, 0.600000) -- (5.750000, 0.600000);
+    \draw[-latex, line width=0.046875cm, rounded corners=0.200000cm] (1.250000, 4.080000) -- (-0.750000, 4.080000) -- (-0.750000, 5.980000) -- (0.000000, 5.980000);
+    \draw[-latex, line width=0.046875cm, rounded corners=0.200000cm] (1.250000, 1.530000) -- (-0.750000, 1.530000) -- (-0.750000, 3.430000) -- (0.000000, 3.430000);
+    \draw[-latex, line width=0.046875cm, rounded corners=0.200000cm] (5.250000, 1.530000) -- (7.250000, 1.530000) -- (7.250000, 3.830000) -- (6.500000, 3.830000);
+    \draw[-latex, line width=0.046875cm, rounded corners=0.200000cm] (5.250000, 4.480000) -- (7.250000, 4.480000) -- (7.250000, 6.380000) -- (6.500000, 6.380000);
+    \draw[-latex, line width=0.046875cm, rounded corners=0.200000cm] (5.250000, 7.030000) -- (7.250000, 7.030000) -- (7.250000, 8.930000) -- (6.500000, 8.930000);
+    \draw[-latex, line width=0.046875cm, rounded corners=0.200000cm] (1.250000, 1.730000) -- (0.312500, 1.730000) -- (0.312500, 2.130000);
+    \draw[-latex, line width=0.046875cm, rounded corners=0.200000cm] (1.250000, 1.730000) -- (2.187500, 1.730000) -- (2.187500, 2.130000);
+    \draw[-latex, line width=0.046875cm, rounded corners=0.200000cm] (5.250000, 1.730000) -- (4.312500, 1.730000) -- (4.312500, 2.130000);
+    \draw[-latex, line width=0.046875cm, rounded corners=0.200000cm] (5.250000, 1.730000) -- (6.187500, 1.730000) -- (6.187500, 2.130000);
+    \draw[-latex, line width=0.046875cm, rounded corners=0.200000cm] (1.250000, 6.230000) -- (1.250000, 7.230000) -- (3.250000, 7.230000) -- (3.250000, 4.680000) -- (4.312500, 4.680000) -- (4.312500, 5.080000);
+    \draw[-latex, line width=0.046875cm, rounded corners=0.200000cm] (1.250000, 6.230000) -- (1.250000, 7.230000) -- (3.250000, 7.230000) -- (3.250000, 4.680000) -- (5.250000, 4.680000) -- (5.250000, 5.080000);
+    \draw[-latex, line width=0.046875cm, rounded corners=0.200000cm] (5.250000, 4.080000) -- (5.250000, 4.680000) -- (6.187500, 4.680000) -- (6.187500, 5.080000);
+    \draw[line width=0.046875cm, -latex] (1.250000, -1.500000) -- (1.250000, -0.900000);
+    \draw[line width=0.046875cm, -latex] (5.250000, -1.500000) -- (5.250000, -0.900000);
+    \draw[line width=0.046875cm, -latex] (5.250000, 11.380000) -- (5.250000, 11.980000);
+      \node[text width=2.500000cm, anchor=north, align=center] at (1.250000,-1.500000) {Inputs};
+      \node[text width=2.500000cm, anchor=north, align=center] at (5.250000,-1.500000) {Outputs \vspace{-0.05cm} \linebreak (shifted right)};
+      \node[text width=2.500000cm, anchor=south, align=center] at (5.250000,11.980000) {Output \vspace{-0.05cm} \linebreak Probabilities};
+      \node[anchor=east] at (-1.175000,3.880000) {$N\times$};
+      \node[anchor=west] at (7.675000,5.355000) {$N\times$};
+      \node[text width=2.000000cm, anchor=east] at (0.250000,0.600000) {Positional \vspace{-0.05cm} \linebreak Encoding};
+      \node[text width=2.000000cm, anchor=west] at (6.750000,0.600000) {Positional \vspace{-0.05cm} \linebreak Encoding};
+  \end{tikzpicture}
+\end{center}
+
+Our goal is given a sequence of tokens (the prompt) $X = (\x_1,\dotsc,\x_n)$,
+to find a sequence $Y = (\vb y_1,\dotsc,\vb y_m)$ such that the maximum likelihood
+\[ \argmax_{Y} p(\vb y_1,\dotsc,\vb y_m \mid \x_1,\dotsc,\x_n) \]
+is achieved.
+We use an \term{auto-regressive} model where we greedily take
+\[ \argmax_{\vb y_k} p(\vb y_k \mid \x_1,\dotsc,\x_n,\vb y_1,\dotsc,\vb y_{k-1}) \]
+i.e., one token at a time.
+Note that $m$ is not pre-defined; we keep generating until we reach the [END] token.
+
+At each step, we input the \textcolor{Red}{\textbf{embeddings}} of the prompt and the partially generated text.
+The text is converted to tokens, which are the smallest elements the model can understand.
+Then, the tokens are embedded in a high-dimensional vector space (typically, $d=512$).
+The embedding should map similar words to similar locations.
+
+The output of the prompt embedding is $X = [\x_1,\dotsc,\x_n] \in \R^{n \times d}$
+and the auto-regressive outputs $[\vb y_1,\dotsc,\vb y_k] \in \R^{k \times d}$
+
+Since word order matters, we also add a \textbf{positional encoding}.
+We define the matrix $W^p \in \R^{n \times d}$ as
+\[ W^p_{t,2i} = \sin(t/10000^{2i/d})\qc W^p_{t,2i+1} = \cos(t/10000^{2i/d})\qc i = 0,\dotsc,\tfrac{d}{2}-1 \]
+This is a fixed part of the model, and we simply add $W^p$ to $X$.
+The auto-regressive output is also similarly positionally encoded.
+
+These are then sent to \textcolor{Orange}{\textbf{attention layers}}.
+
+The Attention function has an input value $V \in \R^{n \times d}$,
+a key $K \in \R^{n \times d}$, and a query $Q \in \R^{m \times d}$.
+It outputs an $\R^{m \times d}$ matrix.
+
+Recall the softmax function (\cref{eq:softmax}) as applied to vectors:
+\[ \softmax(\z) = \qty[\frac{\exp(z_1)}{\sum_i \exp(z_i)},\dotsc,\frac{\exp(z_n)}{\sum_i \exp(z_n)}] \]
+Then, writing $\v_i\trans$, $\k_i\trans$, and $\q_i\trans$ as the rows of $V$, $K$, and $Q$:
+\begin{align*}
+    & \operatorname{Attention}(V,K,Q)                                                                                                                                                                                                                                                                                                                              \\
+  = & \softmax\qty(\frac{QK\trans}{\sqrt d})V                                                                                                                                                                                                                                                                                                                      \\
+  = & \begin{bmatrix}
+        \softmax\qty(\frac{\ip{\q_1}{\k_1}}{\sqrt d}) & \softmax\qty(\frac{\ip{\q_1}{\k_2}}{\sqrt d}) & \cdots & \softmax\qty(\frac{\ip{\q_1}{\k_n}}{\sqrt d}) \\
+        \softmax\qty(\frac{\ip{\q_2}{\k_1}}{\sqrt d}) & \softmax\qty(\frac{\ip{\q_2}{\k_2}}{\sqrt d}) & \cdots & \softmax\qty(\frac{\ip{\q_2}{\k_n}}{\sqrt d}) \\
+        \vdots                                        & \vdots                                        & \ddots & \vdots                                        \\
+        \softmax\qty(\frac{\ip{\q_m}{\k_1}}{\sqrt d}) & \softmax\qty(\frac{\ip{\q_m}{\k_2}}{\sqrt d}) & \cdots & \softmax\qty(\frac{\ip{\q_m}{\k_n}}{\sqrt d})
+      \end{bmatrix}V                               \\
+  = & \begin{bmatrix}
+        \softmax\qty(\frac{\ip{\q_1}{\k_1}}{\sqrt d})\v_1\trans + \softmax\qty(\frac{\ip{\q_1}{\k_2}}{\sqrt d})\v_2\trans + \dotsb + \softmax\qty(\frac{\ip{\q_1}{\k_n}}{\sqrt d})\v_n\trans \\
+        \softmax\qty(\frac{\ip{\q_2}{\k_1}}{\sqrt d})\v_1\trans + \softmax\qty(\frac{\ip{\q_2}{\k_2}}{\sqrt d})\v_2\trans + \dotsb + \softmax\qty(\frac{\ip{\q_2}{\k_n}}{\sqrt d})\v_n\trans \\
+        \vdots                                                                                                                                                                               \\
+        \softmax\qty(\frac{\ip{\q_m}{\k_1}}{\sqrt d})\v_1\trans + \softmax\qty(\frac{\ip{\q_m}{\k_2}}{\sqrt d})\v_2\trans + \dotsb + \softmax\qty(\frac{\ip{\q_m}{\k_n}}{\sqrt d})\v_n\trans
+      \end{bmatrix} \in \R^{m \times d}
+\end{align*}
+Each output ``value'' (i.e., row) here is a convex combination of the rows of $V$.
+
+In the self-attention case, $Q = K = V = $ whatever the input is.
+
+So far, there are no learnable parameters.
+To add learnable parameters, we do a linear layer with each of $V$, $K$, and $Q$.
+That is, $W^q_i,W^k_i,W^v_i \in \R^{512 \times 64}$ can be learnable linear layers
+such that $\operatorname{Attention}_i = \softmax\qty(\frac{QW^q_i(KW^k_i)\trans}{\sqrt{d}})VW^v_i$.
+
+Each of these $i = 1,\dotsc,h$ triplets is called a head.
+Typically $h = 8$.
+A multi-head attention layer concatenates each $\operatorname{Attention}_i$
+and sends that through a final learnable linear layer.
+
+A masked attention layer just ignores future tokens $\vb y_k,\dotsc,\vb y_m$ during training.
+
+The \textcolor{Cerulean}{\textbf{feed forward layers}} are just two-layer MLPs
+with ReLU activation:
+\[ \max(0,\x\trans W_1 + \vb b_1)W_2 + \vb b_2 \]
+where $W_1 \in \R^{d \times 4d}$ and $W_2 \in \R^{4d \times d}$.
+They also have \textcolor{Dandelion}{\textbf{residual connections}}
+and \textcolor{Dandelion}{\textbf{layer normalization}}.
+
+\paragraph{Summary}
+There are three tunable hyperparameters: layers $N = 6$,
+output dimensions $d = 512$, and heads $h = 8$.
+
+The cross-attention module has $V = K = $ encoder and $Q = $ decoder.
+The other attention modules are self-attentive, so $V = K = Q$.
+
+We train by minimizing the log-loss between true next words and predicted next words
+\[ \min_W \hat{\E}[-\ip{Y}{\log\hat Y}] \]
+where $Y = [\vb y_1,\dotsc,\vb y_l]$ is the one-hot output sequence
+and $\hat Y = [\vb{\hat{y}}_1,\dotsc,\vb{\hat{y}}_l]$ are the predicted probabilities.
+
+\chapter{Modern Machine Learning}
+
+\section{Large Language Models}
+
+TOOD: up to slide 9
+
+\subsection*{Generative Pre-Training (GPT-1)}
+
+GPT-1 is an open-source 12-layer decoder with 110M parameters.
+It is pre-trained unsupervised on next-word prediction.
+Then, fine-tuning is done on task-dependent architecture, i.e.,
+there are specific
+
+\subsection*{Bidirectional Encoder Representations from Transformers (BERT)}
+
+BERT is an encoder-only model.
+It also has a pre-training phase and fine-tuning phase.
+
+In the pre-training phase,
+the encoder is given masked sentences and is trained to generate the missing tokens
+(Masked LM; task A).
+Training on task A performs better than training on the left-to-right prediction task.
+The model is also trained on next-sentence prediction (NSP; task B),
+where it binary classifies whether two sentences follow or are unrelated.
+
+$\text{BERT}_\text{BASE}$ has a similar number of parameters (110M) to GPT-1,
+but performs better.
+$\text{BERT}_\text{LARGE}$ (340M) performs better than both.
+
+RoBERTa (Robustly Optimized BERT Approach) is just a larger BERT model
+with bigger batches and more data.
+It was also only trained on the Masked LM objective,
+but with longer sequences.
+
+Sentence-BERT/RoBERTa trains the similarity task using two encoders
+(one for each sentence) and saves represented encodings.
+This saves a lot of inference time.
+
+\subsection*{GPT-2 through 4}
+
+Basically the only thing done is make the model larger.
+
+GPT-2 introduced a new dataset called WebText.
+The 1.5B-parameter model is around $10\times$ larger than GPT-1,
+and is trained in the same way.
+It is about on par with BERT on finetuning tasks.
+It is also the most recent OpenAI model to be open-sourced.
+However, it is very good at zero-shot learning.
+This means we no longer need task-dependent architecture.
+
+GPT-3 is trained exactly the same as GPT and GPT-2,
+but $100\times$ larger (175B parameters).
+At around the 100B-parameter level,
+we start to see emergent properties of in-context learning (zero-/few-shot prompts)
+and chain-of-thought (either one-shot or ``let's do this step-by-step'').
+However, raw language models do not answer questions or behave in a chat-like way.
+For example, asking a quesiton to GPT-3 will result in a list of similar questions.
+
+GPT-3.5 (InstructGPT) uses Reinforcement Learning from Human Feedback (RLHF).
+In RLHF, the agent uses a policy function (LLM)
+to take actions (outputs) given a state (prompt),
+and is returned a reward and new state based on the environment (another LLM):
+\begin{enumerate}
+  \item Collect demonstration data, and train a supervised policy:
+        train by overfitting GPT-3 to human-written desired outputs
+        (the SFT model).
+  \item Collect comparison data, and train a reward model:
+        train a new reward model (RM) using human rankings of outputs.
+        We use pair-wise comparison logistic loss
+        \[ \operatorname{loss}(\theta) = -\E_{(x,y_w,y_l)}[\log(\sigma(r_\theta(x,y_w) - r(x,y_l)))] \]
+        for a prompt $x$ and preferred output $r_\theta(x,y_w) \gg r_\theta(x,y_l)$.
+        This trains a real-valued function $r_\theta$ so ChatGPT knows
+        how much better $y_w$ is than $y_l$ without the unknown human element.
+  \item Optimize a policy against the reward model using reinforcement learning:
+        update the SFT model using the RM model using proximal policy optimization (PPO):
+        \[
+          \max_\phi \E_{(x,y)} [
+            \underbrace{r_\theta(x,y)}_{\text{RM reward}}
+            - \beta\underbrace{\log(\pi_\phi^{\text{RL}}(y \mid x) / \pi^{\text{SFT}(y \mid x)})}_{\text{model is close to SFT}}
+          ] + \gamma\underbrace{\E[\log(\pi_\phi^{\text{RL}}(x))]}_{\text{pretraining loss}}
+        \]
+\end{enumerate}
+In general, GPT $\ll$ prompted GPT $\ll$ SFT $\ll$ PPO $<$ PPO with pretraining mix.
+PPO-ptx is the base model for ChatGPT-3.5 and GitHub Copilot.
+
+GPT-4 allows combined multimodal image/text input.
+The paper says nothing so nobody knows how it works.
 
 % \chapter{Trustworthy Machine Learning}
 

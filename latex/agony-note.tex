@@ -47,6 +47,12 @@
 ]{thmroundresult}
 \declaretheoremstyle[
 	headfont=\bfseries\color{Violet},
+  notefont=\mdseries,
+	bodyfont=\normalfont,
+	mdframed={style=mdquote,linecolor=Violet,backgroundcolor=Periwinkle!5},
+]{thmquotestrongresult}
+\declaretheoremstyle[
+	headfont=\bfseries\color{Violet},
 	mdframed={style=mdsquare,linecolor=Violet,backgroundcolor=Periwinkle!5},
 	headpunct={\\[3pt]},
 	postheadspace={0pt}
@@ -64,6 +70,7 @@
 	mdframed={style=mdquote,linecolor=RoyalBlue,backgroundcolor=CornflowerBlue!5},
 ]{thmquoteresult}
 \declaretheorem[Refname={Theorem,Theorems},refname={thm.,thms.},style=thmroundresult,numberwithin=section]{theorem}
+\declaretheorem[Refname={Fact,Facts},refname={fact,facts},style=thmquotestrongresult,sibling=theorem]{fact}
 \declaretheorem[Refname={Lemma,Lemmas},refname={lem.,lems.},style=thmsquareresult,sibling=theorem]{lemma}
 \declaretheorem[name=Proposition,Refname={Proposition,Propositions},refname={prop.,props.},style=thmprop,sibling=theorem]{prop}
 \declaretheorem[Refname={Corollary,Corollaries},refname={cor.,cors.},style=thmquoteresult,sibling=theorem]{corollary}

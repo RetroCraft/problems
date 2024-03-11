@@ -2119,7 +2119,7 @@ and (3) translates by $\vb b$.
 \begin{defn}[compactness]
   A subset $A \subseteq \R^n$ is \term*{compact} if $A$ is closed and bounded.
 
-  Write $\K_n$ for the set of all compact subsets of $\R^n$.
+  Write $\K_n$ for the set of all non-empty compact subsets of $\R^n$.
 \end{defn}
 
 \begin{defn}[generalized iterated function system]
@@ -2313,6 +2313,350 @@ and that for all $A \in \K_n$, $F^n(A) \to A^*$.
   \[ D(A,B) := \max\{d(A,B), d(B,A)\} \]
   to fix the fact that $d$ is not symmetric.
 \end{defn}
+
+\lecture{Mar 6}
+\begin{fact}
+  $D$ is a metric on $\K_n$
+\end{fact}
+We take this fact without proof.
+
+\begin{example}
+  $A = \{(1,1)\}$, let $B=\{(x, 0): 0 \leq x \leq 1\}$
+
+  [figure]
+
+  Then, $d(A, B) = 1$, $d(B, A) = \sqrt{2}$,
+  and $D(A, B) = \max\{1, \sqrt{2}\} = \sqrt{2}$.
+\end{example}
+
+\begin{lemma}\label{lem:D1}
+  Let $f : \R^n \to \R^n$ be a linear contraction such that
+  $\norm{f(\x)-f(\y)} \leq \lambda \norm{\x-\y}$ for some $\lambda \in (0,1)$.
+
+  Then, for $A, B \in \K_n$, $D(f(A), f(B)) \leq \lambda D(A, B)$.
+\end{lemma}
+\begin{prf}
+  First, we have
+  \[
+    d(f(a), f(B)) = \min_{b \in B} \norm{f(a)-f(b)}
+    \leq \min_{b \in B} \lambda \norm{a-b}
+    = \lambda \min_{b \in B} \norm{a-b}
+    = \lambda d(a, B)
+  \]
+  and so
+  \[
+    d(f(A), f(B)) = \max_{a \in A} d(f(a), f(B))
+    \leq \lambda \max_{a \in A} d(a, B)
+    = \lambda d(A, B)
+    \leq \lambda D(A, B)
+  \]
+  Therefore, $d(f(A), f(B)) \leq \lambda D(A, B)$.
+  Similarly, $d(f(B), f(A)) \leq \lambda D(A, B)$.
+
+  Hence, $D(f(A), f(B)) \leq \lambda D(A, B)$.
+\end{prf}
+
+\begin{lemma}\label{lem:D2}
+  For $A_1, A_2, B_1, B_2 \in \K_n$,
+  \[ D(A_1 \cup A_2, B_1 \cup B_2) \leq \max\{D(A_1, B_1), D(A_2, B_2)\} \]
+\end{lemma}
+\begin{prf}
+  First,
+  \begin{align*}
+    d(A_1 \cup A_2, B_1 \cup B_2)
+     & = \max_{a \in A_1 \cup A_2} d(a, B_1 \cup B_2)                                       \\
+     & = \max\qty{\max_{a \in A_1} d(a, B_1 \cup B_2), \max_{a \in A_2} d(a, B_1 \cup B_2)} \\
+     & \leq \max\qty{\max_{a \in A_1} d(a, B_1), \max_{a \in A_2} d(a, B_2)} \tag{$\star$}
+  \end{align*}
+  by the min in the definition.
+
+  $= \max\{d(A_1, B_1), d(A_2, B_2)\} \leq \max\{D(A_1, B_1), D(A_2, B_2)\}$
+
+  Hence, $d(A_1 \cup A_2, B_1 \cup B_2) \leq \max\{D(A_1, B_1), D(A_2, B_2)\}$
+
+  Similarly, $d(B_1 \cup B_2, A_1 \cup A_2) \leq \max\{D(A_1, B_1), D(A_2, B_2)\}$
+
+  Therefore $D(A_1 \cup A_2, B_1 \cup B_2) \leq \max\{D(A_1, B_1), D(A_2, B_2)\}$
+\end{prf}
+
+\begin{lemma}\label{lem:D3}
+  Let $F_1, \cdots, F_k$ be linear contractions with contraction factor $\lambda \in (0,1)$.
+
+  Consider $F: \K_n \to \K_n, F(A) = F_1(A) \cup F_2(A) \cup \cdots \cup F_k(A)$.
+  Then, $D(F(A), F(B)) \leq \lambda D(A, B)$.
+\end{lemma}
+\begin{prf}
+  We have, $D(F(A), F(B)) \leq \max_{i = 1,\dotsc,k} D(F_i(A), F_i(B))$ by \cref{lem:D2}.
+  By \cref{lem:D1}, $\leq \max_{i = 1,\dotsc,k} \lambda D(A, B) = \lambda D(A, B)$.
+\end{prf}
+
+\begin{defn}
+  Let $(X, d)$ be metric space.
+  \begin{enumerate}[nosep]
+    \item $(x_n) \subseteq X$ is \term{Cauchy} if
+          $\forall \epsilon > 0$, $\exists n \in \N$, such that
+          $n, m \geq N \implies d(x_n, x_m) < \epsilon$.
+    \item $X$ is \term{complete} if every Cauchy sequence $(x_n) \subseteq X$
+          converges to some $x \in X$.
+  \end{enumerate}
+\end{defn}
+
+\begin{fact}
+  $(K_n, D)$ is complete.
+\end{fact}
+We do not prove this.
+
+\lecture{Mar 8}
+\begin{theorem}
+  Let $F_1,\dotsc,F_k$ be linear contractions with contraction factor $\lambda \in (0,1)$.
+
+  Let $F : \K_n \to \K_n$ be the corresponding IFS. Then,
+  \begin{enumerate}[nosep]
+    \item $F$ has a unique fixed point $A^*$, which we call the \term{attractor}.
+    \item For all $A \in \K_n$, $F^m(A) \to A^*$.
+  \end{enumerate}
+\end{theorem}
+\begin{prf}
+  Fix $A \in \K_n$. Consider its orbit $F^m(A)$. Look at the distance
+  \begin{align*}
+    D(F^{m+1}(A), F^m(A)) = D(F^m(F(A)), F^m(A)) \leq \lambda^m D(F(A),A)
+  \end{align*}
+  by \cref{lem:D3}. Let $\epsilon_m = \lambda^m D(F(A),A)$.
+  Then, $\sum \epsilon_m$ converges, since $\abs{\lambda} < 1$.
+  Therefore, the sequence $(F^m(A)) \subseteq \K_n$ is strongly Cauchy.
+  In particular, $F^m(A)$ is Cauchy,
+  so there exists some $F^m(A) \to A^* \in \K_n$ because $\K_n$ is complete.
+
+  Since $F$ is continuous, $F^{m+1}(A) \to F(A^*)$.
+  Hence, $F(A^*) = A^*$.
+
+  Now, consider uniqueness.
+  Suppose $A^*$ and $B^*$ are fixed points for $F$. Then,
+  \[
+    D(A^*, B^*) = D(F(A^*), F(B^*)) \leq \lambda D(A^*, B^*)
+  \]
+  but $\lambda \in (0,1)$. This forces $D(A^*, B^*) = 0$, so $A^* = B^*$.
+\end{prf}
+
+\chapter{Complex Functions}
+
+\section{Foundations}
+\begin{defn*}[complex derivative]
+  Let $f : \C \to \C$. Then,
+  \begin{enumerate}
+    \item For $z_0 \in \C$, we say that
+          \[ \lim_{z \to z_0}f(z) = L \in \C \]
+          if for all $\varepsilon > 0$, there exists a $\delta > 0$ such that
+          \[ 0 < \abs{z - z_0} < \delta \implies \abs{f(z) - L} < \varepsilon \]
+    \item The derivative of $f(z)$ at $z_0$ is
+          \[ f'(z) = \lim_{z \to z_0} \frac{f(z) - f(z_0)}{z-z_0} \]
+          provided the limit exists.
+  \end{enumerate}
+\end{defn*}
+
+In general, we will write $f(x)$ for a real-valued function and $f(z)$ for a complex-valued function.
+Then, analogous to real-valued functions, we can consider complex fixed points.
+
+\begin{defn*}[complex fixed points]
+  Let $a \in \C$ be a fixed point of $f(z)$. Then,
+  \begin{enumerate}[nosep]
+    \item $a$ is attracting if $\abs{f'(a)} > 1$,
+    \item $a$ is repelling if $\abs{f'(a)} < 1$, and
+    \item $a$ is neutral if $\abs{f'(a)} = 1$.
+  \end{enumerate}
+\end{defn*}
+
+\begin{remark}[attracting/repelling complex fixed point theorems]
+  We can obtain complex analogues of the proofs of the
+  real-valued attracting/repelling fixed point theorems
+  by replacing intervals around fixed points with open discs.
+\end{remark}
+
+\begin{example}
+  Analyze the fixed points of $f(z) = z^2 + z + 1$.
+\end{example}
+\begin{sol}
+  The fixed points are $z^2 + z + 1 = z \iff z^2 + 1 = 0 \iff z = \pm i$.
+
+  Then, $f'(z) = 2z + 1$, so $\abs{f'(i)} = \abs{2i+1} = \sqrt5 > 1$
+  and $\abs{f'(-i)} = \abs{-2i+1} = \sqrt5 > 1$,
+  so both are repelling.
+\end{sol}
+
+Recall polar form.
+For some complex number $z = a + ib$, we can plot it as $(a,b)$:
+\begin{center}
+  \begin{tikzpicture}
+    \draw[->] (0,0) -- (4,0) node[right] {$\Re$};
+    \draw[->] (0,0) -- (0,3) node[above] {$\Im$};
+    \draw[fill=black] (3,2) circle [radius=0.05] node[above right] {$z = a + bi$};
+    \draw[->, thick, dashed] (0,0) -- (3,2) node[midway, above left] {$r$};
+    \draw[->, thick] (0,0) -- (1,0) arc (0:33.69:1) node[midway, right] {$\theta$};
+  \end{tikzpicture}
+\end{center}
+Then, we can recall from MATH 135 that we can write $z = r(\cos\theta + i\sin\theta) = re^{i\theta}$
+and we have really nice multiplication.
+\begin{fact}[PM$\C$, MATH 135]
+  $e^{i\theta}e^{i\phi} = e^{i(\theta + \phi)}$ and $(re^{i\theta})^n = r^ne^{in\theta}$,
+  which is just so much prettier than Cartesian multiplication.
+\end{fact}
+In particular, for complex numbers of the form $e^{2\pi i / n}$,
+we have $(e^{2\pi i/n})^n = e^{2\pi i} = 1$,
+which is a nice way to generate periodic points.
+
+\lecture{Mar 11}
+\begin{example}
+  Let $z = e^{2\pi i/3}$ and $f(w) = w^2$.
+\end{example}
+\begin{sol}
+  Write $z = \cos\frac{2\pi}{3} + i\sin\frac{2\pi}{3} = -\frac12 + i\frac{\sqrt3}2$.
+
+  Then, $f(z) = e^{4\pi i/3} = -\frac12 - i\frac{\sqrt3}{2}$
+  and $f^2(z) = e^{8\pi i/3} = e^{2\pi i/3} = z$.
+
+  That is, $z$ is periodic with period 2.
+
+  We can then find $\abs{(f^2)'(z)} = \abs{f'(z)f'(f(z))} = \abs{-1+i\sqrt3}\cdot\abs{-1-i\sqrt3} = 4 > 1$,
+  so $z$ is attracting.
+\end{sol}
+
+\chapter{Julia Sets}
+
+\section{Construction}
+
+\begin{notation}[quadratic family]
+  For $c \in \C$, write $Q_c(z) = z^2 + c$ just like the real one.
+\end{notation}
+
+\begin{defn}
+  The \term{filled Julia set} for $c$ is $K_c = \qty{z \in \C : \text{$(Q_c^n(z))$ is bounded}}$.
+
+  Equivalently, $\qty{z \in \C : \exists M > 0, \forall n \in \N, \abs{Q_c^n(z) \leq M}}$.
+\end{defn}
+
+\begin{remark}
+  This is the complex analogue of $\Lambda$ for $Q_c(x) = x^2 + c$
+  where $c \in \R$ and $c < -2$.
+\end{remark}
+
+\begin{defn}
+  Let $(X,d)$ be a metric space and $A \subseteq X$.
+  \begin{enumerate}[nosep]
+    \item The \term{closure} of $A$ is $\overline{A} = \{x \in X : \exists (a_n) \subseteq A, a_n \to x\}$.
+    \item The \term{interior} of $A$ is $\Int(A) = \{x \in X : \exists \varepsilon>0,B_\varepsilon(x) \subseteq A\}$.
+    \item The \term{boundary} of $A$ is $\partial(A) = \overline{A} \setminus \Int(A)$.
+  \end{enumerate}
+\end{defn}
+
+\begin{example}
+  Let $A$ be the blob
+  \begin{center}
+    \begin{tikzpicture}[use Hobby shortcut,scale=0.5]
+      % [tex.se/603127] stolen blob shape
+      \fill[blue!20] (-3.5,0.5) .. (-3,2.5) .. (-1,3.5).. (1.5,3).. (4,3.5).. (5,2.5).. (5,0.5) ..(2.5,-2).. (0,-0.5).. (-3,-2).. (-3.5,0.5);
+      \draw[blue,dashed] (-3.5,0.5) .. (-3,2.5) .. (-1,3.5).. (1.5,3).. (4,3.5).. (5,2.5);
+      \draw[blue] (5,2.5) .. (5,0.5) ..(2.5,-2).. (0,-0.5).. (-3,-2).. (-3.5,0.5);
+    \end{tikzpicture}
+  \end{center}
+  Find the closure, interior, and boundary.
+\end{example}
+\begin{sol}
+  Since we can make a sequence of points that reaches the dashed open parts,
+  the closure $\overline{A}$ will simply be
+  \begin{center}
+    \begin{tikzpicture}[use Hobby shortcut,scale=0.5]
+      % [tex.se/603127] stolen blob shape
+      \draw[blue,fill=blue!20] (-3.5,0.5) .. (-3,2.5) .. (-1,3.5).. (1.5,3).. (4,3.5).. (5,2.5).. (5,0.5) ..(2.5,-2).. (0,-0.5).. (-3,-2).. (-3.5,0.5);
+    \end{tikzpicture}
+  \end{center}
+  Then, since we can draw a ball on the shaded inside but not on the edge,
+  the interior $\Int(A)$ is
+  \begin{center}
+    \begin{tikzpicture}[use Hobby shortcut,scale=0.5]
+      % [tex.se/603127] stolen blob shape
+      \fill[blue!20] (-3.5,0.5) .. (-3,2.5) .. (-1,3.5).. (1.5,3).. (4,3.5).. (5,2.5).. (5,0.5) ..(2.5,-2).. (0,-0.5).. (-3,-2).. (-3.5,0.5);
+    \end{tikzpicture}
+  \end{center}
+  Finally, the boundary $\partial(A)$ is
+  \begin{center}
+    \begin{tikzpicture}[use Hobby shortcut,scale=0.5]
+      % [tex.se/603127] stolen blob shape
+      \draw[blue] (-3.5,0.5) .. (-3,2.5) .. (-1,3.5).. (1.5,3).. (4,3.5).. (5,2.5).. (5,0.5) ..(2.5,-2).. (0,-0.5).. (-3,-2).. (-3.5,0.5);
+    \end{tikzpicture}
+  \end{center}
+\end{sol}
+
+\begin{remark}
+  $A$ is closed if and only if $A = \overline{A}$.
+\end{remark}
+
+\begin{lemma}[Assignment 4]
+  $K_c$ is closed.
+\end{lemma}
+
+\begin{defn}
+  The \term{Julia set} for $c$ is $J_c = \partial(K_c)$.
+\end{defn}
+
+\begin{remark}
+  Since $K_c$ is closed, $J_c = \partial(K_c) = \overline{K_c} \setminus \Int(K_c) = K_c \setminus \Int(K_c)$.
+\end{remark}
+
+\begin{example}
+  Let $c = 0$, so $Q_0(z) = z^2$. What do $K_0$ and $J_0$ look like?
+\end{example}
+\begin{sol}
+  Let $z = re^{i\theta}$.
+  Then, $\abs{Q_0(z)} = \abs{r^2e^{2i\theta}} = r^2$.
+  Likewise, $\abs{Q_0^2(z)} = \abs{r^4e^{2i\theta}} = r^8$.
+  Clearly, $\abs{Q_0^2(z)} = r^{2^n}$.
+  Therefore, $K_0 = \{z \in \C : \abs{z} \leq 1\}$
+  since that is when $\abs{z}^{2^n}$ is bounded.
+
+  This is the unit disc in the complex plane.
+  Therefore, $J_0 = \{z \in \C : \abs{z} = 1\}$, the unit circle.
+\end{sol}
+
+\begin{example}
+  Repeat with $c = -2$.
+\end{example}
+\begin{sol}
+  First, let $R = \{z \in \C : \abs{z} > 1\}$
+  and define a function $H : R \to \C : z \mapsto z + \frac{1}{z}$.
+
+  Then, we claim that $H$ is injective. Suppose $H(z) = H(w)$. Then,
+  \begin{align*}
+    z + \frac1z & = w + \frac1w                                    \\
+    zw          & = z^2 + 1 - \frac{z}{w}                          \\
+                & = w^2 + 1 - \frac{w}{z}                          \\
+    w^2 - z^2   & = \frac{w}{z} - \frac{z}{w} = \frac{w^2-z^2}{zw}
+  \end{align*}
+  This means that either $zw = 1$ or $w^2 - z^2 = 0$.
+  However, $\abs{zw} = \abs{z}\cdot\abs{w} > 1$, so $w = \pm z$.
+  Since $H(w) = H(z)$, we must pick $w = +z$, and we are done.
+
+  Now, claim that $H : R \to \C \setminus [-2,2]$ is surjective.
+  Suppose that $H(z) = w$. Then,
+  \begin{align*}
+    z + \frac1z  & = w                             \\
+    z^2 - wz + 1 & = 0                             \\
+    z            & = \frac12(w \pm \sqrt{w^2 - 4})
+  \end{align*}
+  and write $z_+$ or $z_-$ for the two possible $z$'s.
+  Since these are roots of a polynomial with constant 1,
+  we must have $z_+z_- = 1$.
+
+  That is, either (1) $\abs{z_+} > 1$ and $\abs{z_-} < 1$,
+  (2) $\abs{z_+} < 1$ and $\abs{z_-} > 1$,
+  or (3) $\abs{z_+} = \abs{z_-} = 1$.
+
+  If either root is in $R$, then either $H(z_+) = w$ or $H(z_-) = w$.
+
+  Otherwise, $\abs{z_+} = \abs{z_-} = 1$.
+  Then, $H(z) = H(e^{i\theta}) = e^{i\theta} + e^{-i\theta} = 2\cos\theta \in [-2,2]$.
+
+  Therefore, $H$ is well-behaved (i.e., invertible) on $R \to \C \setminus [-2,2]$.
+\end{sol}
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
