@@ -491,7 +491,7 @@ Notice that
 so if we augment $\X$ with $\sqrt{n\lambda}I$ and $\Y$ with $\0$, i.e.,
 $p$ data points $\x_j = \sqrt{n\lambda}\e_j$ and $\y_j = 0$.
 
-\section{Logistic Regression}
+\section{Logistic Regression}\label{ch:lr}
 
 Return to the linear classification problem.
 
@@ -1825,8 +1825,8 @@ and is returned a reward and new state based on the environment (another LLM):
         update the SFT model using the RM model using proximal policy optimization (PPO):
         \[
           \max_\phi \E_{(x,y)} [
-            \underbrace{r_\theta(x,y)}_{\text{RM reward}}
-            - \beta\underbrace{\log(\pi_\phi^{\text{RL}}(y \mid x) / \pi^{\text{SFT}(y \mid x)})}_{\text{model is close to SFT}}
+          \underbrace{r_\theta(x,y)}_{\text{RM reward}}
+          - \beta\underbrace{\log(\pi_\phi^{\text{RL}}(y \mid x) / \pi^{\text{SFT}(y \mid x)})}_{\text{model is close to SFT}}
           ] + \gamma\underbrace{\E[\log(\pi_\phi^{\text{RL}}(x))]}_{\text{pretraining loss}}
         \]
 \end{enumerate}
@@ -1835,6 +1835,147 @@ PPO-ptx is the base model for ChatGPT-3.5 and GitHub Copilot.
 
 GPT-4 allows combined multimodal image/text input.
 The paper says nothing so nobody knows how it works.
+
+\section{Generative Adversarial Networks}
+
+\lecture{Mar 12}
+
+Suppose we are given training data $\{\x_i\} \sim q(\x)$, i.e.,
+with \term{data density} $q(\x)$.
+Recall that $q(\x)$ is a distribution if $\int_{-\infty}^\infty q(\x) \dd{\x} = 1$
+and $q(\x) \geq 0$.
+
+We will develop a \term{model density} $p_{\vth}(\x)$
+paramaterized by $\vth$.
+We will find $\vth$ by minimizing some ``distance'' between $q$ and $p_{\vth}$.
+In particular, we will minimize the KL divergence
+\begin{align*}
+  KL(q \parallel p_{\vth})
+   & := \int q(\x)\log\frac{q(\x)}{p_{\vth}(\x)}        \\
+   & \equiv \int -\log p_{\vth}(\x) \cdot q(\x) \dd{\x} \\
+   & = \E_{\x \sim q(\x)}[-\log p_{\vth}(\x)]           \\
+   & \approx -\frac1n \sum_{i=1}^n\log p_{\vth}(\x_i)
+\end{align*}
+Then, we will use $p_{\vth}(\x)$ to generate new data $\rv X \sim p_{\vth}(\x)$.
+
+However, we do not have a closed-form way to calculate $p_{\vth}$.
+Suppose that we want $p(\x)$ to be a $d$-variate Gaussian with means $\vmu \in \R^d$
+and covariance matrix $S \in \R^{d \times d}$:
+\[ p(\x) = (2\pi)^{d/2}[\det(S)]^{-1/2}\exp[-\frac12(\x-\vmu)\trans S^{-1}(\x-\vmu)] \]
+To draw from $p(\x)$, start by drawing $\vb n \sim \normal(\vb 0, \id)$.
+Then, we write $\x = L\vb n + \vmu$ where $LL\trans = S$
+(the \term{Chloesky decompostion} of $S$),
+so that we have
+\begin{align*}
+  \E[\x]                       & = E[L\vb n + \vmu] = \vmu                                  \\
+  \E[(\x-\vmu)(\x-\vmu)\trans] & = L\cdot\E[\vb n \vb n\trans] \cdot L\trans = LL\trans = S
+\end{align*}
+and $p(\x) = \normal(\vmu,S)$, as desired.
+
+We will simply replace the function $L\vb n + \vmu$ with a neural network.
+
+\begin{theorem}[representation through push-forward]\label{thm:push}
+  Let $r$ be any continuous distribution on $\R^h$.
+  Then, for any distribution $p$ on $\R^d$, there exist \term{push-forward maps}
+  $\T : \R^h \toto \R^d$ such that
+  \[ \rv Z \sim r \implies \T(\rv Z) \sim p \]
+\end{theorem}
+
+This does not hold if $r$ has a delta mass at any point.
+\WLOG, we take $r$ to be standard Gaussian noise.
+
+We will learn $\T$ using a neural network.
+In general, $\T$ is not unique, so we can optionally add restrictions to force uniqueness.
+It can be a really weird set of mappings if $h \ll d$.
+
+Now, we are able to generate new data $\rv X \sim p_{\vth} = \T_{\vth}(\rv Z)$
+where $\rv Z \sim \normal(\vb 0,\id)$.
+This means that we can easily \emph{draw from $p_{\vth}$}
+but we cannot \emph{write the density function}.
+
+We're stuck in a catch-22: we need the density to find the loss and train,
+and we need the final trained $\T$ to draw.
+Consider again the KL divergence:
+\begin{align*}
+  KL(q \parallel p_{\vth}) & = \int \log\frac{q(\x)}{p_{\vth}(\x)} \dd{\x}
+  \equiv \int \underbrace{\frac{q(\x)}{p_{\vth}(\x)}\qty[\log\frac{q(\x)}{p_{\vth}(\x)}-1]}_{f(\frac{q(\x)}{p_{\vth}(\x)})} \cdot p_{\vth}(\x) \dd{\x} \nr{eq:kl2}
+\end{align*}
+which we have rewritten as a function $f : \R_+ \to \R$, $f(t) = t\log t - t + 1$ of the ratio.
+
+This is convex, because $\dv[2]{t} f(t) = \dv{t} \log t = \frac1t > 0$.
+
+\begin{defn}[Fenchel conjugate]
+  The conjugate of any function $f$ is the convex function $f^*(s) := \max_t st - f(t)$.
+
+  Then, if $f$ is convex and continuous, then $f = f^{**}$.
+\end{defn}
+
+Since our $f$ is convex and continuous, let's try writing $f$ as $f^{**}$. First,
+\begin{align*}
+  f^*(s) & = [\max_t st - f(t)]            \\
+         & = \max_t [st - t\log t + t - 1] \\
+  \intertext{Then, setting the derivative to 0, we get $s = \log t$, i.e., $t = \exp s$, so}
+  f^*(s) & = \exp s - 1
+\end{align*}
+This gives us
+\[ f(t) = \max_s [st - f^*(s)] = \max_s [st - \exp s + 1] \]
+Revisiting \cref{eq:kl2}, we can replace $f$ by $f^{**}$:
+\begin{align*}
+  KL(q \parallel p_{\vth})
+   & \equiv \int \qty[f\qty(\frac{q(\x)}{p_{\vth}(\x)})-1]\cdot p_{\vth}(\x) \dd{\x}                                                     \\
+   & = \int \qty[\max_s s\frac{q(\x)}{p_{\vth}(\x)} - \exp s] \cdot p_{\vth}(\x) \dd{\x}                                                 \\
+   & = \int \qty[\max_s sq(\x) - \exp(s)p_{\vth}(\x)] \dd{\x} \tag{$p_{\vth}(\x)$ has no $s$-dependence}                                 \\
+   & = \max_{S : \R^d \to \R} \int [S(\x)q(\x) - \exp(S(\x))p_{\vth}(\x)] \dd{\x} \tag{$s$ is paramaterized by $\x$}                     \\
+   & \approx \max_{S : \R^d \to \R} \frac1n\sum_{i=1}^n S(\x_i) - \frac1m \sum_{j=1}^m \exp[S(\T_{\vth}(\z_j))] \tag{by \cref{thm:push}}
+\end{align*}
+where $\x_i \sim q(\x)$ and $\z_j \sim \normal(\vb 0, \id)$.
+We write this as one line:
+\begin{equation}
+  \min_{\vth} KL(q \parallel p_{\vth})
+  \approx \min_{\vth} \max_{\vphi} \frac1n\sum_{i=1}^n S_{\vphi}(\x_i) - \frac1m \sum_{j=1}^m \exp[S_{\vphi}(T_{\vth}(\z_j))]
+\end{equation}
+for a \term{generator} $\T_{\vth}$ which maps latent noise $\z$ to observation $\x$,
+and a \term{discriminator} $S_{\vphi}$ which distinguishes data $\x$ from generation $\T_{\vth}(\z)$.
+
+Both are neural networks paramaterized by weights $\vth$ and $\vphi$, respectively.
+
+This ends up being a minimax game between the generator and discriminator.
+At the equilibrium, the generator can make data and the discriminator cannot distinguish.
+
+In reality, we do not use KL divergence, but instead JS divergence
+\begin{align*}
+  JS(q \parallel p_{\vth})
+   & := KL(q \parallel \tfrac{q+p_{\vth}}{2}) + KL(q \parallel \tfrac{q+p_{\vth}}{2})                                                                                     \\
+   & = \int q(\x) \log\frac{2q(\x)}{q(\x)+p_{\vth}(\x)} + p_{\vth}(\x)\log\frac{2p_{\vth}(\x)}{q(\x)+p_{\vth}(\x)} \dd{\x}                                                \\
+   & = \int \qty[\frac{q(\x)}{p_{\vth}(\x)}\log\frac{q(\x)/p_{\vth}(\x)}{q(\x)/p_{\vth}(\x) + 1} + \log\frac{1}{q(\x)/p_{\vth}(\x)+1} + \log 4]\cdot p_{\vth}(\x) \dd{\x} \\
+   & = \int f\qty(\tfrac{q(\x)}{p_{\vth}(\x)}) \cdot p_{\vth}(\x) \dd{\x}
+\end{align*}
+where $f(t) = t\log t - (t+1)\log(t+1) + \log4$ is convex.
+Then, $f^*(t) = -\log(1-\exp s) - \log 4$.
+
+If we do the same transformation, we can approximate
+\[
+  \min_{\vth} JS(q \parallel p_{\vth})
+  \approx \min_{\vth} \max_{\vphi} \frac1n\sum_{i=1}^n S_{\vphi}(\x_i) - \frac1m \sum_{j=1}^m \log[1-\exp S_{\vphi}(T_{\vth}(\z_j))] - \log 4
+\]
+
+\begin{xca}
+  Verify that this is true.
+\end{xca}
+
+Why do we use JS divergence? After the same transformations,
+we can apply the change of variable $S_{\vphi} \gets \log S_{\vphi}$:
+\[
+  \min_{\vth} JS(q \parallel p_{\vth})
+  \approx \min_{\vth} \max_{\vphi} \frac1n\sum_{i=1}^n \log S_{\vphi}(\x_i) - \frac1m \sum_{j=1}^m \log[1-S_{\vphi}(T_{\vth}(\z_j))]
+\]
+Let $\y(\x) = [\text{$\x$ is real data}]$.
+Let $\mathfrak{p}_1(\x) = S_{\phi}(\x)$ be the (learnable) probability of $\x$ being real,
+and $\mathfrak{p}_0 = 1 - \mathfrak{p}_1$. Then, we have:
+\[ \min_{\vth} \max_{\vphi} \hat{\E}_{\rv X}\log \mathfrak{p}_{\y(\rv X)} \]
+which is just the logistic regression (\cref{ch:lr}), which we know well.
+In fact, one can prove that there exists a mapping between regressions
+and metrics on distributions.
 
 % \chapter{Trustworthy Machine Learning}
 

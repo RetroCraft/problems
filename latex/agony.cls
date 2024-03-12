@@ -196,8 +196,13 @@
 \newcommand{\ilim}[1]{\lim_{#1\to\infty}}
 \newcommand\at[2]{\left.#1\right|_{#2}}
 
-% Sets
+% Fonts
 \newcommand{\bb}{\mathbb}
+\newcommand{\rv}{\mathsf} % random variable => sans-serif
+\newcommand{\vv}{\mathsf} % algorithm variable => sans-serif
+\newcommand{\xx}{\mathtt} % hex literal => typewriter
+
+% Sets
 \newcommand{\N}{\ensuremath{\mathbb{N}}}
 \newcommand{\Z}{\ensuremath{\mathbb{Z}}}
 \newcommand{\Q}{\ensuremath{\mathbb{Q}}}
