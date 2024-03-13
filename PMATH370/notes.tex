@@ -2439,8 +2439,8 @@ We do not prove this.
 \end{prf}
 
 \chapter{Complex Functions}
+\refstepcounter{section}
 
-\section{Foundations}
 \begin{defn*}[complex derivative]
   Let $f : \C \to \C$. Then,
   \begin{enumerate}
@@ -2656,7 +2656,103 @@ which is a nice way to generate periodic points.
   Then, $H(z) = H(e^{i\theta}) = e^{i\theta} + e^{-i\theta} = 2\cos\theta \in [-2,2]$.
 
   Therefore, $H$ is well-behaved (i.e., invertible) on $R \to \C \setminus [-2,2]$.
+
+  \lecture{Mar 13}
+  Consider now $H(Q_0(z)) = H(z^2) = z^2 + \frac{1}{z^2}$.
+  Note that $Q_{-2}(H(z)) = (z+\frac{1}{z})^2 - 2 = z^2+\frac{1}{z^2}$.
+  Hence, $H(Q_0^n(z)) = Q_{-2}^n(H(z))$.
+
+  This looks quite similar to $S(Q_c^n(x)) = \sigma^n(S(x))$ in $\R$.
+  We can say that $H$ plays a similar role as $S$.
+  In fact, (not course content), $Q_0$ and $Q_{-2}$ are \term*{conjugate}
+  because $H$ is a homeomorphism between them.
+
+  Let $z_n$ be a diverging sequence $\abs{z_n} \to \infty$.
+  Note that $\abs{H(z_n)} = \abs{z_n + \frac{1}{z_n}} \geq \abs{z_n} - \frac{1}{\abs{z_n}} \to \infty$
+  Therefore, the image of the sequence $|H(z_n)| \to \infty$ also diverges.
+
+  Let $z \in \C \setminus [-2, 2]$.
+  Since $H$ is surjective, we know there exists a $w \in R$ such that $z=H(w)$,
+  and see that
+  \[
+    \abs{Q_{-2}^n(z)}
+    = \abs{Q_{-2}^n(H(w))}
+    = \abs*{H\underbrace{(Q_0^n(w))}_{\to \infty}} \to \infty
+  \]
+  by the previous claim.
+  Hence, $z \not\in K_{-2}$ and we have that $K_{-2} \subseteq [-2,2]$.
+
+  Finally, let $z \in [-2, 2]$.
+  By graphical analysis,
+  \begin{center}
+    \cobweb[1.7][domain=-2:2,ymin=-2,ymax=2]{(\x)^2 - 2}{25}
+  \end{center}
+  there is no way to escape the box.
+  That is, $z \in K_{-2}$, i.e., $[-2,2] \subseteq K_{-2}$.
+
+  Therefore, $K_{-2} = [-2, 2]$, and we have that $J_{-2} =[-2,2]$.
 \end{sol}
+
+\begin{prop}[Escape Criterion]\label{prop:esc}
+  If $\abs{z} \geq \abs{c} > 2$, then $\abs{Q_c^n(z)} \to \infty$.
+  In particular, $z \not\in K_c$.
+\end{prop}
+\begin{prf}
+  We can write
+  \[ \abs{Q_c(z)} = \abs{z^2+c} \geq \abs{z}^2 - \abs{c} \geq \abs{z}^2 - \abs{z} = \abs{z}(\abs{z}-1) \]
+  Suppose $\abs{z} > 2 + \lambda$ for some $\lambda > 0$.
+  Then, we have that $\abs{z} - 1 > 1+\lambda$.
+  Therefore, $\abs{Q_c(z)} \geq \abs{z}(1+\lambda)$.
+
+  Iterating, we see that $\abs{Q_c^n(z)} \geq \abs{z}(1+\lambda)^n \to \infty$.
+\end{prf}
+
+\begin{corollary}
+  Suppose $\abs{c} > 2$. Then, $\abs{Q_c^n(0)} \to \infty$ and $0 \not\in K_c$.
+\end{corollary}
+\begin{prf}
+  Let $z = Q_c(0) = c$ and $\abs{z} = \abs{c} > 2$.
+  By the \nameref{prop:esc}, $|Q_c^n(0)| \to \infty$.
+\end{prf}
+
+\begin{corollary}
+  Let $M = \max\{\abs{c}, 2\}$.
+  If $\abs{z} > M$, then $\abs{Q_c^n(z)} \to \infty$.
+  That is, we have that $K_c \subseteq \{z : \abs{z} \leq M\}$.
+\end{corollary}
+\begin{prf}
+  We have $\abs{Q_c^n(z)} \geq (1+\lambda)^n\abs{z} \to \infty$
+  by the proof of the Escape Criterion
+  (not the Escape Criterion itself because we don't know if $\abs{z} < 2$).
+\end{prf}
+
+\begin{remark}[assignment hint!]
+  The fact that $K_c$ is inside this bounded disc will help with the proof of its closedness.
+\end{remark}
+
+\begin{corollary}
+  If there exists a $k$ such that $\abs{Q_c^k(z)} > \max\{\abs{c}, 2\}$,
+  then $\abs{Q_c^n(z)} \to \infty$.
+  That is, $z \not\in K_c$.
+\end{corollary}
+
+Based on these results, we can develop the
+
+\begin{algorithm}[H]
+  \caption{Filled Julia set algorithm}
+  \begin{algorithmic}[1]
+    \State Choose a large $N \in \N$.
+    \For{points $z$}
+      \If{$\abs{Q_c^i(z)} > \max\{\abs{c},2\}$ for any $i \leq N$}
+        \State Colour $z$ white
+      \ElsIf{$\abs{Q_c^i(z)} \leq \max\{\abs{c},2\}$ for all $i \leq N$}
+        \State Colour $z$ black
+      \EndIf
+    \EndFor
+  \end{algorithmic}
+\end{algorithm}
+
+whose black-shaded region approximates $K_c$.
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
