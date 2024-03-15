@@ -756,7 +756,7 @@ Neutral fixed points can exhibit a lot of different behaviours.
 Finding a closed form expression for something like $f^{10}(x)$
 is a nightmare, so we need a better way.
 
-\begin{prop}
+\begin{prop}\label{prop:dv}
   Let $f(x)$ be a differentiable function.
   Then, $(f^n)'(x) = f'(x)\cdot f'(f(x))\dotsb f'(f^{n-1}(x))$.
 \end{prop}
@@ -2522,7 +2522,7 @@ which is a nice way to generate periodic points.
 
 \chapter{Julia Sets}
 
-\section{Construction}
+\section{Definition}
 
 \begin{notation}[quadratic family]
   For $c \in \C$, write $Q_c(z) = z^2 + c$ just like the real one.
@@ -2601,6 +2601,8 @@ which is a nice way to generate periodic points.
 \begin{remark}
   Since $K_c$ is closed, $J_c = \partial(K_c) = \overline{K_c} \setminus \Int(K_c) = K_c \setminus \Int(K_c)$.
 \end{remark}
+
+\section{Construction}
 
 \begin{example}
   Let $c = 0$, so $Q_0(z) = z^2$. What do $K_0$ and $J_0$ look like?
@@ -2742,17 +2744,123 @@ Based on these results, we can develop the
   \caption{Filled Julia set algorithm}
   \begin{algorithmic}[1]
     \State Choose a large $N \in \N$.
-    \For{points $z$}
+      \For{points $z$}
       \If{$\abs{Q_c^i(z)} > \max\{\abs{c},2\}$ for any $i \leq N$}
-        \State Colour $z$ white
+    \State Colour $z$ white
       \ElsIf{$\abs{Q_c^i(z)} \leq \max\{\abs{c},2\}$ for all $i \leq N$}
-        \State Colour $z$ black
+    \State Colour $z$ black
       \EndIf
-    \EndFor
+      \EndFor
   \end{algorithmic}
 \end{algorithm}
 
 whose black-shaded region approximates $K_c$.
+
+\lecture{Mar 15}
+\begin{example}
+  Is $i \in K_{2+i}$?
+\end{example}
+\begin{sol}
+  Let $Q(z) = z^2 + 2 + i$ and $M = \max\{\sqrt5,2\} = \sqrt5$.
+
+  Then, $i \mapsto 1 + i \mapsto 2 + 3i$ but $\abs{2+3i} = \sqrt{13} > \sqrt5$.
+
+  Therefore, $i \not\in K_{2+i}$.
+\end{sol}
+
+\begin{remark}\label{rem:int}
+  For $n \in \Z$, $n \neq 0$, $\int_0^{2\pi} e^{int} \dd{t} = 0$
+\end{remark}
+\begin{prf}
+  Evaluate the integral:
+  \begin{align*}
+    \int_0^{2\pi} e^{int} \dd{t}
+     & = \int_0^{2\pi} \cos(nt) + i\sin(nt) \dd{t}                          \\
+     & = \int_0^{2\pi} \cos(nt) + i \int_0^{2\pi} \sin(nt) \dd{t}           \\
+     & = \eval[\frac1n\sin(nt)|_0^{2\pi} + i\eval[\frac1n\cos(nt)|_0^{2\pi} \\
+     & = 0
+  \end{align*}
+  as desired.
+\end{prf}
+
+\begin{prop}[Cauchy's Estimate]\label{prop:cest}
+  Let $P(z) = \sum_{n=0}^d a_n z^n$
+  be a polynomial such that $\abs{P(z)} \leq M$ for all $\abs{z-z_0} \leq r$.
+
+  Then, $\abs{P'(z_0)} \leq \frac{M}{r}$.
+\end{prop}
+\begin{prf}
+  Suppose $z_0 = 0$.
+  Assume $\abs{P(z)} \leq M$ for all $\abs{z} \leq r$.
+  Consider the integral
+  \begin{align*}
+    \frac1{2\pi}\int_0^{2\pi}\frac{P(re^{it})}{re^{it}} \dd{t}
+     & = \frac1{2\pi}\int_0^{2\pi}\sum_{n=0}^d a_nr^{n-1}e^{i(n-1)t} \dd{t}     \\
+     & = \frac1{2\pi}\int_0^{2\pi} a_1 r^0 e^{0} \dd{t} \tag{by \cref{rem:int}} \\
+     & = a_1                                                                    \\
+     & = P'(0)
+  \end{align*}
+  and so we have
+  \begin{align*}
+    \abs{P'(0)} & \leq \frac{1}{2\pi}\int_0^{2\pi}\abs{\frac{P(re^{it})}{re^{it}}} \\
+                & \leq \frac{1}{2\pi} \int_0^{2\pi} \frac{M}{r} \dd{t}             \\
+                & = \frac{M}{r}
+  \end{align*}
+  because $\abs{re^{it}} = r \leq r$, so $\abs{P(re^{it})} \leq M$.
+
+  Suppose now that $z_0 \neq 0$.
+  Assume $\abs{P(z)} \leq M$ for $\abs{z-z_0} \leq r$ .
+  We proceed by just translating to make use of the first case.
+
+  Let $w = z - z_0$ so that $\abs{P(w + z_0)} \leq M$ for all $\abs{w} \leq r$.
+  Then, by the first case,
+  \begin{align*}
+    \abs{\dv{w}\eval_{w=0} P(w + z_0)} & \leq \frac{M}{r} \\
+    \abs{\dv{z}\eval_{z=z_0}{P(z)}}   & \leq \frac{M}{r}
+  \end{align*}
+  completing the proof.
+\end{prf}
+
+\begin{theorem}
+  If $z_0$ is a repelling periodic point for $Q_c(z)$, then $z_0 \in J_c$.
+\end{theorem}
+\begin{prf}
+  Assume $z_0$ is a repelling periodic point with period $n$.
+  Suppose for a contradiction that $z_0 \not\in J_c$.
+  Since $z_0$ is periodic, $z_0 \in K_c$.
+  Therefore, $z_0$ is in the interior of the Julia set.
+  
+  That is, $\exists r > 0$ such that $z \in K_c$ for all $\abs{z-z_0} \leq r$
+  (i.e., there is an $r$-ball in $K_c$ at $z$).
+  For all $z$ with $\abs{z-z_0} \leq r$ and $K \in \N$,
+  we have $\abs{(Q_c^n)^k(z)} \leq M$ where $M = \max\{\abs{c},2\}$
+  by the \nameref{prop:esc}.
+
+  Then, by \nameref{prop:cest}, $\abs{(Q_c^{nk})'(z_0)} \leq \frac{M}{r}$
+  for all $k \in \N$.
+  Suppose that $\abs{(Q_c^{nk})'(z_0)} = \lambda > 1$.
+  
+  Finally, $\abs{(Q_c^{nk})'(z_0)} = \prod_{j=0}^{k-1} \abs{(Q_c^n)'(Q_c^j(z_0))} = \lambda^k \to \infty \not\leq \frac{M}{r}$,
+  by \cref{prop:dv}, which is our conradiction.
+  Therefore, $z_0 \in J_c$.
+\end{prf}
+
+\begin{fact}
+  Suppose $K \subseteq \C$ is closed.
+  Then, if $z \in \Int(K)$, then $Q_c(z) \in \Int(Q_c(K))$.
+\end{fact}
+
+\begin{prop}
+  If $Q_c(z) \in J_c$, then $z \in J_c$.
+  That is, the Julia set is closed under preimages.
+\end{prop}
+\begin{prf}
+  If $Q_c(z) \in J_c$, then $Q_c(z) \in K_c$ and $z \in K_c$.
+
+  But if $Q_c(z) \not\in \Int(K_c)$, then $z \not\in \Int(K_c)$.
+
+  Therefore, $Q_c(K_c) = K_c$.
+\end{prf}
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}

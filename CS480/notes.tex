@@ -13,7 +13,7 @@
 
 Lecture notes taken, unless otherwise specified,
 by myself during section 002 of the Winter 2024 offering of CS 480/680,
-taught by Hongyang Zheng.
+taught by Hongyang Zhang and Yaoliang Yu.
 
 \begin{multicols}{2}
   \listoflecture
@@ -216,12 +216,12 @@ He was (obviously) wrong.
     initialization $\w_0 \in \R^d$, $b_0 \in \R$.
     \Ensure $\w$ and $b$ for linear classifier $\sgn(\ip{\x}{\w} + b)$
     \For{$t=1,2,\dotsc$}
-      \State receive index $I_t \in \{1,\dotsc,n\}$
+    \State receive index $I_t \in \{1,\dotsc,n\}$
       \If{$\y_{I_t}\qty(\ip{\x_{I_t}}{\w} + b) \leq 0$}
-        \State $\w \gets \w + \y_{I_t}\x_{I_t}$
-        \State $b \gets b + \y_{I_t}$
+    \State $\w \gets \w + \y_{I_t}\x_{I_t}$
+    \State $b \gets b + \y_{I_t}$
       \EndIf
-    \EndFor
+      \EndFor
   \end{algorithmic}
 \end{algorithm}
 
@@ -1850,7 +1850,7 @@ paramaterized by $\vth$.
 We will find $\vth$ by minimizing some ``distance'' between $q$ and $p_{\vth}$.
 In particular, we will minimize the KL divergence
 \begin{align*}
-  KL(q \parallel p_{\vth})
+  \KL(q \parallel p_{\vth})
    & := \int q(\x)\log\frac{q(\x)}{p_{\vth}(\x)}        \\
    & \equiv \int -\log p_{\vth}(\x) \cdot q(\x) \dd{\x} \\
    & = \E_{\x \sim q(\x)}[-\log p_{\vth}(\x)]           \\
@@ -1897,7 +1897,7 @@ We're stuck in a catch-22: we need the density to find the loss and train,
 and we need the final trained $\T$ to draw.
 Consider again the KL divergence:
 \begin{align*}
-  KL(q \parallel p_{\vth}) & = \int \log\frac{q(\x)}{p_{\vth}(\x)} \dd{\x}
+  \KL(q \parallel p_{\vth}) & = \int \log\frac{q(\x)}{p_{\vth}(\x)} \dd{\x}
   \equiv \int \underbrace{\frac{q(\x)}{p_{\vth}(\x)}\qty[\log\frac{q(\x)}{p_{\vth}(\x)}-1]}_{f(\frac{q(\x)}{p_{\vth}(\x)})} \cdot p_{\vth}(\x) \dd{\x} \nr{eq:kl2}
 \end{align*}
 which we have rewritten as a function $f : \R_+ \to \R$, $f(t) = t\log t - t + 1$ of the ratio.
@@ -1921,7 +1921,7 @@ This gives us
 \[ f(t) = \max_s [st - f^*(s)] = \max_s [st - \exp s + 1] \]
 Revisiting \cref{eq:kl2}, we can replace $f$ by $f^{**}$:
 \begin{align*}
-  KL(q \parallel p_{\vth})
+  \KL(q \parallel p_{\vth})
    & \equiv \int \qty[f\qty(\frac{q(\x)}{p_{\vth}(\x)})-1]\cdot p_{\vth}(\x) \dd{\x}                                                     \\
    & = \int \qty[\max_s s\frac{q(\x)}{p_{\vth}(\x)} - \exp s] \cdot p_{\vth}(\x) \dd{\x}                                                 \\
    & = \int \qty[\max_s sq(\x) - \exp(s)p_{\vth}(\x)] \dd{\x} \tag{$p_{\vth}(\x)$ has no $s$-dependence}                                 \\
@@ -1931,7 +1931,7 @@ Revisiting \cref{eq:kl2}, we can replace $f$ by $f^{**}$:
 where $\x_i \sim q(\x)$ and $\z_j \sim \normal(\vb 0, \id)$.
 We write this as one line:
 \begin{equation}
-  \min_{\vth} KL(q \parallel p_{\vth})
+  \min_{\vth} \KL(q \parallel p_{\vth})
   \approx \min_{\vth} \max_{\vphi} \frac1n\sum_{i=1}^n S_{\vphi}(\x_i) - \frac1m \sum_{j=1}^m \exp[S_{\vphi}(T_{\vth}(\z_j))]
 \end{equation}
 for a \term{generator} $\T_{\vth}$ which maps latent noise $\z$ to observation $\x$,
@@ -1945,7 +1945,7 @@ At the equilibrium, the generator can make data and the discriminator cannot dis
 In reality, we do not use KL divergence, but instead JS divergence
 \begin{align*}
   JS(q \parallel p_{\vth})
-   & := KL(q \parallel \tfrac{q+p_{\vth}}{2}) + KL(q \parallel \tfrac{q+p_{\vth}}{2})                                                                                     \\
+   & := \KL(q \parallel \tfrac{q+p_{\vth}}{2}) + \KL(q \parallel \tfrac{q+p_{\vth}}{2})                                                                                     \\
    & = \int q(\x) \log\frac{2q(\x)}{q(\x)+p_{\vth}(\x)} + p_{\vth}(\x)\log\frac{2p_{\vth}(\x)}{q(\x)+p_{\vth}(\x)} \dd{\x}                                                \\
    & = \int \qty[\frac{q(\x)}{p_{\vth}(\x)}\log\frac{q(\x)/p_{\vth}(\x)}{q(\x)/p_{\vth}(\x) + 1} + \log\frac{1}{q(\x)/p_{\vth}(\x)+1} + \log 4]\cdot p_{\vth}(\x) \dd{\x} \\
    & = \int f\qty(\tfrac{q(\x)}{p_{\vth}(\x)}) \cdot p_{\vth}(\x) \dd{\x}
@@ -1974,8 +1974,120 @@ Let $\mathfrak{p}_1(\x) = S_{\phi}(\x)$ be the (learnable) probability of $\x$ b
 and $\mathfrak{p}_0 = 1 - \mathfrak{p}_1$. Then, we have:
 \[ \min_{\vth} \max_{\vphi} \hat{\E}_{\rv X}\log \mathfrak{p}_{\y(\rv X)} \]
 which is just the logistic regression (\cref{ch:lr}), which we know well.
-In fact, one can prove that there exists a mapping between regressions
-and metrics on distributions.
+
+\lecture{$\pi$}
+In fact, we can prove that if we pick any strictly convex function $f : \R_+ \to \R$
+with normalization $f(1) = 0$, then we can define an $f$-divergence $\bb D_f$
+such that $\bb D_f (q \parallel p) \geq 0$ iff $p = q$ and we can maximize
+\begin{align*}
+  \min_{\vth} \bb D_f(q \parallel p)                                                                                            \\
+   & := \min_{\vth}\int f(\tfrac{q(\x)}{p_{\vth}(\x)}) p_{\vth}(\x) \dd{\x}                                                     \\
+   & \approx \min_{\vth}\max_{\vphi} \frac1n \sum_{n=1}^n S_{\vphi}(\x_i) - \frac1m \sum_{j=1}^m f^*[S_{\vphi}(T_{\vth}(\z_j))]
+\end{align*}
+
+MMD-GAN: Use a reproducing kernel to introduce non-linearity to the discriminator.
+
+Wasserstein GAN: Suppose that the discriminator $S$ is Lipschitz continuous.
+Then, paramaterize $S$ as a neural network and optimize over all Lipschitz functions.
+
+\section{Flows}
+
+Instead of minimizing distance, we can try to explicitly learn $q$ as a function of $p_{\vth}$.
+
+\begin{remark}
+  Let $\T : \R^d \toto \R^d$.
+  Write $\nabla\T = (\nabla T_1,\dotsc,\nabla T_d) : \R^d \toto \R^d \otimes \R^d$.
+
+  Since $\T\circ\T^{-1} = \id$,
+  then $\nabla\T(\T^{-1})\cdot\nabla\T^{-1} = \id$ by the chain rule.
+\end{remark}
+
+\begin{theorem}[push-forward as change-of-variable]
+  Let $r$ be any continuous distribution on $\R^d$.
+  If the push-forward map $\T : \R^d \to \R^d$ is invertible,
+  then the density of $\rv X := \T(\rv Z)$ is
+  \[
+    p(\x) = r(\T^{-1}\x) \cdot \abs{\det(\nabla\T^{-1}\x)}
+    = \frac{r(\T^{-1}\x)}{\abs{\det(\nabla\T(\T^{-1}\x))}}
+  \]
+\end{theorem}
+\begin{prf}[sketchy. physicisty. gross.]
+  Roughly speaking, this means that $p(\x) \dd{\x} = r(\z) \dd{\z}$, i.e.,
+  the ``mass'' of the distribution is preserved.
+
+  We can ``rearrange'' to write $p(\x) = \dv{\z}{\x}r(\z)$.
+  By definition, $r(\z)$ will be $\T^{-1}\x$.
+  The ``derivative'' $\dv{\z}{\x}$ will be $\nabla \T^{-1}\x$,
+  but we need it as a scalar, so it pops out as $\abs{\det(\nabla\T^{-1}\x)}$.
+\end{prf}
+
+\begin{notation}
+  Write $p = \T_\#r$ to notate the above definition for $p(\x)$.
+\end{notation}
+
+Now, suppose we plug this into the KL-divergence:
+\[
+  \min_{\T} \KL(q \parallel \T_\#r) \approx
+  \max_{\T} \frac1n\sum_{i=1}^n\qty[\log r(\T^{-1}\x_i) - \log\abs{\det \nabla\T(\T^{-1}\x_i)}]
+\]
+and learn $\T$. However, this is pretty hard to do,
+since we have to express the inverse of $\T$ and the determinant of the $d \times d$ gradient matrix of $\T$.
+
+Instead, we can learn the inverse during training:
+\[
+  \max_{\vb S = \T^{-1}} \frac1n\sum_{i=1}^n\qty[\log r(\vb S\x_i) - \log\abs{\det \nabla\vb S\x_i}]
+\]
+but then we need to invert $\vb S$ to recover $\T$ for sampling.
+These both suck.
+We prefer paying the cost during training, since that is a one-time cost.
+
+We can be extremely clever with our construction of $\T$ to try to avoid this.
+Suppose that we construct $\T$ as a \term{triangular map}
+such that $\nabla \T(\z)$ is lower triangular, i.e.,
+$T_i$ depends only on the first $i$ inputs.
+This is very natural, since saying the $i$\xth output can only look at
+elements ``before it'' sounds like causality.
+
+Also, suppose that $\T$ is increasing on the $j$\xth output for the $j$\xth input,
+i.e., the diagonal of $\nabla\T(\z)$ is positive.
+
+Now, since $\nabla\T$ is triangular,
+it's cheap to calculate the determinant as the product of the diagonal.
+We went from an $\order{d^3}$ operation to $\order{d}$, which is way better.
+
+Since $T_i$ only depends on $x_i$ and (already solved) previous elements,
+and it is increasing w.r.t. $x_i$, we can use binary search to invert each element.
+Bisections are basically free, so this is also $\order{d}$.
+
+Therefore, increasing triangular maps work very well for our purposes.
+We can also prove that they work.
+
+\begin{theorem}[uniqueness for increasing triangular maps]
+  For any two densities $r$ and $p$ on $\R^d$,
+  there exists a unique (up to permutation) increasing triangular map $\T$
+  such that $p = \T_\#r$.
+\end{theorem}
+
+If we fix $r$ as noise, this means that
+any property of the probabilistic density $p$
+is fully captured in the deterministic map $\T$!
+
+This means that we can optimize
+\[
+  \min_{\T} \KL(q \parallel T_\#r) \approx
+  \max_{\T} \frac1n\sum_{i=1}^n\qty[\log r(\T^{-1}\x_i) - \sum_{j=1}^d\log\nabla_jT_j(\T^{-1}\x_i)]
+\]
+where it only takes $\order{d}$ time for each training step.
+There are a lot of models that are just this in disguise.
+
+Autoregressive models (like GPT) calculate
+$p_1(x_1), p_2(x_2 \mid x_1), \dotsc, p_j(x_j \mid x_{<j})$
+which will be a triangular map.
+
+If we suppose that each one of these distributions are Gaussian,
+we get an increasing triangular map.
+However, nested Gaussians can only produce Gaussians.
+To add in non-normality, permute the entries randomly after each layer.
 
 % \chapter{Trustworthy Machine Learning}
 

@@ -23,11 +23,13 @@ verbatimEnvironments:
     pyverbatim: 1
 indentAfterItems:
    tikzpicture: 1
+   algorithmic: 1
 itemNames:
     path: 1
     node: 0
     draw: 1
     graph: 1
+    State: 1
 noAdditionalIndent:
     problem: 0
 # https://github.com/cmhughes/latexindent.pl/issues/100
