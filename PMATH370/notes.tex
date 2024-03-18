@@ -2816,7 +2816,7 @@ whose black-shaded region approximates $K_c$.
   Then, by the first case,
   \begin{align*}
     \abs{\dv{w}\eval_{w=0} P(w + z_0)} & \leq \frac{M}{r} \\
-    \abs{\dv{z}\eval_{z=z_0}{P(z)}}   & \leq \frac{M}{r}
+    \abs{\dv{z}\eval_{z=z_0}{P(z)}}    & \leq \frac{M}{r}
   \end{align*}
   completing the proof.
 \end{prf}
@@ -2829,7 +2829,7 @@ whose black-shaded region approximates $K_c$.
   Suppose for a contradiction that $z_0 \not\in J_c$.
   Since $z_0$ is periodic, $z_0 \in K_c$.
   Therefore, $z_0$ is in the interior of the Julia set.
-  
+
   That is, $\exists r > 0$ such that $z \in K_c$ for all $\abs{z-z_0} \leq r$
   (i.e., there is an $r$-ball in $K_c$ at $z$).
   For all $z$ with $\abs{z-z_0} \leq r$ and $K \in \N$,
@@ -2839,7 +2839,7 @@ whose black-shaded region approximates $K_c$.
   Then, by \nameref{prop:cest}, $\abs{(Q_c^{nk})'(z_0)} \leq \frac{M}{r}$
   for all $k \in \N$.
   Suppose that $\abs{(Q_c^{nk})'(z_0)} = \lambda > 1$.
-  
+
   Finally, $\abs{(Q_c^{nk})'(z_0)} = \prod_{j=0}^{k-1} \abs{(Q_c^n)'(Q_c^j(z_0))} = \lambda^k \to \infty \not\leq \frac{M}{r}$,
   by \cref{prop:dv}, which is our conradiction.
   Therefore, $z_0 \in J_c$.
@@ -2862,11 +2862,62 @@ whose black-shaded region approximates $K_c$.
   Therefore, $Q_c(K_c) = K_c$.
 \end{prf}
 
+\lecture{Mar 18}
+\begin{defn}[supersensitivity]
+  We say $Q_c$ is \term*{supersensitive at $z_0$}
+  if whenever $z_0 \in U \subseteq \C$ is open,
+  then $\C = \cup_{n=0}^\infty Q_c^n(U)$.
+\end{defn}
+
+\begin{fact}
+  $Q_c$ is supersensitive at all $z_0 \in J_c$.
+\end{fact}
+
+For a geometric justification, see \href{https://agony.retrocraft.ca/PMATH370/doodles#fact-11215}{https://agony.retrocraft.ca/PMATH370/doodles}.
+
+Therefore, if we pick $z \in \C$ and $z_0 \in J_c$,
+then for all $\varepsilon > 0$, $U = B_\varepsilon(z_0)$,
+by supersensitivity, $Q_c^k(w) = z$ for some $w \in U$.
+By looking at the backwards orbit of $z$,
+we can find a very close $w \in \C$ to $J_c$.
+This leads to a new algorithm:
+
+\begin{algorithm}[H]
+  \caption{Algorithm to draw the Julia set}
+  \begin{algorithmic}[1]
+    \State Choose $z \in \C$.
+    \State Compute 10,000 terms in the backwards orbit,
+      randomly selecting a preimage at each step.
+    \State Plot all but the first 100 points.
+  \end{algorithmic}
+\end{algorithm}
+
+This is implemented here: \href{https://marksmath.org/visualization/julia2.html}{https://marksmath.org/visualization/julia2.html}
+
+\chapter{The Mandlebrot Set}
+
+\begin{defn}
+  Let $(X,d)$ be a metric space.
+  A \term{path} from $a$ to $b$ is a continuous function
+  $\gamma : [0,1] \to X$
+  such that $\gamma(0) = a$ and $\gamma(1) = b$.
+
+  A set $A \subseteq X$ is \term{path-connected}
+  if for all $a,b \in A$, there exists a path $\gamma : [0,1] \to X$
+  from $a$ to $b$ such that $\gamma([0,1]) \subseteq A$.
+
+  The maximal path-connected subsets of $A$
+  are the \term{path-connected components} of $A$.
+
+  If the path-connected components are all singletons,
+  then $A$ is \term{totally disconnected}.
+\end{defn}
+
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
 \renewcommand{\listtheoremname}{List of Named Results}
 \phantomsection\addcontentsline{toc}{section}{\listtheoremname}
-\listoftheorems[ignoreall,numwidth=3em,onlynamed={theorem,lemma,corollary,prop}]
+\listoftheorems[ignoreall,numwidth=4em,onlynamed={theorem,lemma,corollary,prop}]
 \printindex
 
 \end{document}

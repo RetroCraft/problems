@@ -294,3 +294,7 @@ _site
 # TikZ figure cache
 !**/figures-cache/*.dpth
 !**/figures-cache/*.md5
+
+# Python (Manim)
+.venv
+PMATH370/doodles/media
