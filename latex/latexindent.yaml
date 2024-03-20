@@ -29,7 +29,7 @@ itemNames:
     node: 0
     draw: 1
     graph: 1
-    State: 1
+    # State: 1
 noAdditionalIndent:
     problem: 0
 # https://github.com/cmhughes/latexindent.pl/issues/100

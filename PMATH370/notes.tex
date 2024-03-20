@@ -2604,7 +2604,7 @@ which is a nice way to generate periodic points.
 
 \section{Construction}
 
-\begin{example}
+\begin{example}\label{ex:k0}
   Let $c = 0$, so $Q_0(z) = z^2$. What do $K_0$ and $J_0$ look like?
 \end{example}
 \begin{sol}
@@ -2619,7 +2619,7 @@ which is a nice way to generate periodic points.
   Therefore, $J_0 = \{z \in \C : \abs{z} = 1\}$, the unit circle.
 \end{sol}
 
-\begin{example}
+\begin{example}\label{ex:k-2}
   Repeat with $c = -2$.
 \end{example}
 \begin{sol}
@@ -2709,7 +2709,7 @@ which is a nice way to generate periodic points.
   Iterating, we see that $\abs{Q_c^n(z)} \geq \abs{z}(1+\lambda)^n \to \infty$.
 \end{prf}
 
-\begin{corollary}
+\begin{corollary}\label{cor:esc2}
   Suppose $\abs{c} > 2$. Then, $\abs{Q_c^n(0)} \to \infty$ and $0 \not\in K_c$.
 \end{corollary}
 \begin{prf}
@@ -2744,13 +2744,13 @@ Based on these results, we can develop the
   \caption{Filled Julia set algorithm}
   \begin{algorithmic}[1]
     \State Choose a large $N \in \N$.
-      \For{points $z$}
+    \For{points $z$}
       \If{$\abs{Q_c^i(z)} > \max\{\abs{c},2\}$ for any $i \leq N$}
-    \State Colour $z$ white
+        \State Colour $z$ white
       \ElsIf{$\abs{Q_c^i(z)} \leq \max\{\abs{c},2\}$ for all $i \leq N$}
-    \State Colour $z$ black
+        \State Colour $z$ black
       \EndIf
-      \EndFor
+    \EndFor
   \end{algorithmic}
 \end{algorithm}
 
@@ -2873,7 +2873,7 @@ whose black-shaded region approximates $K_c$.
   $Q_c$ is supersensitive at all $z_0 \in J_c$.
 \end{fact}
 
-For a geometric justification, see \href{https://agony.retrocraft.ca/PMATH370/doodles#fact-11215}{https://agony.retrocraft.ca/PMATH370/doodles}.
+For a geometric justification, see \href{https://agony.retrocraft.ca/PMATH370/doodles#fact-11215}{https://agony.retrocraft.ca/PMATH370/doodles\#fact-11215}.
 
 Therefore, if we pick $z \in \C$ and $z_0 \in J_c$,
 then for all $\varepsilon > 0$, $U = B_\varepsilon(z_0)$,
@@ -2887,7 +2887,7 @@ This leads to a new algorithm:
   \begin{algorithmic}[1]
     \State Choose $z \in \C$.
     \State Compute 10,000 terms in the backwards orbit,
-      randomly selecting a preimage at each step.
+    randomly selecting a preimage at each step.
     \State Plot all but the first 100 points.
   \end{algorithmic}
 \end{algorithm}
@@ -2895,6 +2895,8 @@ This leads to a new algorithm:
 This is implemented here: \href{https://marksmath.org/visualization/julia2.html}{https://marksmath.org/visualization/julia2.html}
 
 \chapter{The Mandlebrot Set}
+
+\section{Construction}
 
 \begin{defn}
   Let $(X,d)$ be a metric space.
@@ -2912,6 +2914,73 @@ This is implemented here: \href{https://marksmath.org/visualization/julia2.html}
   If the path-connected components are all singletons,
   then $A$ is \term{totally disconnected}.
 \end{defn}
+
+\lecture{Mar 20}
+
+\begin{example}
+  The unit circle $A = \{z : \abs{z} \leq 1\}$:
+  \begin{center}
+    \begin{tikzpicture}
+      \draw[blue,fill=blue!20] (0,0) circle [radius=1];
+    \end{tikzpicture}
+  \end{center}
+  is path-connected.
+\end{example}
+
+\begin{example}
+  The set $A$:
+  \begin{center}
+    \begin{tikzpicture}
+      \draw[blue] (-1,0.2) circle [radius=0.5];
+      \draw[blue,fill=blue!20] (0,0.5) rectangle (1,-0.5);
+    \end{tikzpicture}
+  \end{center}
+  is neither path-connected nor totally disconnected.
+\end{example}
+
+\begin{example}
+  The Cantor set $K \subseteq \R$ is totally disconnected.
+\end{example}
+
+\begin{theorem}[all-or-nothing theorem]\label{thm:aon}
+  For $Q_c(z) = z^2 + c$, either
+  \begin{enumerate}[nosep]
+    \item $\abs{Q_c^n(0)}$ is bounded (i.e., $0 \in K_c$),
+          in which case $K_c$ is path-connected; or
+    \item $\abs{Q_c^n(0)} \to \infty$ (i.e., $0 \not\in K_c$),
+          in which case $K_c$ is totally disconnected.
+  \end{enumerate}
+\end{theorem}
+
+\begin{defn}[Mandelbrot set]
+  The set $\M
+    = \{c \in \C : \text{$\abs{Q_c^n(0)}$ is bounded}\}
+    = \{c \in \C : \text{$K_c$ is path connected}\}$.
+\end{defn}
+
+\section{Shape}
+
+We want to prove that the Mandlebrot set has our expected shape of circle + heart.
+
+Recall from \cref{cor:esc2} of the Escape Criterion that if $\abs{c} > 2$,
+then $\abs{Q_c^n(0)} \to \infty$.
+
+\begin{example}
+  We know $0 \in \M$, so $K_0$ (the disc, \cref{ex:k0}) is path-connected.
+  Likewise, $-2 \in \M$, so $K_{-2}$ (the interval, \cref{ex:k-2}) is path-connected.
+\end{example}
+
+\begin{example}
+  Let $c = 2$. Then, $Q_c(z) = z^2 + 2$
+  and $0 \mapsto 2 \mapsto 6 \mapsto 38 \mapsto \cdots \mapsto \infty$.
+  That is, $2 \not\in \M$.
+\end{example}
+
+\begin{example}
+  Let $c = i$. Then, $Q_c(z) = z^2 + i$
+  and $0 \mapsto i \mapsto -1+i \mapsto -i \mapsto 1 \mapsto \cdots$,
+  which means that $i \in \M$.
+\end{example}
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}

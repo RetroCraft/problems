@@ -216,12 +216,12 @@ He was (obviously) wrong.
     initialization $\w_0 \in \R^d$, $b_0 \in \R$.
     \Ensure $\w$ and $b$ for linear classifier $\sgn(\ip{\x}{\w} + b)$
     \For{$t=1,2,\dotsc$}
-    \State receive index $I_t \in \{1,\dotsc,n\}$
+      \State receive index $I_t \in \{1,\dotsc,n\}$
       \If{$\y_{I_t}\qty(\ip{\x_{I_t}}{\w} + b) \leq 0$}
-    \State $\w \gets \w + \y_{I_t}\x_{I_t}$
-    \State $b \gets b + \y_{I_t}$
+        \State $\w \gets \w + \y_{I_t}\x_{I_t}$
+        \State $b \gets b + \y_{I_t}$
       \EndIf
-      \EndFor
+    \EndFor
   \end{algorithmic}
 \end{algorithm}
 
@@ -1945,7 +1945,7 @@ At the equilibrium, the generator can make data and the discriminator cannot dis
 In reality, we do not use KL divergence, but instead JS divergence
 \begin{align*}
   JS(q \parallel p_{\vth})
-   & := \KL(q \parallel \tfrac{q+p_{\vth}}{2}) + \KL(q \parallel \tfrac{q+p_{\vth}}{2})                                                                                     \\
+   & := \KL(q \parallel \tfrac{q+p_{\vth}}{2}) + \KL(q \parallel \tfrac{q+p_{\vth}}{2})                                                                                   \\
    & = \int q(\x) \log\frac{2q(\x)}{q(\x)+p_{\vth}(\x)} + p_{\vth}(\x)\log\frac{2p_{\vth}(\x)}{q(\x)+p_{\vth}(\x)} \dd{\x}                                                \\
    & = \int \qty[\frac{q(\x)}{p_{\vth}(\x)}\log\frac{q(\x)/p_{\vth}(\x)}{q(\x)/p_{\vth}(\x) + 1} + \log\frac{1}{q(\x)/p_{\vth}(\x)+1} + \log 4]\cdot p_{\vth}(\x) \dd{\x} \\
    & = \int f\qty(\tfrac{q(\x)}{p_{\vth}(\x)}) \cdot p_{\vth}(\x) \dd{\x}
@@ -2087,7 +2087,84 @@ which will be a triangular map.
 If we suppose that each one of these distributions are Gaussian,
 we get an increasing triangular map.
 However, nested Gaussians can only produce Gaussians.
-To add in non-normality, permute the entries randomly after each layer.
+To add in non-normality, permute the entries randomly after each layer (masked AR flows).
+
+\lecture{Mar 19}
+The real-NVP model works by splitting the data into $\z_1=\{z_1,\dotsc,z_{l-1}\}$
+and $\z_2 = \{z_l,\dots,z_d\}$.
+The first segment is just copied $\x_1 = \z_1$
+but the second part is fed through a map
+\[
+  T_j(z_j; z_1,\dotsc,z_{l-1}) = \exp(\alpha_j(z_1,\dotsc,z_{l-1})\cdot\symbf1_{j\geq l}) \cdot z_j + \mu_j(z_1,\dotsc,z_{l-1})\cdot\symbf1_{j\geq l}
+\]
+where $T$ ends up as a triangular map.
+
+If we replace the linear wrapping of Gaussians with neural networks,
+we end up with a neural AR flow.
+
+If we use a polynomial, this is a sum-of-squares model.
+
+\begin{theorem}[inverse sampling]
+  Let $\rv Z \sim U(0,1)$, $F$ be the cdf of $\rv X$, and $Q = F^{-1}$ be the quantile function of $\rv X$.
+  Then, $Q(\rv Z) \sim F$.
+\end{theorem}
+
+The function $\vb T : \R^d \to \R^d$ pushes the noise $\rv Z$ forward to observation $\rv X$.
+The inverse map $\vb T^{-1}$ pulls observations $\rv X$ back to noise $\rv Z$.
+
+This lets us generate anything from a uniform random generator.
+In particular, we can send noise to uniform, and then uniform to data.
+
+\section{Diffusion Models}
+
+Suppose we had infinite layers of the masked AR flows. Recall that we set
+\[
+  \x_{t+1} \approx \x_t + \eta_t \cdot \f_t(\x_t) =: \T_t(\x_t)
+\]
+In the continuous case, we can express this as an ODE
+\[ \dd{\x_{t+1}} = \f_t(\x_t)\dd{t} \]
+for doing theory. In practice, we use the discrete form,
+since that's all we can do with real computers.
+
+Suppose each $\x_t \sim p_t$. In particular, since $\x_{t+1} \sim p_{t+1}$, we can write
+\begin{align*}
+  \log p_{t+1}(\x_{t+1})
+   & = \log p_t(\x_t) - \log\abs{\det\partial_{\x}\T_t(\x_t)}                \\
+   & = \log p_t(\x_t) - \log\abs{\det[\id + \eta_t \cdot \partial_{\x}\f_t(\x_t)]} \\
+   & \approx \log p_t(\x_t) - \eta_t \cdot \ip{\partial_{\x}}{\f_t(\x_t)}
+\end{align*}
+where we make the last approximation by Taylor expansion of $\log(x)$ at $x=1$.
+Then, in the continuous limit as $\eta_t \to 0$,
+we can conclude that
+\[ \dv{\log p_t(\x_t)}{t} = -\ip{\partial_{\x}}{\f_t(\x_t)} \]
+From this, we can develop an MLE and learn.
+
+We define the forward process as going from data to noise following
+\[ \dd{\x} = \f_t(\x,t)\dd{t} + g(t) \dd{\w} \]
+and the reverse process using stochastic gradient ascent following
+\[ \dd{\x} = \qty[\f(\x,t) - g^2(t)\nabla_{\x}\log p_t(\x)] \dd{t} + g(t) \dd{\overline{\w}} \]
+for some \term{score function} $\nabla_{\x}\log p_t(\x)$.
+The score function is the only thing we need to learn,
+because $\f$ is chosen (the forward process) and $g$ is also chosen (the variance of the noise).
+We will use the forward process to learn the score function,
+just like how the discriminator in GANs is used during training and discarded.
+
+To develop the addition of noise, we can write a stochastic differential equation
+\[ \dd{\x_{t+1}} = \f_t(\x_t) \dd{t} + G_t(\x_t) \dd{\n_t} \]
+where $\n_t \sim \normal(0,1)$ (??) which we can discretize as
+\[ \x_{t+1} \approx \x_t + \eta_t \cdot \f_t(\x_t) + \g_t(\x_t) \]
+where $\g_t(\x_t) \sim \normal(\symbf0,\eta_t^2G_t(\x_t)G_t(\x_t)\trans)$.
+
+Trivially, an ODE is just an SDE with $G_t \equiv \symbf0$.
+Conversely, any SDE is equivalent to an ODE by replacing $\f_t$
+with $\f_t - \frac12(G_tG_t\trans)\partial_{\x} - \frac12(G_tG_t\trans)\partial_{\x}\log p_t$.
+Since we typically pick $G_t$ to have no $\x$-dependence,
+the only important term here is the score function.
+
+We can write the reverse-time SDE as
+\[ \dd{\overline{\x_{t+1}}} = \overline{\f_t}(\overline{\x_t}) \dd{t} + G_t(\overline{\x_t}) \dd{\overline{\n_t}} \]
+where $\overline{\f_t} = -\f_t + (G_tG_t\trans)\partial_{\x} + (G_tG_t\trans)\partial_{\x}\log p_t$
+and time flows backwards for $\overline{\text{barred}}$ variables.
 
 % \chapter{Trustworthy Machine Learning}
 
