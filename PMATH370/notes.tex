@@ -2982,6 +2982,125 @@ then $\abs{Q_c^n(0)} \to \infty$.
   which means that $i \in \M$.
 \end{example}
 
+\lecture{Mar 22}
+\begin{remark}
+  Pick a rational $z \in Q_c$. Let $M = \max\{|c|, 2\}$.
+  By the Escape Criterion, either
+  \begin{enumerate}[nosep]
+    \item $|Q_c^n(z)| \leq M$ for all $n$, or
+    \item $|Q_c^n(z)| \to \infty$.
+  \end{enumerate}
+\end{remark}
+
+First, we want to determine when $Q_c(z)$ has an attracting fixed point.
+Why do we care?
+Suppose $z \in \C$ is an attracting fixed point for $Q_c$.
+Then, there exists $r > 0$ such that $x \in B_r(z)$,
+giving $Q_c^n(x) \to z$ and $B_r(z) \subseteq K_c$.
+Hence, $K_c$ is path connected and $c \in \M$.
+That is, the existence of an attracting fixed point for $Q_c$ tells you that $c \in \M$.
+
+Suppose $z \in \C$ exists. Then, $z^2+c = z$ and $|2z| < 1$.
+This implies $c = z-z^2$ and $|z| < \frac{1}{2}$.
+We can parametrize the boundary.
+Write $z = \frac{1}{2}e^{i \theta}$ in polar form, so that
+\[ c = \frac{1}{2}e^{i \theta} - \frac{1}{4} e^{i 2\theta}\qc \theta \in \R \]
+which, when plotted for all values of $\theta$, gives the \textcolor{blue}{cartioid}:
+\begin{center}
+  \begin{tikzpicture}
+    \begin{axis}[
+        xlabel={$\Re(c)$},
+        ylabel={$\Im(c)$},
+        xmin=-1, xmax=1,
+        ymin=-1, ymax=1,
+        axis lines=center,
+        axis equal,
+        samples=200,
+        smooth,
+        domain=0:2*pi,
+      ]
+      \addplot[color=blue,fill=blue!20,thick,dashed] ({0.5*cos(deg(x)) - 0.25*cos(deg(2*x))}, {0.5*sin(deg(x)) - 0.25*sin(deg(2*x))});
+    \end{axis}
+  \end{tikzpicture}
+\end{center}
+
+Second, when does $Q_c$ have an attracting 2-cycle?
+That is, when does $Q_c$ admit a periodic point of period 2?
+If $Q_c$ has an attracting periodic point $z$ with period 2,
+we can similarly show that $c \in \M$
+(do the open ball around the two cycle,
+and the existence of that ball makes $K_c$ path-connected).
+
+Suppose $(z^2+c)^2+c = z$. Then, $p(z) := z^4+2cz^2-z+c^2+c=0$.
+The roots of $p(z)$ include all the points with period $\leq 2$:
+both the 2-cycle points and the fixed points.
+
+Let $p_1$ and $p_2$ be the fixed points of $Q_c$.
+Then, $(z-p_1)(z-p_2) = z^2-z+c$ is a factor of $p(z)$.
+
+That is, $z$ is a root of $\frac{z^4+2cz^2-z+c^2+c}{z^2-z+c} = z^2+z+c+1$.
+
+Let $z_1$ and $z_2$ be the roots of $z^2+z+c+1$, i.e., the period-2 points for $Q_c$.
+For these to be attracting, we must have
+\begin{align*}
+  |(Q_c^2)'(z_i)|<1 & \implies |Q_c'(z_1)-Q_c'(z_2)|<1 \\
+                    & \implies 4|z_1z_2| < 1           \\
+                    & \implies |z_1z_2| < \frac{1}{4}  \\
+                    & \implies |c+1| < \frac{1}{4}
+\end{align*}
+which is a \textcolor{red}{ball of radius $\frac14$ centered at $-1$}:
+\begin{center}
+  \begin{tikzpicture}
+    \begin{axis}[
+        xlabel={$\Re(c)$},
+        ylabel={$\Im(c)$},
+        xmin=-1.5, xmax=1,
+        ymin=-1, ymax=1,
+        axis lines=center,
+        axis equal,
+        samples=200,
+        smooth,
+        domain=0:2*pi,
+      ]
+      \addplot[color=blue,fill=blue!20,thick,dashed] ({0.5*cos(deg(x)) - 0.25*cos(deg(2*x))}, {0.5*sin(deg(x)) - 0.25*sin(deg(2*x))});
+      \draw[red,fill=red!20,thick,dashed] (-1,0) circle [radius=0.25];
+    \end{axis}
+  \end{tikzpicture}
+\end{center}
+
+\begin{prop}
+  We can write $\M$ as the intersection
+  \[
+    \{c \in \C: |c| \leq 2\}
+    \cap \{c: |c^2+c| \leq 2\}
+    \cap \{c: |(c^2+c)^2+c| \leq 2\} \cap \cdots
+  \]
+  for repeated iterations of $Q_c^n$.
+\end{prop}
+
+\begin{prop}
+  $\M$ is closed.
+\end{prop}
+
+\begin{center}
+  \begin{tikzpicture}
+    \begin{axis}[
+        xlabel={$\Re(c)$},
+        ylabel={$\Im(c)$},
+        xmin=-1.5, xmax=1,
+        ymin=-1, ymax=1,
+        axis lines=center,
+        axis equal,
+        samples=200,
+        smooth,
+        domain=0:2*pi,
+      ]
+      \addplot[color=blue,fill=blue!20,thick] ({0.5*cos(deg(x)) - 0.25*cos(deg(2*x))}, {0.5*sin(deg(x)) - 0.25*sin(deg(2*x))});
+      \draw[blue,fill=blue!20,thick] (-1,0) circle [radius=0.25];
+    \end{axis}
+  \end{tikzpicture}
+\end{center}
+
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
 \renewcommand{\listtheoremname}{List of Named Results}

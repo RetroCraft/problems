@@ -2129,7 +2129,7 @@ since that's all we can do with real computers.
 Suppose each $\x_t \sim p_t$. In particular, since $\x_{t+1} \sim p_{t+1}$, we can write
 \begin{align*}
   \log p_{t+1}(\x_{t+1})
-   & = \log p_t(\x_t) - \log\abs{\det\partial_{\x}\T_t(\x_t)}                \\
+   & = \log p_t(\x_t) - \log\abs{\det\partial_{\x}\T_t(\x_t)}                      \\
    & = \log p_t(\x_t) - \log\abs{\det[\id + \eta_t \cdot \partial_{\x}\f_t(\x_t)]} \\
    & \approx \log p_t(\x_t) - \eta_t \cdot \ip{\partial_{\x}}{\f_t(\x_t)}
 \end{align*}
@@ -2142,7 +2142,9 @@ From this, we can develop an MLE and learn.
 We define the forward process as going from data to noise following
 \[ \dd{\x} = \f_t(\x,t)\dd{t} + g(t) \dd{\w} \]
 and the reverse process using stochastic gradient ascent following
-\[ \dd{\x} = \qty[\f(\x,t) - g^2(t)\nabla_{\x}\log p_t(\x)] \dd{t} + g(t) \dd{\overline{\w}} \]
+\begin{equation}\label{eq:revsde}
+  \dd{\x} = \qty[\f(\x,t) - g^2(t)\nabla_{\x}\log p_t(\x)] \dd{t} + g(t) \dd{\overline{\w}}
+\end{equation}
 for some \term{score function} $\nabla_{\x}\log p_t(\x)$.
 The score function is the only thing we need to learn,
 because $\f$ is chosen (the forward process) and $g$ is also chosen (the variance of the noise).
@@ -2151,8 +2153,10 @@ just like how the discriminator in GANs is used during training and discarded.
 
 To develop the addition of noise, we can write a stochastic differential equation
 \[ \dd{\x_{t+1}} = \f_t(\x_t) \dd{t} + G_t(\x_t) \dd{\n_t} \]
-where $\n_t \sim \normal(0,1)$ (??) which we can discretize as
-\[ \x_{t+1} \approx \x_t + \eta_t \cdot \f_t(\x_t) + \g_t(\x_t) \]
+where $\n_t$ is some noise, which we can discretize as
+\begin{equation}\label{eq:fwdisc}
+  \x_{t+1} \approx \x_t + \eta_t \cdot \f_t(\x_t) + \g_t(\x_t)
+\end{equation}
 where $\g_t(\x_t) \sim \normal(\symbf0,\eta_t^2G_t(\x_t)G_t(\x_t)\trans)$.
 
 Trivially, an ODE is just an SDE with $G_t \equiv \symbf0$.
@@ -2166,7 +2170,90 @@ We can write the reverse-time SDE as
 where $\overline{\f_t} = -\f_t + (G_tG_t\trans)\partial_{\x} + (G_tG_t\trans)\partial_{\x}\log p_t$
 and time flows backwards for $\overline{\text{barred}}$ variables.
 
-% \chapter{Trustworthy Machine Learning}
+\lecture{Mar 21}
+We will make the forwards-time SDE super simple so that the complexity is hidden
+in the reverse-time SDE. Then, we can learn the reverse-time SDE as a neural net.
+
+We can equivalently write the discrete version of \cref{eq:revsde}, derived by integrating
+\begin{align*}
+  \int_s^{s+\delta} \dd{\x_t}                                            & = \x_{s+\delta} - \x_s                                                         \\
+  \int_s^{s+\delta}\qty[\f(\x,t) - g^2(t)\nabla_{\x} \log p_t(x)] \dd{t} & = \qty[f(\x,s) - g^2(s)\nabla_x\log p_s(x)]\cdot\delta                         \\
+  \int_s^{s+\delta} g(t) \dd{w}                                          & = g(s)\cdot\sqrt{\delta}\cdot\varepsilon \tag{$\varepsilon \sim \normal(0,I)$}
+\end{align*}
+to get
+\[
+  \x_{s+\delta} - \x_s = [f(\x,s) - g^2(s)\nabla_{\x}\log p_s(\x)]\cdot\delta + g(s)\cdot\sqrt{\delta}\cdot\varepsilon
+\]
+
+\subsection*{Score Matching}
+
+We want to get the score function $s_p(\x) = \partial_{\x}\log p(\x)$
+of $p$ and $q$ to be close using the Fischer divergence:
+\begin{align*}
+  \F(p \parallel q)
+   & := \frac12\E_{\rv X \sim q} \norm{\partial_{\x}\log p(\rv X) - \partial_{\x}\log q(\rv X)}^2_2                         \\
+   & = \E_{\rv X \sim q} \qty[\frac12\norm{s_p(\rv X)}_2^2 + \ip{\partial_{\x}}{s_p(\rv X)} + \frac12\norm{s_q(\rv X)}_2^2] \\
+   & \approx \hat{\E_{\rv X \sim q}} \qty[\frac12\norm{s_p(\rv X)}_2^2 + \ip{\partial_{\x}}{s_p(\rv X)}]
+\end{align*}
+where we simplify the cross-term in the second line
+\begin{align*}
+  \int -s_p(\x) \cdot \partial_{\x} \log q(\x) \cdot q(\x) \dd{\x}
+   & = \int -s_p(\x) \cdot \partial_{\x} q(\x) \cdot \frac{1}{q(x)} \cdot q(\x) \dd{\x} \tag{chain rule} \\
+   & = \int -s_p(\x) \dd{q(\x)} \tag{magic?}                                                             \\
+   & = \cancelto{0}{-s_p(\x) q(\x)} + \int q(\x) \dd{s_p(\x)} \tag{by parts}                             \\
+   & =  \int q(\x) \cdot \partial_{\x}s_p(\x) \dd{\x}                                                    \\
+   & = \E_{\rv X \sim q} \partial_{\x} s_p(\rv X)
+\end{align*}
+but nobody actually does this because it requires calculating the Hessian of the neural network.
+
+Instead, suppose we have a latent variable $\rv Z$ with joint density $q(\x,\z)$.
+Then, we get instead
+\begin{align*}
+  \F(p \parallel q)
+   & := \frac12\E_{\rv X \sim q} \norm{\partial_{\x}\log p(\rv X) - \partial_{\x}\log q(\rv X)}_2^2                                                                         \\
+   & = \frac12\E_{(\rv X,\rv Z) \sim q} \qty[\norm{s_p(\rv X) - \partial_{\x}\log q(\rv X \mid \rv Z)}_2^2 + \norm{s_q(\rv X)}^2_2 + \norm{\partial_{\x}\log q(\rv X \mid \rv Z)}_2^2] \\
+   & \approx \hat{\E_{(\rv X,\rv Z)\sim q}} \norm{s_p(\rv X) - \partial_{\x}\log q(\rv X \mid \rv Z)}_2^2
+\end{align*}
+If we consider $\rv X$ as the data $\rv Z$ plus some Gaussian noise $\varepsilon \sim \normal(\symbf0,I)$.
+Then, it is easy to obtain the conditional density of $\rv X \mid \rv Z \sim \normal(\rv Z,I)$.
+
+In particular, $q(\rv X \mid \rv Z) \propto \exp(-\frac{\norm{\rv X -\rv Z}_2^2}{2})$
+which means $\log q(\rv X \mid \rv Z) \propto -\frac12\norm{\rv X - \rv Z}_2^2 \propto \norm{\varepsilon}$.
+
+This means we can interpret the score function as a predictor for the noise.
+This makes sense, because we are trying to figure out how to remove noise from the image.
+
+Returning to \cref{eq:fwdisc}, we want to minimize the Fischer divergence
+across the entire interval $t \sim \mu$ and learn the score function
+\begin{equation*}\label{eq:scoremodel}
+  \min_{\vth} \hat{\E_{\scriptscriptstyle\substack{t \sim \mu \\ \mathclap{(\rv X_t \rv X_0) \sim q(\x,\x_0)}}}}
+  \lambda_t \norm{s_t(\rv X_t; \vth) - \partial_{\x}\log q(\rv X_t \mid \rv X_0)}_2^2
+\end{equation*}
+where we learn a single network which takes in $t$ and $\x_t$.
+
+Then, to do inference, we can either stochastically simulate the discrete reverse-time SDE
+\[ \dd{\overline{\x_{t+1}}} = -\f_t + (G_tG_t\trans)\partial_{\x} + (G_tG_t\trans)s_t(\overline{\x_t};\vth) \dd{t} + G_t(\overline{\x_t}) \dd{\overline{\n_t}} \]
+or deterministically follow the discrete reverse-time ODE
+\[ \dd{\x_{t+1}} = \f_t - \tfrac12(G_tG_t\trans)\partial_{\x} - \tfrac12(G_tG_t\trans)s_t(\overline{\x_t};\vth) \dd{t} \]
+The problem is that this requires evaluating the score neural network multiple times.
+
+To do interpolation, run the forwards-time model on two images to get
+noisy points in latent space, then average those and run the backwards-time model
+to recover an average image.
+
+\chapter{Trustworthy Machine Learning}
+\skipto[section]{17}
+\section{Robustness}
+
+We can measure models along a bunch of performance metrics:
+accuracy, training time, memory usage, inference speed,
+robustness, privacy, fairness, etc.
+
+Formally, to define the robustness of a classifier $f : \bb X \to \bb Y$,
+given an unseen pair of examples $(x,y) \in \bb X \times \bb Y$, $f(x)$ should be $y$.
+
+Attackers have found ways to construct noise that image classifiers
+will confidently clsasify as something wrong.
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
