@@ -1,4 +1,5 @@
 \documentclass[class=pmath370,tikz,notes]{agony}
+\usepackage{svg}
 \usetikzlibrary{external}
 \tikzexternalize[prefix=figures-cache/]
 \tikzset{external/only named=true}
@@ -2529,7 +2530,7 @@ which is a nice way to generate periodic points.
 \end{notation}
 
 \begin{defn}
-  The \term{filled Julia set} for $c$ is $K_c = \qty{z \in \C : \text{$(Q_c^n(z))$ is bounded}}$.
+  The \term[Julia set!filled]{filled Julia set} for $c$ is $K_c = \qty{z \in \C : \text{$(Q_c^n(z))$ is bounded}}$.
 
   Equivalently, $\qty{z \in \C : \exists M > 0, \forall n \in \N, \abs{Q_c^n(z) \leq M}}$.
 \end{defn}
@@ -3100,6 +3101,435 @@ which is a \textcolor{red}{ball of radius $\frac14$ centered at $-1$}:
     \end{axis}
   \end{tikzpicture}
 \end{center}
+
+\chapter{Polynomial Julia Sets}
+\refstepcounter{section}
+\lecture{Mar 25}
+
+\begin{theorem}[Polynomial Escape Criterion]
+  Let $p(z) = a_nz^n + \dotsb + a_1z + a_0$ be a complex polynomial
+  with $a_n \neq 0$ and $n \geq 2$.
+  Then, there exists $R > 0$ depending only on $n$ and $a_i$ such that
+  $\abs{p^k(z)} \to \infty$ for all $\abs{z} \geq R$.
+\end{theorem}
+
+Informally, there is a ball of radius $z$ outside of which iteration blows up.
+
+\begin{prf}
+  Fix $\lambda > 1$ and let $C = \sum_{i=0}^{n-1}\abs{a_i}$.
+
+  Consider $R = \max\qty{1,\frac{2c}{\abs{a_n}},\qty(\frac{2\lambda}{\abs{a_n}})^{\flatfrac{1}{n-1}}}$.
+
+  Assume $\abs{z} \geq R$. Then,
+  \begin{align*}
+    \abs{p(z)} & \geq \abs{a_nz^n} - \abs{a_{n-1}z^{n-1} + \dotsb + a_1z + a_0}                                                                                                                                              \\
+               & \geq \abs{a_nz^n} - \qty(\abs{a_{n-1}}\cdot\abs{z}^{n-1} + \dotsb + \abs{a_1}\cdot\abs{z} + \abs{a_0})                                                                                                      \\
+               & \geq \abs{a_nz^n} - C\abs{z}^{n-1} \tag{since $\abs{z} \geq R \geq 1$}                                                                                                                                      \\
+               & = \abs{z}^n\qty(\abs{a_n}-\frac{C}{\abs{z}})                                                                                                                                                                \\
+               & \geq \abs{z}^n\qty(\abs{a_n}-\frac{\abs{a_n}}{2}) \tag{since $\abs{z} \geq \frac{2C}{\abs{a_n}} \implies \frac{C}{\abs{z}}\leq\frac{\abs{a_n}}{2}$}                                                         \\
+               & = \abs{z} \cdot \frac12\abs{a_n} \cdot \abs{z}^{n-1}                                                                                                                                                        \\
+               & \geq \abs{z} \cdot \frac12\abs{a_n} \cdot \frac{2\lambda}{\abs{a_n}} \tag{since $\abs{z} \geq \qty(\frac{2\lambda}{\abs{a_n}})^{\flatfrac{1}{n-1}} \implies \abs{z}^{n-1} \geq \frac{2\lambda}{\abs{a_n}}$} \\
+               & \geq \lambda\abs{z}
+  \end{align*}
+  Therefore, $\abs{p^k(z)} \geq \lambda^k\abs{z}$ so it blows up to infinity.
+\end{prf}
+
+\begin{remark}
+  Either (1) for all $k$, $\abs{p^k(z)} < R$, or (2) $\abs{p^k(z)} \to \infty$.
+\end{remark}
+
+\begin{defn}
+  Let $p(z)$ be a complex polynomial with degree $\geq 2$.
+
+  The \term[Julia set!filled!of $p(z)$]{filled Julia set of $p(z)$}
+  is $K_p = \{z \in \C : \text{$p^k(z)$ is bounded}\}$.
+
+  The \term[Julia set!of $p(z)$]{Julia set of $p(z)$} is $J_p = \partial(K_p)$.
+\end{defn}
+
+We can approximate the Julia set by iterating and seeing if a given point
+``escapes'' in a fixed amount of time.
+
+\chapter{Guest Lectures}
+
+\section{Joaco Prandi: Creating a sundial}
+\lecture{Mar 27}
+\renewcommand{\H}{\mathcal{H}}
+\begin{defn}[box-counting dimension]
+  Consider a blob $K$. Given a grid with spacing $\delta$,
+  define $N_\delta(K)$ to be the number of squares touched by $K$.
+
+  The \term*{box-counting dimension} is
+  $\dim_B(K) = \lim_{\delta\to0}\frac{\log(N_\delta(K))}{-\log(\delta)}$.
+
+  This does not always exist, so we define the upper and lower box-counting
+  dimensions as $\overline{\dim}_B(K) = \limsup_{\delta\to0}\frac{\log(N_\delta(K))}{-\log(\delta)}$
+  and $\underline{\dim}_B(K) = \liminf_{\delta\to0}\frac{\log(N_\delta(K))}{-\log(\delta)}$,
+  which always exist.
+\end{defn}
+
+The definition of $N_\delta(K)$ can be replaced by a lot of other vaguely similar ideas:
+\begin{itemize}[nosep]
+  \item the maximal number of $\delta$-balls that pack into $K$
+  \item the minimal number of $\delta$-balls that cover $K$
+  \item etc.
+\end{itemize}
+recovering an equivalent definition.
+
+\begin{defn}[Hausdorff dimensional measure]
+  Define $\H_\delta^s(K) = \inf\qty{\sum_{n=0}^\infty \abs{U_n}^s : \bigcup_{n=0}^\infty U_n \supset K, \abs{U_n} \leq \delta}$
+  where the $U_n$'s are a cover of $K$ and $\abs{U_n}$ is the diameter of the set $U_n$.
+
+  Then, let $\H^s(K) = \lim_{\delta\to0} \H_\delta^s(K)$.
+\end{defn}
+
+When working in $\R^d$, we have that $\H^n$ for $n \leq d$
+measures the $n$-dimensional Euclidean metric.
+That is, $\H^1$ measures length, $\H^2$ measures area, etc.
+
+\begin{fact}
+  Let $s < t$. If $\H^s(K)$ is finite, then $\H^t(K) = 0$.
+
+  If $\H^t(K)$ is non-zero and finite, then $\H^s(K) = \infty$.
+
+  This means that the values will go $\{\dotsc,\infty,\infty,\text{some non-zero finite value},0,0,\dotsc\}$.
+\end{fact}
+
+\begin{defn}[Hausdorff dimension]
+  The Hausdorff dimension $\dim_H(K) = \sup\{s : \H^s(K) = \infty\} = \inf\{s : \H^s(K) = 0\}$.
+\end{defn}
+
+\begin{example}
+  If $C$ is the Cantor set, then $\dim_B(C) = \dim_H(C) = \log_3(2)$.
+
+  If $F = \{\frac1n\}_{n=0}^\infty$, then $\dim_B(F) = \frac12$ (for some reason)
+  and $\dim_H(F) = 0$.
+\end{example}
+
+\begin{fact}
+  In general, the box-counting dimension is invariant under closures,
+  while the Hausdorff dimension varies after closure.
+\end{fact}
+
+\begin{fact}
+  If $\dim_H(F) < 1$, then the set $F$ is totally disconnected.
+\end{fact}
+
+\begin{fact}
+  If $f$ is Lipschitz with ratio $c$, then $\H^s(f(K)) \leq c^s\H^s(K)$.
+
+  This implies that $\dim_H(f(K)) \leq \dim_H(K)$.
+\end{fact}
+
+Let $L_\theta$ be the line through the origin with angle $\theta \in [0,\pi)$
+and $\Proj_\theta(F)$ be the orthogonal projection to $L_\theta$.
+
+\begin{theorem}
+  For almost all $\theta$ (that is, in all cases that actually matter),
+  \begin{enumerate}[nosep]
+    \item If $\dim_H(F) \leq 1$, then $\dim_H(\Proj_\theta(F)) = \dim_H(F)$.
+    \item If $\dim_H(F) > 1$, then $\dim_H(\Proj_\theta(F)) = 1$ and $\H^1(\Proj_\theta(F)) > 0$.
+  \end{enumerate}
+\end{theorem}
+
+Informally, everything is either less than one-dimensional
+or casts a one-dimensional shadow.
+
+Given a set which casts a shadow on $L_{\theta_1}$ and $L_{\theta_2}$,
+we can split it up and rotate the sections so that it the projection on $L_{\theta_1}$
+becomes a set of singletons but the projection on $L_{\theta_2}$ remains connected
+(this is the iterated Venetian blinds process).
+
+\begin{theorem}
+  Let $G_\theta \subset L_\theta$ for $\theta \in [0,\pi)$
+  be a collection of sets such that $\bigcup_\theta G_\theta$
+  is a measurable 2-dimensional set.
+  Then, there exists a set $F \subseteq \R^2$ such that
+  $G_\theta \subset \Proj_\theta(F)$ and $\H^1(\Proj_\theta(F) \setminus G_\theta) = 0$
+  for almost all $\theta$.
+\end{theorem}
+
+\section{Paul Fieguth: Bifurcations in continuous- and discrete-time systems}
+\lecture{Apr 1}
+
+In general, university courses focus on ``nice'' linear, Gaussian, small models.
+However, reality is usually non-linear, non-Gaussian, and large.
+We will look at non-linear systems, in particular,
+bifurcations in non-linear dynamics.
+
+Recall that in continuous time, we define some system as $\dot z(t) = f(z(t),\theta)$;
+in discrete time, we have $z_{n+1} = \bar f(z_n,\theta)$.
+
+Discrete time can be expressed as the \term*{forward Euler discretization}
+of continuous time, i.e., if $\dot z = f(z)$,
+we have $z(t + \delta) = z(t) + \delta \cdot f(z(t))$.
+
+Suppose we draw a \term*{system diagram} relating $z$ to $\dot z$.
+When $f(z)$ crosses the $z$-axis, we have a fixed point because $\dot z = 0$.
+
+\begin{center}  
+  \begin{tikzpicture}
+    \begin{axis}[axis lines=middle,
+        xlabel=$z$,
+        ylabel=$\dot z$,
+        enlargelimits,
+        ytick=\empty,
+        xtick=\empty,
+        samples=60]
+        \addplot[blue,domain={2:4}] {3*(x-3)};
+        \draw[black,fill=white] (axis cs:3,0) circle [radius=3pt];
+    \end{axis}
+  \end{tikzpicture}
+  \quad
+  \begin{tikzpicture}
+    \begin{axis}[axis lines=middle,
+        xlabel=$z$,
+        ylabel=$\dot z$,
+        enlargelimits,
+        ytick=\empty,
+        xtick=\empty,
+        samples=60]
+        \addplot[blue,domain={2:4}] {-3*(x-3)};
+        \fill[black] (axis cs:3,0) circle [radius=3pt];
+    \end{axis}
+  \end{tikzpicture}
+\end{center}
+
+When sloping up the derivative is positive to the right and negative to the left.
+That means it is pushing away from the fixed point, creating instability.
+In the downwards-sloping figure, the fixed point is attracting (stable).
+
+Linear systems have a handful of key attributes:
+\begin{itemize}
+  \item Superposition: If $x_1 \mapsto y_1$ and $x_2 \mapsto y_2$,
+        then $\alpha x_1 + \beta x_2 \mapsto \alpha y_1 + \beta y_2$
+  \item Sine wave: If $A\sin(\omega t + \phi)$ goes in,
+        then $B\sin(\omega t + \varphi)$ comes out.
+        Only the phase and amplitude can be changed, not the frequency.
+  \item Constant input cannot lead to oscillating output.
+\end{itemize}
+
+\begin{defn*}[bifurcation]
+  Discontinuous change in an attribute or behaviour
+  in response to a continuous change in parameter.
+\end{defn*}
+
+Suppose $\dot z = -(z-5)^2 + c$:
+
+\begin{center}
+  \begin{tikzpicture}
+    \begin{axis}[axis lines=middle,
+        xlabel=$z$,
+        ylabel=$\dot z$,
+        enlargelimits,
+        ytick=\empty,
+        xtick=\empty,
+        samples=60]
+      \addplot[blue,domain={3:7}] {-(x-5)^2+2};
+      \addplot[blue!80,domain={3:7}] {-(x-5)^2+1};
+      \addplot[blue!60,domain={3:7}] {-(x-5)^2};
+      \addplot[blue!40,domain={3:7}] {-(x-5)^2-1};
+      \addplot[blue!20,domain={3:7}] {-(x-5)^2-2};
+      \draw[black,fill=white] (axis cs:3.59,0) circle [radius=3pt];
+      \draw[black,fill=white] (axis cs:4,0) circle [radius=3pt];
+      \draw[black,fill=white] (axis cs:5,0) circle [radius=3pt];
+      \fill (axis cs:6,0) circle [radius=3pt];
+      \fill (axis cs:6.41,0) circle [radius=3pt];
+    \end{axis}
+  \end{tikzpicture}
+\end{center}
+
+Then, the number of fixed points jumps from none to two as $c$ crosses some value.
+To summarize this, we can draw a bifurcation plot:
+
+\begin{center}
+  \begin{tikzpicture}
+    \begin{axis}[axis lines=middle,
+        xlabel=$c$,
+        ylabel=$z$,
+        enlargelimits,
+        ytick=\empty,
+        xtick=\empty,
+        samples=60]
+      \addplot[blue,domain={2:4}] {sqrt(x-2)} node[pos=.9, above]{stable};
+      \addplot[blue,dashed,domain={2:4}] {-sqrt(x-2)} node[pos=.9, below]{unstable};
+    \end{axis}
+  \end{tikzpicture}
+\end{center}
+
+We also have bifurcations in discrete time, when we punch through the 45-degree line
+(as covered in the course proper).
+Considering the quadratic family as a discrete system, we can draw a bifucation plot
+
+\begin{center}
+  \begin{tikzpicture}
+    \begin{axis}[axis lines=middle,
+        xlabel=$c$,
+        ylabel=$z$,
+        enlargelimits,
+        ytick=\empty,
+        xtick=\empty,
+        samples=60]
+      \addplot[blue,domain={2:3}] {sqrt(x-2)} node[pos=.9, below right]{another bifurcation!};
+      \addplot[blue,dashed,domain={3:4}] {sqrt(x-2)};
+      \addplot[blue,dashed,domain={2:4}] {-sqrt(x-2)};
+    \end{axis}
+  \end{tikzpicture}
+\end{center}
+
+since the stable points eventually become unstable.
+
+There are two major kinds of bifurcations that show up.
+First, the double-fold:
+
+\begin{center}
+  \includesvg{figures/double-fold.svg}
+\end{center}
+
+This is the way that thermostats, switches, etc. work to force
+the system into one of the two stable states.
+That is, global climate models are just fridges.
+
+Second, the Hopf bifurcation:
+a transition between cycling and not cycling.
+
+\begin{center}
+  \includesvg{figures/hopf.svg}
+\end{center}
+
+Cycling usually comes up from a bounded unstable system.
+Instability forces the system away from the fixed point,
+but the bounds prevent it from leaving,
+leading to a cyclical motion.
+
+\begin{center}
+  \includesvg{figures/bounded-cycle.svg}
+\end{center}
+
+Ohter bifurcations include stick-slips (like chalkboard dashed lines),
+Covid cases, slap bracelets, jumping frogs, ecologies, epileptic seizures, etc.
+
+\section{Andy Zucker: Fixed point properties in topological dynamics}
+\lecture{Apr 3}
+
+\begin{defn}
+  Let $G$ be a group. A \term*{$G$-flow} is a compact Hausdorff space $X$
+  equipped with a continuous action $a : G \times X \to X$ satisfying
+  (1) $a(1_G,x) = x$ and (2) $a(g,a(h,x)) = a(gh,x)$.
+\end{defn}
+
+\begin{notation}
+  Typically, we understand actions as implied and write $g.x$ or just $gx$ for $a(g,x)$.
+
+  For example, the above axioms can be written as $1_Gx = x$ and $g(hx) = (gh)x$.
+\end{notation}
+
+\begin{example}
+  Let $G = \Z$ and $X$ be the unit circle.
+
+  Let $T : X \to X$ be rotation by an irrational $\alpha$,
+  which acts as our generating homomorphism.
+  Since $\alpha$ is irrational, the action is \term*{free}, i.e.,
+  for all $x$ and non-zero $n$, $T^n(x) \neq x$.
+\end{example}
+
+\begin{example}
+  Let $G = \Z$ and $X = 2^{\Z}$.
+
+  Let $T : 2^{\Z} \to 2^{\Z}$ be the \term*{Bernoulli shift}
+  $T(x)(n) = x(n-1)$.
+
+  This action is not free, since $x \equiv 0$ is a fixed point of $T$.
+  However, there is a closed, non-empty, $T$-invariant subspace of $X$
+  which is free.
+\end{example}
+
+These two examples are related. Suppose we define an interval on the unit circle.
+Then, check if each of the elements of the orbits of the rotation fall in that interval,
+and assign binary values to the function based on that.
+This generates the closed, non-empty, $T$-invariant subspace.
+
+For now, fix $X$ as the Cantor space $\Sigma$.
+Write $\Clop(X) = \{A \subseteq X : \text{$A$ is both closed and open}\}$.
+
+\begin{defn}
+  A \term*{probability measure on $X$} is a map $\mu : \Clop(X) \to [0,1]$
+  with $\mu(X) = 1$ and finite additivity.
+\end{defn}
+
+\begin{example}
+  View $X$ as $2^{\Z}$.
+  For each $A \in \Clop(X)$ defined by $\{x : x(n) = i\}$ for some fixed $n$,
+  set $\mu(A) = \frac12$.
+  Generate the rest of the values axiomatically.
+\end{example}
+
+This is like flipping the $n$\xth coin and expecting $i$.
+
+\begin{example}
+  Fix $x \in X$. The \term*{Dirac delta at $x$} is the measure $\mu(A) = \begin{cases}
+    0 & x \not\in A \\ 1 & x \in A
+  \end{cases}$
+\end{example}
+
+This is measuring whether a set contains $x$.
+
+\begin{defn}
+  The \term{space of probability measures} $P(X)$
+  is equipped with a topology such that $\mu_n \to \mu$
+  if and only if for all clopen $A$, $\mu_n(A) \to \mu(A)$.
+
+  This is the ``weak* topology'' on $P(X)$.
+\end{defn}
+
+If $G$ is a countable group and $G$ acts on $X$,
+then $G$ acts on $P(X)$ which we define as $(g.\mu)(A) = \mu(g^{-1}.A)$.
+
+\begin{defn}
+  A countable group is \term*{amenable} if for any finite $S \subseteq G$
+  and $\varepsilon > 0$, there exists an $F_{S,\varepsilon}$ such that
+  $\frac{\abs{SF \setminus F}}{\abs{F}} < \varepsilon$.
+\end{defn}
+
+\begin{example}
+  The integers $\Z$ are amenable.
+
+  Consider $S = \{\pm1\}$.
+  Given $\varepsilon > 0$,
+  find $n \in \N$ such that $\frac{2}{n} < \varepsilon$.
+  Let $F_{S,\varepsilon}$ be an interval of length $n$.
+
+  Then, $\abs{SF \setminus F} = 2$ giving $\frac{\abs{SF \setminus F}}{\abs{F}} < \varepsilon$.
+\end{example}
+
+\begin{theorem}[Følner]
+  A countable group $G$ is amenable if and only if whenever $G$ acts on $X = \Sigma$,
+  the induced action on $P(X)$ has a fixed point.
+\end{theorem}
+\begin{prf}
+  Suppose $G$ is amenable. Write $G$ as an increasing union $\bigcup S_n$
+  where $S_1 \subseteq \S_2 \subseteq \dotsb$ are finite.
+
+  Let $F_n \subseteq G$ be $(S_n,\frac1n)$-Følner.
+  Given an action of $G$ on the Cantor space $X$,
+  \begin{enumerate}
+    \item Pick an arbitrary $x \in X$.
+    \item For every $n \in \N$, let $\mu_n = \sum\limits_{g\in F_n}\frac{1}{\abs{S_n}} \delta_{gx}$
+          where $\delta$ is the Dirac delta.
+          That is, we are taking the average of the Dirac measures of finitely many points.
+          Concretely, given a clopen set $A$, we ask what proportion of the points
+          lie inside of $A$.
+  \end{enumerate}
+  Because $\ev{F_n : n \in \N}$ are more and more Følner,
+  we have $\mu_n(A) - (g.\mu_n)(A) \to 0$ for every $A \in \Clop(X)$ and $g \in G$.
+
+  That is, because $g$ eventually lies in one of the $S_n$ and $\frac1n$ is very small,
+  applying the action will eventually... something... i'm lost...
+
+  Then we use the compactness of $P(X)$ to do something?
+  which passes to the convergent subsequence of $\mu_n$ with limit $\mu$?
+  those are math words! they mean something!
+\end{prf}
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
