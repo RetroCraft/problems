@@ -84,6 +84,11 @@ and [Final](https://docs.google.com/document/d/1OmAY4RFbbq6bb3P44r9N21mXg4Ygeage
 
 Study materials by [Ace](https://ko-fi.com/augustace){:.a#BU121--KoFi--Ace} are also published before each assessment.
 
+#### BU 121 (W2024) <small>Critical Thinking and Communication Skills</small>
+
+[Notes from the entire course](https://ko-fi.com/s/a7d0d24c89),
+including readings, by Chloe and Stella.
+
 #### BU 288 (F2021) <small>Organizational Behaviour</small>
 
 Another [flashcard set](https://quizlet.com/mian8680/folders/bu288-f2021/sets){:.a#BU288--Flashcards--Imaad} for the two midterms and final exam.
