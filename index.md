@@ -86,8 +86,11 @@ Study materials by [Ace](https://ko-fi.com/augustace){:.a#BU121--KoFi--Ace} are 
 
 #### BU 121 (W2024) <small>Critical Thinking and Communication Skills</small>
 
-[Notes from the entire course](https://ko-fi.com/s/a7d0d24c89),
+[Notes from the entire course](https://ko-fi.com/s/a7d0d24c89){:.a#BU121--Notes--Chloe},
 including readings, by Chloe and Stella.
+
+[Final exam flashcards](https://quizlet.com/ca/901322098/bu121-final-flash-cards/){:.a#BU121--Flashcards--Yash}
+by Yash and Karthik.
 
 #### BU 288 (F2021) <small>Organizational Behaviour</small>
 
