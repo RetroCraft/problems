@@ -36,7 +36,7 @@
   \setmathfont{latinmodern-math.otf}
   % fixes because latinmodern-math is dumb
   \setmathfont[range=\mathbb]{texgyrepagella-math.otf}[AutoFakeBold=3] % restore nice-looking ℝ 
-  \setmathfont[range={\mathscr,\mathbfscr}]{XITS Math} % restore different script font
+  % \setmathfont[range={\mathscr,\mathbfscr}]{XITS Math} % restore different script font
   % [tex.se/648178] fix stacking
   \def\corrxits#1{\expanded{\Umathstackdenomdown#1=\the\Umathfractiondenomdown#1}\relax}
   \corrxits\scriptstyle       \corrxits\crampedscriptstyle

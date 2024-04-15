@@ -1,9 +1,14 @@
+\DeclareMathOperator{\Enc}{Enc}
+\DeclareMathOperator{\Dec}{Dec}
 \DeclareMathOperator{\DES}{DES}
 \DeclareMathOperator{\AES}{AES}
+\DeclareMathOperator{\AESCBC}{AES-CBC}
+\DeclareMathOperator{\AESGCM}{AES-GCM}
 \DeclareMathOperator{\GF}{GF}
 \DeclareMathOperator{\MAC}{MAC}
 \DeclareMathOperator{\HMAC}{HMAC}
 \DeclareMathOperator{\CBCMAC}{CBC-MAC}
+\DeclareMathOperator{\hmacsha}{HMAC-SHA-256}
 \newcommand{\randin}{\mathbin{\in_{\symsf{R}}}}
 \newcommand{\modplus}{\boxplus}
 \newcommand{\modminus}{\boxminus}
@@ -17,4 +22,7 @@
 % Pseudocode
 \RequirePackage{algorithm,float}
 \RequirePackage[noEnd]{algpseudocodex}
-\newcommand{\vv}{\mathsf}
+% Continuous numbering [tex.se/80140]
+\newcommand{\alglineInit}[1][xxx]{\newcounter{ALG@line@#1}\setcounter{ALG@line@#1}{\value{ALG@line}}}
+\newcommand{\alglinePop}[1][xxx]{\setcounter{ALG@line}{\value{ALG@line@#1}}}
+\newcommand{\alglinePush}[1][xxx]{\setcounter{ALG@line@#1}{\value{ALG@line}}}

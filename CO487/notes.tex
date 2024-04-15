@@ -1592,6 +1592,868 @@ The scheme can be used in streaming mode, which is helpful.
 
 This is also proven to be secure.
 
+\lecture{Feb 9}
+In general, an AES-GCM IV should never be reused.
+
+If we reuse $(\vv{IV}, A_1, C_1, t_1)$ and $(\vv{IV}, A_2, C_2, t_2)$,
+then $t_1 \oplus t_2 = f_{A_1,C_1}(H) \oplus f_{A_2,C_2}(H)$.
+This is a polynomial function of $H$ and can be solved.
+The entire keystream can then be derived from $H$.
+
+\section{Real-life example: AWS}
+AWS requires security for data in transit, data in use, and data at rest.
+
+\lecture{Feb 12}
+Every data item is encrypted with a one-time \term{data encryption key} (DEK).
+
+To upload: A client makes a request to a \term{key management service} (KMS) server,
+which gets the one-time key from an HSM and passes it on.
+Then, the client sends the ciphertext to an S3 server.
+
+Alternatively, a client can send data directly to the S3 server,
+which queries the KMS (querying the HSM) for a key an doing the encryption server-side.
+
+To keep the DEKs secure, we use a \term{customer main key} (CMK).
+The HSM generates a CMK $K$ and DEK $k$,
+then sends $k$ and $wk = E_K(A,k)$ to the KMS,
+which passes it to the client.
+Then, the client uses $k$ and immediately deletes it,
+storing only $wk$ and the ciphertext.
+
+To decrypt: The client sends $wk$ to the HSM (via the KMS).
+The HSM decrypts $wk$ and returns $k$.
+The client uses $k$ and immediately deletes it.
+
+The IVs used are guaranteed to be randomly generated
+with collision probability better than $2^{-32}$.
+However, by the birthday paradox, this means that for $B$ IVs,
+there is a $B^2/(2\cdot2^{96})$ chance of collision.
+Therefore, never encrypt more than $2^{32}$ chunks with the same DEK.
+
+This also applies to random IVs for use of CMKs,
+so a CMK should only be used for $2^{32}$ DEKs.
+AWS only rotates CMKs once a year,
+so a user can only encrypt 136 DEKs per second.
+
+To solve this, derive key mode works by setting
+$wk = \Enc_L(A,k)$ where $L = \HMAC_K(N)$.
+It permits $2^{40}$ CMKs, each encrypting $2^{50}$ DEKs.
+
+AWS charges \$1/mo for CMKs, and \$0.03/10,000 requests to the KMS API
+(after a free tier of 20,000).
+DynamoDB is a NoSQL databse with unique DEKs for each table entry,
+which is just kinda stupid crazy.
+
+\lecture{Feb 14}
+CMKs are never stored (unencrypted) on disk and never transmitted off its HSM.
+A CMK is encrypted with a \term{domain key} (shared across HSMs in a domain)
+to create an \term{exported key token} (EKT) which actually put in storage.
+
+The domain key is rotated daily.
+When an HSM selects the new domain key, it is encrypted with a one-time AES-GCM key $\ell$.
+Then, $\ell$ is encrypted with ECC to be exported to the other HSMs,
+adding another layer to the long chain of
+\[
+  \text{ECC keys} \to \ell \to \text{domain key} \to \text{CMK} \to \text{DEK} \to \text{actual data}
+\]
+to create an \term{exported domain token} (EDT),
+which is distributed to the domain and stored in storage.
+
+\chapter{Public-key cryptography}
+\section{Overview}
+Symmetric-key cryptography is limited because it assumes that
+communicating parties share the secret key beforehand.
+This can be established in a few ways:
+\begin{enumerate}
+  \item Point-to-point distribution. Alice sends it to Bob over a secured channel,
+        like a face-to-face meeting or a pre-secured SIM card.
+  \item Through a \term{trusted third party} (TTP) which acts as a \term{key distribution centre} (KDC).
+        The KDC picks keys and sends them to each party, encrypted by pre-established keys.
+\end{enumerate}
+These are inefficient.
+In a network of $n$ users, each user needs to manage $n-1$ secret keys
+for a total of $\order{n^2}$ keys in the network.
+
+Symmetric-key encryption also cannot be used to achieve non-repudiation
+(i.e., a scheme where nobody can deny they were the source of a message).
+This is because secrets are shared.
+
+\begin{defn}[public-key cryptography]
+  Schemes in which communicating parties share some authenticated (but non-secret)
+  information.
+\end{defn}
+
+Public-key schemes were invented by Merkle, Diffie, and Hellman in 1975.
+
+\begin{scheme}[Merkle puzzle]
+  Suppose Alice and Bob desire to establish a secret session key
+  over an authenticated, non-secret channel.
+  \begin{enumerate}[nosep]
+    \item Alice creates $N = 10^9$ puzzles $P_i$ such that each takes $t=5$ hours to solve.
+          The solution to each $P_i$ is a 128-bit session key $sk_i$ and 128-bit serial number $n_i$.
+    \item Alice sends the puzzles to Bob
+    \item Bob picks a random $j \randin [1,N]$ and solves $P_j$ to obtain $sk_j$ and $n_j$.
+    \item Bob sends $n_j$ to Alice.
+    \item The secret key is $sk_j$.
+  \end{enumerate}
+\end{scheme}
+
+In this case, an eavesdropper would need to solve 500 million puzzles to find out $sk_j$.
+
+For example, let $P_i = \AESCBC_{k_i}(sk_i,n_i,n_i)$ for $k_i = r_i \concat 0^{88}$
+and $r_i \randin \bits{40}$.
+Then, the expected time to solve $P_i$ by exhaustive key search is $2^{39}$ operations.
+
+In general, for public key cryptography, each entity $A$
+generates a \term{key pair} of a \term{public key} and \term{secret key} $(P_A, S_A)$.
+It should be infeasible to recover $S_A$ from $P_A$.
+For example, $S_A = (p,q)$ and $P_A = pq$ where $p$ and $q$ are random, large primes.
+Then, the encryption/signing function takes $S_A$
+but the decryption/verifying function only requires $P_A$.
+
+Public-key cryptography is good for key management, verification, and non-repudiation.
+However, it is usually slower than symmetric-key encryption.
+
+To work around this, hybrid schemes exist,
+where public-key encryption is used to share a key used for symmetric-key encryption.
+
+\section{Algorithmic number theory}
+\lecture{Feb 16}
+
+\begin{theorem}
+  Every integer $n \geq 2$ has a unique prime factorization (up to permutation of the factors).
+\end{theorem}
+
+Given an integer, it is hard to find its prime factorization.
+However, it is easy to verify that a given list of primes is the factorization.
+
+\begin{defn}[big-$\mathcal{O}$ notation]
+  If $f, g : \N \toto \R_+$, then $f(n) = \order{g(n)}$ means that
+  there exists a positive constant $c$ and integer $n_0$ such that
+  $f(n) \leq cg(n)$ for all $n \geq n_0$.
+\end{defn}
+
+\begin{defn}
+  An \term{algorithm} is a well-defined computational procedure
+  that takes some input and halts with some output.
+
+  The \term{running time} of an algorithm is an upper bound,
+  as a function of the \term{input size},
+  of the worst-case number of fixed-size operations.
+
+  An algorithm is \term{polynomial-time} if its expected running time is
+  $\order{k^c}$ for input size $k$ and a fixed positive integer $c$.
+\end{defn}
+
+Then, we can figure out the expected time in bit operations
+for basic integer operations. Given two $k$-bit integers $a$ and $b$
+(i.e., input size $\order{k}$ bits):
+
+\begin{center}
+  \begin{tabular}{r|cCl}
+    Operation      & Algorithm           & \text{Running time} &                                               \\ \hline
+    Addition       & Elementary school   & \order{k}                                                           \\
+    Subtraction    & Elementary school   & \order{k}                                                           \\
+    Multiplication & Elementary school   & \order{k^2}         & Fastest known algorithm is $\order{k\log k}$  \\
+    Division       & Elementary school   & \order{k^2}                                                         \\
+    GCD            & Euclidean algorithm & \order{k^2}         & Fastest known algorithm is $\order{k\log^2k}$
+  \end{tabular}
+\end{center}
+
+Given integers $a,b,m \in \Z_n$ for a $k$-bit integer $n$:
+
+\begin{center}
+  \begin{tabular}{r|cC}
+    Operation      & Algorithm                    & \text{Running time} \\ \hline
+    Addition       & Elementary school            & \order{k}           \\
+    Subtraction    & Elementary school            & \order{k}           \\
+    Multiplication & Elementary school            & \order{k^2}         \\
+    Inversion      & Extended Euclidean algorithm & \order{k^2}         \\
+    Exponentiation & Square-and-multiply          & \order{k^3}
+  \end{tabular}
+\end{center}
+
+\lecture{Feb 26}
+The square-and-multiply algorithm reduces the time complexity
+of exponentiation from $\order{2^kk}$ (calculating $a^m$ and modding)
+to $\order{k^3}$.
+
+Let $m = \sum m_i2^i$. Then,
+\[
+  a^m = a^{\sum m_i 2^i}
+  = \prod a^{m_i 2^i}
+  \equiv \prod_{\mathclap{0 \leq i \leq k-1, m_i = 1}} a^{2^i} \pmod{n}
+\]
+which gives us the algorithm
+\begin{algorithm}[H]
+  \caption{Repeated square-and-multiply}
+  \begin{algorithmic}[1]
+    \Procedure{SquareAndMultiply}{$a,m = (m_k\cdots m_0)$}
+      \If{$m_0 = 1$}
+        \State $B \gets a$
+      \Else
+        \State $B \gets 1$
+      \EndIf
+      \State $A \gets a$
+      \For{$i = 1,\dotsc,k-1$}
+        \State $A \gets A^2 \bmod n$
+        \If{$m_i = 1$}
+          \State $B \gets B \times A \bmod n$
+        \EndIf
+      \EndFor
+      \State \Return{$B$}
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+which takes only at most $k$ squarings and $k$ multiplications,
+for a total time of $\order{k^3}$.
+
+\chapter{RSA}
+
+RSA (Rivest--Shamir--Adleman) was invented in 1977.
+
+\section{RSA encryption}
+
+\begin{scheme}[RSA encryption]\label{s:rsa}
+  Each entity $A$ generates a key pair:
+  \begin{algorithmic}[1]
+    \State Randomly select two large, distinct primes $p$ and $q$ of the same bitlength
+    \State Compute the \term{RSA modulus} $n = pq$ and $\phi = \phi(n) = (p-1)(q-1)$
+    \State Select an arbitrary \term{encryption exponent} $1 < e < \phi$ with $\gcd(e,\phi) = 1$
+    \State Compute the \term{decryption exponent} $1 < d < \phi$ with $ed \equiv 1 \pmod{\phi}$
+    \State \Return{$(P_A,S_A) = ((n,e), d)$}
+  \end{algorithmic}
+  To encrypt a message for $A$:
+  \begin{algorithmic}[1]
+    \State Obtain an authenticated copy of $P_A = (n,e)$
+    \State Compute the ciphertext $c = m^e \bmod n$
+    \State \Return{$c$}
+  \end{algorithmic}
+  To decrypt a message as $A$:
+  \begin{algorithmic}[1]
+    \State Compute $m = c^d \pmod n$
+    \State \Return{$m$}
+  \end{algorithmic}
+\end{scheme}
+
+For example, suppose Alice selects $p = 23$ and $q = 37$.
+Then, $n = 851$ and $\phi(n) = 792$.
+She can pick $e = 631$ since it is coprime to $\phi = 792$.
+Then, solving $631d \equiv 1 \bmod 792$ yields $d = 487$.
+
+To encrypt $m = 13$, for Alice, Bob obtains the public key $(n=851,e=631)$.
+Then, he computes $c = 13^{631} \bmod 851$ using square-and-multiply to get 616,
+and sends 616 to Alice.
+
+To decrypt $c = 616$, Alice computes $m = 616^{487} \bmod 851$ which recovers 13.
+
+\begin{theorem}[RSA works]
+  For all $n$ and $m \in [0,n-1]$, if $c = m^e \bmod n$, then $m = c^d \bmod n$.
+\end{theorem}
+\begin{prf}
+  We will prove that $m^{ed} \equiv m \pmod n$ for all $m \in [0, n-1]$.
+
+  Since $ed \equiv 1 \pmod{\phi}$, we can write
+  \[ ed = 1 + k(p-1)(q-1) \]
+  for some $k \in \Z$.
+  Since $ed > 1$ and $(p-1)(q-1) \geq 1$, we have $k \geq 1$.
+  Claim that $m^{ed} \equiv m \pmod p$.
+
+  Suppose $p \mid m$. Then, $m \equiv 0 \pmod p$,
+  so $m^{ed} \equiv 0^{ed} \equiv 0 \equiv m \pmod p$.
+
+  Otherwise, $p \nmid m$. Then, $\gcd(m,p) = 1$,
+  so by Fermat's Little Theorem:
+  \begin{align*}
+    m^{p-1}                 & \equiv 1                  & \pmod p \\
+    m \cdot m^{k(p-1)(q-1)} & \equiv m \cdot 1^{k(q-1)} & \pmod p \\
+    m^{1 + k(p-1)(q-1)}     & \equiv m                  & \pmod p \\
+    m^{ed}                  & \equiv m                  & \pmod p
+  \end{align*}
+
+  Symmetrically, $m^{ed} \equiv m \pmod q$.
+  Since $p$ and $q$ are distinct primes, we have $m^{ed} \equiv m \pmod n$,
+  completing the proof.
+\end{prf}
+
+\lecture{Feb 28}
+RSA is only secure if Eve cannot factor $n$.
+This is the only way Eve can break RSA;
+the RSA problem of computing $d$ from $(n,e)$ reduces to factoring $n$.
+
+\begin{attack}[dictionary attack]
+  Suppose that $m \in \mathscr{M}$ where $\abs{\mathscr{M}}$ is small.
+
+  Then, an adversary can just encrypt all of $\mathscr{M}$ and find the one that matches.
+\end{attack}
+
+To prevent this, add a bunch of random garage (\term{salt}) $s \randin \bits{128}$ to messages.
+That is, instead of encrypting $m$, encrypt $m' = s \concat m$.
+Since the salt is a fixed length, Alice knows to discard it.
+
+\begin{attack}[chosen-ciphertext attack on Basic RSA]
+  Suppose Eve has access to a decryption oracle
+  (i.e., Alice will decrypt any message except $c$).
+  Then, Eve can decrypt $c$ by:
+  \begin{algorithmic}[1]
+    \State Select $x \in [2,n-1]$ coprime to $n$
+    \State Compute $\hat c = cx^e \bmod n$. We will have $\hat c \neq c$ as long as $\gcd(c,n) = 1$
+    \State Obtain $\hat m = \hat c^d = (cx^e)^d = c^dx^{ed} = mx$ from the oracle.
+    \State Recover $m = \hat m x^{-1} \bmod n$
+  \end{algorithmic}
+\end{attack}
+
+To prevent this, ensure that $m$ follows prescribed format before encryption.
+Then, $\hat m$ is unlikely to follow the right format,
+so it cannot be decrypted.
+
+Therefore, a secure implementation of RSA must include salting and formatting.
+
+\lecture{Mar 1}
+\begin{defn*}[security of a public-key encryption scheme]
+  A public-key encryption scheme is \term[security!public-key]{secure}
+  if it is semantically secure against a chosen-ciphertext attack
+  by a computationally bounded adversary.
+\end{defn*}
+
+That is, to break a public-key scheme,
+the adversary must be able to divine some information about the plaintext
+given feasible computation and access to a decryption oracle.
+
+\begin{scheme}[RSA Optimal Asymmetric Encryption Padding (RSA-OAEP)]
+  Let $k$ be the bitlength of $n$ and $\ell = k-256-1$.
+  Pick hash functions $G_1 : \bits{256} \to \bits{\ell}$ and $G_2 : \bits{\ell} \to \bits{256}$.
+
+  To encrypt $M \in \bits{\ell-256}$, pick a salt $r \randin \bits{256}$.
+  Then, use RSA to encrypt $m = 0 \concat s \concat t$
+  where $s = (0^{256} \concat M) \oplus G_1(r) \in \bits{\ell}$
+  and $t = r \oplus G_2(s) \in \bits{256}$.
+
+  To decrypt $c$, first use RSA to get $m$ and parse as $0 \concat s \concat t$.
+  Compute $r = G_2(s) \oplus t$ and check the first 256 bits of $G_1(r) \oplus s$.
+  If they are all zeroes, output $M = $ the rest, otherwise reject.
+\end{scheme}
+
+\begin{theorem}[Bellare \& Rogaway]
+  Suppose that the RSA problem is intractable and that $G_1,G_2$ are random functions.
+  Then, RSA-OAEP is secure.
+\end{theorem}
+
+\section{Integer factorization}
+
+Recall from CS 136/246/240/341:
+
+\begin{defn}
+  We write $f(n) = \order{g(n)}$ if there exists $c > 0$ and $n_0$
+  such that $n \geq n_0$ implies $f(n) \leq cg(n)$.
+
+  We write $f(n) = o(g(n))$ if $\lim\limits_{n\to\infty}\frac{f(n)}{g(n)} = 0$.
+
+  An algorithm is \term[running time!polynomial]{polynomial-time} if its worst-case running time
+  is $\order{n^c}$ for input size $n$ and constant $c$.
+
+  An algorithm is \term[running time!exponential]{exponential-time} if its worst-case running time
+  is \emph{not} of the form $\order{n^c}$ for \emph{any} constant $c$.
+  In particular, if it is of the form $\order{2^{cn}}$ for a constant $c$,
+  it is \term[running time!fully exponential]{fully exponential-time}.
+  If it is of the form $\order{2^{o(n)}}$, it is \term[running time!subexponential]{subexponential-time}.
+\end{defn}
+
+Consider some attacks on RSA via factoring.
+
+\begin{attack}[trial division]
+  Trial divide $n$ by all the primes $2,3,5,\dotsc,\floor{\sqrt{n}}$.
+  If any divide $n$, then stop.
+\end{attack}
+
+The running time of this attack is $\order{\sqrt{n}}$, which is not great
+($2^{64}$ divisions for 128-bit keys).
+In fact, since the size is $\log n$, this is fully exponential-time
+($\order{2^{(\log n)/2}}$).
+
+For classifying subexponential times, we use $L_n[\alpha,c]$ notation.
+
+\begin{defn}
+  If the running time is of the form
+  \[ L_n[\alpha,c] := \order{\exp[(c+o(1))(\log_e n)^\alpha(\log_e\log_e n)^{1-\alpha}]} \]
+  where $c > 0$ and $0 < \alpha < 1$, then the running time is subexponential.
+\end{defn}
+
+Notice that if $\alpha = 0$, we have $L_n[0,c] = \order{(\log n)^{c+o(1)}}$,
+which is polynomial-time.
+On the other edge, if $\alpha = 1$, then $L_n[1,c] = \order{n^{c+o(1)}}$,
+which is fully exponential-time.
+
+There are a number of \term*{special-purpose factoring algorithms},
+like Pollard's $p-1$, Pollard's $\rho$, elliptic curve, etc.\ that work when
+$n$ has special, known properties.
+For example, $n$ has a small prime factor $p$ or $p-1$ only has small prime factors.
+
+If $p$ and $q$ are of the same bitlength and randomly generated,
+these won't get very far.
+
+The algorithms that really matter are the \term*{general-purpose factoring algorithms}
+which care only about the size of the number being factored.
+The two major advancements are
+\begin{enumerate}[nosep]
+  \item the quadratic sieve factoring algorithm (QS; 1982), with running time $L_n[1/2,1]$, and
+  \item the number field sieve factoring algorithm (NFS; 1990), with running time $L_n[1/3,1.923]$.
+\end{enumerate}
+
+\lecture{Mar 4}
+The largest RSA challenge factored was the 2020 factorization of RSA-250
+(250 decimal digits, 829 bits).
+
+The security levels of RSA are approximately equivalent to
+\begin{center}
+  \begin{tabular}{c|ccc}
+    Security & Block cipher & Hash function & RSA   \\ \hline
+    80       & SKIPJACK     & SHA-1         & 1024  \\
+    112      & Triple-DES   & SHA-224       & 2048  \\
+    128      & AES small    & SHA-256       & 3072  \\
+    192      & AES medium   & SHA-384       & 7680  \\
+    256      & AES large    & SHA-512       & 15360
+  \end{tabular}
+\end{center}
+under the current best known algorithms.
+
+However, we have no actual proof that factoring is hard.
+Shor's algorithm can factor in $\order{(\log n)^2}$,
+but nobody has built a large enough quantum computer yet.
+
+Today, 512-bit RSA is considered insecure, 1024-bit risky, and 2048-/3072-bit secure.
+
+\section{Real-life example: QQ browser}
+
+\section{RSA signatures}
+
+The building blocks of RSA encryption can be used to create a signing scheme.
+
+\begin{scheme}[RSA signing]
+  Pick a hash function $H$.
+  Generate keys as in \nameref{s:rsa}.
+
+  To sign a message $m \in \bits{*}$ as $A$,
+  \begin{algorithmic}[1]
+    \State Compute $M = H(m)$
+    \State Compute the signature $s = M^d \bmod n$
+    \State \Return{$(m,s)$}
+  \end{algorithmic}
+
+  To verify that message $(m,s)$,
+  \begin{algorithmic}[1]
+    \State Obtain an authenticated copy of $P_A = (n,e)$
+    \State Compute $M = H(m)$
+    \State Compute $M' = s^e \bmod n$
+    \State \Return{$M = M'$}
+  \end{algorithmic}
+\end{scheme}
+
+This only works if the RSA problem is intractable.
+If it is not, Eve can forge Alice's signature by solving
+$s^e = H(m) \bmod n$ for any $m$.
+
+Recall that an authentication scheme is secure if it is existentially unforgeable
+by a computationally bounded adversary under a chosen-mesage attack.
+That is, Eve gets a signing oracle.
+
+The hash function must also be PR, 2PR, and CR.
+
+If $H$ is not PR, then Eve can pick a random $s$ and get $M = s^e \bmod n$.
+Then, use the PR oracle to get $m$ such that $H(m) = M$.
+
+If $H$ is not 2PR, then given a signed message $(m,s)$,
+the oracle can find another $m' \neq m$ such that $s$
+is also the signature for $m'$.
+
+If $H$ is not CR, then given a collision $(m,m')$,
+Eve can use the signing oracle to get $s = H(m)^d \bmod n$.
+But $s$ is also the signature for $m'$.
+
+The basic RSA signature scheme is not secure if $H$ is SHA-256.
+However, if we use a full-domain hash function, i.e.,
+$H : \bits{*} \to [0,n-1]$, then we get a secure signature scheme.
+Usually, to implement RSA-FDH, we use
+\[
+  H(m) = \operatorname{SHA-256}(1,m) \concat \operatorname{SHA-256}(2,m) \concat \dotsb \concat \operatorname{SHA-256}(t-1,m) \concat \operatorname{truncate}(\operatorname{SHA-256}(t,m))
+\]
+where we repeat until it has the same bitlength as $n$.
+
+\begin{scheme}[PKCS \#1 v1.5 RSA]
+  To sign $m \in \bits{*}$,
+  \begin{algorithmic}[1]
+    \State Compute $H(m)$, where $H$ is a hash function from a fixed list
+    \State Format $M = \x{0001FF} \dotsb \x{FF00} \concat \text{hash name} \concat h$
+    to have the same byte length as $n$.
+    \State Compute $s = M^d \bmod n$
+    \State \Return{$(m,s)$}
+  \end{algorithmic}
+
+  To verify $(m,s)$,
+  \begin{algorithmic}[1]
+    \State Obtain an authentic copy of $(n,e)$
+    \State Compute $M = s^e \bmod n$
+    \State Check the formatting: starts with $\x{0001}$, consecutive $\x{FF}$, then $\x{00}$
+    \State Read the next 15 bytes to determine the hash function $H$
+    \State \Return{$h = H(m)$}
+  \end{algorithmic}
+\end{scheme}
+
+\section{Bleichenbacher's attack}
+\lecture{Mar 6}
+\begin{attack}[Bleichenbacher]
+  Suppose that $e = 3$ and the verifier does not check that there are no bytes
+  to the right of $h$.
+  \WLOG, let $n$ be 384 bytes (3072 bits) and $H$ be SHA-1.
+  Then, the attacker can
+  \begin{algorithmic}[1]
+    \State Select $m \in \bits{*}$
+    \State Compute $h \gets H(m) \in \bits{160}$
+    \State $D \gets \x{00} \concat \text{hash name} \concat h \in \bits{288}$
+    \State $N \gets 2^{288} - D$
+    \State Assert that $3 \mid N$. If $3 \nmid N$, modify $m$ sightly and try again.
+    \State $s \gets 2^{1019} - 2^{34}\frac{N}{3}$
+    \State \Return{$(m,s)$}
+  \end{algorithmic}
+  Then, the verifier will accept $(m,s)$.
+\end{attack}
+\begin{prf}
+  The verifier will compute
+  \begin{align*}
+    M & = s^e                                                                                                                                                             & \pmod n                                                \\
+      & = \qty(2^{1019} - 2^{34}\frac{N}{3})^3                                                                                                                            & \pmod n                                                \\
+      & = 2^{3057} - 2^{2072}N + \underbrace{2^{1087}\frac{N^2}{3} - \qty(2^{34}\frac{N}{3})^3}_{\text{garbage}}                                                          & \pmod n                                                \\
+      & = 2^{3057} - 2^{2072}(2^{288} - D) + \text{garbage}                                                                                                               & \pmod n                                                \\
+      & = 2^{3057} - 2^{2360} + 2^{2072}D + \text{garbage}                                                                                                                & \text{(no mod since this is $\ll 2^{3072} \approx n$)} \\
+      & = 2^{2360}(2^{697}-1) + 2^{2072}D + \text{garbage}                                                                                                                                                                         \\
+      & = \underbrace{\x{0001FF}\cdots\x{FF}}_{3071-2360} \concat \underbrace{\x{00} \concat \text{hash name} \concat h}_{D} \concat \underbrace{\text{garbage}}_{2071-0}
+  \end{align*}
+  and extract $h = H(m)$, ignoring the garbage.
+\end{prf}
+The attack fails if $s^e \gg n$, so the mod cannot be ignored.
+In practice, $e = 2^{16}+1 = 65537$ is used.
+
+\chapter{Elliptic curve cryptography}
+\section{Elliptic curves}
+
+\begin{defn}
+  Let $F$ be a field (i.e., $\R$ or $\Z_p$ for prime $p \geq 5$).
+  An \term*{elliptic curve $E$ over $F$} is given by an equation
+  \[ E/F : Y^2 = X^3 + aX + b \]
+  where $a$ and $b$ are in $F$ such that $4a^3 + 27b^2 \neq 0$.
+\end{defn}
+
+\begin{defn}
+  Let $E/F$ be an ellpitic curve.
+  The set of \term*{$F$-rational points on $E$} is
+  \[ E(F) = \{(x,y) \in F^2 : y^2 = x^3 + ax + b\} \cup \{\infty\} \]
+  where $\infty$ is a special value called the \term*{point at infinity}.
+\end{defn}
+
+\lecture{Mar 8}
+\begin{example}\label{ex:ec1}
+  The set of $\Z_{11}$-rational points on $E/\Z_{11} : Y^2 = X^3 + X + 6$
+  is $E(\Z_{11}) = \{\infty, (2,4), (2,7), (3,5), (3,6), (5,2), (5,9),
+    (7,2), (7,9), (8,3), (8,8), (10,2), (10,9)\}$.
+
+  The size of the set $\#E(\Z_{11}) = 13$.
+\end{example}
+
+\begin{theorem}[Hasse]
+  Let $E/\Z_p : Y^2 = X^3 + aX + b$.
+  Then, $(\sqrt{p}-1)^2 \leq \#E(\Z_p) \leq (\sqrt{p}+1)^2$.
+\end{theorem}
+
+This allows us to approximate $\#E(\Z_p) \approx p$.
+There is a polynomial-time algorithm to find $\#E(\Z_p)$.
+
+To define addition on $E(F)$, we can imagine connecting a line together.
+
+\begin{defn}[geometric rule]
+  Let $P$ and $Q$ be points on $E(\R)$ and let $\ell$ be the line through $P$ and $Q$.
+  In the case where $P = Q$, consider the tangent line.
+
+  Let $T \in E(\R)$ be the third point of intersection of $\ell$ with $E$.
+  If it does not exist, let $T = \infty$, since we treat $\infty$
+  as a point ``at infinity'' on every line.
+
+  Then, we define $P + Q$ as the reflection $-T$ in the $x$-axis.
+\end{defn}
+
+Formally:
+
+\begin{defn}[addition rule]
+  Let $E$ be an elliptic curve over $F$.
+  Let $P = (x_1,y_1)$ and $Q = (x_2,y_2) \in E(F)$.
+  Then:
+  \begin{enumerate}[nosep]
+    \item $P + \infty = \infty + P = P$ for all $P \in E(F)$.
+    \item $-P = (x_1,-y_1)$. Also, $-\infty = \infty$.
+          Furthermore, $P + (-P) = (-P) + P = \infty$ for all $P$.
+    \item Suppose $P \neq \pm Q$.
+          Then, $P + Q = (x_3,y_3)$ where $x_3 = \lambda^2 - x_1 - x_2$
+          and $y_3 = -1 + \lambda(x_1-x_3)$ for $\lambda = \frac{y_2-y_1}{x_2-x_1}$.
+    \item Suppose $P \neq -P$. Then, $P + P = (x_3,y_3)$ where
+          $x_3 = \lambda^2 - 2x_1$, $y_3 = -y_1 + \lambda(x_1-x_3)$ for $\lambda = \frac{3x_1^2 + a}{2y_1}$.
+  \end{enumerate}
+\end{defn}
+
+\begin{example}
+  In $E/\Z_11 : Y^2 = X^3 + X + 6$ (from \cref{ex:ec1}),
+  $(2,4) + (2,7) = \infty$, $(2,4) + (8,3) = (5,2)$,
+  and $(2,4) + (2,4) = (5,9)$.
+\end{example}
+
+\begin{prop}
+  $(E(F), +)$ is an abelian group with identity element $\infty$. That is,
+  \begin{enumerate}[nosep]
+    \item $P + \infty = P$ for all $P$;
+    \item for each $P$, there exists $Q$ such that $P + Q = \infty$;
+    \item $P + Q = Q + P$ for all $P$ and $Q$; and
+    \item $(P + Q) + R = P + (Q + R)$ for all $P$, $Q$, and $R$.
+  \end{enumerate}
+\end{prop}
+
+Associativity is non-trivial, but we do not prove it.
+
+We write $P - Q := P + (-Q)$. This is \term{point subtraction}.
+
+\section{Elliptic curve discrete log}
+\lecture{Mar 11}
+
+\begin{defn}[point multiplication]
+  Let $P \in E(\Z_p)$ and $k \in N$. Then,
+  \[ kP := \underbrace{P + P + \dotsb + P}_{k} \]
+  Define also $0P := \infty$ and $(-k)P := -(kP)$.
+\end{defn}
+
+\begin{theorem}
+  Suppose $n = \#E(\Z_p)$ is prime and $\infty \neq P \in E(\Z_p)$. Then:
+  \begin{enumerate}[nosep]
+    \item $nP = \infty$; and
+    \item the points $\infty,P,2P,3P,\dotsc,(n-1)P$ are distinct,
+          so $E(\Z_p) = \{\infty,P,2P,3P,\dotsc,(n-1)P\}$.
+  \end{enumerate}
+  That is, $P$ is a \term{generator} of $E(\Z_p)$.
+\end{theorem}
+
+\begin{example}\label{ex:ec2}
+  For the curve $E/\Z_{23} : Y^2 = X^3 + X + 4$, we have $\#E(\Z_{23}) = 29$
+  and generator $P = (0,2)$ since:
+  \[
+    \begin{smallmatrix}
+      1P = (0,2)  & 2P = (13,12) & 3P = (11,9) & 4P = (1,12)  & 5P = (7,20)  & 6P = (9,11)  \\
+      7P = (15,6) & 8P = (14,5)  & 9P = (4,7)  & 10P = (22,5) & 11P = (10,5) & 12P = (17,9) \\
+      13P =(8,15) & 14P=(18,9)   & 15P=(18,14) & 16P=(8,8)    & 17P=(17,14)  & 18P=(10,18)  \\
+      19P=(22,18) & 20P=(4,16)   & 21P=(14,18) & 22P=(15,17)  & 23P=(9,12)   & 24P=(7,3)    \\
+      25P=(1,11)  & 26P=(11,14)  & 27P=(13,11) & 28P=(0,21)   & 29P=\infty
+    \end{smallmatrix}
+  \]
+\end{example}
+
+\begin{problem}[elliptic curve discrete logarithm problem (ECDLP)]
+  Given $E$, $p$, $n$, $\infty \neq P \in E(\Z_p)$, and $Q \in E(\Z_p)$,
+  find the \term{discrete logarithm} $\ell \in [0,n-1]$ such that $Q = \ell P$.
+
+  We write $\ell =: \log_P Q$.
+\end{problem}
+
+\begin{example}
+  In \cref{ex:ec2}, we can see that $\log_{(0,2)}((10,18)) = 18$.
+\end{example}
+
+A brute force approach will take $\order{n} = \order{p}$ point additions,
+which is fully exponential-time as the input size is $\log p$.
+
+Shank's algorithm uses the division algorithm.
+Let $m = \ceil{\sqrt{n}}$. By the division algorithm there exist unique
+$q$ and $r$ such that $\ell = qm + r$ where $0 \leq r < m$ and $0 \leq q < m$.
+Then, $\ell = qm - r$ and in particular $\ell P - qm P = rP$.
+
+If $M = mP$, we can say $Q - qM = rP$. This leads us to the algorithm:
+
+\begin{algorithm}[H]
+  \caption{Shank's algorithm for ECDLP}
+  \begin{algorithmic}[1]
+    \For{$r \in [0,m-1]$}
+      \State Compute $rP$ and store $(rP, r)$ in a sorted table
+    \EndFor
+    \State $M \gets mP$
+    \For{$q \in [0,m-1]$}
+      \State $R \gets Q - qM$
+      \If{$(R,r)$ in the table}
+        \State \Return{$\ell = qm + r$}
+      \EndIf
+    \EndFor
+  \end{algorithmic}
+\end{algorithm}
+
+This will require $\order{m} = \order{\sqrt{p}}$ point additions and storage of $\order{\sqrt{p}}$ points.
+
+Pollard's algorithm (no details given) also works in $\order{\sqrt{p}}$ time
+but with negligible space complexity.
+VW parallel collision search can also parallelize Pollard's algorithm.
+
+Some other results: If $n = p$, there exists a polynomial-time algorithm.
+Also, if $n \mid (p^c-1)$ for small $c \lessapprox 100$, there is a subexponential-time algorithm.
+Shor's algorithm solves the ECDLP in $\order{(\log p)^2}$ time.
+
+\section{Elliptic curve cryptography}
+
+ECC is better than RSA because the fastest attacks are fully exponential instead of subexponential.
+This means smaller parameters are needed for the same security level:
+
+\begin{center}
+  \begin{tabular}{c|cc}
+    Security level & RSA bitlength & ECC bitlength \\ \hline
+    80             & 1,024         & 160           \\
+    112            & 2,048         & 224           \\
+    128            & 3,072         & 256           \\
+    192            & 7,680         & 384           \\
+    256            & 15,360        & 512
+  \end{tabular}
+\end{center}
+
+The NSA has specific curves -- P-256, P-384, and P-521 -- that they use
+for achieving 128-, 192-, and 256-bit security levels.
+They all use curves of the form $E/\Z_p : Y^2 = X^3 - 3X + b$.
+
+The $b$-values for these curves were supposedly chosen at random,
+but there is gossip that they were picked because of attacks only known to the NSA.
+
+\lecture{Mar 13}
+Curve25519 was selected by Bernstein and Lange in 2005,
+and provides a 128-bit security level.
+It is the curve $E/\Z_{2^{255}-19} : Y^2 = X^3 + 48662X^2 + X$.
+
+SM2 is a 256-bit elliptic curve chosen by the Chinese State Cryptography Administration,
+which is similar to P-256 but with a slightly different prime and $b$.
+
+The NSA's Commercial National Security Algorithm Suite (CNSA)
+uses AES-256 (encryption), SHA-384 (hashing), ECDSA with P-384/RSA-PSS with $\geq3072$-bit $n$ (signature),
+and ECDH with P-384/RSA with $\geq3072$-bit $n$ (key establishment).
+
+The primes $p = 2^{256} - 2^{224} + 2^{192} + 2^{96} - 1$
+and $2^{384} - 2^{128} - 2^{96} + 2^{32} - 1$ in P-256/384 were chosen
+because reduction modulo $p$ can be implemented on a 32-bit machine without division.
+
+Consider $p = 2^{192} - 2^{64} - 1$.
+Suppose that $a,b \in [0,p-1]$ and we want to compute $c = a \times b \bmod p$.
+We can write $a = a_2 2^{128} + a_1 2^{64} + a_0$ as 64-bit integers and similarly for $b$.
+Then,
+\[ d = a \times b = d_5 2^{230} + d_4 2^{256} + d_3 2^{192} + d_2 2^{128} + d_1 2^{64} + d_0 \]
+is a 384-bit integer of six 64-bit words.
+We have that
+\begin{align*}
+  2^{192} & \equiv 2^{64} + 1                                    & \pmod p \\
+  2^{256} & \equiv 2^{128} + 1                                   & \pmod p \\
+  2^{320} & \equiv 2^{192} + 2^{128} \equiv 2^{128} + 2^{64} + 1 & \pmod p
+\end{align*}
+so we can write that
+\begin{align*}
+  c & \equiv d                                                                                                                         & \pmod p \\
+    & \equiv d_5 2^{230} + d_4 2^{256} + d_3 2^{192} + d_2 2^{128} + d_1 2^{64} + d_0                                                  & \pmod p \\
+    & \equiv d_5(2^{128} + 2^{64} + 1) + d_4(2^{128} + 2^{64}) + d_3(2^{64} + 1) + d_2 2^{128} + d_1 2^{64} + d_0                      & \pmod p \\
+    & \equiv (d_5 \concat d_5 \concat d_5) + (d_4 \concat d_4 \concat 0) + (0 \concat d_3 \concat d_3) + (d_2 \concat d_1 \concat d_0) & \pmod p
+\end{align*}
+which leads us to a nice and clean algorithm:
+
+\begin{algorithm}[H]
+  \caption{Reduction modulo $p = 2^{192} - 2^{64} - 1$}
+  \begin{algorithmic}[1]
+    \State $(d_5,d_4,d_3,d_2,d_1,d_0) \gets a \times b$
+    \State $t_1 \gets (d_2,d_1,d_0)$
+    \State $t_2 \gets (0,d_3,d_3)$
+    \State $t_3 \gets (d_4,d_4,0)$
+    \State $t_4 \gets (d_5,d_5,d_5)$
+    \State $c \gets t_1 + t_2 + t_3 + t_4$
+    \Repeat
+      \State $c \gets c - p$
+    \Until{$c < p$}
+    \State \Return{$c$}
+  \end{algorithmic}
+\end{algorithm}
+
+Notice that we never perform a full long division.
+We also have $0 \leq c < 4p$, so at most three subtractions are required on line 8.
+
+We now have enough defined to actually do some cryptography.
+
+Suppose two parties want to agree on a shared secret $k$
+so they can use AES-GCM or something, but over an unsecured connection.
+Elliptic Curve Diffie--Hellman builds on the Diffie--Hellman key agreement protocol.
+
+\begin{scheme}[Elliptic Curve Diffie--Hellman (ECDH)]
+  Let $E$ be an elliptic curve defined over $\Z_p$ with $n = \#E(\Z_p)$ prime.
+  Let $P \in E(\Z_p)$ be an arbitrary base point $P \neq \infty$.
+  Also select a key derivation function $KDF : E(\Z_p) \to \bits{*}$.
+  Then:
+  \begin{algorithmic}[1]
+    \State Alice selects $x \randin [1,n-1]$ and computes $X \gets xP$
+    \State Alice sends $X$ to Bob
+    \State Bob selects $y \randin [1,n-1]$ and computes $Y \gets yP$
+    \State Bob sends $Y$ to Alice
+    \State Bob computes $K \gets yX$ and $k = KDF(K)$
+    \State Alice computes $K \gets xY$ and $k = KDF(K)$
+  \end{algorithmic}
+\end{scheme}
+
+Then, Alice and Bob both have the same $k$ since
+$xY = x(yP) = (xy)P = (yx)P = y(xP) = yX$.
+The fastest way an attacker can determine $K = xY = yX$ from only $X$ and $Y$
+is to solve an instance of the ECDLP.
+
+However, since ECDH does not ask for an authenticated channel,
+it is vulnerable to a man-in-the-middle (MITM) attack.
+An attacker Eve can sit between Alice and Bob and just pass along her own
+secrets to establish a key with Alice and a key with Bob.
+Then, Eve can decrypt/re-encrypt messages and pass them along
+without Alice or Bob knowing.
+
+\lecture{Mar 15}
+To solve this, instead of sending just $X$,
+Alice sends $X$, an ECDSA signature on $X$, and a certificate for her public key.
+Then, Bob verifies the certificate and signature to know that $X$ is legitimate.
+
+\begin{scheme}[Elliptic Curve Digital Signature Algorithm (ECDSA)]
+  Let $E$ be an elliptic curve defined over $\Z_p$ with $n = \#E(\Z_p)$ prime.
+  Let $P \in E(\Z_p)$ be a generator point $P \neq \infty$.
+  Also select a collision-resistant hash function $H : \bits{*} \to \bits{n}$.
+
+  Alice selects $a \randin [1,n-1]$ and computes $A \gets aP$.
+  Her public key is $A$; her private key is $a$.
+  To sign a message $M \in \bits{*}$:
+  \begin{algorithmic}[1]
+    \State $m \gets H(M)$
+    \State Select a per-mesage secret $k \randin [1,n-1]$
+    \State $R \gets kP$, $r \gets x(R) \bmod n$. Assert $r \neq 0$.
+    \State $s \gets k^{-1}(m+ar) \bmod n$. Assert $s \neq 0$.
+    \State \Return{$(M,(r,s))$}
+  \end{algorithmic}
+  Note that $k$ should be random and only used once.
+  To validate a signature $(r,s)$ on $M$:
+  \begin{algorithmic}[1]
+    \State Obtain a copy of $A$
+    \State Assert that $r,s \in [1,n-1]$
+    \State $m \gets H(M)$
+    \State $u_1 \gets ms^{-1} \bmod n$, $u_2 \gets rs^{-1} \bmod n$
+    \State $V \gets u_1P + u_2A$. Assert $V \neq \infty$.
+    \State $v = x(V) \bmod n$
+    \State \Return{$v = r$}
+  \end{algorithmic}
+\end{scheme}
+
+ECDSA is secure assuming the ECDLP is intractable and $H$ is secure.
+
+We can compare 256-bit ECDSA with 3072-bit RSA:
+\begin{itemize}
+  \item Usually we take $e = 3$ or $e = 2^{16}+1$ (small),
+        so RSA verification $s^e \bmod n$
+        is faster than ECDSA verification $u_1P + u_2A$
+  \item RSA generation $H(M)^d \bmod n$ is slower than ECDSA generation $kP$
+  \item RSA signatures are much longer (3072 bits) than ECDSA signatures (512 bits)
+\end{itemize}
+
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
 \renewcommand{\listtheoremname}{List of Named Results}
