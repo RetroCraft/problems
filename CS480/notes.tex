@@ -6,6 +6,10 @@
 \creflabelformat{equation}{#2\textup{#1}#3}
 
 \title{CS 480/680 Winter 2024: Lecture Notes}
+
+\usepackage[backend=biber,notes,useibid=true]{biblatex-chicago}
+\addbibresource{general.bib}
+
 \begin{document}
 \renewcommand{\contentsname}{CS 480/680 Winter 2024:\\{\huge Lecture Notes}}
 \thispagestyle{firstpage}
@@ -2210,7 +2214,7 @@ Instead, suppose we have a latent variable $\rv Z$ with joint density $q(\x,\z)$
 Then, we get instead
 \begin{align*}
   \F(p \parallel q)
-   & := \frac12\E_{\rv X \sim q} \norm{\partial_{\x}\log p(\rv X) - \partial_{\x}\log q(\rv X)}_2^2                                                                         \\
+   & := \frac12\E_{\rv X \sim q} \norm{\partial_{\x}\log p(\rv X) - \partial_{\x}\log q(\rv X)}_2^2                                                                                    \\
    & = \frac12\E_{(\rv X,\rv Z) \sim q} \qty[\norm{s_p(\rv X) - \partial_{\x}\log q(\rv X \mid \rv Z)}_2^2 + \norm{s_q(\rv X)}^2_2 + \norm{\partial_{\x}\log q(\rv X \mid \rv Z)}_2^2] \\
    & \approx \hat{\E_{(\rv X,\rv Z)\sim q}} \norm{s_p(\rv X) - \partial_{\x}\log q(\rv X \mid \rv Z)}_2^2
 \end{align*}
@@ -2254,6 +2258,240 @@ given an unseen pair of examples $(x,y) \in \bb X \times \bb Y$, $f(x)$ should b
 
 Attackers have found ways to construct noise that image classifiers
 will confidently clsasify as something wrong.
+
+\lecture{Mar 26}
+There will always exist \term{adversarial examples} $\x + \Delta\x$
+such that $f(\x + \Delta\x) \neq f(\x)$ for all non-constant classifiers.
+That is, $f$ is not sufficiently smooth/continuous.
+
+To find adversarial examples, we can maximize the loss over a small space.
+Consider a neighbourhood of size $\varepsilon$. Then, we can write
+\[ \max_{\norm{\x-\x_0} \leq \varepsilon} f(\x,\y;\w) \]
+For a \term{targeted attack} we can set $f(\x,\y;\w) = \log p_{\tilde{\y}}(\x;\w)$,
+i.e., maximize the likelihood anything is labelled $\tilde{\y}$.
+For an \term{untargeted attack} we can set $f(\x,\y;\w) = -\log p_{\y}(\x;\w)$,
+i.e., maximize the loss for the correct label.
+
+There are two algorithms we can use.
+Either take $\x \gets \x + \varepsilon\cdot\sgn(\nabla_{\x}f(\x,\y;\w))$
+(fast gradient sign method)
+or $\x \gets \x + \eta\cdot\nabla_{\x}f(\x,\y;\w)$
+(projected gradient method),
+and then project $\x$ onto the $\varepsilon$-neighbourhood.
+
+Naively, we can use the $L_2$ norm $\norm{\x-\x_0}_2 \leq \varepsilon$,
+but this requires a lot of calculation to project $\x$ back onto the ball.
+Instead, we can use the $L_{\infty}$ norm $\norm{\x-\x_0}_\infty \leq \varepsilon$
+so that projecting $P((x_1,\dotsc,x_d)) = P((\min\{x_1,\varepsilon\},\dotsc,\min\{x_d,\varepsilon\}))$.
+
+To guard against adversarial examples, we can train across perturbations
+to get a min-max game between the model training and potential attackers:
+\[ \min_{\w} \hat{\E}\qty[\max_{\norm{\Delta\x}\leq\varepsilon}\ell(\x+\Delta\x;\w)] \]
+but this loses accuracy in exchange for robustness.
+
+In the case of the linear regression problem
+\[ \min_{\w\in\R^d} \norm{X\w - \vb y}_2 \qq{where} X \in \R^{n \times d}, \vb y \in \R^n \]
+when we apply perturbations to each feature, the robust linear regression
+\[ \min_{\w\in\R^d} \max_{\forall j,\norm{\z_j}_2\leq\lambda} \norm{(X+Z)\w-\vb y}_2 \qq{where} Z = [\z_1,\dotsc,\z_d] \in \R^{n \times d} \]
+is actually exactly equivalent to square-root Lasso regularization
+\[ \min_{\w\in\R^d} \norm{X\w-\vb y}_2 + \lambda\norm{\w}_1 \qq{where} \norm{\w}_1 = \sum \abs{w_j} \]
+
+To avoid the non-differentiability of $\abs{\cdot}$, \term{Huber loss}
+wraps the norm with a Moreau envelope to get
+\begin{align*}
+  M^\eta_{\abs{\cdot}}(t) & = \min_s \frac12(s-t)^2 + \eta\abs{s}        \\
+                          & = \begin{cases}
+                                \frac12t^2             & \abs{t} \leq \eta \\
+                                \eta\abs{t}-\frac12t^2 & \abs{t} \geq \eta
+                              \end{cases}
+\end{align*}
+which smooths away the point with a quadratic curve.
+
+To make sure losses to not grow too big, use \term{variational loss}
+which smoothly clips loss functions by $\psi(\eta)$:
+\[ \tilde{\ell}(t) = \min_{\eta\in[0,1]} \eta\cdot\ell(t) + \psi(\eta) \]
+
+\section{Poisoning}
+
+Motivating examples:
+Carlini et al. took \$60 and bought expired domains from datasets.\footcite{carlini_poisoning_2023}
+They were able to successfully poison the data.
+Tay was a Microsoft chatbot that used conversations as training data.
+It turned into a Nazi in a few hours.
+
+Formally, we define a \term{training distribution} $\mu$
+and \term{poisoning distribution} $\nu$.
+Then, given some (hopefully small) \term{poisoning fraction}
+$\varepsilon_d = \frac{\abs{\nu}}{\abs{\mu}}$,
+we get a mixed distribution $\chi \propto \mu + \varepsilon_d\nu$.
+
+We can formulate the problem as
+\[ \max_{\nu\in\Gamma} L(\tilde\mu; \w_*) \qq{s.t.} \w_* = \argmin_{\w} F(\mu+\varepsilon_d\nu;\w) \]
+where the attacker crafts poison data $\nu$ subject to some constraints $\Gamma$,
+then the defender re-trains $\w$ over the mixed data $\chi$.
+This has a forced order because we cannot train $\nu$ by gradient descent.
+
+Alternatively, a model could be corrupted via parameter corruption where the
+weights are perturbed directly, giving more control over behaviour.
+
+\begin{defn}[model poisoning reachability]
+  A target parameter $\w$ is \term*{$\varepsilon_d$-poisoning reachable}
+  if there exists a poisoning distribution $\nu$ such that
+  \[ g(\chi;\w) = g(\mu;\w) + \varepsilon_dg(\nu;\w) = \vb 0 \]
+  so $\w$ has vanishing gradient over $\chi$.
+\end{defn}
+
+\begin{example}
+  The logistic regression has a minimum poisoning transition threshold.
+\end{example}
+\begin{prf}
+  Recall the logistic regression loss $\ell(\z;\w) = \log(1+\exp(-\w\trans\x))$
+  with gradient $g(\x) = -\frac{1}{1+\exp(\w\trans\x)}\x$.
+
+  There exists a bound $-0.28 \approx -\mathscr{W}(\frac1e) = \inf_t \frac{-t}{1+\exp(t)} \leq \ip{\w}{g(\nu)}$.
+
+  Suppose $\w$ is $\varepsilon_d$-reachable. Then,
+  \begin{align*}
+    g(\mu;\w) + \varepsilon_dg(\nu;\w)                   & = \vb 0                                          \\
+    \ip{\w}{g(\mu;\w)} + \varepsilon_d\ip{\w}{g(\nu;\w)} & = 0                                              \\
+    \varepsilon_d                                        & \geq \max\qty{\frac{\ip{\w}{g(\mu;\w)}}{0.28},0}
+  \end{align*}
+  so as long as the poisoning fraction remains below that threshold,
+  $\w$ cannot be $\varepsilon_d$-reachable.
+\end{prf}
+
+\section{Differential Privacy}
+\lecture{Mar 28}
+
+\section{Model Interpretability}
+\lecture{Apr 2}
+We want to understand how a model arrives at a certain output.
+In particular, given some specific neuron, what is the purpose of that neuron?
+One way is to run the entire test set and check the neuron's activation for each item.
+Then, looking at the high-ranked items might give some insight.
+
+Alternatively, maximize the neuron activation by manipulating the data.
+This will give a fuzzy idea of what the neuron is measuring.
+
+\term*{Gradient saliency} visualizes the gradient at a gradient descent step
+to see what pixels have the highest response.
+
+Suppose $y = x_1 \lor x_2$.
+Then, gradient methods fail because if we fix $x_1$, $x_2$ does nothing.
+Likewise, if we fix $x_2$, $x_1$ does nothing.
+Therefore, gradient analysis would find that neither input matters.
+
+We need to find a way to ``divide'' the contribution of both $x_1 = x_2 = 0$
+between the two neurons.
+
+\begin{problem}
+  Consider a \term*{coalition game} with $n$ players
+  and a payoff function $u : 2^{[n]} \to \R$ (where $u(\varnothing) = 0$).
+  What is the value of each player $i \in [n]$?
+\end{problem}
+
+\begin{example}
+  In a naive Bayes model trained on the dataset of the \emph{Titanic} passengers,
+  we predict that a 3rd-class adult female passenger survives with probability $0.671$.
+
+  The contribution can be broken down as $-0.344$ for being 3rd-class,
+  $-0.034$ for being an adult, and $+1.194$ for being female.
+\end{example}
+
+Let $u : 2^{[n]} \to \R$ be a set function, e.g., accuracy of a subset.
+We want to find an additive approximation of $u$, i.e.,
+$\phi : 2^{[n]} \to \R$ where $\phi(S) = \sum_{i\in S}\phi(\{i\})$.
+
+To do this, we can find the marginal contribution of $i$, i.e.,
+$u(S \cup \{i\}) - u(S \setminus \{i\})$.
+In particular we can leave-one out and find $u([n]) - u([n] \setminus \{i\})$.
+
+\begin{defn}[probabilistic value]
+  The probabilistic value is an additive approximation of $u$
+  \[ \phi_i^p = \phi^p(\{i\}) = \sum_{S \not\ni i} p_{\abs{S}} \cdot [u(S \cup \{i\}) - u(S)] \]
+  for some given weights $p_s$.
+
+  If $p_s = \frac{1}{2^{n-1}}$ (equally weighted), this is the \term{Banzhaf value}.
+  If $p_s = \frac{s!(n-s-1)!}{n!}$, this is the \term{Shapley value}.
+\end{defn}
+
+\begin{example}
+  Consider three sellers. The first sells a right hand and the other two sell left hands.
+  The payout for selling a pair is \$1.
+  That is, the utility function is $u(1,2) = u(1,3) = u(1,2,3) = 1$ and 0 otherwise.
+
+  The sellers should probably divide the dollar by giving the first seller a bit more.
+  How much more?
+\end{example}
+\begin{sol}
+  Calculate the Banzhaf value $\phi_1$.
+  The sets $S \not\ni 1$ are $\varnothing$, $\{2\}$, $\{3\}$, and $\{2,3\}$.
+  In the latter three cases, the marginal utility is 1.
+  Since every $p_s = \frac14$, $\phi_1 = \frac14 + \frac14 + \frac14 = \frac34$.
+
+  Now, consider $\phi_2$ and $\phi_3$.
+  The sets $S \not\ni 2$ are $\varnothing$, $\{1\}$, $\{3\}$, and $\{1,3\}$.
+  and $\phi_2 = \phi_3 = \frac14$ because only adding to $\{1\}$, changes the value.
+
+  However, in this case, $\sum \phi_i > 1$.
+
+  The Shapley value assigns $\frac16$ to subsets of size 1 and $\frac13$ to subsets of size 2.
+  Then, $\phi_1 = \frac16 + \frac16 + \frac13$ and $\phi_2 = \phi_3 = \frac16$.
+\end{sol}
+
+The Banzhaf and Shapley values measure the occurances of swing votes.
+This makes them useful for measuring the ``power'' of a given voting bloc
+or representative in a democratic system
+(and was, in fact, the original motivation for developing these formulae).
+
+\begin{defn}[random order value]
+  Let $\pi$ be a permutation (a random order) of $[n]$.
+  Suppose $i = \pi(k)$ and define
+  \[ \psi_i(u,\pi) = u[\pi(1),\dotsc,\pi(k)] - u[\pi(1),\dotsc,\pi(k-1)] \]
+  i.e., the utility marginal utility of $i$ joining.
+  Then, define $\phi_i(u) = \E_{\pi}\psi_i(u,\pi)$.
+\end{defn}
+
+Shapely articulated axioms that are nice to have for a probabilistic value:
+\begin{itemize}
+  \item Linearity: $\phi_i(u+v) = \phi_i(u) + \phi_i(v)$
+  \item Symmetry: if $u(S \cup i) = u(S \cup j)$ for all $S \not\ni i,j$, then $\phi_i = \phi_j$
+  \item Null: if $u(S \cup i) = u(S)$ for all $S \not\ni i$, then $\phi_i = 0$
+  \item Efficiency: $\sum_i \phi_i(u) = u([n])$
+\end{itemize}
+Shapely proved that the Shapely value is the only one that satisfies these axioms.
+The Shapely value is equivalent to the random order value with $\pi$ drawn uniformly.
+
+We can estimate the probabilistic value with a Monte Carlo simulation
+
+\begin{algorithm}
+  \caption{Monte Carlo estimation of probabilistic value}
+  \begin{algorithmic}
+    \For{$i = 1,\dotsc,n$}
+      \State $\phi_i \gets 0$
+      \For{$k = 1,\dotsc,m$}
+        \State sample a random subset $S \not\ni i$ with probability $\propto \binom{n-1}{s}p_s$
+        \State $\phi_i \gets \phi_i + [u(S \cup \{i\}) - u(S)]$
+      \EndFor
+      \State $\hat \phi_i \gets \phi_i/m$
+    \EndFor
+  \end{algorithmic}
+\end{algorithm}
+
+but this is very expensive because we need to evaluate $u$ twice
+for distinct $n$ and $m$, so we would need to train $n \times m$ neural networks.
+Also, this is not efficient because we might draw the same $S$ for multiple $i$.
+
+Suppose we minimize
+\[ \min_{\phi \in \R^n} \sum_{S \subseteq [n]} q_s \cdot [u(S) - \phi(S)]^2 \qq{s.t.} u([n]) = \sum_i \phi_i \]
+where $q_s = p_s + p_{s-1}$.
+Then, we recover a normalized probabilistic value.
+The Shapely value corresponds to $q_s = \binom{n-2}{s-1}^{-1}$.
+This can be calculated in $\order{\frac{n}{\varepsilon^2}\log\frac{n}{\delta}}$ samples.
+
+In summary, the Shapely value is an example of a random order value,
+which are special cases of probabilistic values,
+which are special cases of least-square values.
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
