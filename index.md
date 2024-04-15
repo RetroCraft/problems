@@ -175,8 +175,8 @@ I don't implement the full design recipe in exercises, for obvious reasons (I'm 
 
 Examples and explanations for how pointers in C work. [Examples and explanations](https://github.com/Eurphus/C-Guides/blob/main/pointers.c){:.a#CS136--Notes--Mac}
 
-[Course notes](./CS136/CS136_Final.pdf){:.a#BU121--Notes--Chloe},
-from sessions 6 through 11, by Chloe and Stella.
+[Course notes](./CS136/CS136_Final.pdf){:.a#CS136--Notes--Stella},
+from sessions 6 through 11, by Stella and Chloe.
 
 #### CS 245 (F2021) <small>Logic and Computation</small>
 
