@@ -2363,6 +2363,127 @@ weights are perturbed directly, giving more control over behaviour.
 \section{Differential Privacy}
 \lecture{Mar 28}
 
+In the late 2000s, Netflix held a competition to create a better recommendation algorithm.
+To do so, they released an anonymized dataset of real users' preferences.
+However, by cross-referencing anonymized Netflix users with public IMDb profiles,
+researchers could identify users within the dataset.
+
+What if we instead released only summary data?
+This can still leak information.
+
+We can measure differential privacy by how much inclusion/exclusion of a data point
+affects the publicized result.
+
+\begin{defn}[differential privacy]
+  A randomized mechanism $M : \mathcal{D} \to \mathcal{Z}$ is \term*{$(\varepsilon,d)$-differentially private}
+  if for any $D$ and $D'$ in $\mathcal{D}$ differing by one data point,
+  \[ \Pr[M(D) \in E] \leq e^{\varepsilon} \cdot \Pr[M(D') \in E] + \delta \]
+  for all events $E \subseteq \mathcal{Z}$.
+\end{defn}
+
+The smaller $\varepsilon$ or $\delta$ are, the stricter the requirement.
+If $\delta = 0$, we say something is $\varepsilon$-DP.
+
+\begin{example}
+  Suppose we want to estimate the percentage of cheaters.
+  Each person tosses a coin.
+  If it's heads, they answer honestly.
+  If it's tails, they answer randomly.
+
+  This system $M$ is useful and $(\log 3,0)$-differentially private.
+\end{example}
+\begin{prf}
+  Notice that $\frac34$ of cheaters say yes and $\frac14$ of non-cheaters say yes.
+  If $p$ is the real percentage, the system will generate $p' = \frac14+\frac12p$.
+  Then, recover $p = 2(p'-\frac14)$.
+  That is, this is a useful system.
+
+  Now, notice that if $\delta = 0$, we can write the DP requirement as
+  \[
+    \log\frac{\Pr[M(D) \in E]}{\Pr[M(D') \in E]} = \log \frac{\int_E p(\x)\dd{\x}}{\int_E q(\x)\dd{\x}}
+    \leq \max_{\x}\log\frac{p(\x)}{q(\x)} \leq \varepsilon
+  \]
+  Consider when $D = \{\text{cheater}\}$ and $D' = \{\text{non-cheater}\}$
+  for events $E = \{\text{reports cheating}\}$ and $E = \{\text{reports no cheating}\}$:
+  \begin{align*}
+    \log\frac{\Pr[M(D) = \text{reports cheating}]}{\Pr[M(D') = \text{reports cheating}]}       & = \log\frac{3/4}{1/4} = \log 3  \\
+    \log\frac{\Pr[M(D) = \text{reports no cheating}]}{\Pr[M(D') = \text{reports no cheating}]} & = \log\frac{1/4}{3/4} = -\log 3
+  \end{align*}
+  Therefore, if we let $\varepsilon = \log 3$, the definition holds,
+  and we can conclude $M$ is $(\log 3,0)$-DP.
+\end{prf}
+
+We can also view this as a hypothesis test.
+Let $H_0 : D$ be the null hypothesis and $H_1 : D'$ be the alternative hypothesis
+(or any other binary classification with $\Y = 0$ or $1$).
+Then, let $E$ be the event that $\hat{\Y} = 1$ (i.e., $\hat{\Y} = \lBrack M(\cdot) \in E \rBrack$).
+
+We can interpret $\Pr[M(D) \in E] = \Probability[\hat\Y = 1 \mid \Y = 0]$ as the false positive rate
+and $\Pr[M(D') \in E] = \Probability[\hat\Y = 1 \mid \Y = 1]$ as the true positive rate.
+Then, to be $(\varepsilon,\delta)$-differentially private means that the statistic has
+\[
+  \text{false positive rate} \leq e^{\varepsilon}\cdot\text{true positive rate} + \delta
+\]
+
+This definition of DP can be generalized.
+
+\begin{defn}[Rényi differental privacy]
+  Let $M$, $D$, and $D'$ be defined as above.
+  Then, $M$ is \term*{$(\alpha,\varepsilon)$-Rényi differential private} if
+  \[ \bb D_\alpha(M(D) \parallel M(D')) = \frac{1}{\alpha-1}\log \E_{\rv X \sim q}\qty(\frac{p(\rv X)}{q(\rv X)})^\alpha \leq \varepsilon \]
+  where $p$ and $q$ are the densities of $M(D)$ and $M(D')$.
+\end{defn}
+
+The Rényi divergence $\bb D_\alpha$ is defined for $\alpha \in (1,\infty)$.
+As $\alpha \to 1$, $\bb D_\alpha$ approaches the KL-divergence.
+As $\alpha \to \infty$, $(\alpha,\varepsilon)$-KDP approaches $\varepsilon$-DP.
+
+\begin{prop}[calculus for DP]
+  $(\varepsilon,\delta)$-DP has a few useful properties:
+  \begin{enumerate}
+    \item Post-processing: If $M$ is $(\varepsilon,\delta)$-DP,
+          then $T \circ M$ is also $(\varepsilon,\delta)$-DP for any $T$.
+    \item Parallel composition: Let $D = \bigcup_k D_k$.
+          If each $M_k$ is $(\varepsilon,\delta)$-DP,
+          then $(M_1(D_1),\dotsc,M_k(D_k))$ is $(\varepsilon,\delta)$-DP.
+    \item Sequential composition: If $M$ is $(\alpha,\varepsilon_M)$-RDP
+          and $N$ is $(\alpha,\varepsilon_N)$-RDP,
+          then releasing $M(D)$ and $N(D,M(D))$
+          is $(\alpha,\varepsilon_M+\varepsilon_N)$-RDP.
+    \item Group of $k$: If $M$ is $(\varepsilon,0)$-DP,
+          then having $D'$ differ from $D$ in $k$ places leads to $(k\varepsilon,0)$-DP.
+  \end{enumerate}
+\end{prop}
+
+\begin{example}[Gaussian mechanism]
+  Let $M(D) = f(D) + \varepsilon$ where $\varepsilon \sim \normal(\vb 0,\Sigma)$.
+
+  Then, $M$ is $(\alpha,\varepsilon)$-RDP with $\varepsilon = \frac\alpha2\Delta_2 f$
+  where $\Delta_2f$ is the $\ell_2$-sensitivity $\sup \norm{f(D)-f(D')}^2_{\Sigma^{-1}}$.
+\end{example}
+
+Notice that the privacy is proportional to the sensitivity.
+
+To introduce differential privacy into stochastic gradient descent,
+we will clip gradients at some maximum bound $C$ (so that no one batch adds too much information)\footnote{this step can be skipped if the gradient is Lipschitz continuous}
+and add noise to the averaged gradient (using the Gaussian mechanism):
+\begin{algorithm}[H]
+  \caption{Differentially private stochastic gradient descent (DP-SGD)}
+  \begin{algorithmic}[1]
+    \For{$t = 0,1,\dotsc$}
+      \State sample a random batch $B_t$ with size $b$
+      \For{$i \in B_t$}
+        \State $\vb g_i \gets \nabla_{\w}\ell(\x_i;\w)$ \Comment{compute gradient}
+        \State $\vb g_i \gets \vb g_i \div \max\{1,\norm{\vb g_i}_2/C\}$ \Comment{clip gradient}
+      \EndFor
+      \State $\vb g \gets [\frac1b \sum \vb g_i] + \sigma C \varepsilon$ \Comment{add noise}
+      \State $\w \gets \w - \eta \cdot \vb g$ \Comment{gradient descent}
+      \State $\w \gets P(\w)$ \Comment{projection} 
+    \EndFor
+  \end{algorithmic}
+\end{algorithm}
+which will give a model that is around about $\varepsilon\sqrt{k}$-DP.
+
 \section{Model Interpretability}
 \lecture{Apr 2}
 We want to understand how a model arrives at a certain output.
