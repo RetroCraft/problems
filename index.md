@@ -178,6 +178,8 @@ Examples and explanations for how pointers in C work. [Examples and explanations
 [Course notes](./CS136/CS136_Final.pdf){:.a#CS136--Notes--Stella},
 from sessions 6 through 11, by Stella and Chloe.
 
+[Mock final](./CS136/Benny_CS136_Final_Review_2024.pdf){:.a#CS136--Notes--Benny}, and [mock final solutions](./CS136/Benny_CS136_Final_Review__Solution_2024.pdf){:.a#CS136--Notes--Benny}, by Tommy and Benny
+
 #### CS 245 (F2021) <small>Logic and Computation</small>
 
 My own version of the [reference sheet](./CS245/ref.pdf){:.l#CS245--Reference-Sheet--James} is a bit more compact.

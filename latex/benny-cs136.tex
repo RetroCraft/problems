@@ -1,0 +1,883 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage{graphicx}
+
+\lstset{
+    basicstyle=\ttfamily,
+    framesep=3pt,
+    language=C,
+    showstringspaces=false,
+    tabsize=2,
+    frame = single,
+    breaklines=true
+}
+\geometry{a4paper, margin=1in}
+
+\begin{document}
+
+\title{Final Practice - CS136}
+\author{Prepared and compiled by Tommy Pang, special thank to Benny Wu for review }
+\date{Last update: April 13th, 2024}
+
+\maketitle
+
+
+
+\noindent
+\textbf{Disclaimer:} \\
+\noindent
+The practice problems is an independent effort and is \textbf{not affiliated} with the University of Waterloo. The materials provided are intended solely for practice purposes, as we recognize its potential benefits for first-year students. Should there be any concerns regarding rights or violations, please contact us immediately for removal.
+
+\vspace{10pt}
+
+\section*{Conceptual Questions}
+
+\begin{enumerate}
+    \item Give three advantages of using modularization and describe each.
+    \vspace{16mm}
+    \item Which of the following statement(s) are true?
+    \begin{enumerate}[label=\alph*.]
+        \item Clients may require functions from modules.
+        \item Clients provide implementation to modules.
+        \item Modules provide functions to clients.
+    \end{enumerate}
+    \item Which of the following statement(s) are true?
+    \begin{enumerate}[label=\alph*.]
+        \item .o files represent source files that are compiled into machine code.
+        \item Only one module is permitted in a program.
+        \item We can combine multiple machine code files to build a program.
+        \item A program must have exactly one function called main.
+    \end{enumerate}
+    \item Discuss declaration vs. definition in C.
+    \vspace{16mm}
+    \item Describe the \texttt{extern} keyword.
+    \vspace{16mm}
+    \item True or False: A module \texttt{my\_module.c} will not compile if you do not include \texttt{my\_module.h}.
+    
+ 
+\item Consider the below module, label each identifier (\texttt{x}, \texttt{score}, \texttt{score\_update}, \texttt{main}, \texttt{run\_game}, \texttt{MAX\_SCORE}) with their scopes (Local, Program, Module scope):
+    
+    \noindent
+    
+    \begin{minipage}{.5\textwidth}
+    \begin{lstlisting}
+    // main.c
+    extern int score;
+    const int MAX_SCORE = 100;
+    
+    void run_game(void);
+    
+    int main(void) {
+        run_game();
+        printf("Score: %d", score);
+    }
+    \end{lstlisting}
+    \end{minipage}%
+    \begin{minipage}{.5\textwidth}
+    \begin{lstlisting}
+    // module.c
+    int score = 0;
+    static int direction = 0;
+    
+    static void score_update(int n) {
+        score += n;
+    }
+    
+    void run_game(void) {
+        int x = 0;
+        // ...
+    }
+    \end{lstlisting}
+    \end{minipage}
+
+
+    \item Describe an Opaque structure.
+    \vspace{16mm}
+    \item What constant(s) does the module \texttt{limits.h} provide?
+    \vspace{16mm}
+    \item What constant(s) does the module \texttt{stdlib.h} provide?
+    % \vspace{16mm}
+    % \item Describe high cohesion.
+    % \vspace{16mm}
+    % \item Describe low coupling.
+    \vspace{16mm}
+    \item Compare Interface vs. implementation.
+    \vspace{16mm}
+
+    % \item Describe an Abstract Data Type (ADT) at a high level, when we may use it, and give an example.
+    % \vspace{16mm}
+    \item Why is the actual data structure \& implementation hidden from the client in an ADT?
+    \vspace{16mm}
+    \item Is this a valid array definition: \texttt{char a[5] = "array";}?
+    \item Is this a valid array definition: \texttt{char a[5] = \{0\};}?
+    \item Is this a valid array definition: \texttt{int a[3] = \{0, 1, 2, 3\};}?
+    \item Given definition \texttt{char a[5] = \{0\};} what does \texttt{strlen(a)} return?
+    \vspace{16mm}
+    \item True or False: Given algorithm A has worst case complexity $O(n^2)$, and algorithm B has worst case complexity $O(n\log n)$, then A runs faster than B in all instances (assume of size $n$).
+    \item State the correct order for the running time: $100000 + 0.0001n + 0.001\log n$.
+    \vspace{16mm}
+    \item Insertion Sort, Selection Sort, and Quicksort, which is more efficient?
+    \begin{enumerate}[label=\alph*.]
+        \item Insertion Sort
+        \item Selection Sort
+        \item Quicksort
+        \item They all have the same efficiency
+    \end{enumerate}
+    \item True/False: C has a String type that’s built-in.
+    \item True/False: The length returned by \texttt{strlen} includes the null-terminator.
+    \item True/False: The character ‘0’ is the null terminator.
+    \item State the result of the below \texttt{strcmp} calls:
+    \begin{enumerate}[label=\alph*.]
+        \item \texttt{strcmp("", "x");}
+        \item \texttt{strcmp("2", "1");}
+        \item \texttt{strcmp("abcd", "abc");}
+    \end{enumerate}
+    \vspace{16mm}
+
+    \item What’s the result of the length:
+    \begin{lstlisting}
+    char arr[5] = {'a', 'x', '0', 'x'};
+    printf("%d\n", strlen(arr));
+    \end{lstlisting}
+    \vspace{16mm}
+    \item What’s the output of the following code:
+    \begin{lstlisting}
+    char s1[] = "str";
+    char s2[] = "str";
+    
+    if (s1 == s2) {
+        printf("equal");
+    }
+    else {
+        printf("not equal");
+    }
+    \end{lstlisting}
+    \vspace{16mm}
+    \item Describe string literals.
+    \vspace{16mm}
+
+    \newpage
+    \item Consider this code, write out the output produced, or up to the point of error occurrence if you think there’s an error, and describe what’s the error (e.g. heap-overflow):
+    \begin{lstlisting}
+    int i = 0;
+    const char* s = "abc\0aaa\0bbb";
+    while (i < strlen(s)) {
+        printf("%c", s[i]);
+        i++;
+    }
+    for (int j = 1; j <= 3; ++j) {
+        printf("%c", s[i + j]);
+    }
+    \end{lstlisting}
+    \vspace{10mm}
+    \item Why this is an issue:
+    \begin{lstlisting}
+    void dumb_string_op(const char* a, const char* b) {
+        strcpy(a, b);
+    }
+    \end{lstlisting}
+    \vspace{16mm}
+    \item In the following code snippet, which line will error occur at runtime in Edx?
+    \begin{lstlisting}
+    int main(void) {
+        int *j = malloc(sizeof(int)); // line 1
+        free(j); // line 2
+        *j = 43; // line 3
+        return 0; // line 4
+    }
+    \end{lstlisting}
+    Options:
+    \begin{enumerate}[label=\alph*.]
+        \item Line 1
+        \item Line 2
+        \item Line 3
+        \item Line 4
+    \end{enumerate}
+    \item In the following code snippet, which line will error occur at runtime in Edx?
+    \begin{lstlisting}
+    int main(void) {
+        int *j = malloc(sizeof(int)); // line 1
+        int *k = j; // line 2
+        free(k); // line 3
+        *j = 43; // line 4
+        return 0; // line 5
+    }
+    \end{lstlisting}
+    Options:
+    \begin{enumerate}[label=\alph*.]
+        \item Line 1
+        \item Line 2
+        \item Line 3
+        \item Line 4
+        \item Line 5
+    \end{enumerate}
+    \item Why is it a good practice to set a pointer to NULL after freeing it?
+    \vspace{16mm}
+    \item What occurs when the malloc function is unable to allocate the requested amount of memory?
+    Options:
+    \begin{enumerate}[label=\alph*.]
+        \item Program end with non 0 exit code
+        \item malloc allocate the maximum \# bytes that’s affordable
+        \item malloc returns NULL
+        \item Undefined behavior
+    \end{enumerate}
+    \item What is a dangling pointer, and provide an example.
+    \vspace{16mm}
+    \item Compare stack and heap data/memory.
+    \vspace{16mm}
+    \item List two advantages of using heap memory.
+    \vspace{16mm}
+
+    \item Is there anything wrong with the below function that destroys the linked list?
+    \begin{lstlisting}
+    struct Node {
+        const void* val;
+        struct Node* next;
+    };
+
+    struct List {
+        struct Node* front;
+    };
+
+    void destroy_linked_list(struct List* lst) {
+        struct Node* cur = lst->front;
+        while (cur) {
+            free(cur);
+            cur = cur->next;
+        }
+    }
+    \end{lstlisting}
+    \vspace{16mm}
+    \item Will the below code result in a dangling pointer?
+    \begin{lstlisting}
+    void bruhdanglingptr(int n) {
+        char *a = malloc(n * sizeof(char));
+        char *b = malloc(n * sizeof(char));
+        b = a;
+    }
+    \end{lstlisting}
+
+    \item Will the below code result in a dangling pointer?
+    \begin{lstlisting}
+    void bruhdanglingptr(int n) {
+        char *a = malloc(n * sizeof(char));
+        a = malloc(2 * n * sizeof(char));
+    }
+    \end{lstlisting}
+    
+    \item Will the below code result in a dangling pointer?
+    \begin{lstlisting}
+    void bruhdanglingptr(int n) {
+        char *a = malloc(n * sizeof(char));
+        char *c = realloc(a, 2 * n * sizeof(char));
+    }
+    \end{lstlisting}
+    
+    \item Will the below code for sure result in a memory leak?
+    \begin{lstlisting}
+    void bruhmemleak(int n) {
+        char *a = malloc(n * sizeof(char));
+        char *b = malloc(n * sizeof(char));
+        b = a;
+    }
+    \end{lstlisting}
+    
+    \item Will the below code for sure result in a memory leak?
+    \begin{lstlisting}
+    void bruhmemleak(int n) {
+        char *a = malloc(n * sizeof(char));
+        char *c = realloc(a, 2 * n * sizeof(char));
+    }
+    \end{lstlisting}
+
+    \item Is it true that the worst case complexity of pushing to a stack ADT seen in class is \( O(n) \)?
+    
+    \item Is it true that if a program runs \( O(1) \) amortized, then its worst case complexity cannot be worse than \( O(n) \)?
+    
+    \item Is it true that amortized analysis is only applicable to data structures and cannot be used for analyzing algorithms?
+    
+    \item Is it true that the amortized cost of an operation is always equal to the worst case cost of that operation?
+    
+    \item Is it true that the amortized runtime/cost of an operation is always better than the worst case cost/runtime of that operation?
+    
+    \item Beside each print statement(assume they run independently), write the corresponding output (address), if that line will cause an error, describe why. See the code here: \url{https://pastebin.com/zgvVfmT3}.
+    \vspace{10pt}
+    % Repeat for the other cases...
+    % Add all your other questions following the same pattern.
+
+    % Add the questions regarding complexity analysis and code outputs.
+    
+\end{enumerate}
+
+\newpage
+\section*{Complexity Analysis}
+
+\begin{enumerate}
+    
+    \item What’s the runtime worst case running time in terms of parameter \( n \) for the following function:
+    \begin{lstlisting}
+    bool is_prime(int n) {
+        if (n <= 1) {
+            return false;
+        } else if (n == 2) {
+            return true;
+        }
+        for (int i = 3; i * i <= n; i += 2) {
+           if (n % i == 0) {
+            return false;
+           }
+        }
+        return true;
+    }
+    \end{lstlisting}
+    Options:
+    \begin{enumerate}[label=\alph*.]
+        \item \( O(n) \)
+        \item \( O(\log n) \)
+        \item \( O(\sqrt{n}) \)
+        \item \( O(n^2) \)
+    \end{enumerate}
+    % Add the other runtime analysis questions in a similar manner...
+
+    \item What’s the worst case time complexity/efficiency of this code:
+    \begin{lstlisting}
+    void subset_sums(int i, int n, int val, int a[]) {
+        if (i == n) {
+            printf("%d\n", val);
+            return;
+        }
+        
+        subset_sums(i + 1, n, val, a);
+        if (i % 2 == 1) {
+            subset_sums(i + 1, n, val + a[i], a);
+        }
+    }
+    \end{lstlisting}
+    Options:
+    \begin{enumerate}[label=\alph*.]
+        \item \( O(n^2) \)
+        \item \( O(n) \)
+        \item \( O(n!) \)
+        \item \( O(2^n) \)
+    \end{enumerate}
+
+    \newpage
+
+    \item What’s the worst case time complexity/efficiency of this code:
+    \begin{lstlisting}
+    int cringe_search() {
+        int lo = 0, hi = 1000000, ans = -1;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (mid % 2 == 1) {
+                ans = mid;
+                hi = mid - 1;
+            } else {
+                lo = mid + 1;
+            }
+        }
+        return ans;
+    }
+    \end{lstlisting}
+    Options:
+    \begin{enumerate}[label=\alph*.]
+        \item \( O(\log n) \)
+        \item \( O(n) \)
+        \item \( O(1) \)
+        \item \( O(n^2) \)
+    \end{enumerate}
+    % Continue with the rest of the questions in the same manner...
+    
+    \item What’s the worst case complexity of the following pseudocode:
+    \begin{lstlisting}
+    p = 1
+    s = 0
+    for i = 1 to n do
+        p = p * 2
+        for j = 1 to p do
+            s = s + 1
+    \end{lstlisting}
+
+    You may find geometric series summation formula useful:
+    \[
+    s_n = a r^0 + ar^1 + \ldots + ar^{n-1} = \sum_{k=0}^{n-1} ar^k = \sum_{k=1}^{n} ar^{k-1} = 
+    \begin{cases} 
+    a \frac{1-r^n}{1-r} & \text{if } r \neq 1 \\
+    an & \text{otherwise}
+    \end{cases}
+    \]
+    
+    Options:
+    \begin{enumerate}[label=\alph*.]
+        \item \( O(2^n) \)
+        \item \( O(n \log n) \)
+        \item \( O(n 2^n) \)
+        \item \( O(n^2) \)
+    \end{enumerate}
+    \newpage
+    
+    \item What's the runtime worst case running time in terms of parameter \( n \):
+    \begin{lstlisting}
+    int fibonacci(int n) {
+        if (n <= 1) {
+            return n;
+        }
+    
+        int a = 0, b = 1;
+        for (int i = 2; i <= n; i++) {
+            int temp = a + b;
+            a = b;
+            b = temp;
+        }
+        return b;
+    }
+    \end{lstlisting}
+    Options:
+    \begin{itemize}
+        \item \( O(n) \)
+        \item \( O(1) \)
+        \item \( O(\sqrt{n}) \)
+        \item \( O(n^2) \)
+    \end{itemize}
+
+    \item What's the runtime worst case running time in terms of parameter \( n \):
+    \begin{lstlisting}
+    void f(int n) {
+        int a = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = n; j > i; j /= 2) {
+                a = a + 1;
+            }
+        }
+    }
+    \end{lstlisting}
+    Options:
+    \begin{itemize}
+        \item \( O(n) \)
+        \item \( O(n \log n) \)
+        \item \( O(n \sqrt{n}) \)
+        \item \( O(n^2) \)
+    \end{itemize}
+
+    \item Give the exact number of iterations performed, i.e., what’s the value printed:
+    \begin{lstlisting}
+    void f(int n) {
+        int value = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                value += 1;
+            }
+        }
+        printf("%d\n", value);
+    }
+    \end{lstlisting}
+    Options:
+    \begin{itemize}
+        \item \( n(n+1) \)
+        \item \( \frac{n(n-1)}{2} \)
+        \item \( n^2 \)
+        \item \( n \)
+    \end{itemize}
+    \newpage
+
+    \item What’s the worst case complexity of the function \texttt{dumb\_binary\_search}:
+    \begin{lstlisting}
+    int binary_search(int arr[], int lo, int hi, int target) {
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (arr[mid] == target) {
+                return mid;
+            } else if (arr[mid] < target) {
+                lo = mid + 1;
+            }
+            else {
+                hi = mid - 1;
+            }
+        }
+        return -1;
+    }
+    
+    int dumb_binary_search(int arr[], int n, int target) {
+        int lo = 0, hi = n - 1;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (arr[mid] == target) {
+                return mid;
+            } else if (arr[mid] < target) {
+                lo = mid + 1;
+            }
+            else {
+                int result = binary_search(arr, lo, mid - 1, target);
+                if (result != -1) {
+                    return -1;
+                }
+                hi = mid - 1;
+            }
+        }
+        return -1;
+    }
+    \end{lstlisting}
+    Options:
+    \begin{itemize}
+        \item \( O(\log n) \)
+        \item \( O((\log n)^2) \)
+        \item \( O(n \log n) \)
+        \item \( O(\log (n^2)) \)
+    \end{itemize}
+
+    \newpage
+    
+    \item What’s the worst case complexity of the function \texttt{weird} (be exact):
+    \begin{lstlisting}
+    void weird(int n, int m) {
+        for (int i = 2; i <= n; i++) {
+            for (int j = 1; j < i % m; j++) {
+                printf("*");
+            }
+        }
+    }
+    \end{lstlisting}
+    Options:
+    \begin{itemize}
+        \item \( O(n^2) \)
+        \item \( O(n) \)
+        \item \( O(m) \)
+        \item \( O(nm) \)
+    \end{itemize}
+
+    \item What is the worst case complexity of the following function \texttt{weird2}?
+    \begin{lstlisting}
+    void weird2(int n, int m) {
+        for (int i = 2; i <= n; i++) {
+            for (int j = 1; j < i % 1000000; j++) {
+                printf("*");
+            }
+        }
+    }
+    \end{lstlisting}
+    Options:
+    \begin{itemize}
+        \item \( O(n) \)
+        \item \( O(n^2) \)
+        \item \( O(n \log n) \)
+        \item \( O(\log n) \)
+    \end{itemize}
+
+
+    \item What’s the worst case complexity of the function \texttt{weird\_recurrence2}?
+    \textbf{Hint: geometric series sum}
+    \begin{lstlisting}
+    void weird_recurrence2(int n) {
+        if (n == 0) return;
+        weird_recurrence(n / 2);
+
+        int s = 0;
+
+        for (int i = 0; i < n; ++i) {
+            for (int j = i + 1; j < n; ++j) {
+                s++;
+            }
+        }
+
+        printf("%d\n", s);
+    }
+    \end{lstlisting}
+    Options:
+    \begin{itemize}
+        \item \( O(n^2 \log n) \)
+        \item \( O(n^3) \)
+        \item \( O(n^2) \)
+        \item \( O(n \log n) \)
+    \end{itemize}
+
+    
+    \item What’s the worst case complexity of the function \texttt{a\_string\_function}?
+    
+    \begin{lstlisting}
+    void a_string_function(char* s) {
+        const char* dummy = "abc";
+        char *res = "";
+
+        for (int i = 0; i < strlen(s); ++i) {
+            if (strcmp(dummy, s)) {
+                strcat(res, s);
+            }
+        }
+        printf("gg %s", res);
+    }
+    \end{lstlisting}
+    Options:
+    \begin{itemize}
+        \item \( O(n^2) \)
+        \item \( O(n^3) \)
+        \item \( O(n^4) \)
+        \item \( O(n^5) \)
+    \end{itemize}
+
+    \newpage
+
+    \item What’s the worst case complexity of the function \texttt{a\_string\_function2}?
+    \begin{lstlisting}
+    void a_string_function2(char* s, char* s2, char*res) {
+        const char* tmp = "sheeeesh";
+
+        for (int i = 0; i < strlen(s); ++i) {
+            for (int j = 0; j < strlen(tmp); j *= 2) {
+                strcopy(res, s2);
+            }
+        }
+        printf("%s", res);
+    }
+    \end{lstlisting}
+    Options:
+    \begin{itemize}
+        \item \( O(nm^2) \)
+        \item \( O(nm \log n) \)
+        \item \( O(n^2m^2) \)
+        \item \( O(n^2m) \)
+        \item \( O(n^2m \log n) \)
+    \end{itemize}
+
+    \item What’s the worst case complexity of the function \texttt{two\_ptr}?
+    \begin{lstlisting}
+    int two_ptr(int nums[], int k, int n) {
+        int ans = n * (n + 1) / 2, max = 0;
+        for (int i = 0; i < n; i++) {
+            if (nums[i] > max) {
+                max = nums[i];
+            }
+        }
+
+        int cnt[100005] = {0};
+
+        for (int i = 0, j = 0; j < n; ++j) {
+            cnt[nums[j]]++;
+            while (i <= j && cnt[max] >= k) {
+                cnt[nums[i]]--;
+                i++;
+            }
+            ans -= (j - i + 1);
+        }
+        return ans;
+    }
+    \end{lstlisting}
+    Options:
+    \begin{itemize}
+        \item \( O(n^2) \)
+        \item \( O(n) \)
+        \item \( O(n \log n) \)
+        \item \( O(n \sqrt{n}) \)
+    \end{itemize}
+
+    \newpage
+    \item What’s the worst case complexity of the function \texttt{nxt\_greater}, assuming a stack ADT implemented with dynamic array is available?
+    \begin{lstlisting}
+    void nxt_greater(int nums[], int n) {
+        struct stack* stk = stack_create();
+        for (int i = n - 1; i >= 0; --i) {
+            while (!stack_empty(stk) && stack_top(stk) <= nums[i]) {
+                stack_pop(stk);
+            }
+            if (stack_empty(stk)) 
+                printf("%d has no next greater element\n", nums[i]);
+            else 
+                printf("%d has next greater element - %d \n", nums[i], stack_top(stk));
+            stack_push(stk, nums[i]);
+        }
+    }
+    \end{lstlisting}
+    Options:
+    \begin{itemize}
+        \item \( O(n) \)
+        \item \( O(n^2) \)
+        \item \( O(n \log n) \)
+    \end{itemize}
+
+\end{enumerate}
+
+\newpage
+\section*{Programming Questions}
+
+\begin{enumerate}
+    \item Implement a recursive function \texttt{pow(b, p)} that calculates \( b^p \) in \( O(\log p) \) time and \( O(1) \) space. You may assume recursion stack does not count towards space memory. Hint: notice \( p = 2k \) or \( 2k + 1 \) for some integer \( k \), and \( b^{2k} = (b^k)^2 \), \( b^{(2k+1)} = b^{2k} \cdot b \). 
+    \begin{lstlisting}
+    int pow(int b, int p) {
+    }
+    \end{lstlisting}
+    
+    \newpage
+    \item Given an array \( A \) of length \( n \) such that \( 1 \leq A[i] \leq 1000 \) for all \( i = 0, 1, \ldots, n - 1 \), sort the array in \( O(n) \) time.
+
+    \begin{lstlisting}
+    void special_sort(int A[], int n) {
+    }
+    \end{lstlisting}
+    
+    \newpage
+    \item Given a string containing brackets ‘(’, ‘)’, ‘[‘, ‘]’, ‘{‘, ‘}’, and other alphabetic characters, check if the brackets sequence is valid, i.e. all opening bracket has a corresponding closing bracket of the same type, and vice-versa. The brackets are closed by the same type that opened them. For example, "()ab[\{\}b]" is valid whereas ")\{\}[[d]]" and "c\{\{)\}\}[]c" are not. Hint: use stack, you may assume you have a correct Stack ADT implementation (below) is given to you, Runtime: \( O(n) \), Space: \( O(n) \).
+    \begin{lstlisting}
+struct stack;
+// malloc a stack in heap memory
+struct stack *create();
+// check if stack is empty
+bool empty(const struct stack *stk);
+// push element to top of stack
+void push(void *item, struct stack *stk);
+// get the top element of the stack
+const void *top(const struct stack *stk);
+// remove the top element of the stack
+void *pop(struct stack *stk);
+// free the resources used by stack
+void destroy(struct stack *s);
+    \end{lstlisting}
+
+    \begin{lstlisting}
+    bool balanced(char* s, int n) {}
+    \end{lstlisting}
+
+    \newpage
+    \item Given a string containing printable ASCII characters, write a function \texttt{most\_frequent\_char} that returns the most frequently occurred character in \( O(n) \) time and constant (i.e. \( O(1) \)) space.
+
+    \begin{lstlisting}
+    char most_frequent(const char* s, int n) {
+    
+    }
+    \end{lstlisting}
+
+    \newpage
+    \item A hashmap can be thought of as an array of buckets of length M, and in our case the buckets will be LinkedLists. We will implement a generic hashmap that will support storing any type. And any given element will be mapped to an integer index 0 $\leq$ i $<$ M, by a hash function H. Essentially range(H) = \{0, 1, …, M - 1\}. You will support below operations:
+    \begin{enumerate}[label=\alph*.]
+        \item  table\_create: it takes in the number of buckets \( M \), a hash function \( h \), a compare function \( cmp(a, b) \) that returns 0 iff object \( a \) and \( b \) equals, and \( print(x) \) that prints the value to std out.
+        \item table\_insert: given a void typed value \( x \), compute its hash value \( i \) and try to insert it into bucket \( i \) if \( x \) is not already present. We will chain multiple elements together with LinkedLists if more than one element has been inserted at bucket i
+        \item table\_search: given a void typed value \( x \), return true if the item \( x \) is in the hash table, false otherwise.
+        \item table\_remove: given a void typed value \( x \), return true if the item \( x \) is removed from the hash table, false otherwise.
+        \item table\_destroy: given a hash table, free all its resources.
+        \item table\_print prints content of hash table, bucket by bucket, for each element in the bucket list, print its value.
+    \end{enumerate}
+    Starter code: 
+    \begin{lstlisting}
+struct Node {
+    const void* val;
+    struct Node* nxt;
+};
+
+struct List {
+    struct Node* front;
+};
+
+struct hashtable {
+    int size;
+    int bucket_length;
+    int (*hash_func)(const void *);
+    int (*key_cmp)(const void *, const void *);
+    void (*key_print)(const void *);
+    struct List **buckets;
+};
+
+struct hashtable *table_create(int M, int (*hash_func)(const void *), int (*key_cmp)(const void *, const void *), void (*key_print)(const void *)) {}
+
+bool table_insert(const void* x, struct hashtable* ht) {}
+
+bool table_search(const void* x, struct hashtable* ht) {}
+
+bool table_remove(const void* x, struct hashtable* ht) {}
+
+void table_print(struct hashtable* ht) {}
+
+void table_destroy(struct hashtable* ht) {}
+    \end{lstlisting}
+
+    \newpage
+    \item Given two pointers \( n1 \) and \( n2 \) to distinct nodes in binary trees (not necessarily on the same tree), determine if there exists an LCA between \( n1 \) and \( n2 \). If so, return the pointer to LCA; otherwise, return NULL. The runtime should be \( O(h) \), where \( h \) is the height of the binary tree. You may assume the root’s parent is NULL.
+
+    \begin{lstlisting}
+    struct Node {
+        int val;
+        struct Node* left;
+        struct Node* right;
+        struct Node* parent;
+    };
+     
+    struct Node* find_lca(struct Node* n1, struct Node* n2) {}
+ 
+    \end{lstlisting}
+
+
+    % Placeholder for the image
+    \includegraphics[width=0.8\textwidth]{q6lca.png}
+
+    \newpage
+    \item Assume we have a variant of the binary tree, called a \( d \)-ary tree, where each node have exactly \( d \) children except the leaf nodes. Write a function \texttt{find\_val} that returns the value of the \( k \)th ( \( 1 \leq k \leq n \) ) element from the left in the  \( j \)th level (root is level 1). The runtime should be $O(n)$ where n is the total number of elements. (\textbf{Challenge: Solve in O(h) where h is the height of the d-ary tree})
+    
+
+    \begin{lstlisting}
+    /**
+     * @param root The root of the d-ary tree.
+     * @param j The depth of the element to find.
+     * @param k The position of the element to find.
+     */
+    int find_kth(struct DaryTreeNode* root, int k);
+    \end{lstlisting}
+    
+    \begin{lstlisting}
+    struct DaryTreeNode {
+        int value;
+        struct DaryTreeNode** children; // Array of pointers to children
+        int numChildren;                // Actual number of children (d)
+    };
+    
+    
+    int find_kth(struct DaryTreeNode* root, int j, int k) {
+        
+    }
+\end{lstlisting}
+
+    \includegraphics[width=0.4\textwidth]{q7tree.png}
+    
+    For instance, 
+    \begin{lstlisting}
+        find_kth(struct DaryTreeNode* root, 3, 7)
+    \end{lstlisting} would yield $11$ in the above example
+
+
+    % \newpage
+    % \item The actual priority queue is a binary heap that satisfies both the structural and ordering properties.
+    % \begin{enumerate}[label=\alph*.]
+    %     \item Structural property specifies that all levels of the tree are complete, except possibly the last level, and that the last level is left-justified (all the nodes are placed to the left).
+    %     \item Ordering property specifies that for any node \( i \), \( key[parent \ of \ i] \geq key[i] \).
+    %     \item Nodes are stored in a dynamic array \( A \), with the root in \( A[0] \), and each level from top to bottom, and each level from left-most node to right-most node. For any node stored at index \( i \), the left child of \( i \), if it exists, is at \( A[2i + 1] \), the right child of \( i \), if it exists, is at \( A[2i + 2] \), and the parent of \( i \), if it exists, is at \( \lfloor (i - 1)/2 \rfloor \).\\
+    %     % Placeholder for the image
+    %     \includegraphics[width=0.4\textwidth]{q8c.png}
+    %     \item Support two operations: delete max and insert \( x \) in \( O(\log n) \) time.
+
+        
+    % \end{enumerate}
+
+    \newpage
+    \item Implement a substring function \texttt{substr(s, i, j)}. Given a string \( S \) of length \( n \), and two indices \( i \), \( j \) such that \( i \leq j \), return the string containing characters of s in the range \( [i, j) \), namely \( S[i, i + 1, \ldots, j - 1] \). For example, if \( S = "abc" \), \( i = 0 \), \( j = 2 \), the substr function should return "ab".
+    \begin{lstlisting}
+    // Extracts a substring from s between two indices i, j - 1.
+    // Effect: allocate memory
+    char* substr(const char* s, int i, int j);
+    \end{lstlisting}
+
+
+    \newpage
+    \item Implement a vending machine module capable of handling item stock and purchases with transaction history. Provide implementations for each of the following functions as described:
+
+
+    \textbf{Header:}
+    \url{https://pastebin.com/CQfCUuE6} \\
+    \textbf{Implementation \& Starter:}
+    \url{https://pastebin.com/AbGJHDz4}
+    
+\end{enumerate}
+
+
+\end{document}
