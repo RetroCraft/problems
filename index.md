@@ -134,6 +134,9 @@ If you just want the sheets, you can get them all at my
 (which is, as always, pay-what-you-want).
 They remain on this [GitHub repository](/.src/ECON120) too.
 
+Some [notes](https://grave-space-21c.notion.site/ECON120-c0c1cdb463ca43ad900abb45cbcdf744?pvs=4){:.a#EC120--Notes--Benny} by Benny!
+
+
 #### EC 140 (W2021) <small>Introduction to Macroeconomics</small>
 
 I hastily put together an [equation sheet](./ECON140/ref.html){:.a#EC140--Equation-Sheet--James} after lecture on the 4th.
@@ -153,6 +156,9 @@ aesthetic changes bump the minor version.
 
 Might also be helpful: Will put together a compilation of sample
 [algebraic solution processes](https://cdn.discordapp.com/attachments/755580436398473226/809696310043213835/NuMbEr_1_iN_StUdEnt_SaTisFactiOn.pdf){:.a#EC140--Sample-Solutions--Will}.
+
+Some [notes](https://grave-space-21c.notion.site/EC-140-27706ed940da4a938ee3fd8474c40e42?pvs=4){:.a#EC140--Notes--Benny} by Benny!
+
 
 ## Waterloo Faculty of Mathematics
 
@@ -178,6 +184,12 @@ Examples and explanations for how pointers in C work. [Examples and explanations
 [Course notes](./CS136/CS136_Final.pdf){:.a#CS136--Notes--Stella},
 from sessions 6 through 11, by Stella and Chloe.
 
+[More course notes](https://grave-space-21c.notion.site/CS-136-5d2c3a59c9104336ad9ab7de54f7b9ff?pvs=4){:.a#CS136--Notes--Benny} by Benny
+
+
+[Mock final](./CS136/benny-cs136.pdf){:.l#CS136--Notes--Benny}, and [mock final solutions](./CS136/benny-cs136-sol.pdf){:.l#CS136--Mock--Tommy}, by Tommy and Benny
+
+
 #### CS 245 (F2021) <small>Logic and Computation</small>
 
 My own version of the [reference sheet](./CS245/ref.pdf){:.l#CS245--Reference-Sheet--James} is a bit more compact.
@@ -187,6 +199,9 @@ My own version of the [reference sheet](./CS245/ref.pdf){:.l#CS245--Reference-Sh
 [Lecture notes](https://www.notion.so/CS-246-6633f1e64d8e4dce9c5eeb318af6da23?pvs=4){:.a#CS246--Notes--Ananya}
 from Ananya are available.
 These should be up-to-date with the latest course redesign.
+
+Detailed [lecture notes](https://grave-space-21c.notion.site/CS-246-7a97ec0fce9245798ca922f3404240fa?pvs=4) by Benny, Tommy and Yifei.
+
 
 #### CS 330 (F2023) <small>Management Information Systems</small>
 
@@ -376,3 +391,5 @@ or by one of [email](mailto:jahyong@uwaterloo.ca),
 [Facebook](https://facebook.com/james.ahyong),
 [Instagram](https://instagram.com/james.ahyong),
 and Discord (`@retrocraft`).
+
+
