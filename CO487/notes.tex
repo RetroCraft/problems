@@ -2454,6 +2454,206 @@ We can compare 256-bit ECDSA with 3072-bit RSA:
   \item RSA signatures are much longer (3072 bits) than ECDSA signatures (512 bits)
 \end{itemize}
 
+\chapter{Bluetooth security}
+\lecture{Mar 18}
+
+Bluetooth is a short-range low-power wireless communication technology.
+Version 1.0 was released in 2009, the latest version 5.4 was released in 2023.
+
+We will only discuss Bluetooth Classic and not Bluetooth Low Energy,
+and only a simplified version since the spec is 3,000 pages long.
+
+Bluetooth aims to provide five security services:
+\begin{enumerate}[nosep]
+  \item Confidentiality: no eavesdropping
+  \item Data integrity: no modification in transit
+  \item Entity authentication: identity is verifiable
+  \item Authorization: resources are access-controlled
+  \item Pairing: trusted device pairs can form subsequent connections
+\end{enumerate}
+
+Two devices can pair using either Legacy, Secure Simple Pairing,
+or Secure Connections.
+The latter two are very similar.
+Within Secure Connections, there are four \term*{association models}:
+\begin{enumerate}[nosep]
+  \item Numeric Comparison: both have displays (for 6-digit numbers) and a button/keyboard (for OK/reject)
+  \item Passkey Entry: one has a keyboard and no display, the other has both keyboard and display
+  \item Just Works: one device has no display or keyboard
+  \item Out-of-Band: special extra stuff (e.g., NFC)
+\end{enumerate}
+We only care about Numeric Comparison.
+Suppose Alice and Bob are devices with displays and inputs.
+There are five phases:
+\begin{enumerate}[nosep]
+  \item Public key exchange: establish an unauthenticated shared secret
+  \item Authentication stage 1: protect against active MITM attacks
+  \item Authentication stage 2: confirm both devices completed the exchange
+  \item Link key calculation: compute a long-term key
+  \item Authentication and encryption: derive a shared session secret
+\end{enumerate}
+
+\begin{scheme}[Bluetooth public key exchangge]
+  Alice and Bob exchange their Bluetooth addresses $A$ and $B$,
+  then use ECDH with the P-256 curve $(p,E,n,P)$:
+  \begin{algorithmic}[1]
+    \State Alice selects $x \randin [1,n-1]$, computes $X \gets xP$, and sends $X$ to Bob.
+    \State Bob selects $y \randin [1,n-1]$, computes $Y \gets yP$, and sends $Y$ to Alice.
+    \State The shared 256-bit secret is $K \gets x(yX) = x(xY)$
+  \end{algorithmic}
+\end{scheme}
+
+\lecture{Mar 20}
+\begin{scheme}[Bluetooth authentication stage 1] 
+  Continuing with $X$ and $Y$ from phase 1:
+  \begin{algorithmic}[1]
+    \State Bob selects a nonce $N_B \randin \bits{128}$, computes a commitment $C_B \gets \hmacsha_{N_B}(Y,X)$, and sends $C_B$ to Alice.
+    \State Alice selects a nonce $N_A \randin \bits{128}$ and sends $N_A$ to Bob.
+    \State Bob sends $N_B$ to Alice.
+    \State Alice asserts $C_B = \hmacsha_{N_B}(Y,X)$.
+    \State Alice computes a verification value $V_A \gets (\sha(X,Y,N_A,N_B) \bmod 2^{32}) \bmod 10^6$ and displays it.
+    \State Bob computes a verification value $V_B \gets (\sha(X,Y,N_A,N_B) \bmod 2^{32}) \bmod 10^6$ and displays it.
+    \State If the values are the same, the user presses OK on both devices.
+  \end{algorithmic}
+\end{scheme}
+
+The commitment $C_B$ ensures that Alice and Bob both select their nonces
+before seeing the other one's nonce.
+Failing at the assertion indicates a MITM attack or a transmission error
+(with probability 0.99999).
+
+\begin{scheme}[Bluetooth authentication stage 2]
+  Continuing with $N_A$ and $N_B$ from phase 2:
+  \begin{algorithmic}[1]
+    \State Alice computes $E_A \gets \sha(N_A,N_B,A,B) \gg 128$ and sends it to Bob.
+    \State Bob verifies that $E_A = \sha(N_A,N_B,A,B) \gg 128$.
+    \State Bob computes $E_B \gets \sha(N_A,N_B,B,A) \gg 128$ and sends it to Bob.
+    \State Alice verifies $E_B = \sha(N_A,N_B,B,A) \gg 128$.
+  \end{algorithmic}
+\end{scheme}
+
+This stage does the same thing as authentication stage 1,
+but without human intervention,
+to ensure that the authentication actually happened
+(and to prevent against people spamming OK without checking).
+
+\begin{scheme}[Bluetooth link key calculation]
+  Both parties compute the link key $LK \gets \hmacsha(N_A,N_B,\x{624746c6b},A,B)$
+  where $\x{624746c6b}$ is ASCII for ``btlk''.
+\end{scheme}
+
+The link key is a long-term authentication key to maintain the pairing.
+The nonces ensure that the link key was just generated, even if the long-term ECDH
+values are reused by both sides.
+
+\begin{scheme}[Bluetooth authentication and encryption]
+  Continuing with $LK$, for authentication:
+  \begin{algorithmic}[1]
+    \State Alice generates $R_A \randin \bits{128}$ and sends $(A,R_A)$ to Bob.
+    \State Bob generates $R_B \randin \bits{128}$ and sends $(B,R_B)$ to Alice.
+    \State Both compute a device authentication key $h \gets \hmacsha_{LK}(A,B)$.
+    \State Both compute device authentication confirmation values $S_A, S_B \in \bits{32}$, $ACO \in \bits{64}$ from the top 128 bits of $\hmacsha_h(R_A,R_B)$.
+    \State Alice sends $S_A$ to Bob.
+    \State Bob sends $S_B$ to Alice.
+    \State Both assert that the sent values match their values.
+  \end{algorithmic}
+  For encryption, derive $K_E$ as the top 128 bits of $\hmacsha_{LK}(A,B,ACO)$.
+  Then, use AES-CCM (CBC-MAC then AES-CTR) using $K_E$.
+\end{scheme}
+
+The devices can choose the length of $K_E$ (instead of taking the top 128, take the top $\ell$).
+The negotiation to pick $\ell$ is neither authenticated nor encrypted.
+
+\begin{attack}[KNOB attack]
+  An attacker can use a MITM attack to force the devices to choose an 8-bit key $K_E$.
+  Then, the key can be bruteforced during the session.
+\end{attack}
+
+This is easily stopped by forcing 128-bit keys always.
+
+\chapter{Key management}
+\lecture{Mar 22}
+
+\lecture{Mar 25}
+
+\chapter{The Signal protocol}
+
+\lecture{Mar 25}
+
+\lecture{Apr 1}
+\chapter{Random bit generation}
+
+\begin{defn}[random bit generator]
+  A device that outputs a sequence of independent and random bits.
+\end{defn}
+
+This is important for generating, e.g., the AES secret $k$,
+the RSA primes $p$ and $q$, and the ECDSA private key $a$.
+
+The random bits should be unpredictable to an active adversary who knows some bits.
+
+Random bits should come from actual randomness, like input devices,
+and not pseudorandomness (algorithms that look random), like repeated HMACing.
+
+In Linux, $\x{rand}$ and $\x{srand}$ are pseudorandom and should not be used for cryptography.
+Instead, use $\x{getrandom}$, which uses hardware events as noise sources.
+
+Using pseudorandomness can lead to shared primes appearing in multiple users' keys.
+
+Key derivation functions can be pseudorandom and seeded with the root key.
+This is secure because it relies on the security of the key.
+For example, HKDF takes $K \gets \text{HMAC}_{\vv{salt}}(k)$ for a key $k$ and public $\vv{salt}$
+and then generates keys $k_i = \text{HMAC}_K(k_{i-1},\vv{info},i)$ with public $\vv{info}$.
+
+\chapter{Post-quantum cryptography}
+\lecture{Apr 3}
+
+\chapter{Wrap-up}
+\lecture{Apr 5}
+
+This course has focused on well-studied, standardized cryptography.
+A lot of problems can still come up in implementation.
+
+\begin{defn}[side-channel attack]
+  An attack which exploits information leaked as a result of physical processes.
+\end{defn}
+
+For example, if Alice computes $aP$ with double-and-add,
+an attacker can analyze how much power her computer is drawing and
+correlate spikes with doubles vs. adds (which represent 0s/1s in $a$).
+
+Alternatively, attackers have successfully leaked keys using
+the high-pitched whine of a microchip, the static potential of a laptop case,
+or the flickering of the power LED.
+
+\begin{defn}[multi-party computation]
+  A protocol that allows $n$ parties to jointly evaluate a function $f(x_1,\dotsc,x_n)$
+  where $x_i$ is private to the $i$\xth party
+  without any party revealing anything about their $x_i$.
+\end{defn}
+
+\begin{problem}[private set intersection]
+  Alice has a set $X$ and Bob has a set $Y$.
+  Alice wishes to determine $X \cap Y$ without revealing anything else
+  (other than $\abs{X}$ and $\abs{Y}$).
+\end{problem}
+
+For example, if $X$ is a list of Alice's passwords and Bob has a list $Y$ of known compromised passwords,
+Alice wants $X \cap Y$ without telling Bob $X$.
+
+\begin{scheme}[elliptic curve PSI protocol]
+  Let $E/\Z_p$ be the P-256 curve and $H : \bits{*} \to E(\Z_p)$ be a hash function.
+  \begin{algorithmic}[1]
+    \State Alice selects $a \randin [1,n-1]$ and sends $aH(X) \gets (aH(x_1),\dotsc,aH(x_s))$ to Bob.
+    \State Bob selects $b \randin [1,n-1]$ and sends $bH(Y)$ to Alice.
+    \State Alice sends $T \gets a(bH(Y)) = (u_1,\dotsc,u_t)$ to Bob.
+    \State Bob sends $S \gets b(aH(X)) = (v_1,\dotsc,v_s)$ to Alice.
+    \State Alice determines $X \cap Y = \{x_i : v_i \in T\}$.
+    \State Bob determines $X \cap Y = \{y_j : u_j \in S\}$.
+  \end{algorithmic}
+  This works as long as there are no hash collisions.
+\end{scheme}
+
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
 \renewcommand{\listtheoremname}{List of Named Results}
