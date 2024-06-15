@@ -95,6 +95,12 @@ by Yash and Karthik.
 
 Another [flashcard set](https://quizlet.com/mian8680/folders/bu288-f2021/sets){:.a#BU288--Flashcards--Imaad} for the two midterms and final exam.
 
+#### BU 288 (F23) <small>Organizational Behaviour</small>
+
+[Notes for Midterm 1 content](./BU288/f23-mt1-notes.pdf), [Notes for Midterm 2 content](./BU288/f23-mt2-notes.pdf) by Andy. Unfortunately a set for the finals do not exist from him.
+
+[A set of self-written practice problems for Midterm 1](./BU288/f23-mt1-selfquestions.pdf) by Andy. Content may not reflect actual question difficulty or answer format.
+
 #### BU 231 (S22) <small>Business Law</small>
 
 Yet more [Quizlet cards](https://quizlet.com/ca/703888580/bu231-midterm-flash-cards/){:.a#BU231--Flashcards--Imaad} by Imaad for the midterm.
