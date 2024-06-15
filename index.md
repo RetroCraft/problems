@@ -97,9 +97,9 @@ Another [flashcard set](https://quizlet.com/mian8680/folders/bu288-f2021/sets){:
 
 #### BU 288 (F23) <small>Organizational Behaviour</small>
 
-[Notes for Midterm 1 content](./BU288/f23-mt1-notes.pdf), [Notes for Midterm 2 content](./BU288/f23-mt2-notes.pdf) by Andy. Unfortunately a set for the finals do not exist from him.
+[Notes for Midterm 1 content](./BU288/f23-mt1-notes.pdf){:.a#BU288-MT1Notes-Andy}, [Notes for Midterm 2 content](./BU288/f23-mt2-notes.pdf){:.a#BU288-MT2Notes-Andy} by Andy. Unfortunately a set for the finals do not exist from him.
 
-[A set of self-written practice problems for Midterm 1](./BU288/f23-mt1-selfquestions.pdf) by Andy. Content may not reflect actual question difficulty or answer format.
+[A set of self-written practice problems for Midterm 1](./BU288/f23-mt1-selfquestions.pdf){:.a#BU288-MT1Qs-Andy} by Andy. Content may not reflect actual question difficulty or answer format.
 
 #### BU 231 (S22) <small>Business Law</small>
 
