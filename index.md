@@ -103,10 +103,6 @@ A review casebook using real life fact patterns is available [here](https://retr
 
 For post-midterm content, Imaad made a summary in [flowchart format](./BU231/flowchart.html){:.a#BU231--Flowchart--Imaad}.
 
-#### BU 231 (S24) <small>Business Law</small>
-
-[Notes](./BU231/s24-midterm-notes-andy.pdf){:.a#BU231--Notes-Andy} for content up to the midterm by Andy.
-
 #### BU 352 (F22) <small>Introduction to Marketing</small>
 
 [Flashcard set](https://quizlet.com/ca/723976718/bu352-f22-flash-cards/){:.a#BU352--Flashcards--Imaad} by Imaad.
@@ -149,9 +145,9 @@ Set the price based on your marginal propensity to consume cheat sheets.
 Versioning is semantic: anything that is wrong/serious bumps the major version,
 aesthetic changes bump the minor version.
 
--   [Test 1 Cheat Sheet](https://ko-fi.com/s/3c60df39f2){:.a#EC140--Cheat-Sheet--James--Test-1} (v2, Feb 12 @ 8:20pm)
--   [Test 2 Cheat Sheet](https://ko-fi.com/s/8c50c38761){:.a#EC140--Cheat-Sheet--James--Test-2} (v2.0, Mar 19 @ 5:09pm)
--   [Exam Cheat Sheet](https://ko-fi.com/s/f1a8bd1ab7){:.a#EC140--Cheat-Sheet--James--Exam} (v0.1, Apr 20 @ 6:49pm)
+- [Test 1 Cheat Sheet](https://ko-fi.com/s/3c60df39f2){:.a#EC140--Cheat-Sheet--James--Test-1} (v2, Feb 12 @ 8:20pm)
+- [Test 2 Cheat Sheet](https://ko-fi.com/s/8c50c38761){:.a#EC140--Cheat-Sheet--James--Test-2} (v2.0, Mar 19 @ 5:09pm)
+- [Exam Cheat Sheet](https://ko-fi.com/s/f1a8bd1ab7){:.a#EC140--Cheat-Sheet--James--Exam} (v0.1, Apr 20 @ 6:49pm)
 
 Some more recent (W24) [notes](https://grave-space-21c.notion.site/EC-140-27706ed940da4a938ee3fd8474c40e42?pvs=4){:.a#EC140--Notes--Benny} by Benny.
 
@@ -163,12 +159,12 @@ Some more recent (W24) [notes](https://grave-space-21c.notion.site/EC-140-27706e
 
 I don't implement the full design recipe in exercises, for obvious reasons (I'm lazy):
 
--   [Module 11 Exercises](/.src/CS135/E11.rkt){:.a#CS135--Practice-Problems--James--Module-11}
--   [Module 12 Exercises](/.src/CS135/E12.rkt){:.a#CS135--Practice-Problems--James--Module-12}
--   [Module 13 Exercises](/.src/CS135/E13.rkt){:.a#CS135--Practice-Problems--James--Module-13}
--   [Module 14 Exercises](/.src/CS135/E14.rkt){:.a#CS135--Practice-Problems--James--Module-14}
--   [Module 15 Exercises](/.src/CS135/E15.rkt){:.a#CS135--Practice-Problems--James--Module-15}
--   [Module 16 Exercises](/.src/CS135/E16.rkt){:.a#CS135--Practice-Problems--James--Module-16}
+- [Module 11 Exercises](/.src/CS135/E11.rkt){:.a#CS135--Practice-Problems--James--Module-11}
+- [Module 12 Exercises](/.src/CS135/E12.rkt){:.a#CS135--Practice-Problems--James--Module-12}
+- [Module 13 Exercises](/.src/CS135/E13.rkt){:.a#CS135--Practice-Problems--James--Module-13}
+- [Module 14 Exercises](/.src/CS135/E14.rkt){:.a#CS135--Practice-Problems--James--Module-14}
+- [Module 15 Exercises](/.src/CS135/E15.rkt){:.a#CS135--Practice-Problems--James--Module-15}
+- [Module 16 Exercises](/.src/CS135/E16.rkt){:.a#CS135--Practice-Problems--James--Module-16}
 
 #### CS 136 (W24) <small>Elementary Algorithm Design and Data Abstraction </small>
 
@@ -227,21 +223,21 @@ so these are really just a personal, public commitment to trying to learn.
 Extra Practice files have been collated and reformatted as [one big PDF](./MATH135/extra-practice.pdf){:.l#MATH135--Practice-Problems--James}.
 Older files can be found in the [Git history](/.src/tree/977583efdb041bbf28b6f11b5b16f642e9010435/MATH135--James).
 
--   [Extra Practice 1](./MATH135/extra-practice.pdf#chapter.1){:.a#MATH135--Practice-Problems--James--Chapter-1}
--   [Extra Practice 2](./MATH135/extra-practice.pdf#chapter.2){:.a#MATH135--Practice-Problems--James--Chapter-2}
--   [Extra Practice 3](./MATH135/extra-practice.pdf#chapter.3){:.a#MATH135--Practice-Problems--James--Chapter-3}
--   [Extra Practice 4](./MATH135/extra-practice.pdf#chapter.4){:.a#MATH135--Practice-Problems--James--Chapter-4} (missing C02)
--   [Extra Practice 5](./MATH135/extra-practice.pdf#chapter.5){:.a#MATH135--Practice-Problems--James--Chapter-5}
--   [Extra Practice 6](./MATH135/extra-practice.pdf#chapter.6){:.a#MATH135--Practice-Problems--James--Chapter-6} (missing C03, C05, C06. RP09 by sooshi)
--   [Extra Practice 7](./MATH135/extra-practice.pdf#chapter.7){:.a#MATH135--Practice-Problems--James--Chapter-7} (missing C01)
--   [Extra Practice 8](./MATH135/extra-practice.pdf#chapter.8){:.a#MATH135--Practice-Problems--James--Chapter-8}
--   [Extra Practice 9](./MATH135/extra-practice.pdf#chapter.9){:.a#MATH135--Practice-Problems--James--Chapter-9}
--   [Extra Practice 10](./MATH135/extra-practice.pdf#chapter.10){:.a#MATH135--Practice-Problems--James--Chapter-10} (missing C02. RP10 by sooshi)
--   [Extra Practice 11](./MATH135/extra-practice.pdf#chapter.11){:.a#MATH135--Practice-Problems--James--Chapter-11} (missing C01)
--   [Fall 2018 Midterm](./MATH135/MT2018F.pdf){:.l#MATH135--Practice-Exam--James--Midterm-F18}
--   [Fall 2019 Midterm](./MATH135/MT2019F.pdf){:.l#MATH135--Practice-Exam--James--Midterm-F19}
--   [Winter 2020 Midterm](./MATH135/MT2020W.pdf){:.l#MATH135--Practice-Exam--James--Midterm-W20}
--   [Winter 2020 Final](./MATH135/FE2020W.pdf){:.l#MATH135--Practice-Exam--James--Final-W20}
+- [Extra Practice 1](./MATH135/extra-practice.pdf#chapter.1){:.a#MATH135--Practice-Problems--James--Chapter-1}
+- [Extra Practice 2](./MATH135/extra-practice.pdf#chapter.2){:.a#MATH135--Practice-Problems--James--Chapter-2}
+- [Extra Practice 3](./MATH135/extra-practice.pdf#chapter.3){:.a#MATH135--Practice-Problems--James--Chapter-3}
+- [Extra Practice 4](./MATH135/extra-practice.pdf#chapter.4){:.a#MATH135--Practice-Problems--James--Chapter-4} (missing C02)
+- [Extra Practice 5](./MATH135/extra-practice.pdf#chapter.5){:.a#MATH135--Practice-Problems--James--Chapter-5}
+- [Extra Practice 6](./MATH135/extra-practice.pdf#chapter.6){:.a#MATH135--Practice-Problems--James--Chapter-6} (missing C03, C05, C06. RP09 by sooshi)
+- [Extra Practice 7](./MATH135/extra-practice.pdf#chapter.7){:.a#MATH135--Practice-Problems--James--Chapter-7} (missing C01)
+- [Extra Practice 8](./MATH135/extra-practice.pdf#chapter.8){:.a#MATH135--Practice-Problems--James--Chapter-8}
+- [Extra Practice 9](./MATH135/extra-practice.pdf#chapter.9){:.a#MATH135--Practice-Problems--James--Chapter-9}
+- [Extra Practice 10](./MATH135/extra-practice.pdf#chapter.10){:.a#MATH135--Practice-Problems--James--Chapter-10} (missing C02. RP10 by sooshi)
+- [Extra Practice 11](./MATH135/extra-practice.pdf#chapter.11){:.a#MATH135--Practice-Problems--James--Chapter-11} (missing C01)
+- [Fall 2018 Midterm](./MATH135/MT2018F.pdf){:.l#MATH135--Practice-Exam--James--Midterm-F18}
+- [Fall 2019 Midterm](./MATH135/MT2019F.pdf){:.l#MATH135--Practice-Exam--James--Midterm-F19}
+- [Winter 2020 Midterm](./MATH135/MT2020W.pdf){:.l#MATH135--Practice-Exam--James--Midterm-W20}
+- [Winter 2020 Final](./MATH135/FE2020W.pdf){:.l#MATH135--Practice-Exam--James--Final-W20}
 
 #### MATH 136 (W21) <small>Linear Algebra I for Honours Mathematics</small>
 
@@ -257,20 +253,20 @@ are in the `etudes` repository.
 
 #### MATH 137 (F20) <small>Calculus I for Honours Mathematics</small>
 
--   [Practice Assignment 1](./MATH137/PA01.pdf){:.l#MATH137--Practice-Problems--James--Assignment-1}
--   [Practice Assignment 2](./MATH137/PA02.pdf){:.l#MATH137--Practice-Problems--James--Assignment-2}
--   [Practice Assignment 3](./MATH137/PA03.pdf){:.l#MATH137--Practice-Problems--James--Assignment-3}
--   [Practice Assignment 4](./MATH137/PA04.pdf){:.l#MATH137--Practice-Problems--James--Assignment-4}
--   [Practice Assignment 5](./MATH137/PA05.pdf){:.l#MATH137--Practice-Problems--James--Assignment-5}
--   [Practice Assignment MT](./MATH137/PAMT.pdf){:.l#MATH137--Practice-Problems--James--Midterm}
--   [Practice Assignment 6](./MATH137/PA06.pdf){:.l#MATH137--Practice-Problems--James--Assignment-6}
--   [Practice Assignment 7](./MATH137/PA07.pdf){:.l#MATH137--Practice-Problems--James--Assignment-7}
--   [Practice Assignment 8](./MATH137/PA08.pdf){:.l#MATH137--Practice-Problems--James--Assignment-8}
--   [Practice Assignment 9](./MATH137/PA09.pdf){:.l#MATH137--Practice-Problems--James--Assignment-9}
--   [Practice Assignment 10](./MATH137/PA10.pdf){:.l#MATH137--Practice-Problems--James--Assignment-10}
--   [Practice Assignment FE](./MATH137/PAFE.pdf){:.l#MATH137--Practice-Problems--James--Final}
--   [Practice Midterm 1](./MATH137/PM01.pdf){:.l#MATH137--Practice-Exam--James--Midterm}
--   [Practice Final F2019](./MATH137/PF2019F.pdf){:.l#MATH137--Practice-Exam--James--Final-F19}
+- [Practice Assignment 1](./MATH137/PA01.pdf){:.l#MATH137--Practice-Problems--James--Assignment-1}
+- [Practice Assignment 2](./MATH137/PA02.pdf){:.l#MATH137--Practice-Problems--James--Assignment-2}
+- [Practice Assignment 3](./MATH137/PA03.pdf){:.l#MATH137--Practice-Problems--James--Assignment-3}
+- [Practice Assignment 4](./MATH137/PA04.pdf){:.l#MATH137--Practice-Problems--James--Assignment-4}
+- [Practice Assignment 5](./MATH137/PA05.pdf){:.l#MATH137--Practice-Problems--James--Assignment-5}
+- [Practice Assignment MT](./MATH137/PAMT.pdf){:.l#MATH137--Practice-Problems--James--Midterm}
+- [Practice Assignment 6](./MATH137/PA06.pdf){:.l#MATH137--Practice-Problems--James--Assignment-6}
+- [Practice Assignment 7](./MATH137/PA07.pdf){:.l#MATH137--Practice-Problems--James--Assignment-7}
+- [Practice Assignment 8](./MATH137/PA08.pdf){:.l#MATH137--Practice-Problems--James--Assignment-8}
+- [Practice Assignment 9](./MATH137/PA09.pdf){:.l#MATH137--Practice-Problems--James--Assignment-9}
+- [Practice Assignment 10](./MATH137/PA10.pdf){:.l#MATH137--Practice-Problems--James--Assignment-10}
+- [Practice Assignment FE](./MATH137/PAFE.pdf){:.l#MATH137--Practice-Problems--James--Final}
+- [Practice Midterm 1](./MATH137/PM01.pdf){:.l#MATH137--Practice-Exam--James--Midterm}
+- [Practice Final F2019](./MATH137/PF2019F.pdf){:.l#MATH137--Practice-Exam--James--Final-F19}
 
 #### MATH 138 (W21) <small>Calculus II for Honours Mathematics</small>
 
@@ -287,15 +283,15 @@ You might be interested in the [source](/.src/MATH239/notes) if you want to use 
 There are also [exercise solutions](./MATH239/exercises.pdf){:.l#MATH239--Practice-Problems--James} for the course notes
 (using the Part I F20 and Part II S18 course notes). Progress:
 
--   [Ch. 1 (Basic Principles)](./MATH239/exercises.pdf#section.1.1){:.a#MATH239--Practice-Problems--James--Chapter-1}
--   [Ch. 2 (Generating Series)](./MATH239/exercises.pdf#section.1.2){:.a#MATH239--Practice-Problems--James--Chapter-2} (missing 2.8, 2.13(b)-(c), 2.16-21)
--   [Ch. 3 (Binary Strings)](./MATH239/exercises.pdf#section.1.3){:.a#MATH239--Practice-Problems--James--Chapter-3} (missing 3.13(b), 3.14(d))
--   [Ch. 4 (Recurrence Relations)](./MATH239/exercises.pdf#section.1.4){:.a#MATH239--Practice-Problems--James--Chapter-4a} (missing 4.10-12)
--   [Ch. 4 (Graph Theory Intro.)](./MATH239/exercises.pdf#section.2.4){:.a#MATH239--Practice-Problems--James--Chapter-4b} (missing 4.4.9-10, 4.4.12, 4.5, 4.6.2-3, 4.6.10)
--   [Ch. 5 (Trees)](./MATH239/exercises.pdf#section.2.5){:.a#MATH239--Practice-Problems--James--Chapter-5} (missing 5.3.2, 5.4, 5.5)
--   [Ch. 6 (Codes)](./MATH239/exercises.pdf#section.2.6){:.a#MATH239--Practice-Problems--James--Chapter-6} (not covered)
--   [Ch. 7 (Planar Graphs)](./MATH239/exercises.pdf#section.2.7){:.a#MATH239--Practice-Problems--James--Chapter-7} (missing 7.4, 7.6.1, 7.6.7-13, 7.8)
--   [Ch. 8 (Matchings)](./MATH239/exercises.pdf#section.2.8){:.a#MATH239--Practice-Problems--James--Chapter-8} (missing 8.2.7-17, 8.3, 8.6, 8.8)
+- [Ch. 1 (Basic Principles)](./MATH239/exercises.pdf#section.1.1){:.a#MATH239--Practice-Problems--James--Chapter-1}
+- [Ch. 2 (Generating Series)](./MATH239/exercises.pdf#section.1.2){:.a#MATH239--Practice-Problems--James--Chapter-2} (missing 2.8, 2.13(b)-(c), 2.16-21)
+- [Ch. 3 (Binary Strings)](./MATH239/exercises.pdf#section.1.3){:.a#MATH239--Practice-Problems--James--Chapter-3} (missing 3.13(b), 3.14(d))
+- [Ch. 4 (Recurrence Relations)](./MATH239/exercises.pdf#section.1.4){:.a#MATH239--Practice-Problems--James--Chapter-4a} (missing 4.10-12)
+- [Ch. 4 (Graph Theory Intro.)](./MATH239/exercises.pdf#section.2.4){:.a#MATH239--Practice-Problems--James--Chapter-4b} (missing 4.4.9-10, 4.4.12, 4.5, 4.6.2-3, 4.6.10)
+- [Ch. 5 (Trees)](./MATH239/exercises.pdf#section.2.5){:.a#MATH239--Practice-Problems--James--Chapter-5} (missing 5.3.2, 5.4, 5.5)
+- [Ch. 6 (Codes)](./MATH239/exercises.pdf#section.2.6){:.a#MATH239--Practice-Problems--James--Chapter-6} (not covered)
+- [Ch. 7 (Planar Graphs)](./MATH239/exercises.pdf#section.2.7){:.a#MATH239--Practice-Problems--James--Chapter-7} (missing 7.4, 7.6.1, 7.6.7-13, 7.8)
+- [Ch. 8 (Matchings)](./MATH239/exercises.pdf#section.2.8){:.a#MATH239--Practice-Problems--James--Chapter-8} (missing 8.2.7-17, 8.3, 8.6, 8.8)
 
 ### Pure Math
 
