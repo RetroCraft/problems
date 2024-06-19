@@ -103,6 +103,10 @@ A review casebook using real life fact patterns is available [here](https://retr
 
 For post-midterm content, Imaad made a summary in [flowchart format](./BU231/flowchart.html){:.a#BU231--Flowchart--Imaad}.
 
+#### BU 231 (S24) <small>Business Law</small>
+
+[Notes](./BU231/s24-midterm-notes.pdf){:.a#BU231--Notes--Andy} for all content up to the midterm by Andy.
+
 #### BU 352 (F22) <small>Introduction to Marketing</small>
 
 [Flashcard set](https://quizlet.com/ca/723976718/bu352-f22-flash-cards/){:.a#BU352--Flashcards--Imaad} by Imaad.
