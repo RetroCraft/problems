@@ -1,4 +1,5 @@
 \documentclass[class=pmath370,tikz,notes]{agony}
+\usepackage[hybrid,underscores=false]{markdown}
 \usepackage{svg}
 \usetikzlibrary{external}
 \tikzexternalize[prefix=figures-cache/]
@@ -2408,7 +2409,7 @@ We take this fact without proof.
 We do not prove this.
 
 \lecture{Mar 8}
-\begin{theorem}
+\begin{theorem}\label{thm:ifsfp}
   Let $F_1,\dotsc,F_k$ be linear contractions with contraction factor $\lambda \in (0,1)$.
 
   Let $F : \K_n \to \K_n$ be the corresponding IFS. Then,
@@ -2822,7 +2823,7 @@ whose black-shaded region approximates $K_c$.
   completing the proof.
 \end{prf}
 
-\begin{theorem}
+\begin{theorem}\label{thm:repel}
   If $z_0$ is a repelling periodic point for $Q_c(z)$, then $z_0 \in J_c$.
 \end{theorem}
 \begin{prf}
@@ -3267,7 +3268,7 @@ we have $z(t + \delta) = z(t) + \delta \cdot f(z(t))$.
 Suppose we draw a \term*{system diagram} relating $z$ to $\dot z$.
 When $f(z)$ crosses the $z$-axis, we have a fixed point because $\dot z = 0$.
 
-\begin{center}  
+\begin{center}
   \begin{tikzpicture}
     \begin{axis}[axis lines=middle,
         xlabel=$z$,
@@ -3276,8 +3277,8 @@ When $f(z)$ crosses the $z$-axis, we have a fixed point because $\dot z = 0$.
         ytick=\empty,
         xtick=\empty,
         samples=60]
-        \addplot[blue,domain={2:4}] {3*(x-3)};
-        \draw[black,fill=white] (axis cs:3,0) circle [radius=3pt];
+      \addplot[blue,domain={2:4}] {3*(x-3)};
+      \draw[black,fill=white] (axis cs:3,0) circle [radius=3pt];
     \end{axis}
   \end{tikzpicture}
   \quad
@@ -3289,8 +3290,8 @@ When $f(z)$ crosses the $z$-axis, we have a fixed point because $\dot z = 0$.
         ytick=\empty,
         xtick=\empty,
         samples=60]
-        \addplot[blue,domain={2:4}] {-3*(x-3)};
-        \fill[black] (axis cs:3,0) circle [radius=3pt];
+      \addplot[blue,domain={2:4}] {-3*(x-3)};
+      \fill[black] (axis cs:3,0) circle [radius=3pt];
     \end{axis}
   \end{tikzpicture}
 \end{center}
@@ -3468,8 +3469,8 @@ This is like flipping the $n$\xth coin and expecting $i$.
 
 \begin{example}
   Fix $x \in X$. The \term*{Dirac delta at $x$} is the measure $\mu(A) = \begin{cases}
-    0 & x \not\in A \\ 1 & x \in A
-  \end{cases}$
+      0 & x \not\in A \\ 1 & x \in A
+    \end{cases}$
 \end{example}
 
 This is measuring whether a set contains $x$.
@@ -3529,6 +3530,367 @@ then $G$ acts on $P(X)$ which we define as $(g.\mu)(A) = \mu(g^{-1}.A)$.
   Then we use the compactness of $P(X)$ to do something?
   which passes to the convergent subsequence of $\mu_n$ with limit $\mu$?
   those are math words! they mean something!
+\end{prf}
+
+\section{Lila Kari: Chaos game representation of DNA sequences for biodiversity informatics}
+\lecture{Apr 5}
+\begin{markdown}
+Key questions that we're looking to answer:
+
+1. Does biological relatedness produce a detectable mathematical signature in genomes
+2. Can the **environment** produce a detectable, kinship independent mathematical structure
+
+What is Taxonomy?
+
+- groups names and living organisms based on relationships inferred by shared characteristics
+- These days, we use DNA-based techniques such as gene alignment for taxonomy
+- Overall, the general purpose of this is to create the "tree of life"
+- Important for later: there are 3 main domains of life; bacteria, archaea, eukaria
+
+Why do we care?
+
+- 95\% of multicellular species on earth don't yet have a scientific name
+- And you can't exactly protect what you don't know exists
+- Goal of her research group: map all life on earth by 2045
+
+Mathematical representations of DNA
+
+- A DNA sequence can be viewed as a string/word over a 4-letter alphabet ${A, C, G, T}$
+	- This encodes enough genetic information
+- How to represent DNA otherwise?
+	1. The Chaos Game representation
+		1. Start with a square with corners labelled A, C, G, T
+		2. DNA sequence is read left-to-right
+		3. A new point is plotted midpoint between the current point,
+      and the corner labelled by the DNA letter being read.
+			[picture]
+		- Note in-practice: you would pick a resolution and store a matrix in the computer. So the 
+		- Who gives af? Mathematical numbers have wack ass chaos game plots as sequences, but DNA looks SICK AF when represented like this
+		- Turns out:
+			- Real life geonomic CGRs are specices specific
+			- Patterns are similar for DNA sequences from same genome
+			- Patterns are different for DNA sequences from different species
+			- Patterns are preserved *regardless of the length and location of the DNA sequence*
+			- Hence why CGR is considered a qualified genomic signature
+	2. Vector of words of length $k$
+	3. Digital signal - numerical vector by assigning each of the 4 letters a number
+
+- CGR $\to$ can establish some kind of pair-wise distance, create a matrix,
+  and now you can visually cluster entire species on a plot.
+  The coolest part about this is we're using like a 20,000 long subset
+  of 3 billion entries in these DNA sequences
+	- These plots even show animals like platypus
+
+Supervised machine learning for taxonomic classification
+
+- Taxonomy is a bloodbath, so we try and see how good ML can work
+- Training set of pairs (DNA sequence CGR, species name)
+- Doesn't wanna get into too much details about the individual ML things used but there was about 80-90\% accuracy through some of the methods
+- Took a hierarchical classification approach to classifying COVID genomes and got like 98\% accuracy.
+  It was using this CGR approach and found that the COVID was closest to some bat virus
+
+Unsupervised clustering for taxonomic identification
+
+- Motivation: supervised learning is limited to your dataset, *especially in this taxonomy case*
+- Give the algorithm all the sequences and ask it to cluster shit
+- How this works: for every sequence you generate a mimic sequence with a few mutations.
+  You tell your algorithm that the mimic sequence should be similar to its original.
+  Iterate this and now you've got clustering.
+
+Based on all of the above, answer to motivating question 1 is correct.
+
+Motivation question 2 questions this central dogma in biology:
+that genomes are exclusively determined by ancestry.
+Brings us to the last part of the talk:
+
+Supervised/unsupervised learning to test the hypothesis of an environmental signal in extreme genomes
+
+- Analyzed Extremophiles: organisms able to live in extreme environments
+  (temperature, radiation, salinity or pH level)
+- Used 2 big datasets: one temperature extreme and pH extreme
+	- Took stuff from bacteria and archea. Note these are DIFFERENT AS FUCK. there's more different in bacteria and archea than there is between a polar bear and  a fern
+	- Some examples:
+		- *Pyrococcus furiosus*, a hyperthemophile that has optimal growth temp of 100°C
+		- *Psychromonas*, a psychrophile - optional growth temperature $-12$°
+		- Bunch of other really long names with pretty pictures
+- Through supervised learning, the accuracy was about 83\% when you feed it a dataset of (DNA sequence, temperature) - shows that classifications based on temperature are decently accurate too.
+  So perhaps your genetics are at least somewhat affected by your environment
+
+- What about unsupervised learning?
+	- In most cases, it clustered based on usual taxonomy
+	- BUT, there were plenty of cases where we saw clusters of bacteria and archea at the same temperature WHICH IS CRAZY BC THESE THINGS ARE MAD DIFFERENT
+	- What was even wilder is that these cases actually represented the *errors in the taxonomy supervised learning model*
+
+So the answer to the second motivating question is actually insanely cool.
+This paper that talked about this was published last year.
+\end{markdown}
+
+\chapter{Final Exam Theorems}
+
+The following proofs are restated to be standalone.
+
+\begin{theorem}
+  $S : \Lambda \to \Sigma$ is continuous (\cref{thm:Shom}).
+\end{theorem}
+\begin{prf}
+  Let $y \in \Lambda$ and $S(y) = (y_0y_1y_2\cdots)$.
+  Let $\varepsilon > 0$ and choose $n$ such that $\frac{1}{2^n} < \varepsilon$.
+
+  Define \[ I_{i,j} := \{ x \in I_{y_i} : Q_c(x) \in I_{y_{i+1}}, \dotsc, Q_c^{j-i}(x) \in I_{y_j} \} \]
+  i.e., $x \in I_{i,j}$ iff the leading digits of $S(x)$ are $y_i \cdots y_j$.
+
+  Claim that each $I_{i,j}$ is a closed interval.
+  We will induct on the number of consecutive matching digits $n = j-i$.
+
+  ($n=1$) Observe that $I_0$ and $I_1$ are closed intervals.
+
+  ($n \geq 2$) Suppose that all sets that match $n-1$ consecutive digits
+  are closed intervals.
+  In particular, we have that $I_{i+1,j}$ is a closed interval.
+  Then:
+  \begin{align*}
+         & x \in I_{i,j}                                                           \\
+    \iff & x \in I_{y_i}, Q_c(x) \in I_{y_{i+1}}, \dotsc, Q_c^{j-i}(x) \in I_{y_j} \\
+    \iff & x \in I_{y_i}, x \in Q_c^{-1}(I_{i+1,j})                                \\
+    \iff & x \in I_{y_i} \cap Q_c^{-1}(I_{i+1,j})
+  \end{align*}
+  That is, $I_{i,j} = I_{y_i} \cap Q_c^{-1}(I_{i+1,j})$.
+  Consider the preimage of the closed interval $I_{i+1,j}$:
+  \begin{center}
+    \begin{tikzpicture}
+      \begin{axis}[domain=-4:4,xmin=-4,xmax=4,ymin=-4,ymax=4,hide axis]
+        \addplot[dotted,green!70!black] {x};
+        \addplot[dotted,blue] {x^2-3};
+        \addplot[domain=-2.303:-0.835,blue] {x^2-3} node[above,pos=0] {$I_0$};
+        \addplot[domain=0.835:2.303,blue] {x^2-3} node[above,pos=1] {$I_1$};
+        \addplot[domain=-2.121:-1.414,purple,ultra thick] {x^2-3};
+        \addplot[domain=1.414:2.121,purple,ultra thick] {x^2-3};
+        \addplot[orange] {1.5};
+        \addplot[orange] {-1};
+        \draw[red,dotted] (2.303,2.303) rectangle (-2.303,-2.303);
+        \draw[orange,decorate,decoration=brace] (-3,-1) -- node[midway,left,orange]{\rotatebox{90}{$I_{i+1,j}$}} (-3,1.5);
+      \end{axis}
+    \end{tikzpicture}
+  \end{center}
+  By graphical analysis, it consists of two disjoint closed intervals
+  one in $I_0$ and one in $I_1$.
+  But we are taking the intersection with $I_{y_i}$ which is either $I_0$ or $I_1$,
+  so we get exactly one of those closed intervals.
+
+  In particular, $I_{0,n}$ is closed,
+  so there exists a $\delta$ such that $(y-\delta, y+\delta) \subseteq I_{0,n}$.
+
+  Then, for $x \in \Lambda$ with $\abs{x-y} < \delta$,
+  $x \in I_{0,n}$, so by construction, $d(S(x),S(y)) \leq \frac{1}{2^n} < \varepsilon$.
+\end{prf}
+
+\begin{theorem}
+  $S : \Lambda \to \Sigma$ is surjective (\cref{thm:Shom}).
+\end{theorem}
+\begin{prf}
+  Let $y = (y_0y_1\cdots) \in \Sigma$.
+  Define \[ I_{i,j} := \{ x \in I_{y_i} : Q_c(x) \in I_{y_{i+1}}, \dotsc, Q_c^{j-i}(x) \in I_{y_j} \} \]
+  i.e., $x \in I_{i,j}$ iff the leading digits of $S(x)$ are $y_i \cdots y_j$.
+
+  We must show that $I_{0,\infty}$ is non-empty,
+  since if $x \in I_{0,\infty}$, $S(x) = y$.
+
+  Claim that each $I_{i,j}$ is a closed interval.
+  We will induct on the number of consecutive matching digits $n = j-i$.
+
+  ($n=1$) Observe that $I_0$ and $I_1$ are closed intervals.
+
+  ($n \geq 2$) Suppose that all sets that match $n-1$ consecutive digits
+  are closed intervals.
+  In particular, we have that $I_{i+1,j}$ is a closed interval.
+  Then:
+  \begin{align*}
+         & x \in I_{i,j}                                                           \\
+    \iff & x \in I_{y_i}, Q_c(x) \in I_{y_{i+1}}, \dotsc, Q_c^{j-i}(x) \in I_{y_j} \\
+    \iff & x \in I_{y_i}, x \in Q_c^{-1}(I_{i+1,j})                                \\
+    \iff & x \in I_{y_i} \cap Q_c^{-1}(I_{i+1,j})
+  \end{align*}
+  That is, $I_{i,j} = I_{y_i} \cap Q_c^{-1}(I_{i+1,j})$.
+  Consider the preimage of the closed interval $I_{i+1,j}$:
+  \begin{center}
+    \begin{tikzpicture}
+      \begin{axis}[domain=-4:4,xmin=-4,xmax=4,ymin=-4,ymax=4,hide axis]
+        \addplot[dotted,green!70!black] {x};
+        \addplot[dotted,blue] {x^2-3};
+        \addplot[domain=-2.303:-0.835,blue] {x^2-3} node[above,pos=0] {$I_0$};
+        \addplot[domain=0.835:2.303,blue] {x^2-3} node[above,pos=1] {$I_1$};
+        \addplot[domain=-2.121:-1.414,purple,ultra thick] {x^2-3};
+        \addplot[domain=1.414:2.121,purple,ultra thick] {x^2-3};
+        \addplot[orange] {1.5};
+        \addplot[orange] {-1};
+        \draw[red,dotted] (2.303,2.303) rectangle (-2.303,-2.303);
+        \draw[orange,decorate,decoration=brace] (-3,-1) -- node[midway,left,orange]{\rotatebox{90}{$I_{i+1,j}$}} (-3,1.5);
+      \end{axis}
+    \end{tikzpicture}
+  \end{center}
+  By graphical analysis, it consists of two disjoint closed intervals
+  one in $I_0$ and one in $I_1$.
+  But we are taking the intersection with $I_{y_i}$ which is either $I_0$ or $I_1$,
+  so we get exactly one of those closed intervals.
+
+  Thus, $I_{i,j}$ is a closed interval.
+
+  Finally, by definition, $I_0 = I_{0,0} \supseteq I_{0,1} \supseteq I_{0,2} \supseteq \dotsb$.
+  Then, by the nested intervals lemma,
+  there must exist $x \in I_{0,\infty} = \bigcap_{j=0}^\infty I_{0,j}$.
+
+  Therefore, for this $x$, $S(x) = y$ and $S$ is surjective.
+\end{prf}
+
+\begin{theorem}
+  $S : \Lambda \to \Sigma$ is injective (\cref{thm:Shom}).
+\end{theorem}
+\begin{prf}
+  Suppose for a contradiction that there exist $x \neq y$ in $\Lambda$
+  such that $S(x) = S(y)$.
+  Then, for all $n$, $Q_c^n(x)$ and $Q_c^n(y)$ live in the same $I_0$ or $I_1$.
+
+  By Assignment 2, $\abs{Q_c'(x)} \geq \mu > 1$ for all $x \in I_0 \cup I_1$.
+  Therefore, by the mean value theorem and by injectivity of $Q_c$,
+  \begin{align*}
+    \abs{Q_c(x) - Q_c(y)}     & \geq \mu\abs{x-y}   \\
+    \abs{Q_c^2(x) - Q_c^2(y)} & \geq \mu^2\abs{x-y} \\
+                              & \vdotswithin{\geq}  \\
+    \abs{Q_c^n(x) - Q_c^n(y)} & \geq \mu^n\abs{x-y}
+  \end{align*}
+  and since $\mu > 1$, the right hand side explodes to infinity.
+  But the left hand side is bounded by the finite lengths of $I_0$ and $I_1$.
+  Contradiction.
+\end{prf}
+
+\begin{theorem}
+  $\sigma : \Sigma \to \Sigma$ is transitive (\cref{prop:Strans}).
+\end{theorem}
+\begin{prf}
+  We must show that for all $x,y \in \Sigma$, there exists $z \in \Sigma$
+  and $n,m \in \N \cup \{0\}$ such that $d(x,\sigma^n(z)) < \varepsilon$ and $d(y,\sigma^m(z)) < \varepsilon$.
+
+  Let $x,y \in \Sigma$ and $\varepsilon > 0$.
+  Let $\frac{1}{2^k} < \varepsilon$.
+
+  Pick $z = (0\ 1\ 00\ 01\ 10\ 11\ 000\ 001\ \cdots)$ to contain \emph{all} blocks of increasing sizes.
+
+  In particular, $z$ contains at index $n$ the first $k$ bits of $x$.
+  Then, $d(x,\sigma^n(z)) \leq \frac{1}{2^k} < \varepsilon$.
+
+  Likewise, $z$ contains at index $m$ the first $k$ bits of $y$.
+  Then, $d(y,\sigma^m(z)) \leq \frac{1}{2^k} < \varepsilon$.
+\end{prf}
+
+\begin{theorem}
+  Period 3 implies period 2 (\cref{thm:p3}).
+\end{theorem}
+\begin{prf}
+  Recall two propositions from class:
+  \begin{enumerate}[(1)]
+    \item if $I \subseteq J$ are closed intervals, $f$ is continuous,
+          and $f(I) \supseteq J$, then $f$ has a fixed point in $I$.
+    \item if $I$ and $J$ are closed intervals, $f$ is continuous,
+          and $f(I) \supseteq J$, then there exists a closed interval $I' \subseteq I$
+          such that $f(I') = J$.
+  \end{enumerate}
+  Let $a \in \R$ be a period 3 point for $f(x)$.
+  Say $f(a) = b$, $f(b) = c$, and $f(c) = a$. \WLOG, suppose $a < b, c$.
+  With loss of generality, suppose $b < c$.
+
+  Let $I = [a,b]$ and $J = [b,c]$.
+  Since $f(a) = b$ and $f(b) = c$, the intermediate value theorem
+  gives that $f(I) = f([a,b]) \supseteq [b,c] = J$.
+  Likewise, $f(b) = c$ and $f(c) = a$ imply that $f(J) = f([b,c]) \supseteq [a,c] = I \cup J$.
+
+  Then, by (2), $J = f(I')$ for some interval $I' \subseteq I$.
+  Likewise, $f(J) \supseteq I \cup J \supseteq I'$ means $f(J') = I'$ for an interval $J' \subseteq J$.
+
+  Therefore, $f^2(J') = f(I') = J \supseteq J'$.
+  By (1) w.r.t. $f^2$, there exists a fixed point $x \in J'$ such that $f^2(x) = x$.
+
+  We must check $x$ is not a fixed point.
+  Since $x \in J'$ and $f(x) \in I'$, if $x$ is a fixed point,
+  it must be $b$ (the only element of $I \cap J \supset I' \cap J'$).
+  But $b$ is not a fixed point by construction.
+
+  Therefore, $x$ is a point with period 2.
+\end{prf}
+
+\begin{theorem}
+  If $F : \K_n \to \K_n$ is an iterated function system and $A \in \K_n$,
+  then $F^k(A) \to A^*$ where $A^*$ is the unique fixed point of $F$ (\cref{thm:ifsfp}).
+\end{theorem}
+\begin{prf}
+  Let $F(A) = F_1(A) \cup \dotsb \cup F_k(A)$
+  for linear contractions $F_1,\dotsc,F_k : \R^n \toto \R^n$
+  with contraction factor $\lambda \in (0,1)$.
+
+  Recall the following results from class:
+  \begin{enumerate}[(1),nosep]
+    \item $D(F(A),F(B)) \leq \lambda D(A,B)$ for all $A,B \in \K_n$ where $D$ is the Hausdorff metric.
+    \item All strongly Cauchy sequences are Cauchy.
+    \item $(\K_n, D)$ is complete, meaning all Cauchy sequences have a limit point.
+  \end{enumerate}
+
+  Fix an $A \in \K_n$. Then, consider the orbit $F^m(A)$ and distance
+  \[ D(F^{m+1}(A),F^m(A)) = D(F^m(F(A)),F^m(A)) \leq \lambda^m D(F(A),A) \]
+  by (1). Now, let $\varepsilon_m = \lambda^m D(F(A),A)$.
+  Since $\lambda < 1$, $\sum \varepsilon_m$ converges.
+  Therefore, the sequence $(F^m(A))_{m=0}^\infty \subseteq \K_n$
+  is strongly Cauchy, and by (2), Cauchy.
+  By (3), $F^m(A) \to A^*$ for some limit point $A^* \in \K_n$.
+
+  Since $F$ is continuous, $F^{m+1}(A) \to F(A^*)$ so $F(A^*) = A^*$,
+  meaning it is a fixed point.
+
+  Now, suppose $A^*$ is not unique and $B^*$ is a fixed point of $F$. Then,
+  \[ D(A^*,B^*) = D(F^m(A^*),F^m(B^*)) \leq \lambda^m D(A^*,B^*) \]
+  by (1), which goes to 0, meaning $A^* = B^*$. Thus, $A^*$ is unique.
+\end{prf}
+
+\begin{theorem}
+  The escape criterion for the quadratic family (\cref{prop:esc}).
+\end{theorem}
+\begin{prf}
+  Suppose $\abs{z} \geq \abs{c} > 2$. Then,
+  \[ \abs{Q_c(z)} = \abs{z^2+c} \geq \abs{z}^2 - \abs{c} \]
+  by the reverse triangle inequality and
+  \[ \abs{Q_c(z)} \geq \abs{z}^2 - \abs{c} \geq \abs{z}^2 - \abs{z} = \abs{z}(\abs{z}-1) \]
+  Now, since $\abs{z} > 2$, write $\abs{z} > 2 + \lambda$ for some $\lambda$.
+  Then, $\abs{z} - 1 > \lambda + 1$, so
+  \[ \abs{Q_c(z)} \geq \abs{z}(\abs{z}-1) > \abs{z}(\lambda + 1) \]
+  Iterating, $\abs{Q_c^n(z)} \geq \abs{z}(\lambda+1)^n \to \infty$.
+
+  That is, $Q_c^n(z)$ does not converge and $z \not\in K_c$.
+\end{prf}
+
+\begin{theorem}
+  If $z_0$ is a repelling point for $Q_c(z)$, then $z_0 \in J_c$ (\cref{thm:repel}).
+\end{theorem}
+\begin{prf}
+  Suppose $z_0$ is a repelling periodic point with period $n$.
+
+  Suppose for a contradition that $z_0 \not\in J_c = \partial(K_c)$.
+  Since $z_0$ is periodic, by definition, $z_0 \in K_c$.
+  That is, $z_0$ is in the interior of $K_c$.
+
+  By definition of the interior,
+  there exists an $r$-ball in $K_c$ centered at $z$.
+  By the escape criterion, for all $z$ in the ball with $\abs{z - z_0} \leq r$
+  and $k \in \N$, we have $\abs{(Q_c^n)^k(z)} \leq M = \max\{\abs{c},2\}$.
+
+  Then, by Cauchy's estimate, $\abs{((Q_c^n)^k)'(z_0)} \leq \frac{M}{r}$.
+
+  Finally, $\abs{((Q_c^n)^k)'(z_0)}
+    = \prod_{j=0}^{k-1}\abs{(Q_c^n)'((Q_c^n)^j(z_0))}
+    = \prod_{j=0}^{k-1}\abs{(Q_c^n)'(z_0)}$
+  since $z_0$ is a fixed point of $Q_c^n$.
+  Since $z_0$ is repelling, $\abs{(Q_c^n)'(z_0)} = \lambda > 1$.
+  Then, $\abs{((Q_c^n)^k)'(z_0)} = \lambda^k \to \infty \not\leq \frac{M}{r}$.
+  Contradiction.
+
+  Therefore, $z_0 \in J_c$.
 \end{prf}
 
 \pagebreak
