@@ -38,11 +38,11 @@
     #v(-3em)
     #text(size: 40pt)[*Business Law Notes*] 
     #v(-3em)
-    #text(size: 20pt)[*Section 1: On the Law of Torts*]
+    #text(size: 20pt)[*Section 1: The Law of Torts*]
     #v(-1em)
-    #text(size: 14pt)[by Andy Chang]
+    #text(size: 12pt)[by Andy Chang]
 
-    Last Update: June 14, 2024 (version 1.1)
+    #update
   ]
   #outline(depth: 2)
 

@@ -8,7 +8,7 @@
   Defamation but for someone's property. Not much to say here.
   
   === Inducing Breach of Contract
-  Occurs when the tortfeasor knows of a contract signed between 2 parties, and takes *active* steps to break said contract. For example, stealing employees from one of your competitors. Not cool.
+  Occurs when the tortfeasor knows of a contract signed between 2 parties and takes *active* steps to break said contract. For example, stealing employees from one of your competitors. Not cool.
   
   === Unlawful Interference with Economic Relations
   Here, unlawful is the true meaning of the word - doing something genuinely criminal or quasi-criminal, with intention to injure/interfere with someone's ability to do business or earn a living. (Ex. Bribery)
@@ -20,12 +20,12 @@
   ]
   
   === Negligent Misrepresentation
-  A tort that was conceived in *_Hedley Byrne & Co. Ltd v. Heller and Partners_, [1964], A.C. 465*. Though the Plaintiff lost the case the courts still decided to start recognizing this and became formal in 1971.
+  A tort that was conceived in *_Hedley Byrne & Co. Ltd v. Heller and Partners_, [1964], A.C. 465*. Though the Plaintiff lost the courts still decided to start recognizing this and became formal in 1971.
 
-  *Representation* is any statement - written, verbal, or action. *Misrepresentation* is thus any untrue statement. Negligent Misrepresentation covers cases where it was untrue due to carelessness. Especially important for professionals - you're responsible to *not do this*!
+  *Representation* is any statement - written, verbal, or action. *Misrepresentation* is thus any untrue statement. Negligent Misrepresentation covers cases where it was untrue due to carelessness. Especially important for professionals - you're responsible for *not doing this*!
   #block(inset:(left: 1em))[
     1. A statement is made that is *false*
-    2. The statement Maker owes the statement Hearer a duty of care (subject to policy considerations to limit liability - are you an actual client, etc? Important due to internet info spread - liable to all?)
+    2. The statement Maker owes the statement Hearer a duty of care (subject to policy considerations to limit liability - are you an actual client, etc? Important due to internet info spread - it could potentially open up unlimited liability to all, which is absurd)
     3. The statement fell *below the standard of care*
     4. The Hearer *reasonably acts* on the Statement and suffers a *loss* as a result of the action taken.
   ]
@@ -50,10 +50,10 @@
   #block(inset:(left: 1em))[
     1. Has the scope to *exercise some discretion or power*
     2. Able to *unilaterally exercise power* to affect beneficiary legally or practically
-    3. The beneficiary is *particularly vulnerable to / at the mercy of* the fiduciary
+    3. The beneficiary is *particularly vulnerable to/at the mercy of* the fiduciary
   ]
 
-  Some in-class examples include, the director of a company to the company; a husband holding assets for a wife; an old woman relying on only 1 banker ever; pension investors to pensioners apparently (even if they never even met!) Relationships can change from contractual to fiduciary - if 1 party becomes heavily reliant or vulnerable in a way that only the other party can protect them
+  Some in-class examples include: the director of a company to the company; a husband holding assets for a wife; an old woman relying on only 1 banker ever; and pension investors to pensioners apparently??? (even if they never even met!) Relationships can change from contractual to fiduciary - if 1 party becomes heavily reliant or vulnerable in a way that only the other party can protect them.
   
   As a fiduciary, your duties include (*in addition to the normal duty of care*):
   #block(inset: (left: 1em))[
@@ -66,9 +66,9 @@
 
   But who do they owe a Duty of Care to? As the General Public relies on these professionals, there could be *unlimited liability* as anyone who even happens on your work (like a published financial report from an analyst on the internet) could claim a Duty of Care and ask for damages. (3rd Party Liability)
 
-  This obviously isn't good, since you would owe a Duty to Care to an absurd number of people. This is why Duty of Care for professionals often are dealt on a *case by case basis* and have lots of *policy* to limit liability - for the latter, recall the Anns test, which lets us limit liability due to policy reasons.
+  This obviously isn't good, since you would owe a Duty to Care to an absurd number of people. This is why Duty of Care for professionals often is dealt with on a *case by case basis* and is subject to lots of *policies* to limit liability - for the latter, recall the Anns test, which lets us limit liability due to policy reasons.
 
-  In summary, here are some common ways to limit professional liability:
+  Here are some common ways to limit professional liability:
   #block(inset:(left: 1em))[
     - Utilize Policy Reasons to limit Duty of Care: you could argue that the plaintiff is not your client
     - *Retainer agreement*: A contract stating you will do exactly what is contracted of them to do and nothing more; anything else that occurs is not your problem and thus you are not liable for it.

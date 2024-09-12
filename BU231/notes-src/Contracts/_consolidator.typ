@@ -28,8 +28,8 @@
   #Contracts_ExitWriting2
   #pagebreak()
   #Contracts_ExitWriting3
-
   #pagebreak()
+  
   #Contract_Tidbits
     
  
@@ -43,11 +43,11 @@
     #v(-3em)
     #text(size: 40pt)[*Business Law Notes*] 
     #v(-3em)
-    #text(size: 20pt)[*Section 2: On the Law of Contracts*]
+    #text(size: 20pt)[*Section 2: The Law of Contracts*]
     #v(-1em)
-    #text(size: 14pt)[by Andy Chang]
+    #text(size: 12pt)[by Andy Chang]
 
-    Last Update: June 14, 2024 (version 1.1)
+    #update
   ]
   #outline(depth: 2)
 
