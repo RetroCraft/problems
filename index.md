@@ -376,6 +376,7 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 36. **MATH135/EP09/RP01** Flipped digits in final answer (various, [#28](/.gh/issues/28))
 37. **MATH135/EP10/RP01** Lost a negative (various, [#29](/.gh/pull/29))
 38. **MATH135/FE2020W/Q07** Rooted modulus instead of squaring (Max)
+39. **MATH239/exercises/2.0.9** Failed at counting to five (Connor, [#39](/.gh/pull/39))
 
 ## Contact
 
