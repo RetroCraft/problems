@@ -95,6 +95,15 @@ by Yash and Karthik.
 
 Another [flashcard set](https://quizlet.com/mian8680/folders/bu288-f2021/sets){:.a#BU288--Flashcards--Imaad} for the two midterms and final exam.
 
+#### BU 288 (F23) <small>Organizational Behaviour</small>
+
+[Notes for Midterm 1 content](./BU288/f23-mt1-notes.pdf){:.a#BU288--Notes--Andy--Midterm-1} and
+[Midterm 2 content](./BU288/f23-mt2-notes.pdf){:.a#BU288--Notes--Andy--Midterm-2} by Andy.
+
+A set of [practice problems](./BU288/f23-mt1-selfquestions.pdf){:.a#BU288--Practice-Problems--Andy}
+for Midterm 1 written by Andy.
+Questions may not reflect actual exam difficulty or answer format.
+
 #### BU 231 (S22) <small>Business Law</small>
 
 Yet more [Quizlet cards](https://quizlet.com/ca/703888580/bu231-midterm-flash-cards/){:.a#BU231--Flashcards--Imaad} by Imaad for the midterm.
@@ -102,6 +111,7 @@ Yet more [Quizlet cards](https://quizlet.com/ca/703888580/bu231-midterm-flash-ca
 A review casebook using real life fact patterns is available [here](https://retrocraft.notion.site/retrocraft/BU-231-Review-Casebook-232bb411c0b34176a0340812d7f84a24){:.a#BU231--Casebook--James}.
 
 For post-midterm content, Imaad made a summary in [flowchart format](./BU231/flowchart.html){:.a#BU231--Flowchart--Imaad}.
+
 
 #### BU 231 (S24) <small>Business Law</small>
 
@@ -382,6 +392,7 @@ Thanks to everyone on the list who've helped me make this resource better for ev
 36. **MATH135/EP09/RP01** Flipped digits in final answer (various, [#28](/.gh/issues/28))
 37. **MATH135/EP10/RP01** Lost a negative (various, [#29](/.gh/pull/29))
 38. **MATH135/FE2020W/Q07** Rooted modulus instead of squaring (Max)
+39. **MATH239/exercises/2.0.9** Failed at counting to five (Connor, [#39](/.gh/pull/39))
 
 ## Contact
 
