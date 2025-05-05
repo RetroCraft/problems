@@ -21,6 +21,7 @@ verbatimEnvironments:
     markdown: 1
     pycode: 1
     pyverbatim: 1
+    forest: 1
 indentAfterItems:
    tikzpicture: 1
    algorithmic: 1
@@ -58,8 +59,3 @@ specialBeginEnd:
           - '\\Else'
         end: '\\EndIf'
         lookForThis: 1
-    For:
-        begin: '\\For'
-        end: '\\EndFor'
-        lookForThis: 1
-
