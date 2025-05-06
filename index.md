@@ -66,9 +66,9 @@ The `agony` class is documented [here](/.gh#using-the-agony-class).
 #### BU 111 (F20, F22) <small>Introduction to the Business Environment</small>
 
 Imaad's flashcards for [PEST factors](https://quizlet.com/ca/553312795/bu111-final-review-f2020-all-pest-factors-flash-cards/){:.a#BU111--Flashcards--Imaad--PEST}
-and [strategic expansion](https://quizlet.com/ca/553644800/bu111-final-review-f2020-intl-business-strategic-expansion-flash-cards/){:.a#BU111--Flashcards--Imaad--Strategic-Expansion}.
+and [strategic expansion](https://quizlet.com/ca/553644800/bu111-final-review-f2020-intl-business-strategic-expansion-flash-cards/){:.a#BU111--Flashcards--Imaad--Strategic-Expansion} from Fall 2020.
 
-Complete notes for the F22 [midterm](https://docs.google.com/document/d/1LcJJwRRkSb64HsP4X-sOGEsH88taibLOtuMiVI-641A/edit?usp=sharing){:.a#BU111--Notes--Sophia--Midterm}
+Complete notes for the Fall 2022 [midterm](https://docs.google.com/document/d/1LcJJwRRkSb64HsP4X-sOGEsH88taibLOtuMiVI-641A/edit?usp=sharing){:.a#BU111--Notes--Sophia--Midterm}
 and [final](https://docs.google.com/document/d/1OmAY4RFbbq6bb3P44r9N21mXg4YgeageJ0Qsx3ZSWYE/edit?usp=sharing){:.a#BU111--Notes--Sophia--Final} by Sophia.
 
 #### BU 121 (W21) <small>Functional Areas of the Organization</small>
@@ -91,39 +91,30 @@ including readings, by Chloe and Stella.
 [Final exam flashcards](https://quizlet.com/ca/901322098/bu121-final-flash-cards/){:.a#BU121--Flashcards--Yash}
 by Yash and Karthik.
 
-#### BU 288 (F21) <small>Organizational Behaviour</small>
+#### BU 288 (F21, F23) <small>Organizational Behaviour</small>
 
-Another [flashcard set](https://quizlet.com/mian8680/folders/bu288-f2021/sets){:.a#BU288--Flashcards--Imaad} for the two midterms and final exam.
+Another [flashcard set](https://quizlet.com/mian8680/folders/bu288-f2021/sets){:.a#BU288--Flashcards--Imaad} for the two midterms and final exam from Fall 2021.
 
-#### BU 288 (F23) <small>Organizational Behaviour</small>
+[Notes](./BU288/f23-mt1-notes.pdf){:.a#BU288--Notes--Andy--Midterm-1} and
+set of [practice problems](./BU288/f23-mt1-selfquestions.pdf){:.a#BU288--Practice-Problems--Andy} for Midterm 1 content,
+and [notes](./BU288/f23-mt2-notes.pdf){:.a#BU288--Notes--Andy--Midterm-2}
+for Midterm 2 content by Andy during Fall 2023.
 
-[Notes for Midterm 1 content](./BU288/f23-mt1-notes.pdf){:.a#BU288--Notes--Andy--Midterm-1} and
-[Midterm 2 content](./BU288/f23-mt2-notes.pdf){:.a#BU288--Notes--Andy--Midterm-2} by Andy.
-
-A set of [practice problems](./BU288/f23-mt1-selfquestions.pdf){:.a#BU288--Practice-Problems--Andy}
-for Midterm 1 written by Andy.
-Questions may not reflect actual exam difficulty or answer format.
-
-#### BU 231 (S22) <small>Business Law</small>
-
-Yet more [Quizlet cards](https://quizlet.com/ca/703888580/bu231-midterm-flash-cards/){:.a#BU231--Flashcards--Imaad} by Imaad for the midterm.
+#### BU 231 (S22, S24) <small>Business Law</small>
 
 A review casebook using real life fact patterns is available [here](https://retrocraft.notion.site/retrocraft/BU-231-Review-Casebook-232bb411c0b34176a0340812d7f84a24){:.a#BU231--Casebook--James}.
 
+Yet more [Quizlet cards](https://quizlet.com/ca/703888580/bu231-midterm-flash-cards/){:.a#BU231--Flashcards--Imaad} by Imaad for the S22 midterm.
+
 For post-midterm content, Imaad made a summary in [flowchart format](./BU231/flowchart.html){:.a#BU231--Flowchart--Imaad}.
 
+A selection of [notes](./BU231/notes-andy/BU 231 Notes.pdf){:.a#BU231--Notes--Andy} for content by Andy from Spring 2024:
 
-#### BU 231 (S24) <small>Business Law</small>
-
-A selection of notes for content by Andy:
-
-- [Full Notes](<./BU231/notes-andy/BU 231 Notes.pdf>){:.a#BU231--Notes--Andy}
-- [Midterm Content](<./BU231/notes-andy/BU 231 Notes.pdf#page=5>){:.a#BU231--Notes--Andy} - Torts and Contract Law I
-- [Tort Law](<./BU231/notes-andy/BU 231 Notes.pdf#page=5>){:.a#BU231--Notes--Andy} - Intentional and Unintentional Torts, Damages, Liability
-- [Contract Law I](<./BU231/notes-andy/BU 231 Notes.pdf#page=16>){:.a#BU231--Notes--Andy} - Elements to a Contract, Impeaching Contracts, Requirement of Writing
-- [Contract Law II](<./BU231/notes-andy/BU 231 Notes.pdf#page=28>){:.a#BU231--Notes--Andy} - Interpretation, Privity, Assignment, Discharge, Remedies
-- [Relationships](<./BU231/notes-andy/BU 231 Notes.pdf#page=42>){:.a#BU231--Notes--Andy} - Agency, Franchise, Employment, Secured Transactions
-- [Business and Misc.](<./BU231/notes-andy/BU 231 Notes.pdf#page=57>){:.a#BU231--Notes--Andy} - Corporate Structure/Governance, IP, Privacy, International Law
+- [Tort Law](<./BU231/notes-andy/BU 231 Notes.pdf#page=5>){:.a#BU231--Notes--Andy--Torts}: Intentional and unintentional torts, damages, liability
+- [Contract Law I](<./BU231/notes-andy/BU 231 Notes.pdf#page=16>){:.a#BU231--Notes--Andy--Contracts-1}: Elements to a contract, impeachment, writing requirements
+- [Contract Law II](<./BU231/notes-andy/BU 231 Notes.pdf#page=28>){:.a#BU231--Notes--Andy--Contracts-2}: Interpretation, privity, assignment, discharge, remedies
+- [Relationships](<./BU231/notes-andy/BU 231 Notes.pdf#page=42>){:.a#BU231--Notes--Andy--Relationships}: Agency, franchise, employment, secured transactions
+- [Business and Misc.](<./BU231/notes-andy/BU 231 Notes.pdf#page=57>){:.a#BU231--Notes--Andy--Business}: Corporate structure/governance, IP, privacy, international law
 
 #### BU 352 (F22) <small>Introduction to Marketing</small>
 
