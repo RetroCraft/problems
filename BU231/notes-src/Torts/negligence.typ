@@ -11,14 +11,14 @@
   ]
   
   === History
-  In the past, around the Industrial Era, there was of course horrible mistreatment of workers, sending workers to die in the mines in droves. Workers tried to sue for Duty of Care, however back then Duty of Care was outlined in the contract - and since no contract was signed, they can't sue! Employees used to not have a duty of care to workers aside from what the contract says. Thanks capitalism.
+  In the past, around the Industrial Era, there was (of course) horrible mistreatment of workers, sending workers to die in the mines in droves. Workers tried to sue for Duty of Care, however back then Duty of Care was outlined in the contract - and since no contract was signed, they can't sue! Employees used to not have a duty of care to workers aside from what the contract says. Thanks capitalism.
 
-  But this all changed in the fateful *Donoghue v. Stevenson (1932)* case. Donoghue had bought a ginger beer from Stevenson, which apparently contained a decomposed snail. She got ill and sued. After lots of failure in the lower courts (since there's no direct intent to tort), this eventually got to the highest courts, who said "Nah wait sec hold on a moment". They expanded and established General Principles of Duty of Care significantly, and the principle of "Neighbours in Law"
+  But this all changed in the fateful *Donoghue v. Stevenson (1932)* case. Donoghue had bought a ginger beer from Stevenson, which apparently contained a decomposed snail. She got ill and sued. After lots of failure in the lower courts (since there's no direct intent to tort), this eventually got to the highest courts, who said "Nah wait sec hold on a moment". They expanded and established the General Principles of Duty of Care significantly, and the principle of "Neighbours in Law"
   
   === Duty of Care
-  A *duty of care* is any relationship to which one could foreseeably cause harm to another. As outlined by Donoghue v. Stevenson, *"you must take reasonable care to avoid acts or omissions which you can reasonably foresee would be likely to injure your neighbour"* - you should think of them!
+  A *duty of care* is any relationship to which one could foreseeably cause harm to another. As outlined by Donoghue v. Stevenson, *"You must take reasonable care to avoid acts or omissions which you can reasonably foresee would be likely to injure your neighbour"* - you should think of them!
 
-  A *neighbour in law* is anyone who is closely and directly affected by one's actions; such that one should reasonably have thought they'd be effected when performing the negligent act. 
+  A *neighbour in law* is anyone who is closely and directly affected by one's actions; such that one should reasonably have thought they'd be affected when performing the negligent act. 
 
   The general test (also called the "Anns Test") has 2 steps:
   #block(inset: (left: 1em))[
@@ -29,14 +29,15 @@
   === Falling Below a Standard of Care
   In general, falling below a standard of care means that you did not do what a *reasonable ordinary person* would have done in the scenario; thus the negligence! There are some exceptions:
   #block(inset:(left: 1em))[
-    - Professionals have additional standards they are held to, and must act like a *reasonable and competent person in their profession*, if the negligent act requires specialized skill/ knowledge.
+    - Professionals have additional standards they are held to, and must act like a *reasonable and competent person in their profession* if the negligent act requires specialized skill/ knowledge.
     - Professionals must also *avoid conflicts of interest* as part of their standard of care.
-    - Specialists in a field are held to a higher standard than generalists - surgeons VS the family doctor.
+    - Specialists in a field are held to a higher standard than generalists - surgeons v. the family doctor.
     - Children are held to the standard of a reasonable child of the *same age*; unless they are engaged in an adult activity (like driving), then it's a reasonable adult.
   ]
   
   === Injury and Causing Said Injury
   Harm or Loss must occur for negligence to occur, but did the defendant _cause_ it to happen? 
+  
   ==== The "But For Test"
   This test simply states, "*but for* the conduct of the tortfeasor, would the harm/injury have happened?" If yes, then this is the cause of the loss or harm! Essentially, outcomes that would have been inevitable cannot be sued for - the acts of the defendant must have caused it.
 
@@ -71,18 +72,18 @@
     - *Failure to Warn*: Failing to warn consumers about faulty products (not sending recalls, not putting safety warnings, etc.)
   ]
   ==== Ongoing Duty to Warn
-  For some products, manufacturers have an *ongoing* duty to warn users of the risks of using its products, and send notice to them it something comes up (if that advice is heed is not their responsibility - that's voluntary assumption of risk).
+  For some products, manufacturers have an *ongoing* duty to warn users of the risks of using its products, and send notice to them if something comes up (if that advice is heed is not their responsibility - that's then voluntary assumption of risk).
 
-  This applies to dangerous products (cigarettes, explosives, corrosives), products found to be defective, and new scientific or technological advancements. Especially applies for *unexpected risks*.
+  This applies to dangerous products (cigarettes, explosives, corrosives), products found to be defective, and new scientific or technological advancements. This especially applies to any *unexpected risks*.
   
   === Occupier's Liability
-  This outlines that people who occupy/own (tenant/owner) a property *owe a duty of care* to anyone who enter those premises. An occupier is any person who has control over the property. Essentially, people entering your property should not die or get injured due to the condition of the property.
+  This outlines that people who occupy/own (tenant/owner) a property *owe a duty of care* to anyone who enters those premises. An occupier is any person who has control over the property. Essentially, people entering your property should not die or get injured due to the condition of the property.
 
-  A separate duty of care is also owed to _trespassers_ - they are still owed a *duty of general humanity* and thus you *cannot set traps* - you cannot *create harm*. Otherwise, the standard of care is minimal.
+  A separate duty of care is also owed to _trespassers_ - they are still owed a *duty of general humanity* and thus you *cannot set traps* - you *cannot create harm*. Otherwise, the standard of care is minimal.
 
   If signage is placed, it depends on the ambiguity of the wording and if a notion of consent exists. Also, if the sign is visible (and for that matter, if the plaintiff can read).
 
   
   === Failure to Supervise
-  An interesting new tort: says that people have a duty to supervise children, and if the child causes or incurs damages, the supervisor can be liable. This includes babysitters, teachers etc.
+  An interesting new tort: says that people have a duty to supervise children, and if the child causes or incurs damages, the supervisor can be liable. This includes babysitters, teachers, etc.
 ]

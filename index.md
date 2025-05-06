@@ -112,6 +112,19 @@ A review casebook using real life fact patterns is available [here](https://retr
 
 For post-midterm content, Imaad made a summary in [flowchart format](./BU231/flowchart.html){:.a#BU231--Flowchart--Imaad}.
 
+
+#### BU 231 (S24) <small>Business Law</small>
+
+A selection of notes for content by Andy:
+
+- [Full Notes](<./BU231/notes-andy/BU 231 Notes.pdf>){:.a#BU231--Notes--Andy}
+- [Midterm Content](<./BU231/notes-andy/BU 231 Notes.pdf#page=5>){:.a#BU231--Notes--Andy} - Torts and Contract Law I
+- [Tort Law](<./BU231/notes-andy/BU 231 Notes.pdf#page=5>){:.a#BU231--Notes--Andy} - Intentional and Unintentional Torts, Damages, Liability
+- [Contract Law I](<./BU231/notes-andy/BU 231 Notes.pdf#page=16>){:.a#BU231--Notes--Andy} - Elements to a Contract, Impeaching Contracts, Requirement of Writing
+- [Contract Law II](<./BU231/notes-andy/BU 231 Notes.pdf#page=28>){:.a#BU231--Notes--Andy} - Interpretation, Privity, Assignment, Discharge, Remedies
+- [Relationships](<./BU231/notes-andy/BU 231 Notes.pdf#page=42>){:.a#BU231--Notes--Andy} - Agency, Franchise, Employment, Secured Transactions
+- [Business and Misc.](<./BU231/notes-andy/BU 231 Notes.pdf#page=57>){:.a#BU231--Notes--Andy} - Corporate Structure/Governance, IP, Privacy, International Law
+
 #### BU 352 (F22) <small>Introduction to Marketing</small>
 
 [Flashcard set](https://quizlet.com/ca/723976718/bu352-f22-flash-cards/){:.a#BU352--Flashcards--Imaad} by Imaad.

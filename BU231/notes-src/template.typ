@@ -1,6 +1,6 @@
 #let section_title = state("section_title", [#h(1em)])
 
-#let project(title: "", authors: "Andoiii", header_after: 0, body) = {
+#let project(title: "", authors: "", header_after: 0, body) = {
 
   set heading(numbering: "1.")
   

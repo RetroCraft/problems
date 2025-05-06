@@ -10,18 +10,21 @@
 #import "./Relationships/_consolidator.typ": *
 #import "./CGIP/_consolidator.typ": *
 
+
+
 #align(horizon + center)[
     #v(3em)
     #text(size: 60pt)[*BU 231*] 
     #v(-3em)
     #text(size: 40pt)[*Business Law Notes*] 
     #v(-3em)
-    #text(size: 20pt)[*Full Notes*]
+    #text(size: 20pt)[*Midterm Content Only*]
     #v(-1em)
     #text(size: 12pt)[by Andy Chang]
 
     #update
 ]
+
 #v(10em)
 #preface
 #pagebreak()
@@ -31,14 +34,6 @@
   indent: 2em,
 )
 
-#Intro_Chapter()
-
 #Torts_Chapter()
 
 #Contracts_Chapter()
-
-#Contracts_II_Chapter()
-
-#Relationships_Chapter()
-
-#BIP_Chapter()
