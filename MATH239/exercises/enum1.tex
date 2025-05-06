@@ -103,10 +103,10 @@
 
           Suppose $\rl A \bijects \rl B$.
           Then, there exists a bijection $f : \rl A \to \rl B$.
-          Because $f$ is surjective, a preimage under $f$ exists for all $a \in \rl A$.
-          Since $f$ is a injective, the preimage of $a$ under $f$ is a single element $b$.
+          Because $f$ is surjective, a preimage under $f$ exists for all $b \in \rl B$.
+          Since $f$ is injective, the preimage of $b$ under $f$ is a single element $a$.
 
-          Define $g : \rl B \to \rl A$ by that preimage.
+          Define $g : \rl B \to \rl A$ using the unique preimages of $f$.
           This is surjective (for all $a$, there exists $b = f(a)$ such that $g(b) = a$)
           and injective ($g(b) = g(b') \implies f(g(b)) = f(g(b')) \implies b = b'$).
           Then, $g$ is a bijection and $\rl B \bijects \rl A$.
