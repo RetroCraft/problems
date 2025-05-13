@@ -162,7 +162,7 @@
 
 % Question/Problem theorem styles
 \usepackage{mdframed}
-\usepackage{amsthm,thmtools}
+\usepackage{amsthm,thmtools,thm-restate}
 
 \newcounter{question}[subsection]
 \renewcommand{\thequestion}{Q\ifnum\value{question}<10 0\fi\arabic{question}}

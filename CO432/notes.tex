@@ -1,4 +1,4 @@
-\documentclass[notes,tikz]{agony}
+\documentclass[class=co432,notes,tikz]{agony}
 
 \DeclareMathOperator*{\E}{\mathbb{E}}
 
@@ -19,17 +19,96 @@ taught by Vijay Bhattiprolu.
 
 \chapter{Introduction}
 
+\begin{notation}
+  I will be using my usual \LaTeX{} typesetting conventions:
+  \begin{itemize}[nosep]
+    \item $[n]$ means the set $\{1,2,\dotsc,n\}$
+    \item $\bits*$ means the set of bitstrings of arbitrary length (i.e., the Kleene star)
+    \item $\rv A, \rv B, \dotsc, \rv Z$ are random variables (in sans-serif)
+    \item $\rv X = (p_1,p_2,\dotsc,p_k)$ means $\rv X$ is a discrete random variable
+          such that $\Pr[\rv X = 1] = p_1$, $\Pr[\rv X=2] = p_2$, etc.
+          (abbreviate further as $\rv X = (p_i)$)
+  \end{itemize}
+\end{notation}
+
 \section{Entropy}
 \lecture{May 6}
-TODO
+
+\textrule{$\downarrow$ Lecture 1 adapted from Arthur $\downarrow$}
 
 \begin{defn}[entropy]
-  For a random variable $\rv X$ which is equal to $i$ with probability $p_i$,
-  the \term{entropy} $H(\rv X) := \sum_i p_i \log \frac{1}{p_i}$.
+  For a random variable $\rv X = (p_i)$,
+  the \term*{entropy} $H(\rv X)$ is
+  \[ H(\rv X) = -\sum_i p_i \log p_i = \sum_i p_i \log \frac{1}{p_i}. \]
 \end{defn}
 
-\subsection{Axiomatic view of entropy}
-\lecture{May 8}
+\begin{convention}
+  By convention, we usually use $\log_2$.
+  Also, we define entropy such that $\log_2(0) = 0$ so that
+  impossible values do not break the formula.
+\end{convention}
+
+\begin{example}
+  If $\rv X$ takes on the values $a$, $b$, $c$, $d$
+  with probabilities 1, 0, 0, 0, respectively, then $H(\rv X) = 1 \log 1 = 0$.
+
+  If $\rv X$ takes on those values instead with probabilities
+  $\frac12$, $\frac14$, $\frac18$, $\frac18$, respectively,
+  then $H(\rv X) = \frac74$.
+\end{example}
+
+\begin{fact}
+  $H(\rv X) = 0$ if and only if $\rv X$ is a constant.
+\end{fact}
+\begin{prf}
+  Suppose $\rv X$ is constant. Then, $H(\rv X) = 1 \log 1 = 0$.
+
+  Suppose $H(\rv X) = 0$.
+  Probabilities are in $[0,1]$, so $p_i \log \frac{1}{p_i} \geq 0$.
+  Since $H(\rv X) = \sum_i p_i \log \frac{1}{p_i} = 0$
+  and each term is non-negative, each term must be zero.
+  Thus, each $p_i$ is either 0 or 1.
+  We cannot have $\sum p_i > 1$, so exactly one $p_i = 1$ and the rest are zero.
+  That is, $\rv X$ is constant.
+\end{prf}
+
+\begin{theorem}[Jensen's inequality]\label{thm:jensen}
+  Let $f : \R \to \R$ be concave. That is,
+  for any $a$ and $b$ in the domain of $f$ and $\lambda \in [0,1)$,
+  $f(\lambda a + (1-\lambda)b) \geq \lambda f(a) + (1-\lambda)f(b)$.
+  For any discrete random variable $\rv X$,
+  \[ \E[f(\rv X)] \leq f(\E[\rv X]) \]
+\end{theorem}
+\begin{prf}
+  Consider a random variable $\rv X$ with two values $a$ and $b$,
+  each with probabilities $\lambda$ and $1-\lambda$.
+  Then, notice that
+  \[ \E[f(\rv X)] = \lambda f(a) + (1-\lambda) f(b) \leq f(\lambda a + (1-\lambda)b) = f(\E[\rv X]) \]
+  by convexity of $f$.
+
+  TODO: This can be generalized by induction.
+\end{prf}
+
+\begin{fact}
+  Assume $\rv X$ is supported on $[n]$. Then, $0 \leq H(\rv X) \leq \log n$.
+\end{fact}
+\begin{prf}
+  Start by claiming without proof that $\log n$ is concave, so we can apply
+  \nameref{thm:jensen}.
+
+  Let $\rv X' = \frac{1}{p_i}$ with probability $p_i$. Then,
+  \begin{align*}
+    H(\rv X) & = \sum_i p_i \log \frac{1}{p_i}    \\
+             & = \E\qty[\log(\rv X')]             \\
+             & \leq \log(\E[\rv X'])              \\
+             & = \log\qty(\sum p_i \frac{1}{p_i}) \\
+             & = \log n \qedhere
+  \end{align*}
+\end{prf}
+
+It is not a coincidence that $\log_2 n$ is the minimum number of bits to encode $[n]$.
+
+\section{Entropy as expected surprise}
 
 We want $S : [0,1] \to [0,\infty)$ to capture how ``surprised''
 we are $S(p)$ that an event with probability $p$ happens.
@@ -44,6 +123,9 @@ In particular:
   \item $S(pq) =  S(p) + S(q)$, surprise should add for independent events.
         That is, if I see something twice, I should be twice as surprised.
 \end{enumerate}
+
+\textrule{$\uparrow$ Lecture 1 adapted from Arthur $\uparrow$}
+\lecture{May 8}
 
 \begin{prop}
   If $S(p)$ satisfies these 4 axioms, then $S(p)=c\cdot \log_2(1/p)$ for some $c > 0$.
@@ -71,15 +153,15 @@ We can now view entropy as expected surprise. In particular,
 \[ \sum_i p_i \log_2\frac{1}{p_i} = \E_{x \sim \rv X}\qty[S(p_x)] \]
 for a random variable $\rv X = i$ with probability $p_i$.
 
-\subsection{Entropy as optimal lossless data compression}
+\section{Entropy as optimal lossless data compression}
 
 Suppose we are trying to compress a string consisting of $n$
 symbols drawn from some distribution.
 
-\begin{problem}
+\begin{restatable}{problem}{bitproblem}
   What is the expected number of bits you need to store the results of $n$ independent samples
   of a random variable $\rv X$?
-\end{problem}
+\end{restatable}
 
 We will show this is $nH(\rv X)$.
 
@@ -88,11 +170,11 @@ which is violated by almost all data we actually care about.
 
 \begin{defn}
   Let $C : \Sigma \to (\Sigma')^*$ be a code.
-  We say $C$ is \term{uniquely decodable} if there does not exist
+  We say $C$ is \term[code!uniquely decodable]{uniquely decodable} if there does not exist
   a collision $x, y \in \Sigma^*$,
   with identical encoding $C(x_1)C(x_2)\cdots C(x_k) = C(y_1)C(y_2)\cdots C(y_{k'})$.
 
-  Also, $C$ is \term{prefix-free} (sometimes called \term*{instantaneous})
+  Also, $C$ is \term[code!prefix-free]{prefix-free} (sometimes called \term*{instantaneous})
   if for any distinct $x,y \in \Sigma$, $C(x)$ is not a prefix of $C(y)$.
 \end{defn}
 
@@ -112,7 +194,7 @@ which is violated by almost all data we actually care about.
 Recall from CS 240 that a prefix-free code is equivalent to a trie,
 and we can decode it by traversing the trie in linear time.
 
-\begin{theorem}[Kraft's inequality]
+\begin{theorem}[Kraft's inequality]\label{thm:kraft}
   A prefix-free binary code $C : \{1,\dotsc,n\} \to \{0,1\}^*$
   with codeword lengths $\ell_i = \abs{C(i)}$ exists if and only if
   \[ \sum_{i=1}^n \frac{1}{2^{\ell_i}} \leq 1. \]
@@ -153,5 +235,104 @@ and we can decode it by traversing the trie in linear time.
   \end{align*}
   by the inequality.
 \end{prf}
+
+\lecture{May 13}
+Recall the problem we are trying to solve:
+\bitproblem*
+\begin{sol}[Shannon \& Faro]
+  Consider the case where $\rv X$ is symbol $i$ with probability $p_i$.
+  We want to encode independent samples $x_i \sim \rv X$
+  as $C(x_i)$ for some code $C : [n] \to \bits*$.
+
+  Suppose for simplification that $p_i = \frac{1}{2^{\ell_i}}$
+  for some integers $\ell_i$.
+  Since $\sum p_i = 1$, we must have $\sum \frac{1}{2^{\ell_i}} = 1$.
+  Then, by \nameref{thm:kraft}, there exists a prefix-free binary code
+  $C : [n] \to \bits*$ with codeword lengths $\abs{C(i)} = \ell_i$.
+  Now,
+  \[
+    \E_{x_i \sim \rv X}\qty[\sum_i\abs{C(x_i)}] = \sum_i p_i\ell_i = \sum_i p_i\log_2\frac{1}{p_i} = H(\rv X)
+  \]
+  Proceed to the general case.
+  Suppose $\log_2\frac{1}{p_i}$ are non-integral.
+  Instead, use $\ell'_i = \ceil*{\log_2\frac{1}{p_i}}$.
+  We still satisfy Kraft since $\sum_i \frac{1}{2^{\ell'_i}} \leq \sum_i p_i = 1$.
+  Then,
+  \[
+    \E_{x_i \sim \rv X}\qty[\sum_i\abs{C(x_i)}] = \sum_i p_i\ell'_i = \sum_i p_i\ceil*{\log_2\frac{1}{p_i}}
+  \]
+  which is bounded by
+  \[ H(\rv X) = \sum_i p_i\log_2\frac{1}{p_i} \leq \sum_i p_i\ceil*{\log_2\frac{1}{p_i}} < \sum_i p_i\qty(1+\log_2\frac{1}{p_i}) = H(\rv X) + 1 \]
+  We call the code $C$ generated by this process the \term[code!Shannon--Faro]{Shannon--Faro code}.
+\end{sol}
+
+We can improve on this bound $[H(\rv X), H(\rv X) + 1)$
+by amortizing over longer batches of the string.
+
+\begin{sol}[batching]
+  For $\rv Y$ defined on $[n]$ equal to $i$ with probability $q_i$,
+  define the random variable $\rv Y^{(k)}$ on $[n]^k$
+  equal to the string $i_1\cdots i_k$ with probability $q_{i_1}\cdots q_{i_k}$.
+  That is, $\rv Y^{(k)}$ models $k$ independent samples of $\rv Y$.
+
+  Apply the Shannon--Fano code to $\rv Y^{(k)}$
+  to get an encoding of $[n]^k$ as bitstrings of expected length $\ell$
+  satisfying $H(\rv Y^{(k)}) \leq \ell \leq H(\rv Y^{(k)}) + 1$.
+  \begin{align*}
+    H(\rv Y^{(k)}) & = \E_{i_1\cdots i_k \sim \rv Y^{(k)}}\qty[\log_2 \frac{1}{q_{i_1}\cdots q_{i_k}}] \tag{by def'n}                       \\
+                   & = \E_{i_1\cdots i_k \sim \rv Y^{(k)}}\qty[\log_2 \frac{1}{q_{i_1}} + \dotsb + \log_2\frac{1}{q_{i_k}}] \tag{log rules} \\
+                   & = \sum_{j=1}^k \E_{i_1\cdots i_k \sim \rv Y^{(k)}}\qty[\log_2 \frac{1}{q_{i_j}}] \tag{linearity of expectation}        \\
+                   & = \sum_{j=1}^k \E_{i \sim \rv Y}\qty[\log_2 \frac{1}{q_{i}}] \tag{$q_{i_j}$ only depends on one character}             \\
+                   & = kH(\rv Y) \tag{by def'n, no $j$-dependence in sum}
+  \end{align*}
+  For every $k$ symbols, we use $\ell$ bits, i.e., $\frac{\ell}{k}$ bits per symbol.
+  From the Shannon--Faro bound, we have
+  \begin{align*}
+    \frac{H(\rv Y^{(k)})}{k} & \leq \frac{\ell}{k} < \frac{H(\rv Y^{(k)})}{k} + \frac{1}{k} \\
+    H(\rv Y)                 & \leq \frac{\ell}{k} < H(\rv Y) + \frac{1}{k}
+  \end{align*}
+  Then, we have a code for $\rv Y$ bounded by
+  $[H(\rv Y), H(\rv Y) + \frac{1}{k})$.
+
+  Taking a limit of some sort, we can say that we need $H(\rv Y) + o(1)$ bits.
+\end{sol}
+
+\begin{defn*}[relative entropy]
+  Given two discrete distributions $p = (p_i)$ and $q = (q_i)$,
+  the \term[entropy!relative]{relative entropy}
+  \[ D(p \parallel q) :=
+    \sum p_i \log_2\frac{1}{q_i} - \sum_i p_i \log_2 \frac{1}{p_i}
+    = \sum p_i \log_2 \frac{p_i}{q_i} \]
+  This is also known as the \term{KL divergence}.
+\end{defn*}
+
+\begin{fact}
+  $D(p \parallel q) \geq 0$ with equality exactly when $p = q$.
+\end{fact}
+\begin{prf}
+  Define $\rv X' = \frac{p_i}{q_i}$ with probability $p_i$.
+  Then,
+  \[ D(p \parallel q) = \E[-\log_2 \rv X'] \geq -\log_2 E[\rv X'] \]
+  by Jensen's inequality (as $f(x) = -\log_2 x$ is convex), and then
+  \[ D(p \parallel q) \geq  -\log_2 \sum p_i \frac{q_i}{p_i} = -\log_2 1 = 0 \qedhere \]
+\end{prf}
+
+\begin{prop}
+  Any prefix-free code has an expected length at least $H(\rv X)$.
+\end{prop}
+\begin{prf}
+  We can show this by interpreting the expected length $H(\rv X)$
+  as $D(p \parallel q)$ for some $q$.
+
+  We will take $q$ to be the random walk distribution corresponding to the binary tree
+  associated to the candidate prefix-free code.
+\end{prf}
+
+\pagebreak
+\phantomsection\addcontentsline{toc}{chapter}{Back Matter}
+\renewcommand{\listtheoremname}{List of Named Results}
+\phantomsection\addcontentsline{toc}{section}{\listtheoremname}
+\listoftheorems[ignoreall,numwidth=4em,onlynamed={theorem,lemma,corollary,prop}]
+\printindex
 
 \end{document}
