@@ -219,7 +219,7 @@ My [lecture notes](./CS341/notes.pdf){:.l#CS341--Notes--James} are available, ta
 
 #### CS 480/680 (W24) <small>Introduction to Machine Learning</small>
 
-[Lecture notes](./CS480/notes.pdf){:.l#CS480--Notes--James}, updated after each lecture.
+[Lecture notes](./CS480/notes.pdf){:.l#CS480--Notes--James}.
 
 #### CS 886 (W24) <small>Advanced Topics in Artificial Intelligence</small>
 
@@ -316,7 +316,7 @@ so they look a little funny after spamming regexes to try and make it GFM-friend
 
 #### PMATH 370 (W24) <small>Chaos and Fractals</small>
 
-[Lecture notes](./PMATH370/notes.pdf){:.l#PMATH370--Notes--James}, updated after each lecture.
+[Lecture notes](./PMATH370/notes.pdf){:.l#PMATH370--Notes--James} with fun and cool TikZ graphics!
 
 ### Combinatorics and Optimization
 
@@ -325,6 +325,10 @@ so they look a little funny after spamming regexes to try and make it GFM-friend
 [Lecture notes](./CO250/reformatted-notes.pdf){:.l#CO250--Notes--James--Reformatted}
 originally written in Obsidian and ported to LaTeX.
 The original Obsidian file is [here](./CO250/obsidian-notes.md)
+
+#### CO 432 (S25) <small>Information Theory and Applications</small>
+
+[Lecture notes](./CO432/notes.pdf){:.l#CO432--Notes--James}, updated after each lecture.
 
 #### CO 485/685 (F22) <small>Mathematics of Public-Key Cryptography</small>
 
