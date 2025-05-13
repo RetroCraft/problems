@@ -93,7 +93,7 @@
 \begin{enumerate}
   \item Prove that $\bijects$ is an equivalence relation.
         \begin{prf}
-          We must show identity, reflexivity, and transitivity.
+          We must show reflexivity, symmetry, and transitivity.
           Let $\rl A$, $\rl B$, and $\rl C$ be sets.
 
           Notice that $\id : \rl A \to \rl A : a \mapsto a$
@@ -204,10 +204,10 @@
   Conversely, consider $f^{-1}(f(S)) = f^{-1}(f(\{s_1,\dotsc,s_{t-1}\})) = f^{-1}(m_1,\dotsc,m_t)$.
   \WLOG, suppose that the $s_i$ are already in increasing order. Then,
   \begin{align*}
-    s'_i & = i + \sum_{j=0}^i m_j                            \\
-         & = \sum_{j=0}^i (m_j + 1)                          \\
-         & = \sum_{j=0}^i ((s_j - s_{j-1} - 1) + 1)          \\
-         & = (s_1 + \dotsb + s_i) - (s_1 + \dotsb + s_{i-1}) \\
+    s'_i & = i + \sum_{j=1}^i m_j                            \\
+         & = \sum_{j=1}^i (m_j + 1)                          \\
+         & = \sum_{j=1}^i ((s_j - s_{j-1} - 1) + 1)          \\
+         & = (s_1 + \dotsb + s_i) - (s_0 + \dotsb + s_{i-1}) \\
          & = s_i
   \end{align*}
   and it follows that $f^{-1}(f(S)) = \{s'_1,\dotsc,s'_{t-1}\} = \{s_1,\dotsc,s_{t-1}\} = S$.
