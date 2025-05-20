@@ -24,10 +24,12 @@ taught by Vijay Bhattiprolu.
   \begin{itemize}[nosep]
     \item $[n]$ means the set $\{1,2,\dotsc,n\}$
     \item $\bits*$ means the set of bitstrings of arbitrary length (i.e., the Kleene star)
+    \item $\sum_i$ is implicitly $\sum_{i=1}^n$
     \item $\rv A, \rv B, \dotsc, \rv Z$ are random variables (in sans-serif)
-    \item $\rv X = (p_1,p_2,\dotsc,p_k)$ means $\rv X$ is a discrete random variable
-          such that $\Pr[\rv X = 1] = p_1$, $\Pr[\rv X=2] = p_2$, etc.
-          (abbreviate further as $\rv X = (p_i)$)
+    \item $\X = (p_1,p_2,\dotsc,p_n)$ means $\X$ is a
+          discrete random variable with $n$ outcomes
+          such that $\Pr[\X = 1] = p_1$, $\Pr[\X=2] = p_2$, etc.
+          (abbreviate further as $\X = (p_i)$)
   \end{itemize}
 \end{notation}
 
@@ -37,9 +39,9 @@ taught by Vijay Bhattiprolu.
 \textrule{$\downarrow$ Lecture 1 adapted from Arthur $\downarrow$}
 
 \begin{defn}[entropy]
-  For a random variable $\rv X = (p_i)$,
-  the \term*{entropy} $H(\rv X)$ is
-  \[ H(\rv X) = -\sum_i p_i \log p_i = \sum_i p_i \log \frac{1}{p_i}. \]
+  For a random variable $\X = (p_i)$,
+  the \term*{entropy} $H(\X)$ is
+  \[ H(\X) = -\sum_i p_i \log p_i = \sum_i p_i \log \frac{1}{p_i}. \]
 \end{defn}
 
 \begin{convention}
@@ -49,60 +51,60 @@ taught by Vijay Bhattiprolu.
 \end{convention}
 
 \begin{example}
-  If $\rv X$ takes on the values $a$, $b$, $c$, $d$
-  with probabilities 1, 0, 0, 0, respectively, then $H(\rv X) = 1 \log 1 = 0$.
+  If $\X$ takes on the values $a$, $b$, $c$, $d$
+  with probabilities 1, 0, 0, 0, respectively, then $H(\X) = 1 \log 1 = 0$.
 
-  If $\rv X$ takes on those values instead with probabilities
+  If $\X$ takes on those values instead with probabilities
   $\frac12$, $\frac14$, $\frac18$, $\frac18$, respectively,
-  then $H(\rv X) = \frac74$.
+  then $H(\X) = \frac74$.
 \end{example}
 
 \begin{fact}
-  $H(\rv X) = 0$ if and only if $\rv X$ is a constant.
+  $H(\X) = 0$ if and only if $\X$ is a constant.
 \end{fact}
 \begin{prf}
-  Suppose $\rv X$ is constant. Then, $H(\rv X) = 1 \log 1 = 0$.
+  Suppose $\X$ is constant. Then, $H(\X) = 1 \log 1 = 0$.
 
-  Suppose $H(\rv X) = 0$.
+  Suppose $H(\X) = 0$.
   Probabilities are in $[0,1]$, so $p_i \log \frac{1}{p_i} \geq 0$.
-  Since $H(\rv X) = \sum_i p_i \log \frac{1}{p_i} = 0$
+  Since $H(\X) = \sum_i p_i \log \frac{1}{p_i} = 0$
   and each term is non-negative, each term must be zero.
   Thus, each $p_i$ is either 0 or 1.
   We cannot have $\sum p_i > 1$, so exactly one $p_i = 1$ and the rest are zero.
-  That is, $\rv X$ is constant.
+  That is, $\X$ is constant.
 \end{prf}
 
 \begin{theorem}[Jensen's inequality]\label{thm:jensen}
   Let $f : \R \to \R$ be concave. That is,
   for any $a$ and $b$ in the domain of $f$ and $\lambda \in [0,1)$,
   $f(\lambda a + (1-\lambda)b) \geq \lambda f(a) + (1-\lambda)f(b)$.
-  For any discrete random variable $\rv X$,
-  \[ \E[f(\rv X)] \leq f(\E[\rv X]) \]
+  For any discrete random variable $\X$,
+  \[ \E[f(\X)] \leq f(\E[\X]) \]
 \end{theorem}
 \begin{prf}
-  Consider a random variable $\rv X$ with two values $a$ and $b$,
+  Consider a random variable $\X$ with two values $a$ and $b$,
   each with probabilities $\lambda$ and $1-\lambda$.
   Then, notice that
-  \[ \E[f(\rv X)] = \lambda f(a) + (1-\lambda) f(b) \leq f(\lambda a + (1-\lambda)b) = f(\E[\rv X]) \]
+  \[ \E[f(\X)] = \lambda f(a) + (1-\lambda) f(b) \leq f(\lambda a + (1-\lambda)b) = f(\E[\X]) \]
   by convexity of $f$.
 
   TODO: This can be generalized by induction.
 \end{prf}
 
 \begin{fact}
-  Assume $\rv X$ is supported on $[n]$. Then, $0 \leq H(\rv X) \leq \log n$.
+  Assume $\X$ is supported on $[n]$. Then, $0 \leq H(\X) \leq \log n$.
 \end{fact}
 \begin{prf}
   Start by claiming without proof that $\log n$ is concave, so we can apply
   \nameref{thm:jensen}.
 
-  Let $\rv X' = \frac{1}{p_i}$ with probability $p_i$. Then,
+  Let $\X' = \frac{1}{p_i}$ with probability $p_i$. Then,
   \begin{align*}
-    H(\rv X) & = \sum_i p_i \log \frac{1}{p_i}    \\
-             & = \E\qty[\log(\rv X')]             \\
-             & \leq \log(\E[\rv X'])              \\
-             & = \log\qty(\sum p_i \frac{1}{p_i}) \\
-             & = \log n \qedhere
+    H(\X) & = \sum_i p_i \log \frac{1}{p_i}    \\
+          & = \E\qty[\log(\X')]                \\
+          & \leq \log(\E[\X'])                 \\
+          & = \log\qty(\sum p_i \frac{1}{p_i}) \\
+          & = \log n \qedhere
   \end{align*}
 \end{prf}
 
@@ -150,8 +152,8 @@ In particular:
 \end{prf}
 
 We can now view entropy as expected surprise. In particular,
-\[ \sum_i p_i \log_2\frac{1}{p_i} = \E_{x \sim \rv X}\qty[S(p_x)] \]
-for a random variable $\rv X = i$ with probability $p_i$.
+\[ \sum_i p_i \log_2\frac{1}{p_i} = \E_{x \sim \X}\qty[S(p_x)] \]
+for a random variable $\X = i$ with probability $p_i$.
 
 \section{Entropy as optimal lossless data compression}
 
@@ -160,23 +162,23 @@ symbols drawn from some distribution.
 
 \begin{restatable}{problem}{bitproblem}
   What is the expected number of bits you need to store the results of $n$ independent samples
-  of a random variable $\rv X$?
+  of a random variable $\X$?
 \end{restatable}
 
-We will show this is $nH(\rv X)$.
+We will show this is $nH(\X)$.
 
 Notice that we assume that the symbols we are drawn \uline{independently},
 which is violated by almost all data we actually care about.
 
-\begin{defn}
+\begin{restatable}{definition}{defcode}
   Let $C : \Sigma \to (\Sigma')^*$ be a code.
-  We say $C$ is \term[code!uniquely decodable]{uniquely decodable} if there does not exist
+  We say $C$ is a \term[code!uniquely decodable]{uniquely decodable} code (UDC) if there does not exist
   a collision $x, y \in \Sigma^*$,
   with identical encoding $C(x_1)C(x_2)\cdots C(x_k) = C(y_1)C(y_2)\cdots C(y_{k'})$.
 
   Also, $C$ is \term[code!prefix-free]{prefix-free} (sometimes called \term*{instantaneous})
   if for any distinct $x,y \in \Sigma$, $C(x)$ is not a prefix of $C(y)$.
-\end{defn}
+\end{restatable}
 
 \begin{prop}
   Prefix-freeness is sufficient for unique decodability.
@@ -240,8 +242,8 @@ and we can decode it by traversing the trie in linear time.
 Recall the problem we are trying to solve:
 \bitproblem*
 \begin{sol}[Shannon \& Faro]
-  Consider the case where $\rv X$ is symbol $i$ with probability $p_i$.
-  We want to encode independent samples $x_i \sim \rv X$
+  Consider the case where $\X$ is symbol $i$ with probability $p_i$.
+  We want to encode independent samples $x_i \sim \X$
   as $C(x_i)$ for some code $C : [n] \to \bits*$.
 
   Suppose for simplification that $p_i = \frac{1}{2^{\ell_i}}$
@@ -251,7 +253,7 @@ Recall the problem we are trying to solve:
   $C : [n] \to \bits*$ with codeword lengths $\abs{C(i)} = \ell_i$.
   Now,
   \[
-    \E_{x_i \sim \rv X}\qty[\sum_i\abs{C(x_i)}] = \sum_i p_i\ell_i = \sum_i p_i\log_2\frac{1}{p_i} = H(\rv X)
+    \E_{x_i \sim \X}\qty[\sum_i\abs{C(x_i)}] = \sum_i p_i\ell_i = \sum_i p_i\log_2\frac{1}{p_i} = H(\X)
   \]
   Proceed to the general case.
   Suppose $\log_2\frac{1}{p_i}$ are non-integral.
@@ -259,14 +261,14 @@ Recall the problem we are trying to solve:
   We still satisfy Kraft since $\sum_i \frac{1}{2^{\ell'_i}} \leq \sum_i p_i = 1$.
   Then,
   \[
-    \E_{x_i \sim \rv X}\qty[\sum_i\abs{C(x_i)}] = \sum_i p_i\ell'_i = \sum_i p_i\ceil*{\log_2\frac{1}{p_i}}
+    \E_{x_i \sim \X}\qty[\sum_i\abs{C(x_i)}] = \sum_i p_i\ell'_i = \sum_i p_i\ceil*{\log_2\frac{1}{p_i}}
   \]
   which is bounded by
-  \[ H(\rv X) = \sum_i p_i\log_2\frac{1}{p_i} \leq \sum_i p_i\ceil*{\log_2\frac{1}{p_i}} < \sum_i p_i\qty(1+\log_2\frac{1}{p_i}) = H(\rv X) + 1 \]
+  \[ H(\X) = \sum_i p_i\log_2\frac{1}{p_i} \leq \sum_i p_i\ceil*{\log_2\frac{1}{p_i}} < \sum_i p_i\qty(1+\log_2\frac{1}{p_i}) = H(\X) + 1 \]
   We call the code $C$ generated by this process the \term[code!Shannon--Faro]{Shannon--Faro code}.
 \end{sol}
 
-We can improve on this bound $[H(\rv X), H(\rv X) + 1)$
+We can improve on this bound $[H(\X), H(\X) + 1)$
 by amortizing over longer batches of the string.
 
 \begin{sol}[batching]
@@ -300,33 +302,323 @@ by amortizing over longer batches of the string.
 \begin{defn*}[relative entropy]
   Given two discrete distributions $p = (p_i)$ and $q = (q_i)$,
   the \term[entropy!relative]{relative entropy}
-  \[ D(p \parallel q) :=
+  \[ \D p q :=
     \sum p_i \log_2\frac{1}{q_i} - \sum_i p_i \log_2 \frac{1}{p_i}
     = \sum p_i \log_2 \frac{p_i}{q_i} \]
   This is also known as the \term{KL divergence}.
 \end{defn*}
 
-\begin{fact}
-  $D(p \parallel q) \geq 0$ with equality exactly when $p = q$.
+\lecture{May 15}
+The KL divergence works vaguely like a ``distance'' between distributions.
+(In particular, KL divergence is not a metric since it lacks symmetry
+and does not follow the triangle inequality,
+but it can act sorta like a generalized squared distance.)
+
+\begin{fact}\label{fact:dnneg}
+  $\D p q \geq 0$ with equality exactly when $p = q$.
 \end{fact}
 \begin{prf}
-  Define $\rv X' = \frac{p_i}{q_i}$ with probability $p_i$.
-  Then,
-  \[ D(p \parallel q) = \E[-\log_2 \rv X'] \geq -\log_2 E[\rv X'] \]
-  by Jensen's inequality (as $f(x) = -\log_2 x$ is convex), and then
-  \[ D(p \parallel q) \geq  -\log_2 \sum p_i \frac{q_i}{p_i} = -\log_2 1 = 0 \qedhere \]
+  % Define $\X' = \frac{p_i}{q_i}$ with probability $p_i$.
+  % Then,
+  % \[ \D p q = \E[-\log_2 \X'] \geq -\log_2 E[\X'] \]
+  % by Jensen's inequality (as $f(x) = -\log_2 x$ is convex), and then
+  % \[ \D p q \geq  -\log_2 \sum p_i \frac{q_i}{p_i} = -\log_2 1 = 0 \qedhere \]
+  Observe that
+  \[ -\D p q = \sum_i p_i(-\log_2\frac{p_i}{q_i}) = \sum_i p_i \log_2 \frac{q_i}{p_i} \]
+  and then define $\X' = \frac{q_i}{p_i}$ with probability $p_i$.
+  By construction, we get
+  \[ -\D p q = \E[\log_2 \X'] \leq \log_2(\E[\X']) \]
+  by \nameref{thm:jensen} (as $f = \log_2$ is concave).
+  Finally,
+  \[ \D p q \geq -\log_2(\E[\X']) = \log_2\qty(\sum_i p_i \frac{q_i}{p_i}) = \log_2 1 = 0  \qedhere \]
 \end{prf}
 
 \begin{prop}
-  Any prefix-free code has an expected length at least $H(\rv X)$.
+  Any prefix-free code has an expected length at least $H(\X)$.
 \end{prop}
 \begin{prf}
-  We can show this by interpreting the expected length $H(\rv X)$
-  as $D(p \parallel q)$ for some $q$.
+  Let $\X = (p_i)$.
+  Suppose $C$ is a prefix-free code with codeword lengths $\ell_i$.
+
+  Then, by \nameref{thm:kraft}, $\sum_i 2^{-\ell_i} \leq 1$.
+  We want to show that $\sum_i p_i \ell_i \geq H(\X)$,
+  and we will prove this by showing that $\sum_i p_i \ell_i - H(\X) =
+    \D p q$ for some distribution $q$
+  (then apply \cref{fact:dnneg}).
 
   We will take $q$ to be the random walk distribution corresponding to the binary tree
   associated to the candidate prefix-free code.
+
+  Let $T$ be the binary tree associated to $C$.
+  Consider the process of randomly going left/right at each node
+  and stopping when either falling off the tree or hitting a leaf.
+
+  Let $q_i = 2^{-\ell_i}$ be the probability that this random walk reaches the leaf for the symbol $i$
+  and let $q_{n+1} = 1-\sum_i 2^{-\ell_i}$ be the probability that the random walk falls off the tree.
+  Also, to keep ranges identical, let $\tilde p_i = p_i$ and $\tilde p_{n+1} = 0$. Now,
+  \begin{align*}
+    \D{\tilde p}{q_C}
+     & = \sum_{i=1}^{n+1} \tilde p_i \log_2 q_i^{-1} - \sum_{i=1}^{n+1} \tilde p_i \log_2 \frac{1}{p_i}      \\
+     & = \sum_{i=1}^n p_i \log_2 2^{\ell_i} - \sum_{i=1}^n p_i \log_2 \frac{1}{p_i} \tag{$\tilde p_{n+1}=0$} \\
+     & = \sum_{i=1}^n p_i \ell_i - H(\X)
+  \end{align*}
+  Therefore, by \cref{fact:dnneg}, $\sum_i p_i \ell_i \geq H(\X)$.
 \end{prf}
+
+This proof technique generalizes.
+Recall the distinction between UDCs and prefix-free codes:
+
+\defcode*
+
+\begin{example}
+  The code $C(1,2,3,4) = (10,00,11,110)$ is a uniquely decodable code.
+
+  The code $C'(1,2,3,4) = (0,10,110,111)$ is a prefix-free code.
+\end{example}
+
+\begin{remark}
+  A natural additional requirement for unique decodability
+  is that for any $k \in \N$, $x \in [n]^k$, $y \in [n]^k$, $C(x) \neq C(y)$.
+\end{remark}
+
+\begin{theorem}
+  For any uniquely decodable code $C : [n] \to \bits*$ of codeword lengths $\ell_i$,
+  there is also a prefix-free code $C' : [n] \to \bits*$ of lengths $\ell_i$.
+\end{theorem}
+
+We will show that for any UDC $C$, the lengths $\sum_i 2^{-\ell_i} \leq 1$.
+Then, \nameref{thm:kraft} applies and we have a prefix-free code $C'$.
+
+Partition the code's codomain $C([n]) = C_1 \cup C_2 \cup C_3 \cup \cdots$
+by the length of the codeword $C_j \subseteq \bits{j}$.
+We must instead show $\sum_j \frac{\abs{C_i}}{2^j} \leq 1$.
+
+Consider the easy case $C([n]) = C_2 \cup C_3$.
+If there are no collisions of length 5,
+we have \[ 2 \cdot \abs{C_2} \cdot \abs{C_3} \leq 2^5 \]
+because every string in $\{xy : x \in C_2, y \in C_3\} \cup \{yx : x \in C_2, y \in C_3\}$
+is unique in $\bits{5}$.
+That is, $\abs{C_2} \cdot \abs{C_3} \leq 2^4$.
+
+Likewise, if there are no collisions of length $5k$, we get
+\[ \frac{(2k)!}{k! \cdot k!} \cdot \abs{C_2}^k \cdot \abs{C_3}^k \leq 2^{5k} \]
+because the union
+$\displaystyle\bigcup_{\mathclap{\substack{\alpha \in \{2,3\}^{2k}, \\ \alpha_i = 2\text{ for} \\ \text{$k$ choices of $i$}}}} C_{\alpha_i}$
+consists of only unique strings.
+
+In the limit, by \nameref{thm:sterling},
+\begin{align*}
+  \frac{2^{2k}}{\sqrt{k}} \cdot \abs{C_2}^k \cdot \abs{C_3}^k & \leq 2^{5k}                                                         \\
+  \abs{C_2}\cdot\abs{C_3}                                     & \leq \frac{2^5}{2^2}(\sqrt{k})^{1/k} \approx 1 + \order{\log k / k}
+\end{align*}
+I have no idea where this was going.
+
+\begin{prf}
+  Fix a $k \geq 1$. Let $\ell_{max} = \max \ell_i$.
+  Write $C^{(k)}$ to be the set of encoded $k$-length strings.
+
+  Consider the distribution:
+  sample a length $m$ uniformly from the set $[k\cdot \ell_{max}]$.
+  Also, sample a uniformly random string $s \in \bits{m}$.
+  For each $x \in C^{(k)}$, let $E_x$ be the event where $s = x$.
+
+  Now, we can write
+  \begin{align*}
+    \sum_{x \in C^{(k)}} \Pr[E_x]                                               & \leq 1                \\
+    \intertext{because the events $E_x$ are mutually exclusive. Then,}
+    \sum_{x \in C^{(k)}} \frac{1}{k\cdot\ell_{max}} \cdot \frac{1}{2^{\ell(x)}} & \leq 1                \\
+    \sum_{x \in C^{(k)}} \frac{1}{2^{\ell(x)}}                                  & \leq k\cdot\ell_{max}
+  \end{align*}
+  where $\ell(x)$ is the length of $x$. Since summing over each codeword $x \in C$
+  is the same as summing over each codeword $\ell_i$,
+  \begin{align*}
+    \qty(\sum_i \frac{1}{2^{\ell_i}})^k
+     & = \qty(\sum_{x \in C}\frac{1}{2^{\ell(x)}})^k                                                                      \\
+     & = \sum_{x_1,\dotsc,x_k \in C} \frac{1}{2^{\ell(x_1)}} \cdot \frac{1}{2^{\ell(x_2)}} \cdots \frac{1}{2^{\ell(x_k)}} \\
+     & = \sum_{x_1,\dotsc,x_k \in C} \frac{1}{2^{\ell(x_1) + \ell(x_2) + \dotsb + \ell(x_k)}}                             \\
+     & = \sum_{x_1,\dotsc,x_k \in C} \frac{1}{2^{\ell(x_1x_2 \cdots x_k)}}                                                \\
+     & = \sum_{x \in C^{(k)}} \frac{1}{2^{\ell(x)}}
+  \end{align*}
+  where we can take the last step by uniquely decoding $x_1x_2\cdots x_k$ into $x$.
+  Combining,
+  \begin{align*}
+    \qty(\sum_i \frac{1}{2^{\ell_i}})^k & \leq k \cdot \ell_{max}                            \\
+    \sum_i \frac{1}{2^{\ell_i}}         & \leq (k \cdot \ell_{max})^{\frac{1}{k}}            \\
+                                        & \leq 1 + \order{\frac{\ell_{max}\cdot\log_2 k}{k}}
+  \end{align*}
+  which tends to 1 as $k \to \infty$, as desired.
+\end{prf}
+
+\chapter{Applications of KL divergence}
+\lecture{May 20}
+
+\begin{notation}
+  Write $H(p)$ to denote $H(\X)$ for $\X \sim \Bern(p)$.
+
+  That is, $H(p) = p\log_2\frac1p + (1-p)\log_2\frac{1}{1-p}$.
+
+  Likewise, write $\D q p$ to be $\D{\rv Y}{\X}$
+  where $\rv Y \sim \Bern(q)$.
+\end{notation}
+
+Recall Sterling's approximation (which we have used before):
+
+\begin{theorem}[Sterling's approximation]\label{thm:sterling}
+  $m!$ behaves like $\sqrt{2\pi m}\qty(\frac{m}{e})^m\qty(1+\order{\frac{1}{m}})$
+\end{theorem}
+
+\section{The boolean $k$-slice}
+Consider the \term{boolean $k$-slice} (also known as the \term{Hamming $k$-slice})
+of the hypercube $\bits{n}$ defined by
+\[ B_k := \{x \in \bits{n} : \text{$x$ has exactly $k$ ones}\} \]
+\begin{remark}
+  \[ \abs{B_k} \approx 2^{H(\frac{k}{n})\cdot n} \]
+\end{remark}
+\begin{prf}
+  By \nameref{thm:sterling}, knowing that $\abs{B_k} = \binom{n}{k}$:
+  \begin{align*}
+    \abs{B_k} & = \binom{n}{k}                                                                                                             \\
+              & = \frac{n!}{n!(n-k)!}                                                                                                      \\
+              & \approx \frac{\sqrt{2\pi n}\qty(\frac{n}{e})^n}{\sqrt{2\pi k}\qty(\frac{k}{e})^k\sqrt{2\pi(n-k)}\qty(\frac{n-k}{e})^{n-k}} \\
+              & = \sqrt{\frac{n}{2\pi k(n-k)}} \cdot \frac{n^k\qty(\frac{n}{n-k})^{n-k}}{k^k}
+  \end{align*}
+  Now, notice that $\qty(\frac{n}{n-k})^{n-k} = \qty(1+\frac{k}{n-k})^{n-k} \approx e^k$
+  for $k \ll n-k$ because $1+x \approx e^x$ for small $x$.
+  Then, $\qty(1+\frac{k}{n-k})^{n-k} \approx \qty(e^{k/(n-k)})^{n-k} = e^k$ and
+  \begin{align*}
+    \abs{B_k} & \approx \qty(\frac{ne}{k})^k \nr{eq:borgor}       \\
+              & = 2^{k \log_2 \frac{ne}{k}}                       \\
+              & = 2^{k\log_2 \frac{n}{k} + k\log_2 e}             \\
+              & = 2^{(\frac{k}{n}\log_2\frac{n}{k})n + k\log_2 e} \\
+              & \approx 2^{(\frac{k}{n}\log_2\frac{n}{k})n}
+  \end{align*}
+  for $1 \ll k \ll n$. Then, given that same assumption,
+  \begin{align*}
+    H\qty(\frac{k}{n})
+     & = \frac{k}{n} \log_2 \frac{n}{k} + \cancelto{0}{\qty(1-\frac{k}{n}) \log_2\frac{1}{1-\frac{k}{n}}} \\
+     & \approx \frac{k}{n} \log_2 \frac{n}{k}
+  \end{align*}
+  because if $n \gg k$, $\frac{k}{n} \to 0$ and $1\log_2 1 = 0$.
+  Combining these approximations yields
+  \[ \abs{B_k} \approx 2^{H(\frac{k}{n})n} \qedhere \]
+\end{prf}
+
+Let $\X$ be a uniformly chosen point in $B_k$
+and $\X_1,\dotsc,\X_n \sim \Bern(\frac{k}{n})$.
+
+This means that $H(\X) \approx H((\X_1,\dotsc,\X_n))$,
+which is remarkable because the latter could produce points in $B_k$
+or points with $n$ ones or points with no ones.
+
+This seems to imply that the majority of the mass of $(\X_1,\dotsc,\X_n)$
+lies within the boolean $k$-slice.
+Formally, we make the following claim about the
+\term{concentration of measure}:\footnote{cf. Dvoretzky--Milman theorem}
+
+\begin{prop}
+  Fix any $\varepsilon > 0$. The probability
+  \[ \Pr\qty[(\X_1,\dotsc,\X_n) \not\in \bigcup_{\ell = (1-\varepsilon k)}^{(i+\varepsilon)k}B_\ell] = \frac{1}{2^{n/\varepsilon^2}} \]
+  Informally, the probability of the randomly-drawn vector lying outside of
+  the boolean $k$-slice is exponentially small.
+\end{prop}
+
+We will prove a stronger claim:
+
+\begin{claim}
+  Fix any $p \in (0,1)$ and consider any $q > p$. Then,
+  \[ \Pr[w((\X_i)) > q \cdot n] \leq 2^{-\D q p \cdot n} \]
+  where $w((\X_i))$ is the number of ones. Likewise, consider any $q < p$. Then,
+  \[ \Pr[w((\X_i)) < q \cdot n] \leq 2^{-\D q p \cdot n} \]
+\end{claim}
+
+Consider a toy example first.
+Let $\X$ be the number of heads after $n$ fair coin tosses.
+
+Then, $\E[\X] = \frac{n}{2}$ and
+\[
+  \Pr[\X \geq 0.51n]
+  = \frac{1}{2^n}\sum_{k\geq0.51n}^n\binom{n}{k}
+  \approx \frac{1}{2^n}\sum_{k\geq0.51n}^n\qty(\frac{ne}{k})^k
+  \to 0 \text{ very quickly}
+\]
+by the same magic that we did in \cref{eq:borgor}
+and because $\frac{1}{2^n}$ goes to 0 very quickly.
+
+Now we can prove the claim.
+
+\begin{prf}
+  Let $\theta_p(x)$ denote the probability of sampling a vector $x \in \bits{n}$
+  where each bit is \iid $\Bern(p)$.
+  Then,
+  \begin{align*}
+    \frac{\theta_p(x)}{\theta_q(x)}
+     & = \frac{p^k(1-p)^k}{q^k(1-q)^k}                                            \\
+     & = \frac{(1-p)^n}{(1-q)^n}\qty(\frac{\frac{p}{1-p}}{\frac{q}{1-q}})^k       \\
+     & \leq \frac{(1-p)^n}{(1-q)^n}\qty(\frac{\frac{p}{1-p}}{\frac{q}{1-q}})^{qn}
+  \end{align*}
+  for any $k \geq qn$ because (1)
+  if $q \geq p$, then $\frac{q}{1-q} \geq \frac{p}{1-p}$
+  and the ugly fraction is greater than 1
+  and (2) increasing the exponent increases the quantity if the base is greater than 1.
+
+  Let $B_{\geq k} := \bigcup_{\ell \geq k} B_\ell$.
+  Then, for all $x \in B_{\geq qn}$, we must show that
+  \begin{align*}
+    \theta_p(x) \leq \frac{(1-p)^n}{(1-q)^n}\qty(\frac{\frac{p}{1-p}}{\frac{q}{1-q}})^{qn} \cdot \theta_q(x)
+    = 2^{-n\D q p\cdot \theta_q(x)}
+  \end{align*}
+  Consider the right-hand expression:
+  \begin{align*}
+    2^{n \cdot \D q p}
+     & = 2^{n \cdot (q\log_2\frac1p + (1-q)\log_2\frac{1}{1-p} - q\log_2\frac1q - (1-q)\log_2\frac{1}{1-q})} \\
+     & = \qty(\frac{1}{p^q} \cdot \frac{1}{(1-p)^{1-q}} \cdot q^q \cdot (1-q)^{1-q})^n                       \\
+  \end{align*}
+  and the left-hand expression:
+  \begin{align*}
+    \frac{(1-p)^n}{(1-q)^n}\qty(\frac{\frac{p}{1-p}}{\frac{q}{1-q}})^{qn}
+     & = \qty(\frac{(1-p)^{1-q}p^q}{(1-q)^{1-q}q^q})^n                                 \\
+     & = \qty(p^q \cdot (1-p)^{1-q} \cdot \frac{1}{q^q} \cdot \frac{1}{(1-q)^{1-q}})^n
+  \end{align*}
+  which is clearly the reciprocal of the right-hand expression.
+
+  Now, we know that $\theta_p(x) = 2^{-n\D q p}\theta_q(x)$, so
+  \begin{align*}
+           & \Pr_{\X_1,\dotsc,\X_n \sim \Bern(p)}[(\X_1,\dotsc,\X_n) \in B_{\geq qn}] \\
+    ={}    & \sum_{\mathclap{x \in B_{\geq qn}}} \theta_p(x)                          \\
+    \leq{} & 2^{-n\D q p}\sum_{\mathclap{x \in B_{\geq qn}}}\theta_q(x)               \\
+    \leq{} & 2^{-n\D q p}
+  \end{align*}
+  since the sum of the probabilities of $x$ being any given entry in $B_{\geq qn}$
+  must be at most 1.
+\end{prf}
+
+\section{Rejection sampling}
+
+The KL divergence can give us a metric of how accurately we can sample
+one distribution using another distribution.
+
+\begin{example}
+  Suppose $\X = \begin{cases}
+    0 & p=\frac12 \\
+    1 & p=\frac12
+  \end{cases}$ and $\rv Y = \begin{cases}
+    0 & p=\frac14 \\
+    1 & p=\frac34
+  \end{cases}$.
+
+  How can we sample $\rv Y$ using $\X$?
+\end{example}
+\begin{sol}[naive]
+  Take \iid $\X_1$ and $\X_2$.
+  Return 0 if $x_1 = x_2 = 0$ and 1 otherwise.
+\end{sol}
+\begin{sol}[fancy]
+  Take an infinite \iid queue $\X_1,\X_2,\dotsc$
+
+  Starting at $i = 1$, if $\X_i = 0$, then output 0 with probability $\frac12$,
+  otherwise increment $i$ until $\X_i = 1$.
+\end{sol}
+
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
