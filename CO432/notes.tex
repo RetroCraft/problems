@@ -272,31 +272,31 @@ We can improve on this bound $[H(\X), H(\X) + 1)$
 by amortizing over longer batches of the string.
 
 \begin{sol}[batching]
-  For $\rv Y$ defined on $[n]$ equal to $i$ with probability $q_i$,
-  define the random variable $\rv Y^{(k)}$ on $[n]^k$
+  For $\Y$ defined on $[n]$ equal to $i$ with probability $q_i$,
+  define the random variable $\Y^{(k)}$ on $[n]^k$
   equal to the string $i_1\cdots i_k$ with probability $q_{i_1}\cdots q_{i_k}$.
-  That is, $\rv Y^{(k)}$ models $k$ independent samples of $\rv Y$.
+  That is, $\Y^{(k)}$ models $k$ independent samples of $\Y$.
 
-  Apply the Shannon--Fano code to $\rv Y^{(k)}$
+  Apply the Shannon--Fano code to $\Y^{(k)}$
   to get an encoding of $[n]^k$ as bitstrings of expected length $\ell$
-  satisfying $H(\rv Y^{(k)}) \leq \ell \leq H(\rv Y^{(k)}) + 1$.
+  satisfying $H(\Y^{(k)}) \leq \ell \leq H(\Y^{(k)}) + 1$.
   \begin{align*}
-    H(\rv Y^{(k)}) & = \E_{i_1\cdots i_k \sim \rv Y^{(k)}}\qty[\log_2 \frac{1}{q_{i_1}\cdots q_{i_k}}] \tag{by def'n}                       \\
-                   & = \E_{i_1\cdots i_k \sim \rv Y^{(k)}}\qty[\log_2 \frac{1}{q_{i_1}} + \dotsb + \log_2\frac{1}{q_{i_k}}] \tag{log rules} \\
-                   & = \sum_{j=1}^k \E_{i_1\cdots i_k \sim \rv Y^{(k)}}\qty[\log_2 \frac{1}{q_{i_j}}] \tag{linearity of expectation}        \\
-                   & = \sum_{j=1}^k \E_{i \sim \rv Y}\qty[\log_2 \frac{1}{q_{i}}] \tag{$q_{i_j}$ only depends on one character}             \\
-                   & = kH(\rv Y) \tag{by def'n, no $j$-dependence in sum}
+    H(\Y^{(k)}) & = \E_{i_1\cdots i_k \sim \Y^{(k)}}\qty[\log_2 \frac{1}{q_{i_1}\cdots q_{i_k}}] \tag{by def'n}                       \\
+                   & = \E_{i_1\cdots i_k \sim \Y^{(k)}}\qty[\log_2 \frac{1}{q_{i_1}} + \dotsb + \log_2\frac{1}{q_{i_k}}] \tag{log rules} \\
+                   & = \sum_{j=1}^k \E_{i_1\cdots i_k \sim \Y^{(k)}}\qty[\log_2 \frac{1}{q_{i_j}}] \tag{linearity of expectation}        \\
+                   & = \sum_{j=1}^k \E_{i \sim \Y}\qty[\log_2 \frac{1}{q_{i}}] \tag{$q_{i_j}$ only depends on one character}             \\
+                   & = kH(\Y) \tag{by def'n, no $j$-dependence in sum}
   \end{align*}
   For every $k$ symbols, we use $\ell$ bits, i.e., $\frac{\ell}{k}$ bits per symbol.
   From the Shannon--Faro bound, we have
   \begin{align*}
-    \frac{H(\rv Y^{(k)})}{k} & \leq \frac{\ell}{k} < \frac{H(\rv Y^{(k)})}{k} + \frac{1}{k} \\
-    H(\rv Y)                 & \leq \frac{\ell}{k} < H(\rv Y) + \frac{1}{k}
+    \frac{H(\Y^{(k)})}{k} & \leq \frac{\ell}{k} < \frac{H(\Y^{(k)})}{k} + \frac{1}{k} \\
+    H(\Y)                 & \leq \frac{\ell}{k} < H(\Y) + \frac{1}{k}
   \end{align*}
-  Then, we have a code for $\rv Y$ bounded by
-  $[H(\rv Y), H(\rv Y) + \frac{1}{k})$.
+  Then, we have a code for $\Y$ bounded by
+  $[H(\Y), H(\Y) + \frac{1}{k})$.
 
-  Taking a limit of some sort, we can say that we need $H(\rv Y) + o(1)$ bits.
+  Taking a limit of some sort, we can say that we need $H(\Y) + o(1)$ bits.
 \end{sol}
 
 \begin{defn*}[relative entropy]
@@ -457,8 +457,8 @@ I have no idea where this was going.
 
   That is, $H(p) = p\log_2\frac1p + (1-p)\log_2\frac{1}{1-p}$.
 
-  Likewise, write $\D q p$ to be $\D{\rv Y}{\X}$
-  where $\rv Y \sim \Bern(q)$.
+  Likewise, write $\D q p$ to be $\D{\Y}{\X}$
+  where $\Y \sim \Bern(q)$.
 \end{notation}
 
 Recall Sterling's approximation (which we have used before):
@@ -601,12 +601,12 @@ one distribution using another distribution.
   Suppose $\X = \begin{cases}
     0 & p=\frac12 \\
     1 & p=\frac12
-  \end{cases}$ and $\rv Y = \begin{cases}
+  \end{cases}$ and $\Y = \begin{cases}
     0 & p=\frac14 \\
     1 & p=\frac34
   \end{cases}$.
 
-  How can we sample $\rv Y$ using $\X$?
+  How can we sample $\Y$ using $\X$?
 \end{example}
 \begin{sol}[naive]
   Take \iid $\X_1$ and $\X_2$.

@@ -64,7 +64,7 @@
 \usepackage[titles]{tocloft}
 \addto\captionsenglish{\renewcommand{\contentsname}{\@title}}
 \usepackage{titlesec}
-\usepackage{multicol,collcell}
+\usepackage{multirow,multicol,collcell}
 \usepackage[dvipsnames,table]{xcolor}
 \usepackage{array} % for \newcolumntype macro
 
@@ -98,6 +98,7 @@
 % \catcode`^=7 \catcode`_=8
 
 % Figures
+\RequirePackage{float}
 \ifagony@tikz
   \RequirePackage{tikz,pgfplots,transparent,annotate-equations}
   \pgfplotsset{compat=1.15}
@@ -206,14 +207,15 @@
 \newcommand{\rv}{\mathsf} % random variable => sans-serif
 \newcommand{\vv}{\mathsf} % algorithm variable => sans-serif
 \newcommand{\xx}{\mathtt} % hex literal => typewriter
+\newcommand{\sv}{\mathcal} % set variable => caligraphic
 
 % Sets
-\newcommand{\N}{\ensuremath{\mathbb{N}}}
-\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
-\newcommand{\Q}{\ensuremath{\mathbb{Q}}}
-\newcommand{\R}{\ensuremath{\mathbb{R}}}
-\newcommand{\C}{\ensuremath{\mathbb{C}}}
-\newcommand{\F}{\ensuremath{\mathbb{F}}}
+\newcommand{\N}{\ensuremath{\bb{N}}}
+\newcommand{\Z}{\ensuremath{\bb{Z}}}
+\newcommand{\Q}{\ensuremath{\bb{Q}}}
+\newcommand{\R}{\ensuremath{\bb{R}}}
+\newcommand{\C}{\ensuremath{\bb{C}}}
+\newcommand{\F}{\ensuremath{\bb{F}}}
 
 % Functions
 \newcommand{\fn}{\operatorname}
