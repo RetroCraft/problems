@@ -200,7 +200,8 @@
 \newcommand{\dlim}[2]{\lim\limits_{#1\to#2}} % totally not \dfrac ripoff
 \newcommand{\dilim}[1]{\dlim{#1}{\infty}} % infinite limits
 \newcommand{\ilim}[1]{\lim_{#1\to\infty}}
-\newcommand\at[2]{\left.#1\right|_{#2}}
+\newcommand{\at}[2]{\left.#1\right|_{#2}}
+\newcommand{\br}{\\} % non-aligning line break
 
 % Fonts
 \newcommand{\bb}{\mathbb}

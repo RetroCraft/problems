@@ -1,3 +1,7 @@
+% \RequirePackage{scalerel}
+\DeclareMathOperator*{\E}{\mathbb{E}}
+\DeclareMathOperator{\Unif}{Uniform}
+
 \newcommand{\bits}[1]{\ensuremath{\{0,1\}^{#1}}}
 \newcommand{\X}{\rv{X}}
 \newcommand{\Y}{\rv{Y}}
@@ -6,3 +10,14 @@
 \newcommand{\D}[2]{D(#1 \parallel #2)}
 \DeclareMathOperator{\Bern}{Bernoulli}
 \newcommand{\iid}{\textsc{iid}\xspace}
+
+% Pseudocode
+\RequirePackage{algorithm,float}
+\RequirePackage[noEnd]{algpseudocodex}
+\alglanguage{pseudocodex}
+\algnewcommand{\algorithmicprob}{\textbf{with probability}}
+\algdef{SE}[PROB]{Prob}{EndProb}[1]{\algpx@startCodeCommand\algpx@startIndent\algorithmicprob\ #1\ \algorithmicdo}{}
+\pretocmd{\Prob}{\algpx@endCodeCommand}{}{}
+\algtext*{EndProb}
+\pretocmd{\EndProb}{\algpx@endIndent}{}{}
+\pretocmd{\EndProb}{\algpx@endCodeCommand[1]}{}{}

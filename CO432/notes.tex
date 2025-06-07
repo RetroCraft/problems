@@ -1,7 +1,5 @@
 \documentclass[class=co432,notes,tikz]{agony}
 
-\DeclareMathOperator*{\E}{\mathbb{E}}
-
 \title{CO 432 Spring 2025: Lecture Notes}
 
 \begin{document}
@@ -26,10 +24,10 @@ taught by Vijay Bhattiprolu.
     \item $\bits*$ means the set of bitstrings of arbitrary length (i.e., the Kleene star)
     \item $\sum_i$ is implicitly $\sum_{i=1}^n$
     \item $\rv A, \rv B, \dotsc, \rv Z$ are random variables (in sans-serif)
-    \item $\X = (p_1,p_2,\dotsc,p_n)$ means $\X$ is a
+    \item $\X \sim (p_1,p_2,\dotsc,p_n)$ means $\X$ is a
           discrete random variable with $n$ outcomes
           such that $\Pr[\X = 1] = p_1$, $\Pr[\X=2] = p_2$, etc.
-          (abbreviate further as $\X = (p_i)$)
+          (abbreviate further as $\X \sim (p_i)$)
   \end{itemize}
 \end{notation}
 
@@ -39,7 +37,7 @@ taught by Vijay Bhattiprolu.
 \textrule{$\downarrow$ Lecture 1 adapted from Arthur $\downarrow$}
 
 \begin{defn}[entropy]
-  For a random variable $\X = (p_i)$,
+  For a random variable $\X \sim (p_i)$,
   the \term*{entropy} $H(\X)$ is
   \[ H(\X) = -\sum_i p_i \log p_i = \sum_i p_i \log \frac{1}{p_i}. \]
 \end{defn}
@@ -282,10 +280,10 @@ by amortizing over longer batches of the string.
   satisfying $H(\Y^{(k)}) \leq \ell \leq H(\Y^{(k)}) + 1$.
   \begin{align*}
     H(\Y^{(k)}) & = \E_{i_1\cdots i_k \sim \Y^{(k)}}\qty[\log_2 \frac{1}{q_{i_1}\cdots q_{i_k}}] \tag{by def'n}                       \\
-                   & = \E_{i_1\cdots i_k \sim \Y^{(k)}}\qty[\log_2 \frac{1}{q_{i_1}} + \dotsb + \log_2\frac{1}{q_{i_k}}] \tag{log rules} \\
-                   & = \sum_{j=1}^k \E_{i_1\cdots i_k \sim \Y^{(k)}}\qty[\log_2 \frac{1}{q_{i_j}}] \tag{linearity of expectation}        \\
-                   & = \sum_{j=1}^k \E_{i \sim \Y}\qty[\log_2 \frac{1}{q_{i}}] \tag{$q_{i_j}$ only depends on one character}             \\
-                   & = kH(\Y) \tag{by def'n, no $j$-dependence in sum}
+                & = \E_{i_1\cdots i_k \sim \Y^{(k)}}\qty[\log_2 \frac{1}{q_{i_1}} + \dotsb + \log_2\frac{1}{q_{i_k}}] \tag{log rules} \\
+                & = \sum_{j=1}^k \E_{i_1\cdots i_k \sim \Y^{(k)}}\qty[\log_2 \frac{1}{q_{i_j}}] \tag{linearity of expectation}        \\
+                & = \sum_{j=1}^k \E_{i \sim \Y}\qty[\log_2 \frac{1}{q_{i}}] \tag{$q_{i_j}$ only depends on one character}             \\
+                & = kH(\Y) \tag{by def'n, no $j$-dependence in sum}
   \end{align*}
   For every $k$ symbols, we use $\ell$ bits, i.e., $\frac{\ell}{k}$ bits per symbol.
   From the Shannon--Faro bound, we have
@@ -337,7 +335,7 @@ but it can act sorta like a generalized squared distance.)
   Any prefix-free code has an expected length at least $H(\X)$.
 \end{prop}
 \begin{prf}
-  Let $\X = (p_i)$.
+  Let $\X \sim (p_i)$.
   Suppose $C$ is a prefix-free code with codeword lengths $\ell_i$.
 
   Then, by \nameref{thm:kraft}, $\sum_i 2^{-\ell_i} \leq 1$.
@@ -599,12 +597,12 @@ one distribution using another distribution.
 
 \begin{example}
   Suppose $\X = \begin{cases}
-    0 & p=\frac12 \\
-    1 & p=\frac12
-  \end{cases}$ and $\Y = \begin{cases}
-    0 & p=\frac14 \\
-    1 & p=\frac34
-  \end{cases}$.
+      0 & p=\frac12 \\
+      1 & p=\frac12
+    \end{cases}$ and $\Y = \begin{cases}
+      0 & p=\frac14 \\
+      1 & p=\frac34
+    \end{cases}$.
 
   How can we sample $\Y$ using $\X$?
 \end{example}
@@ -619,6 +617,536 @@ one distribution using another distribution.
   otherwise increment $i$ until $\X_i = 1$.
 \end{sol}
 
+\textrule{$\downarrow$ Lecture 6 adapted from Arthur $\downarrow$}
+
+\lecture{May 22}
+\begin{problem}[rejection sampling]
+  Given access to a distribution $Q = (Q(x))_{x \in \XX}$,
+  how efficiently can you simulate $P = (P(x))_{x \in \XX}$?
+\end{problem}
+
+\begin{example}
+  Suppose $Q = (\frac13,\frac13,\frac13)$ and $P = (\frac12,\frac12)$.
+  We want to obtain the $P$ distribution from $Q$.
+\end{example}
+\begin{sol}
+  Since $Q$ and $P$ are both uniform, we can just keep sampling from $Q$
+  until we get something in $P$. That is, for $i = 1,\dotsc,\infty$:
+  \begin{enumerate}
+    \item Sample $\X_i \sim Q$.
+    \item If $\X_i \in \{1,2\}$, accept and output $\Y \gets \X_i$.
+    \item Otherwise, $i \gets i + 1$.
+  \end{enumerate}
+  This works because
+  \[ \Pr[\Y = 1] = \Pr[\X_i = 1 \mid \X_i = 1 \lor \X_i = 2] = \frac{1/3}{2/3} = \frac12 \]
+  for the final round $i$, and similarly for $\Y = 2$.
+\end{sol}
+
+\begin{example}
+  Consider a slightly more complex distribution $P = (\frac13,\frac23)$
+  and $Q = (\frac12,\frac12)$.
+\end{example}
+\begin{sol}
+  We will create a more complex rejection sampling protocol with some cheating.
+
+  Again, iterate and draw independent $\X_i$:
+  \begin{itemize}
+    \item If $\X_1 = 1$, accept with probability $\frac23$.
+          Otherwise, reject and continue to $\X_2$ with probability $\frac13$.
+    \item If $\X_1 = 2$, accept.
+    \item For $i \geq 2$, accept if $\X_i = 1$ and reject if $\X_i = 2$.
+  \end{itemize}
+  Then, the probability of accepting $\X_1 = 1$ is $\frac13$,
+  $\X_1 = 2$ is $\frac12$, and rejecting $\X_1$ is $\frac16$.
+
+  Since later rounds only output 1,
+  we output 1 with probability $\frac13 + \frac16 = \frac12$
+  and 2 with probability $\frac12$.
+\end{sol}
+
+\begin{defn}[rejection sampler]
+  A \term{rejection sampler} is a procedure that reads sequentially independent
+  random samples $\X_i \sim Q$ and in each round $i$ either
+  \begin{itemize}[nosep]
+    \item accepts the value of $\X_i$ and terminates with an index $i^*$, or
+    \item rejects and continues.
+  \end{itemize}
+
+  The iteration we terminated on $i^*$ is a random variable
+  since it is a function of other random variables. It satisfies
+  $\X_{i^*} \sim P$, which is weird since for all fixed $i$, $\X_i \sim Q$.
+\end{defn}
+
+An interesting application is communication complexity.
+Suppose Alice has some hidden distribution $P$.
+Alice and Bob have access to a shared random \iid sequence $\X_i \sim Q$.
+
+Alice can send an encoding of $i^*$ to Bob who outputs $\X_{i^*} \sim P$.
+This encoding $i^*$ can be encoded using $\log i^*$ bits.
+
+We will show that $\E[\log i^*] \leq \D P Q + \order{1}$.
+You can also show that $\D P Q \leq \E[\log i*]$.
+
+For each round $i$ and symbol $x$,
+we need to know whether $x$ was sampled before round $i$,
+i.e., the probability assigned to $x$ in previous rounds.
+
+For round $i \geq 1$, define:
+\begin{itemize}[nosep]
+  \item $\alpha_i(x)$ to denote the probability that the procedure accepts $\X_i$ and that $\X_i = x$
+  \item $p_i(x)$ to denote the probability that the procedure halts at round $i^* \leq i$ and $\X_{i^*} = x$
+\end{itemize}
+
+We want to construct our procedure such that
+\begin{itemize}[nosep]
+  \item for all $x$, $P(x) = \sum_{i=1}^n \alpha_i(x)$
+  \item for all $x$ and $i$, $p_i(x) = \sum_{k=1}^i \alpha_k(x)$
+  \item the probability that we halt on or before round $i$ is $p_i^* := \sum_{x \in \XX} p_i(x)$
+\end{itemize}
+
+% Then:
+% - probability that procedure gets to iteration $i$ and satisfies $X_i=x$ is $(1-p^*_{i-1}) Q(x)$
+% 	- $Q(x)$ is the chance that the distribution $Q$ outputs $x$
+% 	- this does not necessarily mean that we output it
+% - deficit probability of $x$ at round $i$ is
+% 	- $P(x) - p_{i-1}(x)$ 
+% 		- $P(x)$ is our target
+% 		- $p_{i-1}(x)$ is the previous accumulated probability
+% - If $(1-p^*_{i-1}) Q(x) > P(x)-p_{i-1}(x)$, 
+% 	- then we want $\alpha_i(x) = P(x)-p_{i-1}(x)$ (we never want to exceed the target $P(x)$?)
+% 		- this does not prescribe an action
+% 	- otherwise we want to always accept, so $\alpha_i(x) = (1-p^*_{i-1}) Q(x)$
+% 		- 100% conditioned on getting to round $i$ and sampling $x$
+% 	- Therefore: $\alpha_i(x)\coloneqq \min(P(x)-p_{i-1}(x), (1-p_{i-1}^*)Q(x))$
+% - 
+
+% Define rejection sampler as:
+% ```
+% for i = 1 to infty:
+% 	Sample X_i ~ Q
+% 	If X_i == x:
+% 		With probability beta_i(X_i) output i and halt
+% 		otherwise continue
+
+% ```
+
+% Define: $\beta_i(X_i) = \frac{\alpha_i(X_i)}{(1-p^*_{i-1})Q(X_i)}$
+% - Therefore, the bias of the coin (aka this beta_i x_i) changes on each round
+% 	- but we only flip a coin once
+
+\textrule{$\uparrow$ Lecture 6 adapted from Arthur $\uparrow$}
+
+\lecture{May 27}
+\begin{algorithm}[H]
+  \caption{\Call{RejectionSampling}{$P$, $Q$}}
+  \begin{algorithmic}[1]
+    \Require{$\forall x \in \XX, Q(x) > 0 \iff \D P Q < \infty$}
+    \For{$x \in \XX$} $p_0(x) \gets 0$ \EndFor
+    \State $p_0^* \gets 0$
+    \For{$i = 1,\dotsc,\infty$}
+      \State sample $\X_i \sim Q$
+      \If{$P(\X_i) - P_{i-1}(\X_i) \leq (1-p^*_{i-1})\cdot Q(\X_i)$}
+        \Prob{$\beta_i(\X_i) = \frac{P(\X_i) - p_{i-1}(\X_i)}{(1-p_{i-1}^*)(Q(\X_i))}$}
+          \LComment{so that the net probability of sampling $\X_i$ will be $\alpha_i(\X_i) = P(\X_i) - p_{i-1}(\X_i)$}
+          \State \Return $\X_i$
+        \EndProb
+      \Else{}
+        \Prob{$\beta_i(\X_i) = 1$}
+          \LComment{so that the net probability of sampling $\X_i$ is $\alpha_i(1-p_{i-1}^*)\cdot Q(\X_i)$}
+          \State \Return $\X_i$
+        \EndProb
+      \EndIf
+    \EndFor
+  \end{algorithmic}
+\end{algorithm}
+
+In this case, for all $x$ and for all $i$:
+\begin{itemize}[nosep]
+  \item the probability of accepting $x$ in round $i$
+        is $\alpha_i(x) = \min\{P(x) - p_{i-1}(x), (1-p_{i-1}^*)Q(x)\}$
+  \item the probability of accepting $x$ on or before round $i$ is
+        $p_i(x) = p_{i-1}(x) + \alpha_i(x)$
+  \item the probability of terminating on or before round $i$ is
+        $p_i^* = p_{i-1}^* + \sum_{x \in \XX} \alpha_i(x) = \sum_{x \in \XX} p_i(x)$
+\end{itemize}
+
+\begin{example}
+  Let $P = (\frac12,\frac38,\frac18)$ and $Q = (\frac13,\frac13,\frac13)$.
+  Do the procedure.
+\end{example}
+\begin{sol}
+  In round 1, sample $\X_1 \sim Q$.
+  \begin{itemize}[nosep]
+    \item If $\X_1 = 1$, accept with probability 1.
+    \item If $\X_1 = 2$, accept with probability 1.
+    \item If $\X_1 = 3$, accept with probability $\frac38$.
+  \end{itemize}
+  Then, $p_1(1) = \frac13$, $p_1(2) = \frac13$, $p_1(3) = \frac18$, and $p_1^* = \frac{19}{24}$.
+
+  In round 2, sample $\X_2 \sim Q$.
+  \begin{itemize}[nosep]
+    \item If $\X_2 = 1$, accept with probability 1.
+          There is a $\frac{5}{72}$ chance of getting here,
+          but deficit probability is $\frac16$, so no need to reduce.
+    \item If $\X_2 = 2$, accept with probability $\frac35$.
+          There is a $\frac{5}{72}$ chance of getting here and
+          deficit probability is $\frac38 - \frac13 = \frac{1}{24}$.
+          For equality, use probability $\frac{3}{5}\cdot\frac{5}{72} = \frac{1}{24}$.
+    \item If $\X_3 = 3$, accept with probability 0.
+          We already fulfilled $P(3) = p_1(3)$.
+  \end{itemize}
+  Then, $p_2(1) = \frac{29}{72}$, $p_2(2) = \frac38$, $p_3(2) = \frac18$,
+  and $p_2^* = \frac{19}{24} + \frac{5}{24}\cdot(\frac13+\frac{3/5}{5}) = \frac{65}{72}$.
+
+  In round 3, sample $\X_3 \sim Q$.
+  \begin{itemize}[nosep]
+    \item If $\X_3 = 1$, accept with probability 1.
+    \item If $\X_3 = 2$ or 3, accept with probability 0.
+  \end{itemize}
+  Keep repeating until we accept a 1.
+\end{sol}
+
+\begin{prop}
+  $(p_i(x))_{x \in \XX}$ converges to $P(x)$ as $i \to \infty$.
+  In fact, the residual decays exponentially fast
+  \[ P(x) - p_i(x) \leq P(x) \cdot (1-Q(x))^i. \]
+\end{prop}
+\begin{prf}
+  Begin with the claim that the probability of reaching round $i$
+  is at least the residual at $i$ for any $x$:
+  \[ 1-p_{i-1}^* \geq P(x) - p_{i-1}(x) \quad \forall x \]
+  Intuitively, either you returned prior to round $i$ (i.e., $p_{i-1}^*$)
+  or you did not (i.e., the residual).
+  \begin{align*}
+    1 - p_{i-1}^*
+     & = \sum_{x \in \XX} P(x) - \sum_{x \in \XX} p_{i-1}(x)    \\
+     & = \sum_{x \in \XX} (P(x) - p_{i-1}(x)) \nr{eq:subclaim1}
+  \end{align*}
+  Also, claim that
+  \[ \alpha_i \geq (P(x) - p_{i-1}(x))\cdot Q(x) \nr{eq:subclaim2} \]
+  If $\alpha_i = P(x) - p_{i-1}(x)$, then clearly $\alpha_i \geq \alpha_i Q(x)$.
+  Otherwise, if $\alpha_i = (1-p_{i-1}^*)Q(x)$, then \cref{eq:subclaim1} applies.
+
+  Proceed by induction.
+
+  Base case: exercise.
+
+  Inductive step: suppose that
+  $P(x) - p_i(x) \leq P(x) \cdot (1-Q(x))^i$. Then,
+  \begin{align*}
+    P(x) - p_{i+1}(x)
+     & = P(x) - p_i(x) - \alpha_{i+1}(x)                             \\
+     & \leq (P(x) - p_{i-1}(x))(1-Q(x)) \tag{by \cref{eq:subclaim2}} \\
+     & \leq (P(x) \cdot (1-Q(x))^i)(1-Q(x)) \tag{by supposition}     \\
+     & \leq P(x) \cdot (1-Q(x))^{i+1} \qedhere
+  \end{align*}
+\end{prf}
+
+Now, we will prove that this is related to relative entropy.
+
+\begin{prop}\label{prop:rejworst}
+  Let $i^*$ be the iteration at which the procedure returns.
+  Then, $\E[\log_2 i^*] \leq \D P Q + 2\log_2 e$.
+\end{prop}
+\begin{prf}
+  First, claim that for all $x \in \XX$ and any $i \geq 2$
+  such that $\alpha_i(x) > 0$,
+  \[ i \leq \frac{P(x)}{(1-p_{i-1}^*) \cdot Q(x)} + 1 \nr{eq:maxi} \]
+  That is, if we reach a particular round $i$,
+  the probability mass left must be sufficiently large.
+
+  We know that $P(x) \geq p_{i-1}(x)$ since we increase to $P(x)$. Then,
+  \begin{align*}
+    P(x) & \geq p_{i-1}(x)                                               \\
+         & = \alpha_1(x) + \dotsb + \alpha_{i-1}(x)                      \\
+         & \geq (1-p_1^*)\cdot Q(x) + \dotsb + (1-p_{i-1})\cdot Q(x)     \\
+         & \geq (1-p_{i-1}^*)\cdot Q(x) + \dotsb + (1-p_{i-1})\cdot Q(x) \\
+         & = (i-1)(1-p_{i-1}^*)\cdot  Q(x)                               \\
+    i    & \leq \frac{P(x)}{(1-p_{i-1}^*) \cdot Q(x)} + 1
+  \end{align*}
+  as long as $\alpha_{j-1} < \alpha_j$ for all $j$.
+
+  \lecture{May 29}
+  Do a gigantic algebra bash:
+  \begin{align*}
+    \E[\log_2 i^*]
+     & = \sum_{i=1}^\infty (p_i^* - p_{i-1}^*) \cdot \log_2 i                                                                                                                                     \\
+     & = \sum_{i=1}^\infty \sum_{x\in\XX} \alpha_i(x) \cdot \log_2 i                                                                                                                              \\
+     & \leq \sum_{i=1}^\infty \sum_{x\in\XX} \alpha_i(x) \cdot \log_2 \qty[\frac{P(x)}{(1-p_{i-1}^*) Q(x)}+1] \tag{by \cref{eq:maxi}}                                                             \\
+     & \leq \sum_{i=1}^\infty \sum_{x\in\XX} \alpha_i(x) \cdot \log_2 \qty[\frac{1}{(1-p_{i-1}^*)}\qty(\frac{P(x)}{Q(x)}+1)]                                                                      \\
+     & = \underbrace{\sum_{i=1}^\infty \sum_{x\in\XX} \alpha_i(x) \log_2 \frac{1}{(1-p_{i-1}^*)}}_A + \underbrace{\sum_{i=1}^\infty \sum_{x\in\XX} \alpha_i(x) \log_2\qty(\frac{P(x)}{Q(x)}+1)}_B
+  \end{align*}
+  Consider the first term $A$:
+  \begin{align*}
+    A & = \sum_{i=1}^\infty \sum_{x\in\XX}\alpha_i(x) \log_2 \frac{1}{(1-p_{i-1}^*)} \\
+      & = \sum_{i=1}^\infty (p_i^*-p_{i-1}^*) \log_2\frac{1}{(1-p_{i-1}^*)}
+    \intertext{Notice that this is a left-handed Riemann sum of $\log_2\frac{1}{1-x}$:}
+    A & \leq \int_0^1 \log_2\frac{1}{1-x} \dd{x}                                     \\
+      & = \log_2 e
+  \end{align*}
+  Now, consider the second term $B$:
+  \begin{align*}
+    B & = \sum_{i=1}^\infty \sum_{x\in\XX} \alpha_i(x) \log_2\qty(\frac{P(x)}{Q(x)}+1)                            \\
+      & = \sum_{x\in\XX} \sum_{i=1}^\infty  \alpha_i(x) \log_2\qty(\frac{P(x)}{Q(x)}+1) \tag{Fubini?}             \\
+      & = \sum_{x\in\XX} P(x) \log_2\qty(\frac{P(x)}{Q(x)}+1)\tag{$P(x)=\sum_i \alpha_i(x)$}                      \\
+      & = \sum_{x\in\XX} P(x) \log_2\qty(\frac{P(x)}{Q(x)}\cdot\qty(1+\frac{Q(x)}{P(x)}))                         \\
+      & = \sum_{x\in\XX} P(x) \log_2\qty(\frac{P(x)}{Q(x)}) + \sum_{x\in\XX} P(x) \log_2\qty(1+\frac{Q(x)}{P(x)}) \\
+      & = \D P Q + \sum_{x\in\XX} P(x) \log_2\qty(1+\frac{Q(x)}{P(x)})                                            \\
+      & \leq \D P Q + \sum_{x\in\XX} P(x) \log_2\qty(e^{Q(x)/P(x)}) \tag{$1+x\leq e^x$ for all $x \geq 0$}        \\
+      & = \D P Q + \sum_{x\in\XX} P(x) \frac{Q(x)}{P(x)}\log_2 e                                                  \\
+      & = \D P Q + \log_2 e\sum_{x\in\XX} Q(x)                                                                    \\
+      & = \D P Q + \log_2 e
+  \end{align*}
+  Therefore,
+  \[ \E[\log_2 i^*] \leq A + B \leq \D P Q + 2\log_2 e \]
+  completing the proof.
+\end{prf}
+
+Intuition: for any $x\in\XX$, if $\alpha_i(x)\leq Q(x) \lll P(x)$,
+then you need an expected amount of $\frac{P(x)}{Q(x)}$ steps to succeed,
+because you just won't roll $x$ that often.
+
+Also, if $\alpha_{i+1}(x)>0$ (any round prior to termination),
+$(1-p_{i-1}^*(x))Q(x) \leq \alpha_i(x)$.
+
+\begin{prop}\label{prop:rejbest}
+  For any rejection sampler, let $i^*$ be the index where it returns. Then,
+  \[ \E[\ell(i^*)] \geq \D P Q \]
+\end{prop}
+\begin{prf}
+  For convenience, redefine $\alpha_i(x) \coloneqq \Pr[i^* = i \land \X_i = x]$.
+
+  First, observe that for any $x\in\XX$, a rejection sampler must have
+  \[ \alpha_i(x) \leq Q(x) \]
+  because we only have a $Q(x)$ chance of rolling $x$ to accept it in round $i$.
+
+  Now, fix $x\in\XX$. Consider the random variable $i^*|_{\X_{i^*}=x}$.
+  Then, by \nameref{thm:kraft},
+  \begin{align*}
+    \E[\ell(i^*) \mid \X_{i^*}=x]
+     & \geq H(i^* \mid \X_{i^*}=x)                                                             \\
+     & = \sum_{i=1}^\infty \Pr[i^*=i\mid \X_{i^*}=x]\log_2\frac{1}{\Pr[i^*=i \mid \X_{i^*}=x]} \\
+     & = \sum_{i=1}^\infty \frac{\alpha_i(x)}{P(x)}\log_2\frac{P(x)}{\alpha_i(x)}              \\
+     & \geq \sum_{i=1}^\infty \frac{\alpha_i(x)}{P(x)}\log_2\frac{P(x)}{Q(x)}                  \\
+     & = \log_2\frac{P(x)}{Q(x)} \cdot \sum_{i=1}^\infty \frac{\alpha_i(x)}{P(x)}              \\
+     & = \log_2\frac{P(x)}{Q(x)}
+  \end{align*}
+  because $\sum_{i=1}^\infty \alpha_i(x) = P(x)$.
+  Apply the law of total probability:
+  \begin{align*}
+    \E[\ell(i^*)] & = \sum_{x\in \XX} \Pr[\X_{i*}=x] \E[\ell(i^*) \mid \X_{i^*}=x] \\
+                  & = \sum_{x\in \XX} P(x) \E[\ell(i^*) \mid \X_{i^*}=x]           \\
+                  & \geq \sum_{x\in \XX} P(x) \log_2 \frac{P(x)}{Q(x)}             \\
+                  & = \D P Q
+  \end{align*}
+  as desired.
+\end{prf}
+
+\section{Mutual information and communication complexity}
+
+\lecture{June 3}
+\begin{notation}
+  Given two jointly distributed random variables $(\X,\Y)$ over sample space
+  $\XX \times \YY$, write $p_{xy}$ for $\Pr[\X = x, \Y = y]$.
+\end{notation}
+\begin{defn}
+  Given two jointly distributed random variables $(\X,\Y)$ over sample space
+  $\XX \times \YY$, define the \term{mutual information} $I(\X : \Y)$ by
+  \begin{align*}
+    I(\X : \Y) & = H(\X) + H(\Y) - H((\X,\Y)) \\
+               & = H(\X) - H(\X \mid \Y)      \\
+               & = H(\Y) - H(\Y \mid \X)
+  \end{align*}
+  where the \term{conditional entropy} $H(\X \mid \Y)$ is
+  \[ \sum_{y \in \YY} p_y \cdot H((\X|_{\Y=y})) \]
+\end{defn}
+This is entirely analogous to saying that
+$\abs{A \cap B} = \abs{A} + \abs{B} - \abs{A \cup B} = \abs{A} - \abs{A \setminus B}$.
+
+\begin{theorem}[chain rule for entropy]\label{thm:chain}
+  Given two jointly distributed random variables $(\X,\Y)$
+  over a discrete sample space $\XX \times \YY$,
+  \[ H((\X,\Y)) = H(\X) + H(\Y \mid \X) \]
+\end{theorem}
+\begin{prf}
+  Do a bunch of algebra:
+  \begin{align*}
+    H(\X) + H(\Y\mid\X)
+     & = \sum_{x\in\XX}p_x\log\frac{1}{p_x} + \sum_{x\in\XX}p_x \sum_{y\in\YY} \Pr[\Y=y\mid\X=x]\log\frac{1}{\Pr[\Y=y\mid\X=x]}           \\
+     & = \sum_{x\in\XX}p_x\log\frac{1}{p_x} + \sum_{x\in\XX}\cancel{p_x} \sum_{y\in\YY} \frac{p_{xy}}{\cancel{p_x}}\log\frac{p_x}{p_{xy}} \\
+     & = \sum_{\substack{x\in\XX\br y\in\YY}}p_{xy}\log\frac{1}{p_x} + \sum_{\substack{x\in\XX\br y\in\YY}} p_{xy}\log\frac{p_x}{p_{xy}}  \\
+     & = \sum_{\substack{x\in\XX\br y\in\YY}}p_{xy}\qty(\log\frac{1}{p_x} + \log\frac{p_x}{p_{xy}})                                       \\
+     & = \sum_{\substack{x\in\XX\br y\in\YY}}p_{xy}\log\frac{1}{p_{xy}}                                                                   \\
+     & = H((\X,\Y)) \qedhere
+  \end{align*}
+\end{prf}
+\begin{corollary}
+  For two independent variables, since $(\Y \mid \X) = \Y$,
+  we have $H((\X,\Y)) = H(\X) + H(\Y)$ as expected.
+\end{corollary}
+\begin{corollary}
+  $H((\X_1,\X_2,\X_3)) = H(\X_1) + H(\X_2 \mid \X_1) + H(\X_3 \mid (\X_1,\X_2))$
+\end{corollary}
+\begin{prf}
+  Consider $(\X_1,\X_2,\X_3) = ((\X_1,\X_2),\X_3)$.
+  Then, by the \nameref{thm:chain},
+  \[ H(((\X_1,\X_2),\X_3)) = H((\X_1,\X_2)) + H(\X_3 \mid (\X_1,\X_2)) \]
+  and then by another application,
+  \[ H(((\X_1,\X_2),\X_3)) = H(\X_1) + H(\X_2 \mid \X_1) + H(\X_3 \mid (\X_1,\X_2)) \]
+  as desired.
+\end{prf}
+\begin{theorem}[general chain rule for entropy]
+  For $k$ random variables $\X_1,\dotsc,\X_k$,
+  \[ H((\X_1,\dotsc,\X_k)) = \sum_{i=1}^k H(\X_i \mid (\X_1,\cdots,\X_{i-1})) \]
+\end{theorem}
+\begin{prf}
+  By induction on the \nameref{thm:chain}.
+\end{prf}
+
+\begin{notation}
+  Although relative entropy is defined only on \emph{distributions},
+  write $\D\X\Y$ to be $\D{f_{\X}}{f_{\Y}}$.
+\end{notation}
+
+\begin{theorem}[chain rule for relative entropy]\label{thm:chainD}
+  Let $p(x,y)$ and $q(x,y)$ be distributions. Then,
+  \[ \D{p(x,y)}{q(x,y)} = \D{p(x)}{q(x)} + \D{p(y \mid x)}{q(y \mid x)} \]
+  Equivalently, let $(\X_1,\Y_1)$ and $(\X_2,\Y_2)$ be two joint random variables.
+  Then,
+  \[
+    \D{(\X_1,\Y_1)}{(\X_2,\Y_2)}
+    = \D{\X_1}{\X_2} + \D{\Y_1|_{(\X_1,\X_2)}}{\Y_2|_{(\X_1,\X_2)}}
+  \]
+\end{theorem}
+\begin{prf}[for distributions]
+  Do algebra:
+  \begin{align*}
+        & \D{p(x)}{q(x)} + \D{p(y \mid x)}{q(y \mid x)}                                                                                                \\
+    ={} & \sum_{x\in\XX} p_x \log \frac{p_x}{q_x} + \sum_{x\in\XX}p_x\sum_{y\in\YY}p(y\mid x) \log\frac{p(y\mid x)}{q(y\mid x)}                        \\
+    ={} & \sum_{x\in\XX} p_x \log \frac{p_x}{q_x} + \sum_{x\in\XX}p_x\sum_{y\in\YY}\frac{p_{xy}}{p_x} \log\frac{p_{xy}q_x}{q_{xy}p_x}                  \\
+    ={} & \sum_{\substack{x\in\XX\br y\in\YY}} p_{xy} \log \frac{p_x}{q_x} + \sum_{\substack{x\in\XX\br y\in\YY}}p_{xy}\log\frac{p_{xy}q_x}{q_{xy}p_x} \\
+    ={} & \sum_{\substack{x\in\XX\br y\in\YY}} p_{xy} \qty(\log \frac{p_x}{q_x} + \log\frac{p_{xy}q_x}{q_{xy}p_x})                                     \\
+    ={} & \sum_{\substack{x\in\XX\br y\in\YY}} p_{xy} \log\frac{p_{xy}}{q_{xy}}                                                                        \\
+    ={} & \D{p(x,y)}{q(x,y)}
+  \end{align*}
+  as in the proof of \nameref{thm:chain}.
+\end{prf}
+\begin{fact}
+  \[ I[\X : \Y] = \E_{x \gets \X}[\D{\Y|_{\X=x}}{\Y}] = \sum_{x\in\XX}p_x\D{\Y|_{\X=x}}{\Y} \]
+\end{fact}
+\begin{prf}
+  First, claim that
+  \[
+    I[\X : \Y] = \D{(\X,\Y)}{\tilde\X \otimes \tilde\Y}
+    \nr{eq:claim1}
+  \]
+  where $\tilde\X \otimes \tilde\Y$ denotes a random variable consisting of
+  $\tilde\X$ (resp.\ $\tilde\Y$) independently sampled
+  according to the distribution of $\X$ (resp.\ $\Y$)
+  so that $\Pr[\tilde\X=x,\tilde\Y=y]=p_x p_y$. Expand the left-hand side:
+  \begin{align*}
+    I[\X : \Y]
+     & = \sum_{x\in\XX} p_x \log\frac1{p_x} + \sum_{y\in\YY} p_y \log\frac1{p_y} - \sum_{\substack{x\in\XX\br y\in\YY}}p_{xy}\log\frac1{p_{xy}}                   \\
+     & = \sum_{x\in\XX}\sum_{y\in\YY} p_{xy} \log\frac1{p_x} + \sum_y\sum_x p_{xy} \log\frac1{p_y} - \sum_{\substack{x\in\XX\br y\in\YY}}p_{xy}\log\frac1{p_{xy}} \\
+     & = \sum_{x\in\XX}\sum_{y\in\YY} p_{xy} \qty(\log\frac1{p_x} + \log\frac1{p_y} - \log\frac1{p_{xy}})                                                         \\
+     & = \sum_{\substack{x\in\XX\br y\in\YY}} p_{xy} \log\frac{p_{xy}}{p_x p_y}                                                                                   \\
+     & = \D{(\X,\Y)}{\tilde\X \otimes \tilde\Y}
+  \end{align*}
+  Now, apply the \nameref{thm:chainD}:
+  \begin{align*}
+    \D{(\X,\Y)}{\tilde\X \otimes \tilde\Y}
+     & = \D{\X}{\tilde\X} + \D{(\X,\Y)\mid(\X,\tilde\X)}{(\tilde\X\oplus\tilde\Y)\mid(\X,\tilde\X)} \\
+     & = 0 + \sum_x p_x \D{\Y|_{\X=x}}{\Y}                                                          \\
+     & = \E_{x\gets\X}\D{\Y|_{\X=x}}{\Y} \qedhere
+  \end{align*}
+\end{prf}
+
+\lecture{June 5}
+\begin{problem}
+  Suppose there is a joint distribution $(\X,\Y)$ that Alice and Bob wish to
+  jointly compute. Alice and Bob have access to a shared random string $\rv R = (\rv R_i)$.
+  Alice is given $x\in\XX$ and wants to send Bob a prefix-free message of minimum length
+  so that Bob can compute a sample from $\Y \mid \X=x$.
+\end{problem}
+
+\begin{defn}
+  A \term*{protocol} $\Pi$ is a pair of functions $(M,y)$ where
+  $M : \XX\times\Omega_{\rv R} \to \bits*$ is the message Alice sends to Bob
+  and $y : \bits*\times\Omega_{\rv R} \to \YY$ is Bob's output.
+
+  The \term*{performance} of $\Pi$ is $\E_{\X,\rv R}\abs{M(\rv X,\rv R)}$
+\end{defn}
+
+Suppose $\X$ and $\Y$ are independent.
+Then, Bob needs no information so we can use the trivial protocol
+$M(\X,\rv R) = \varnothing$ with performance 0.
+
+Otherwise, we can use a strategy of prefix-free encoding $x$
+so that $\E\abs{M(\X,\rv R)} \approx H(\X)$.
+
+\begin{theorem}
+  There exists a protocol $\Pi = (M,y)$ such that expected message length
+  \[ \E\abs{M(\X,\rv R)} \leq I(\X : \Y) + \order{\log I(\X : \Y)} \]
+  For all other protocols $\Pi' = (M',y')$,
+  \[ \E\abs{M'(\X,\rv R)} \geq I(\X : \Y) \]
+\end{theorem}
+\begin{prf}
+  Let $\X$ be a random point on the hypercube $\{\pm1\}^n$.
+  Let $\Y$ be a random point on $\{\pm1\}^n$ that is $\varepsilon$-correlated with $\X$.
+  That is, $\Y_i = \X_i$ with probability $\varepsilon$
+  and is uniformly random otherwise.
+
+  Observe that, individually, $\X$ and $\Y$ have the same distribution.
+  In particular, in the $\varepsilon$ case, then $\Y_i = \X_i$ is $\Unif\{\pm1\}$.
+  In the $1-\varepsilon$ case, $\Y_i \sim \Unif\{\pm1\}$ by definition.
+
+  We can calculate $H(\X) = H(\Y) = n$.
+
+  Also, $H(\Y\mid\X) = \sum_{x} p_x H(\Y\mid\X=x) \approx (1-\varepsilon)n$.
+  One can show that $\Y\mid\X=x$ is approximately uniformly distributed
+  over the vectors of length $n$ that agree on $\varepsilon n$ coordinates with $x$.
+  This sample space has size $2^{(1-\varepsilon)n}$.
+
+  Therefore, $I(\X:\Y) = H(\Y) - H(\Y \mid \X) \approx \varepsilon n$.
+
+  By \cref{prop:rejworst}, there exists a rejection sampler such that
+  $\E[\ell(i^*)] \leq \D P Q + \order{\log \D P Q}$.
+
+  Recall from STAT 230 that we can transform $\rv R$ into any distribution
+  with the change of variable bullshit.
+  In particular, transform $\rv R_i$ to \iid $\Y_i \sim \Y$ and the biased coins.
+
+  Alice will run \Call{RejectionSampler}{$\Y|_{\X=x},\Y$} to find a random index $i^*$
+  such that $\Y_{i^*}$ has distribution $\Y|_{\X=x}$.
+
+  Alice sends a prefix-free encoding of $i^*$. Bob outputs $\Y_{i^*}$.
+  The performance is:
+  \begin{align*}
+    \E_{\mathclap{\X,\rv R}} \abs{M(\X,\rv R)}
+     & = \sum_{x\in\XX} p_x \E_{i^*,\rv Y_1,\rv Y_2,\dotsc}[\ell(i^*)]   \\
+     & \leq \sum_{x\in\XX} p_x \qty(\D{\Y|_{\X=x}}{\Y} + \order{\log \D{\Y_{\X=x}}{\Y}}) \\
+     & = I(\X:\Y) + \sum_{x\in\XX}p_x\order{\log \D{\Y_{\X=x}}{\Y}}                      \\
+     & \leq I(\X:\Y) + \order{\log I(\X:\Y)}
+  \end{align*}
+  where the last step is by Jensen's inequality.
+
+  Now, let $\Pi$ be any protocol.
+  By \nameref{thm:kraft}, $\E_{\X,\rv R} \abs{M(\X,\rv R)} \geq H(M(\X,\rv R))$.
+
+  We will also show the data-processing inequality:
+  \begin{align*}
+    I(\X : (M(\X,\rv R), \rv R))
+     & = I(X : M(\X,\rv R)) + \sum_{r\in\Omega} p_r I(\X|_{\rv R=r} : M(\X,\rv R)|_{\rv R=r}) \tag{chain rule}            \\
+     & = 0 + \sum_{r\in\Omega} p_r I(\X|_{\rv R=r} : M(\X,\rv R)|_{\rv R=r}) \tag{since $\X$ and $\rv R$ are independent} \\
+     & \leq \sum_{r\in\Omega} p_r H(M(\X,\rv R)|_{\rv R=r}) \tag{venn diagram logic}                                      \\
+     & = H(M(\X,\rv R) \mid \rv R)                                                                                        \\
+     & \leq H(M(\X,\rv R)) \tag{conditioning only reduces entropy}
+  \end{align*}
+  In general,
+  \[ I(\rv A : f(\rv B)) \leq I(\rv A : \rv B) \]
+  and we are doing the case where $\rv A = \X$, $\rv B = (M(\X,\rv R))$,
+  and $f = y$.
+\end{prf}
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}

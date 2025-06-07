@@ -1,4 +1,6 @@
 lookForAlignDelims:
+    align*:
+        alignFinalDoubleBackSlash: 1
     deduce:
         delims: 1
         delimiterRegEx: (?<!\\)(&|\|[-=]\|?|\\j)
@@ -23,8 +25,8 @@ verbatimEnvironments:
     pyverbatim: 1
     forest: 1
 indentAfterItems:
-   tikzpicture: 1
-   algorithmic: 1
+    tikzpicture: 1
+    algorithmic: 1
 itemNames:
     path: 1
     node: 0
@@ -52,10 +54,14 @@ specialBeginEnd:
         begin: '\\Repeat'
         end: '\\Until'
         lookForThis: 1
+    Prob:
+        begin: '\\Prob'
+        end: '\\EndProb'
+        lookForThis: 1
     If:
         begin: '\\If'
-        middle: 
-          - '\\ElsIf'
-          - '\\Else'
+        middle:
+            - '\\ElsIf'
+            - '\\Else'
         end: '\\EndIf'
         lookForThis: 1
