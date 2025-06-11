@@ -297,6 +297,7 @@ by amortizing over longer batches of the string.
   Taking a limit of some sort, we can say that we need $H(\Y) + o(1)$ bits.
 \end{sol}
 
+\chapter{Relative entropy}
 \begin{defn*}[relative entropy]
   Given two discrete distributions $p = (p_i)$ and $q = (q_i)$,
   the \term[entropy!relative]{relative entropy}
@@ -447,7 +448,6 @@ I have no idea where this was going.
   which tends to 1 as $k \to \infty$, as desired.
 \end{prf}
 
-\chapter{Applications of KL divergence}
 \lecture{May 20}
 
 \begin{notation}
@@ -942,8 +942,9 @@ $(1-p_{i-1}^*(x))Q(x) \leq \alpha_i(x)$.
   as desired.
 \end{prf}
 
-\section{Mutual information and communication complexity}
+\chapter{Mutual information}
 
+\section{Definition and chain rules}
 \lecture{June 3}
 \begin{notation}
   Given two jointly distributed random variables $(\X,\Y)$ over sample space
@@ -957,7 +958,7 @@ $(1-p_{i-1}^*(x))Q(x) \leq \alpha_i(x)$.
                & = H(\X) - H(\X \mid \Y)      \\
                & = H(\Y) - H(\Y \mid \X)
   \end{align*}
-  where the \term{conditional entropy} $H(\X \mid \Y)$ is
+  where the \term[entropy!conditional]{conditional entropy} $H(\X \mid \Y)$ is
   \[ \sum_{y \in \YY} p_y \cdot H((\X|_{\Y=y})) \]
 \end{defn}
 This is entirely analogous to saying that
@@ -1009,13 +1010,23 @@ $\abs{A \cap B} = \abs{A} + \abs{B} - \abs{A \cup B} = \abs{A} - \abs{A \setminu
 \end{notation}
 
 \begin{theorem}[chain rule for relative entropy]\label{thm:chainD}
-  Let $p(x,y)$ and $q(x,y)$ be distributions. Then,
-  \[ \D{p(x,y)}{q(x,y)} = \D{p(x)}{q(x)} + \D{p(y \mid x)}{q(y \mid x)} \]
+  Let $p$ and $q : \XX\times\YY \to [0,1]$ be distributions.
+  Let $p(x) \coloneqq \sum_{y\in\YY} p(x,y)$ denote marginals of $p$
+  and $p(y|x) \coloneqq \frac{p(x,y)}{p(x)}$ denote conditionals of $p$.
+  Then,
+  \begin{align*}
+    \D{p(x,y)}{q(x,y)}
+     & = \D{p(x)}{q(x)} + \D{p(y|x)}{q(y|x)}                                                   \\
+     & = \D{p(x)}{q(x)} + \sum_{x\in\XX} p(x) \cdot \D{(p(y|x))_{y\in\YY}}{(q(y|x))_{y\in\YY}}
+  \end{align*}
+  where $\D{p(y|x)}{q(y|x)}$
+  is the \term[entropy!relative!conditional]{conditional relative entropy}.
+
   Equivalently, let $(\X_1,\Y_1)$ and $(\X_2,\Y_2)$ be two joint random variables.
   Then,
   \[
     \D{(\X_1,\Y_1)}{(\X_2,\Y_2)}
-    = \D{\X_1}{\X_2} + \D{\Y_1|_{(\X_1,\X_2)}}{\Y_2|_{(\X_1,\X_2)}}
+    = \D{\X_1}{\X_2} + \sum_{x\in\XX}\Pr[\X_1=x]\cdot\D{\Y_1|_{\X_1=x}}{\Y_2|_{\X_2=x}}
   \]
 \end{theorem}
 \begin{prf}[for distributions]
@@ -1061,6 +1072,72 @@ $\abs{A \cap B} = \abs{A} + \abs{B} - \abs{A \cup B} = \abs{A} - \abs{A \setminu
   \end{align*}
 \end{prf}
 
+\skipto[lecture]{11}
+\lecture{June 10}
+\begin{theorem}[chain rule for mutual information]
+  Let $\X_1$, $\X_2$, and $\Y$ be random variables. Then,
+  \[ I((\X_1,\X_2) : \Y) = I(\X_1 : Y) + I(\X_2 : (Y \mid \X_1)) \]
+  and in general
+  \[ I((\X_1,\dotsc,\X_n) : \Y) = \sum_{i=1}^n I(\X_1 : (\Y \mid (\X_1,\dotsc,\X_{i-1}))) \]
+\end{theorem}
+
+\section{Markov chains, data processing, and sufficient statistics}
+\begin{defn}
+  The random variables $\X$, $\Y$, and $\rv Z$ form a \term{Markov chain}
+  if the conditional distribution of $\rv Z$ depends only on $\Y$
+  and is conditionally independent of $\X$. Equivalently,
+  \[ \Pr[\X=x,\Y=y,\rv Z=z] = \Pr[\X=x]\cdot\Pr[\Y=y\mid\X=x]\cdot\Pr[\rv Z=z\mid\Y=y] \]
+  Then, we write $\X \to \Y \to \rv Z$.
+\end{defn}
+
+\begin{example}[Legend of the Drunken Master]
+  In $\Omega = \R^2$, Jackie Chan is drunk and takes steps in random directions.
+  He starts at $\rv J_0 = (0,0)$.
+  Then, $\rv J_1 = \rv J_0 + d_1$ where $d_1$ is an independent random unit vector in $\R^2$,
+  and $\rv J_2 = \rv J_1 + d_2$ and so on.
+\end{example}
+
+First, $\rv J_3$ and $\rv J_1$ are not independent.
+But if we fix $\rv J_2 = j_2 \in \R^2$, then $\rv J_1 \mid \rv J_2=j_2$
+and $\rv J_3 \mid \rv J_2=j_2$ are independent.
+In fact, they are uniformly distributed random points on the circle of radius 1
+centred at $j_2$.
+
+\begin{prop}
+  Let $\X$, $\Y$, and $\rv Z$ be random variables. \TFAE:
+  \begin{enumerate}
+    \item $\X \to \Y \to \rv Z$
+    \item $\X$ and $\rv Z$ are conditionally independent given $\Y$.
+          That is,
+          \[
+            \Pr[\X=x,\rv Z=z \mid \Y=y] = \Pr[\X=x \mid \Y=y] \cdot \Pr[\rv Z=z \mid \Y=y]
+          \]
+    \item $\rv Z$ is distributed according to $f(\Y,\rv R)$ for some $\rv R$ independent of $\X$ and $\Y$.
+  \end{enumerate}
+\end{prop}
+\begin{xca}
+  Prove the definitions are equivalent.
+\end{xca}
+
+\begin{theorem}[data-processing inequality]\label{thm:dpi}
+  If $\X \to \Y \to \rv Z$, then $I(\X : \rv Z) \leq I(\X : \Y)$.
+
+  Equality happens if and only if $\X \to \rv Z \to \Y$.
+\end{theorem}
+\begin{prf}
+  By the chain rule,
+  \[
+    I(\X : (\Y, \rv Z)) = I(\X : \Y) + \cancelto{0}{I(\X : \rv Z \mid \Y)}
+    = I(\X : \rv Z) + I(\X : \Y \mid \rv Z)
+  \]
+  so that
+  \[ I(\X : \Y) = I(\X : \rv Z) + I(\X : \Y \mid \rv Z) \]
+  One may show that the mutual information is always non-negative,
+  so we have $I(\X : \Y) \geq I(\X : \rv Z)$ as desired.
+\end{prf}
+
+\section{Communication complexity}
+\skipto[lecture]{10}
 \lecture{June 5}
 \begin{problem}
   Suppose there is a joint distribution $(\X,\Y)$ that Alice and Bob wish to
@@ -1123,30 +1200,35 @@ so that $\E\abs{M(\X,\rv R)} \approx H(\X)$.
   The performance is:
   \begin{align*}
     \E_{\mathclap{\X,\rv R}} \abs{M(\X,\rv R)}
-     & = \sum_{x\in\XX} p_x \E_{i^*,\rv Y_1,\rv Y_2,\dotsc}[\ell(i^*)]   \\
-     & \leq \sum_{x\in\XX} p_x \qty(\D{\Y|_{\X=x}}{\Y} + \order{\log \D{\Y_{\X=x}}{\Y}}) \\
-     & = I(\X:\Y) + \sum_{x\in\XX}p_x\order{\log \D{\Y_{\X=x}}{\Y}}                      \\
+     & = \sum_{x\in\XX} p_x \E_{i^*,\rv Y_1,\rv Y_2,\dotsc}[\ell(i^*)]                    \\
+     & \leq \sum_{x\in\XX} p_x \qty(\D{\Y|_{\X=x}}{\Y} + \order{\log \D{\Y|_{\X=x}}{\Y}}) \\
+     & = I(\X:\Y) + \sum_{x\in\XX}p_x\order{\log \D{\Y|_{\X=x}}{\Y}}                      \\
      & \leq I(\X:\Y) + \order{\log I(\X:\Y)}
   \end{align*}
   where the last step is by Jensen's inequality.
 
   Now, let $\Pi$ be any protocol.
-  By \nameref{thm:kraft}, $\E_{\X,\rv R} \abs{M(\X,\rv R)} \geq H(M(\X,\rv R))$.
+  \marginnote{\normalsize{\textit{Lecture 11\\June 10\\cont.}}}
+  We will apply the \nameref{thm:dpi}.
 
-  We will also show the data-processing inequality:
+  Notice that $\X \to (M(\X,\rv R),\rv R) \to \Y$ if and only if $\Pi$
+  is a valid protocol.
+  If we sample $x\sim\X$ and Alice sends $M(x,\rv R)$,
+  then Bob outputs something distributed according to $\Y \mid \X=x$,
+  i.e., just $\Y$ since $x$ was arbitrary. Then,
   \begin{align*}
-    I(\X : (M(\X,\rv R), \rv R))
-     & = I(X : M(\X,\rv R)) + \sum_{r\in\Omega} p_r I(\X|_{\rv R=r} : M(\X,\rv R)|_{\rv R=r}) \tag{chain rule}            \\
-     & = 0 + \sum_{r\in\Omega} p_r I(\X|_{\rv R=r} : M(\X,\rv R)|_{\rv R=r}) \tag{since $\X$ and $\rv R$ are independent} \\
-     & \leq \sum_{r\in\Omega} p_r H(M(\X,\rv R)|_{\rv R=r}) \tag{venn diagram logic}                                      \\
-     & = H(M(\X,\rv R) \mid \rv R)                                                                                        \\
-     & \leq H(M(\X,\rv R)) \tag{conditioning only reduces entropy}
+    I(\X : \Y)
+     & \leq I(\X : (M(\X,\rv R),\rv R)) \tag{data processing inequality}                                          \\
+     & = I(\X : \rv R) + \sum_{r\in\Omega_{\rv R}} p_r I(\X|_{\rv R=r} : M(\X,\rv R)|_{\rv R=r}) \tag{chain rule} \\
+     & = 0 + I(\X : M(\X,\rv R) \mid \rv R) \tag{independence}                                                    \\
+     & \leq H(M(\X,\rv R) \mid \rv R) \tag{$I(\rv A : \rv B) \leq \min\{H(\rv A),H(\rv B)\}$}                     \\
+     & \leq H(M(\X,\rv R)) \tag{$H(\rv A \mid \rv B) \leq H(\rv A)$}                                              \\
+     & \leq \E\abs{M(\X,\rv R)} \tag{Kraft inequality}
   \end{align*}
-  In general,
-  \[ I(\rv A : f(\rv B)) \leq I(\rv A : \rv B) \]
-  and we are doing the case where $\rv A = \X$, $\rv B = (M(\X,\rv R))$,
-  and $f = y$.
+  completing the proof.
 \end{prf}
+
+\section{Parameter estimation}
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
