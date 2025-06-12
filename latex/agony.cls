@@ -201,6 +201,7 @@
 \newcommand{\dilim}[1]{\dlim{#1}{\infty}} % infinite limits
 \newcommand{\ilim}[1]{\lim_{#1\to\infty}}
 \newcommand{\at}[2]{\left.#1\right|_{#2}}
+\newcommand{\mmid}{\mathrel{\middle|}}
 \newcommand{\br}{\\} % non-aligning line break
 
 % Fonts

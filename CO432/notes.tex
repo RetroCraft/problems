@@ -15,7 +15,7 @@ taught by Vijay Bhattiprolu.
   \listoflecture
 \end{multicols}
 
-\chapter{Introduction}
+\chapter{Entropy}
 
 \begin{notation}
   I will be using my usual \LaTeX{} typesetting conventions:
@@ -31,7 +31,7 @@ taught by Vijay Bhattiprolu.
   \end{itemize}
 \end{notation}
 
-\section{Entropy}
+\section{Definition}
 \lecture{May 6}
 
 \textrule{$\downarrow$ Lecture 1 adapted from Arthur $\downarrow$}
@@ -1006,7 +1006,8 @@ $\abs{A \cap B} = \abs{A} + \abs{B} - \abs{A \cup B} = \abs{A} - \abs{A \setminu
 
 \begin{notation}
   Although relative entropy is defined only on \emph{distributions},
-  write $\D\X\Y$ to be $\D{f_{\X}}{f_{\Y}}$.
+  write $\D\X\Y$ to be $\D{f_{\X}}{f_{\Y}}$
+  where $\X \sim f_{\X}$ and $\Y \sim f_{\Y}$.
 \end{notation}
 
 \begin{theorem}[chain rule for relative entropy]\label{thm:chainD}
@@ -1081,7 +1082,7 @@ $\abs{A \cap B} = \abs{A} + \abs{B} - \abs{A \cup B} = \abs{A} - \abs{A \setminu
   \[ I((\X_1,\dotsc,\X_n) : \Y) = \sum_{i=1}^n I(\X_1 : (\Y \mid (\X_1,\dotsc,\X_{i-1}))) \]
 \end{theorem}
 
-\section{Markov chains, data processing, and sufficient statistics}
+\section{Markov chains and data processing}
 \begin{defn}
   The random variables $\X$, $\Y$, and $\rv Z$ form a \term{Markov chain}
   if the conditional distribution of $\rv Z$ depends only on $\Y$
@@ -1090,7 +1091,7 @@ $\abs{A \cap B} = \abs{A} + \abs{B} - \abs{A \cup B} = \abs{A} - \abs{A \setminu
   Then, we write $\X \to \Y \to \rv Z$.
 \end{defn}
 
-\begin{example}[Legend of the Drunken Master]
+\begin{example}[\textit{\href{https://en.wikipedia.org/wiki/Drunken_Master_II}{Legend of the Drunken Master}}]
   In $\Omega = \R^2$, Jackie Chan is drunk and takes steps in random directions.
   He starts at $\rv J_0 = (0,0)$.
   Then, $\rv J_1 = \rv J_0 + d_1$ where $d_1$ is an independent random unit vector in $\R^2$,
@@ -1103,7 +1104,7 @@ and $\rv J_3 \mid \rv J_2=j_2$ are independent.
 In fact, they are uniformly distributed random points on the circle of radius 1
 centred at $j_2$.
 
-\begin{prop}
+\begin{prop}[Markov chain characterization]\label{prop:markov}
   Let $\X$, $\Y$, and $\rv Z$ be random variables. \TFAE:
   \begin{enumerate}
     \item $\X \to \Y \to \rv Z$
@@ -1134,6 +1135,7 @@ centred at $j_2$.
   \[ I(\X : \Y) = I(\X : \rv Z) + I(\X : \Y \mid \rv Z) \]
   One may show that the mutual information is always non-negative,
   so we have $I(\X : \Y) \geq I(\X : \rv Z)$ as desired.
+  We defer the proof of the equality case for \cref{sec:ss}.
 \end{prf}
 
 \section{Communication complexity}
@@ -1208,7 +1210,7 @@ so that $\E\abs{M(\X,\rv R)} \approx H(\X)$.
   where the last step is by Jensen's inequality.
 
   Now, let $\Pi$ be any protocol.
-  \marginnote{\normalsize{\textit{Lecture 11\\June 10\\cont.}}}
+  \marginnote{\normalsize{\textit{Lecture 11\\June 10\\(con'd)}}}
   We will apply the \nameref{thm:dpi}.
 
   Notice that $\X \to (M(\X,\rv R),\rv R) \to \Y$ if and only if $\Pi$
@@ -1228,7 +1230,126 @@ so that $\E\abs{M(\X,\rv R)} \approx H(\X)$.
   completing the proof.
 \end{prf}
 
-\section{Parameter estimation}
+\section{Sufficient statistics}\label{sec:ss}
+\skipto[lecture]{12}
+\lecture{June 12}
+We will develop the idea of sufficient statistics and data processing
+towards the asymptotic equipartition property.
+This is a warmup for the joint asymptotic equipartition property
+which we will use to prove one direction of Shannon's channel-coding theorem.
+
+\begin{problem}
+  Suppose $\X = (\X_1,\dotsc,\X_n)$ are \iid sampled according to $\Bern(\theta)$
+  for some fixed parameter $\theta \in [0,1]$.
+
+  If we have a sample $x = (x_1,\dotsc,x_n)$, how can we recover $\theta$?
+\end{problem}
+
+The classical solution (recall from STAT 230) is the maximum likelihood estimator
+$\hat\theta = \frac1n\sum_{i=1}^n x_i$ such that
+$\Pr[\abs{\hat\theta-\theta} > \varepsilon] \leq 2^{-\Omega(\varepsilon^2n)}$.
+In essence, we are reducing the number of bits to send $\theta$ from $n$
+to [whatever it is you need to send a float of desired accuracy lol].
+
+\begin{defn}
+  A function $T(\X)$ is a \term{sufficient statistic}
+  relative to a family $\{f_\theta(x)\}$ if $\theta \to T(\X) \to \X$.
+\end{defn}
+
+We are considering the case where $f_\theta$ is $\Bern(\theta)$.
+Clearly, $\theta \to \X \to T(\X)$ is a Markov chain
+because $\X$ is distributed based on $\theta$ and $T$ is a function of
+$\X$ which is not influenced $\theta$.
+
+\begin{example}
+  $T(\X) = \frac1n\sum_{i=1}^n \X_i$ is a sufficient statistic
+  relative to the family $\{\Bern(\theta)\}$.
+\end{example}
+\begin{prf}
+  We must show $\theta \to T(\X) \to \X$ is a Markov chain.
+
+  Fix $x = (x_1,\dotsc,x_n)$. Notice that
+  \[ \Pr\qty[\X_1=0,\dotsc,\X_n=0 \mid \frac1n\sum \X_i = \frac12] = 0 \]
+  and
+  \[ \Pr\qty[\X_1=1,\dotsc,\X_n=1 \mid \frac1n\sum \X_i = \frac12] = 0 \]
+  since we obviously cannot have half the $\X_i$'s be 1 if they are all 0s or all 1s.
+
+  But if we set exactly half of the $\X_i$'s to be 1, the distribution is uniform
+  \[ \Pr\qty[\X_1=1,\dotsc,\X_{\frac{n}{2}}=1,\X_{\frac{n}{2}+1}=0,\dotsc,\X_n=0 \mid \frac1n\sum\X_i = \frac12] = \Pr[\X=x \mid \frac1n\sum\X_i = \frac12] = \frac{1}{\binom{n}{n/2}} \]
+  for all $x\in\bits{n}$ such that $\frac{n}{2}$ entries are 1.
+
+  More generally, suppose $x$ has exactly $k$ ones where $k = n\bar\theta$. Then,
+  \[
+    \Pr[\X=x \mid \frac1n\sum\X_i = \bar\theta] = \begin{cases}
+      1/\binom{n}{n\bar\theta} & \frac1n\sum x_i = \bar\theta \\
+      0                        & \text{otherwise}
+    \end{cases}
+  \]
+  so we have that $\X \mid \frac1n\sum\X_i = \bar\theta$ is independent of $\theta$.
+
+  We can also see this by saying that $\X \sim \Bern(\theta)^n$
+  can be equivalently sampled as:
+  \begin{enumerate}
+    \item first sampling $\rv K = k$ with probability $\Pr[\frac1n\sum\X_i=k]$,
+    \item then sampling a uniform random point that has exactly $\rv K$ ones.
+  \end{enumerate}
+  which clearly shows that $\rv X$ can be sampled as $f(\frac1n\sum\X_i,\rv R)$
+  for some new randomness $\rv R$ (the uniform randomness) independent of $\theta$. 
+\end{prf}
+
+\begin{example}[``mostly unrelated \textit{\href{https://en.wikipedia.org/wiki/Drunken_Master_III}{Drunken Master III}}'']
+  A public domain generic drunkard legally distinct from Jackie Chan begins at $(0,0)$
+  and takes steps in random directions $d_i$
+  of length $\ell \sim \abs{\normal(0,\theta^2)}$.
+\end{example}
+
+Let $\X_n$ be the position at time $n$.
+We can show that 
+\[ \norm{\X_n}_2 = c(1\pm o(1))\theta\sqrt{n} \]
+with probability very close to 1. To be more precise,
+\[ \Pr[\text{length from origin} > (1+o(1))(\text{expected length from origin})] \]
+is exponentially small in $n$.
+That is, after $n$ steps, the randomness cancels out,
+and we have a pretty good idea of where we end up.
+
+The whole point of this exercise is to notice that if we have a sufficient statistic,
+the probability measure is extremely concentrated around some constant,
+and we can almost just treat the statistic as a constant itself.
+
+\begin{example}
+  Consider \iid Gaussians $\X_1,\dotsc,\X_n \sim \normal(0,1)$.
+  Then, what is the probability $\Pr[\X_1,\dotsc,\X_n > t\sqrt{n}]$
+  we overshoot the estimator by $t$ times?
+\end{example}
+\begin{sol}
+  Apply simple properties of Gaussians from STAT 230:
+  \begin{align*}
+    \Pr[\X_1,\dotsc,\X_n > t\sqrt{n}] = \Pr[\sqrt n\normal(0,1) > t\sqrt{n}] = \Pr[\normal(0,1) > t] = \Phi(t) \approx e^{-t^2/2}
+  \end{align*}
+\end{sol}
+
+\begin{lemma}[rotation invariance of the Gaussian]
+  Let $\X$ be a Gaussian and $O$ be an orthonormal matrix.
+  Then, $O\X$ is distributed identically to $\X$.
+\end{lemma}
+\begin{prf}[super sketchy]
+  Consider \iid $\X_1,\dotsc,\X_n \sim \normal(0,1)$.
+  Then, since $p(x_i) = \frac1{\sqrt{2\pi}}\exp(-\frac{x_i^2}{2})$, we have
+  \[ p(x_1,\dotsc,x_n) = \frac{1}{\sqrt{2\pi}^n}\exp(-\frac{\norm{x}_2^2}{2}) \]
+  Notice that this only depends on the length of $x$,
+  so we are uniformly distributing on the $n$-ball of length $\norm{x}_2$.
+\end{prf}
+
+Now consider what's going on with a summation.
+Notice that $\sum \X_i = \ev{\X, \bb 1}$.
+There exists some rotation $O$ such that $O\bb 1 =\sqrt{n}e_1$ (the first basis vector).
+Inner products preserve rotations, so $\sum \X_i = \ev{O\X,O\bb 1} = \sqrt{n}\ev{O\X,e_1} = \sqrt{n}O\X_1$.
+But by rotation invariance, this has the same distribution as $\sqrt{n}\X_1$,
+which is just a Gaussian.
+
+\chapter{Coding theory}
+
+\chapter{Parallel repetition}
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
