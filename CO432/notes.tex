@@ -1294,7 +1294,7 @@ $\X$ which is not influenced $\theta$.
     \item then sampling a uniform random point that has exactly $\rv K$ ones.
   \end{enumerate}
   which clearly shows that $\rv X$ can be sampled as $f(\frac1n\sum\X_i,\rv R)$
-  for some new randomness $\rv R$ (the uniform randomness) independent of $\theta$. 
+  for some new randomness $\rv R$ (the uniform randomness) independent of $\theta$.
 \end{prf}
 
 \begin{example}[``mostly unrelated \textit{\href{https://en.wikipedia.org/wiki/Drunken_Master_III}{Drunken Master III}}'']
@@ -1304,7 +1304,7 @@ $\X$ which is not influenced $\theta$.
 \end{example}
 
 Let $\X_n$ be the position at time $n$.
-We can show that 
+We can show that
 \[ \norm{\X_n}_2 = c(1\pm o(1))\theta\sqrt{n} \]
 with probability very close to 1. To be more precise,
 \[ \Pr[\text{length from origin} > (1+o(1))(\text{expected length from origin})] \]
@@ -1347,7 +1347,527 @@ Inner products preserve rotations, so $\sum \X_i = \ev{O\X,O\bb 1} = \sqrt{n}\ev
 But by rotation invariance, this has the same distribution as $\sqrt{n}\X_1$,
 which is just a Gaussian.
 
+\lecture{June 17}
+\section{Concentration of measure}
+\begin{defn*}[shapes!]
+  Let $B^n$ be the unit $n$-ball, i.e., $\{x\in\R^n : \norm{x}_2 \leq 1\}$.
+
+  Also write $S^n$ for the unit $n$-sphere, i.e., $\partial B^n = \{x\in\R^n : \norm{x}_2 = 1\}$.
+\end{defn*}
+
+\begin{problem}[isoparametric problem]
+  Of all $A \subseteq \R^n$ such that $\text{Vol}_n(A) = 1$,
+  what $A$ minimizes $\text{Vol}_{n-1}(\partial A)$?
+\end{problem}
+
+It can be shown that $A = B^n$ with minimal ``surface area''.
+The proof uses symmetrization:
+take an axis, then align all the perpendicular fibres to that axis.
+
+Very similarly, we can show that of all $n-1$ dimensional shapes lying
+on the $n-1$-sphere, the one that minimizes the spherical volume is the hemispherical cap.
+The proof uses a spherical version of symmetrization
+where great circles take the place of lines.
+
+Since we know that with stupidly high probability,
+$n$ \iid Gaussians will end up on a sphere with radius $\sqrt{n}$,
+we can consider the ``Gaussian isoparametric problem''.
+
+Suppose again that $\rv G_i \sim \normal(0,1)$ and $g_i$ is a sample.
+If we imagine the vector $g$ lying on an $n$-ball,
+we showed that $\norm{g}_2 \approx \sqrt{n}$ with exponential decay.
+
+\begin{defn}[Lipschitz continuity]
+  A function $f : \R^n \to \R^m$ is \term*{$L$-Lipschitz continuous}
+  if for all $x$ and $y$ in $\R^n$, $\abs{f(x) - f(y)} \leq L\norm{x-y}_2$.
+\end{defn}
+
+\begin{theorem}[Gaussian concentration inequality]\label{thm:gci}
+  Let $f$ be any 1-Lipschitz function $f : \R^n \to \R$ and for all $x$, $y$,
+  $\abs{f(x)-f(y)} \leq \norm{x-y}_2$. Then,
+  \[ \Pr(\abs{f(g) - \text{median}(f(g))} > t) \]
+  is exponentially small in $t$ and $n$.
+\end{theorem}
+
+We will not prove this rigorously.
+Milman used this to show that for any convex body $C$ in John position
+that is origin-symmetric, a random subspace $S$ of dimension $\log n$
+``looks like a ball'' with probability $1-e^{-n}$.
+That is, $(1-\varepsilon)B^n \subseteq S \cap C \subseteq (1+\varepsilon)B^n$
+for $\varepsilon \to 0$ as $n \to \infty$.
+
+\begin{prf}[sketchier than the Tenderloin]
+  We can pretend that the Gaussian variable just lies on $\sqrt{n}S^{n-1}$.
+  Define \[ A = \{x\in S^{n-1} : f(x) \geq \median_{z\sim S^{n-1}} f(z)\} \]
+  such that \[ \Pr_{\X\sim S^{n-1}}[\X\in A] = \frac12 \]
+  Also define a slight relaxation of $A$
+  \[ A_\varepsilon = \{x\in S^{n-1} : f(x) \geq \median_{z\sim S^{n-1}} f(z) - \varepsilon\} \]
+  We can show ``fairly easily'' that
+  \[ \lim_{\varepsilon\to0}\frac{\Pr[\X\in A_e]-\Pr[\X\in A]}{\varepsilon} = 0 \]
+  and we can relate $\Pr[\abs{f(x)-\median f(x)} \geq \varepsilon]$
+  to the spherical volume of $\partial A$.
+
+  [something something isoparametric] $A$ must be a hemisphere.
+
+  A hemisphere can be written as $\{ x \in S^{n-1} : \ev{x,a} \geq 0 \}$.
+
+  Then, we can rephrase the question as
+  $\Pr[\sum x_i \in [-\varepsilon,\varepsilon]]$ being exponentially small
+  which we already showed?
+\end{prf}
+
 \chapter{Coding theory}
+
+\section{Source coding}
+
+Shannon used a nice choice of $f$ with the \nameref{thm:gci}
+to develop his channel coding theorem.
+
+Let $\X$ be a random variable over a finite sample space $\XX$.
+On average and in expectation, we need $H(\X)+\varepsilon$ bits/symbol
+to store symbols $\X_1,\dotsc,\X_n$. Then, we can say that
+\[
+  \lim_{n\to\infty}\Pr[\abs{\frac1n\sum \log p(\X_i) - H(\X)} > \varepsilon] = 0 \nr{eq:logclose}
+\]
+for any fixed $\varepsilon$ (via the central limit theorem).
+
+We can define a typical set $A_\varepsilon$ where \cref{eq:logclose} fails
+(i.e., $\abs{\cdots} \leq \varepsilon$ and the probability does not go to zero)
+and use naive 0/1 encodings of those $\abs{A_\varepsilon} = 2^{H(\X)n + \varepsilon n}$ common strings.
+Encode the remainder with garbage long strings,
+and we experience no penalty since we still have
+an expected length $H(\X)n + \varepsilon n$.
+
+\lecture{June 19}
+\begin{theorem}[Shannon's source coding theorem]
+  Let $\X \sim (p(x))$ be a random variable over a finite sample space $\XX$.
+  Let $\X_1,\dotsc,\X_n$ be \iid copies of $\X$.
+
+  For all $\varepsilon > 0$ and any sufficiently large $n$,
+  there exists an encoding map $E : \XX^n \to \bits*$
+  such that the performance of $E$
+  \[ \text{perf}(E) = \frac1n\E\abs{E(\X_1,\dotsc,\X_n)} \leq H(\X) + \varepsilon \]
+  Further, for all encoding maps $E : \XX^n \to \bits*$,
+  \[ \text{perf}(E) \geq H(\X) \]
+\end{theorem}
+
+Consider an example: let $\XX = \{1,\dotsc,\Sigma\}$ and $\X = \Unif(\XX)$.
+Then, $H(\X) = \log_2\Sigma$.
+If this is an integer, we can encode using the base-2 encoding of $\XX$
+so that
+\[
+  \text{perf}(E)
+  = \abs{E(x_1,\dotsc,x_n)} = \abs{B_2(x_1)\cdots B_2(x_n)}
+  = (\log_2\Sigma)n = nH(\X)
+\]
+for any sample.
+
+Otherwise, interpret $x \in \XX^n$ as a base-$\Sigma$ number
+and convert \emph{that} to base-2 so that
+\[
+  \text{perf}(E)
+  =\abs{E(x)}
+  = \abs{B_2\qty(\sum_i \Sigma^{i-1} (x_i-1))}
+  \leq \abs{B_2(\Sigma^n)}
+  = \ceil{n\log_2\Sigma}
+  = \ceil{nH(\X)}
+\]
+The key observation of Shannon's theorem
+is that taking copies of \emph{any} random variable will eventually
+``look a lot like'' a uniform random variable over some special set.
+
+The intuition here is that if we have a very large $n$,
+the proportions are pretty much fixed and you have a uniform distribution
+over the permutations.
+
+Recall the central limit theorem. Then,
+
+\begin{corollary}
+  For all $\varepsilon > 0$ and any $n \in \N$,
+  if $\X = (\X_1,\dotsc,\X_n)$ are \iid, then
+  \[ \Pr[\abs{\frac1n\sum_{i=1}^n\log_2\frac{1}{p(\X_i)} - H(\X)} > \varepsilon] \leq o(1) \]
+\end{corollary}
+Notice that all the $p(\X_i)$'s are identical since the $\X_i$'s are \iid.
+Then, $\E[\log_2\frac{1}{p(\X_i)}] = H(\X)$ so what we are really measuring
+is the difference between theoretical entropy and the ``entropy'' of the sample.
+
+\newcommand{\aeps}{A_{(\varepsilon)}^{(n)}}
+\begin{defn}
+  Let
+  \begin{align*}
+    \aeps
+     & \coloneqq \qty{x\in\XX^n \Bigm| H(\X) - \varepsilon \leq \frac1n\sum\log_2\frac{1}{p(x_i)} \leq H(\X) + \varepsilon}       \\
+     & = \qty{x\in\XX^n \Bigm| \frac{1}{2^{(H(\X)+\varepsilon)n}} \leq p(x_1,\dotsc,x_n) \leq \frac{1}{2^{(H(\X)-\varepsilon)n}}}
+  \end{align*}
+  be the set of values that work nicely with the CLT corollary,
+  or, equivalently, the set of strings that have an equal-ish probability.
+\end{defn}
+
+Quick exercise: we have a random variable $\rv R$ over $[\Sigma]$,
+and we know that $\frac{1}{k^{1+\varepsilon}} \leq \Pr[\rv R=i] \leq \frac{1}{k^{1-\varepsilon}}$.
+Then, we can bound $\Sigma$ by $k^{1-\varepsilon} \leq \Sigma \leq k^{1+\varepsilon}$.
+This is because if we had more/symbols, the sum of probabilities would be over/under 1.
+
+If $\rv R$ instead could take other values with probability at most $\varepsilon$,
+then our upper bound on $\Sigma$ remains the same and the lower bound
+becomes $(1-\varepsilon)k^{1-\varepsilon} \leq \Sigma$.
+
+\begin{claim}
+  $(1-o(1))2^{(H(\X)+\varepsilon)n} \leq \abs{\aeps} \leq 2^{H(\X)n}$
+  assuming $H(\X) \geq 1$.
+\end{claim}
+Informally: we can divide the possibilities into $\aeps$,
+where the distribution looks uniform, and $\XX \setminus \aeps$,
+which has vanishingly small probability.
+
+Now, we can naively encode $\aeps$ using the binary numbers up to $\abs{\aeps}$.
+
+Encode the rest of $\XX^n$ using larger numbers.
+
+The performance of this encoding is
+\begin{align*}
+  n\operatorname{perf}(E) & = \E_{\X_1,\dotsc,\X_n} \abs{E(\X_1,\dotsc,\X_n)}                             \\
+                          & = \Pr[(\X_1,\dotsc,\X_n) \in \aeps]\cdot\ceil{\log_2 A^{(n)}_{(\varepsilon)}}
+  + \Pr[(\X_1,\dotsc,\X_n) \not\in \aeps]\cdot\ceil{\log_2 \abs{\XX}^n}                                   \\
+                          & = (1-o(1))\ceil{(H(\X)+\varepsilon)n} + o(1)\ceil{n\log_2\abs{\XX}}
+\end{align*}
+In particular here it turns out that the $o(1)$ term is around about $\frac{1}{\sqrt{n}}$ and
+\[ \text{perf}(E) = H(\X)n + \varepsilon n + \sqrt{n}\log\abs{\XX} \]
+This does not actually help us in real life,
+since sorting the symbols by their presence in $\aeps$
+would take $2^n$ space.
+
+\section{Channel coding}
+\lecture{June 24}
+
+Shannon set up a noise model where:
+\begin{itemize}[nosep]
+  \item Start with a source message.
+  \item Encode it in some alphabet $\XX$.
+  \item As it goes through the noisy channel $\XX \to \YY$,
+        apply a probabilistic mapping to each character independently.
+        Every $x \in \XX$ is mapped to a random $y \in\YY$ with some probability.
+  \item The message is decoded from $\YY$.
+  \item We must recover the original message with high probability.
+\end{itemize}
+
+\begin{defn}[binary symmetric channel]
+  The \term*{binary symmetric channel} $\BSC(p)$
+  is as described above where $\XX = \YY = \{0,1\}$
+  such that $b \mapsto 1-b$ with probability $p$
+  and $b \mapsto b$ with probability $1-p$.
+\end{defn}
+
+We can now state Shannon's channel coding theorem.
+
+\begin{theorem}[Shannon's channel coding theorem for $\BSC(p)$]\label{thm:scc}
+  For all $0 \leq p < \frac12$ and $0 < \varepsilon < \frac12-p$
+  with $n$ sufficiently large:
+  \begin{itemize}
+    \item Possibility: For all $k \leq \floor{(1-H(p+\varepsilon))n}$,
+          there exists $E : \bits{k} \to \bits{n}$ and $D:\bits{n}\to\bits{k}$
+          such that
+          \[ \forall m \in \bits{k} \qc \Pr_{\rv e\sim B(p)^n}[D(E(m)+\rv e) = m] \geq 1-\frac{1}{2^{\Omega(n)}} \]
+    \item Impossibility: If $k \geq \ceil{(1-H(p)+\varepsilon)n}$,
+          then for every pair of encoding and decoding maps
+          $E : \bits{k} \to \bits{n}$ and $D : \bits{n} \to \bits{k}$,
+          \[ \exists m\in\bits{k} \qc \Pr_{\rv e\sim B(p)^n}[D(E(m)+\rv e) = m] \leq \frac12 \]
+  \end{itemize}
+\end{theorem}
+
+Before we prove this, let's develop a proof technique using geometric intuition.
+
+\section{Interlude: Packing, covering, and Voronoi tiling}
+Consider the space $\bits{n}$.
+Then, by our discussion of concentration of measure, $\E[m]+\rv e$
+lives with extremely high probability inside a ``ball''.
+In particular, $\rv e$ is in the \term{Hamming ball} of radius $(p+\varepsilon)n$,
+\[ \Ball_H((p+\varepsilon)n) = \{ e : \abs{e}_H \leq (p+\varepsilon)n \} \]
+where $\abs{e}_H$ is the number of non-zero entries in $e$.\footnote{
+  We may think of the Hamming wall as a 0-norm ball.}
+
+Now, consider this deterministic form of \nameref{thm:scc}:
+
+\begin{prop}
+  Possibility: There exists encoding/decoding maps $E : \bits{k} \to \bits{n}$
+  and $D : \bits{n} \to \bits{k}$ such that for all messages $m \in \bits{k}$,
+  there exists a subset $S_m$ of the Hamming ball $\Ball_H((p+\varepsilon)n)$
+  of fractional size
+  \[ \frac{\abs{S_m}}{\abs{\Ball_H((p+\varepsilon)n)}} = 1-\frac{1}{2^{\Omega(n)}} \]
+  such that for all errors $e \in S_m$,
+  \[ D(E(m)+e) = m \]
+  Impossibility: for all $E$, $D$, and $m$, it cannot be that the correctly encoded vectors
+  $S_m = \{e : D(E(m)+e) = m\}$ have fractional size
+  \[ \frac{\abs{S_m}}{\abs{\{\}}} \geq \frac12 \]
+\end{prop}
+
+Consider any $m$ and let $D_m$ be the set of vectors decoded to $m$.
+Geometrically, in $\bits{n}$, the space must be partitioned according to the $D_m$'s.
+
+\begin{remark}
+  If we have a shape $S \subseteq \sv S$ we would like to tile the space $\sv S$ with,
+  the \term{volume ratio} $\frac{\abs{S}}{\abs{\sv S}}$ is an upper bound
+  on the number of $S$'s you can fit inside $\sv S$.
+\end{remark}
+
+In high dimensions, for almost all shapes, this also becomes a good estimate.
+In particular, it works for the Hamming ball.
+
+\begin{remark}
+  For the Hamming ball, there is a Euclidean ball of appropriate radius
+  such that in almost all directions, the two balls look the same.
+\end{remark}
+
+\begin{prf}[of the impossibility direction]
+  $D_m$ has large intersection with a large set $E(m) + \Ball_H((p+\varepsilon)n)$
+
+  So $D_m$ must have high volume.
+
+  But the $D_m$ shape tiles the space $\bits{n}$ with finite volume.
+
+  Therefore, $k$ cannot be too large otherwise there are too many $D_m$'s.
+\end{prf}
+
+\lecture{June 26}
+
+TODO
+
+\lecture{July 3}
+
+\begin{defn}
+  Fix some small fixed constant $\varepsilon > 0$.
+  Let $p \in (0,\frac12)$, $k = (1-H(p)-\varepsilon)n$, and $n$ grows to $\infty$.
+
+  The encoding map $E : \F_2^k \to \F_2^n$ is defined randomly and independent message-wise.
+
+  Let $D : \F_2^n \to \F_2^k$ be the nearest-codeword map associated to $E$.
+\end{defn}
+
+We will delete a fraction $2^{-\varepsilon'n}$ of codewords that are bad.
+
+\begin{defn}
+  An element $E(m)$ is \term*{bad} if
+  $\frac{(E(m) + \Ball_H(pn)) \cap D_m}{\Ball_H(pn)} \leq 1-2^{-\varepsilon''n}$
+  for $\varepsilon'' = ?$ (fill in later).
+
+  We call another element $y$ \term*{corrupt} if it causes $E(m)$ to be bad.
+\end{defn}
+
+\begin{defn}
+  The \term{Voronoi cell} $D_m = \{y \in \F_2^n : d_H(y,m) = \min_{m'\in \F_2^k} d(y,m')\}$.
+\end{defn}
+
+\begin{claim}
+  Fix an $E(m)$ and a $y$ in its Hamming ball $E(m) + \Ball_H(pn)$. Then,
+  \[
+    \Pr_{E(m')}[d(y,E(m')) < d(y,E(m))] \leq \frac{1}{2^k}\cdot\frac{1}{2^{\varepsilon n}}
+  \]
+\end{claim}
+\begin{prf}
+  \begin{align*}
+    \Pr_{E(m')}[d(y,E(m')) < d(y,E(m))]
+     & \leq \Pr_{E(m')}[E(m') \in y+\Ball_H(pn-1)]     \\
+     & = \frac{\Vol(\Ball_H(pn-1))}{\abs{F_2^n}}       \\
+     & \leq \frac{2^{H(p)n}}{2^n}                      \\
+     & = \frac{1}{2^k}\cdot\frac{1}{2^{\varepsilon n}}
+  \end{align*}
+\end{prf}
+
+Now, what is the probability a codeword is bad?
+
+\begin{claim}
+  Fix an $E(m)$ and a $y$ in its Hamming ball $E(m) + \Ball_H(pn)$.
+  Of the remaining encoding maps,
+  \[
+    \Pr_{E : \F_2^k \setminus \{m\} \to \F_2^n} [\text{$y$ is corrupt}]
+    \leq \frac{1}{2^{\varepsilon n}}
+  \]
+\end{claim}
+\begin{prf}
+  \begin{align*}
+    \Pr_{E : \F_2^k \setminus \{m\} \to \F_2^n} [\text{$E(m)$ is bad}]
+     & \leq \sum_{m' \neq m} \Pr_{E : \F_2^k \setminus \{m\} \to \F_2^n}[\text{$E(m')$ is closer to $y$ than $E(m)$}] \\
+     & = \sum_{m' \neq m} \Pr_{E(m')}[\text{$E(m')$ is closer to $y$ than $E(m)$}] \tag{by independence}              \\
+     & \leq 2^k \cdot \frac{1}{2^k} \cdot \frac{1}{2^{\varepsilon n}}                                                 \\
+     & = \frac{1}{2^{\varepsilon n}}
+  \end{align*}
+\end{prf}
+
+\paragraph{Aside: Markov's inequality} Let $a_1,\dotsc,a_n \in \R_{\geq 0}$.
+Suppose $\frac1n\sum a_i \leq \lambda$.
+Can $\varepsilon n$ indices $a_i$ satisfy $a_i > \frac\lambda\varepsilon$?
+No! Otherwise, $\sum a_i \geq \sum_{\text{big}} a_i > \varepsilon n \cdot \frac{\lambda}{\varepsilon} > n \lambda$.
+Take this principle and generalize.
+
+\begin{theorem}[Markov's inequality]
+  Let $\X$ be a random variable. Fix $\varepsilon > 0$. Then,
+  \[ \Pr_{\X}\qty[\X > \E[\X] \cdot \varepsilon] \leq \varepsilon \]
+\end{theorem}
+
+\begin{claim}
+  Fix any $m$. Then,
+  \[
+    \Pr_{E : \F_2^k \to \F_2^n} [\text{$E(m)$ is bad}] \leq \frac{1}{2^{\varepsilon n / 2}}
+  \]
+\end{claim}
+\begin{prf}
+  \begin{align*}
+    \Pr_{E : \F_2^k  \setminus \{m\} \to \F_2^n} [\text{$E(m)$ is bad}]
+     & = \Pr_{E : \F_2^k \to \F_2^n} [\text{$E(m)$ is bad}] \tag{by independence}                                                        \\
+     & = \Pr_{E}\qty[\abs{\{y \in \Ball_H(pn) + E(m) : \text{$y$ is corrupt}\}} > \frac{1}{2^{\varepsilon n/2} \cdot \abs{\Ball_H(pn)}}] \\
+     & \leq \frac{1}{2^{\varepsilon n/2}} \tag{Markov's inequality}
+  \end{align*}
+  because
+  \begin{align*}
+    \E[\abs{\{y \in \Ball_H(pn) + E(m) : \text{$y$ is corrupt}\}}]
+    \leq \frac{1}{2^{\varepsilon n}}\abs{\Ball_H(pn)}
+  \end{align*}
+\end{prf}
+
+\begin{prop}
+  With probability $1-o(1)$, there are at most $\abs{\F_2^k}2^{-\varepsilon n/4}$ bad codewords.
+\end{prop}
+\begin{prf}
+  \begin{align*}
+    \Pr_E\qty[\abs{\{m : \text{$E(m)$ is bad}\}} > \frac{1}{2^{\varepsilon n/4}}\cdot\abs{\F_2^k}]
+     & \leq \frac{\E[\abs{\{m : \text{$E(m)$ is bad}\}}]}{\abs{\F_2^k}/2^{\varepsilon n/4}} \\
+     & \leq \frac{2^{\varepsilon n/4}}{2^k} \cdot \frac{2^k}{2^{\varepsilon n/2}}           \\
+     & = \frac{1}{2^{\varepsilon n/4}}
+  \end{align*}
+  Therefore, with probability $1-2^{-\varepsilon n/4} = 1-o(1)$,
+  there are at most $\abs{\F_2^k}2^{-\varepsilon n/4}$ bad codewords.
+\end{prf}
+
+\begin{problem}
+  We have shown an almost-packing of Hamming balls in $\F_2^n$.
+
+  What about an exact packing of Hamming balls?
+  This is an open question.
+
+  What about in a continuous field?
+\end{problem}
+
+\section{Shannon's channel coding for discrete memoryless channels}
+\lecture{July 8}
+
+Consider a message $m \in \bits k$ deterministically encoded into a sentence
+$E(m) = X = (x_1,\dotsc,x_n) \in \XX^n$.
+Then, we send the words through a noisy channel $\XX \to \YY$
+where each symbol $x_i \mapsto y_j \in \YY$ with some probability $p(y_j \mid x_i)$.
+This results in a random sentence $\rv Y$.
+We try to decode $D(Y) = \hat m$.
+
+\begin{defn}
+  The \term*{performance} of an encoding/decoding pair $(E,D)$ is
+  \[ \perf(E,D) = \min_{m\in\F_2^k} \Pr_{p}[D(\rv Y \mid m) = m] \]
+\end{defn}
+
+We will show a scheme that gives performance $\geq 1-\varepsilon$.
+
+Fix any marginal distribution $(p(x))_{x\in\X}$.
+Then, let $\X$ be the random variable taking $x$ with probability $p(x)$.
+Let $\Y$ be the channel noising of $\X$.
+We will consider the joint distribution $(\X,\Y)$.
+
+\begin{defn}
+  Given a channel $(p(y \mid x))_{x\in\XX,y\in\YY}$, the \term{channel capacity}
+  \[ C := \sup_{\mathclap{(p(x))_{x\in\XX}}} I(\X : \Y) \]
+\end{defn}
+
+For $\BSC(p)$, $C = 1-H(p)$ as expected.
+
+Channel capacity characterizes the length of messages that can be sent.
+
+\begin{theorem}[Shannon's channel coding for discrete memoryless channels]
+  Fix $\varepsilon > 0$. For $n$ sufficiently large, if $\frac k n < C$,
+  there exists $(E, D)$ such that $\perf(E,D) \geq 1-\varepsilon$.
+
+  If $\frac k n \geq C$, then no such $(E, D)$ exists.
+\end{theorem}
+\begin{prf}
+  Consider the following encoding scheme:
+  \begin{quote}
+    Pick marginal $(p(x))_{x\in\XX}$ that attains $C$ and fix it.
+    We will pick $2^k$ \iid random codewords $\X_i$ in $\XX^n$
+    according to the distribution $\X_i \sim p^n$,
+    then assign them to the messages $m \in \bits{k}$.
+  \end{quote}
+  Let $X,X' \in \XX^n$ be random codewords.
+  Let $Y \in \YY^n$ be the random sentence received if $X$ is sent over the channel.
+  How likely does $Y$ get decoded to $X'$?
+
+  First, what does $(X,Y) \in \XX^n \times \YY^n$ look like?
+  Start by considering $X \in \XX^n$.
+  It is almost certainly uniformly distributed over the typical set $\XX_\varepsilon^{(n)}$.
+  Likewise, $Y$ is almost certainly uniformly distributed over the typical set $\YY_\varepsilon^{(n)}$.
+
+  Using the fact that CLT needs only independence and \emph{not}
+  identical distributions, we similarly get that $(X,Y)$
+  is roughly uniformly distributed over a ``typical set'' of some sort.
+
+  Formally: suppose that
+  \begin{gather*}
+    \XX_\varepsilon^{(n)} = \{ X \in \XX^n : 2^{-H(x)n(1+\varepsilon)} \leq \Pr[\X=X] \leq 2^{-H(x)n(1-\varepsilon)}\} \\
+    \YY_\varepsilon^{(n)} = \{ Y \in \YY^n : 2^{-H(y)n(1+\varepsilon)} \leq \Pr[\Y=Y] \leq 2^{-H(y)n(1-\varepsilon)}\}
+  \end{gather*}
+  then we can write
+  \begin{align*}
+    \XX\YY_{\varepsilon}^n = \{
+     & (X,Y) \in \XX^n\times\YY^n : X \in \XX_\varepsilon^{(n)} \land Y \in \YY_\varepsilon^{(n)} \land \\
+     & \qquad 2^{-H(x,y)n(1+\varepsilon)} \leq \Pr[(\X,\Y) = (X,Y)] \leq 2^{-H(x,y)n(1-\varepsilon)}\}
+  \end{align*}
+  \lecture{July 10}
+  To be precise, observe that
+  \begin{align*}
+    \Pr[(\X,\Y) = (X,Y)]      & = \prod_{i=1}^n p(X_i, Y_i)     \\
+    \log \Pr[(\X,\Y) = (X,Y)] & = \sum_{i=1}^n \log p(X_i, Y_i)
+  \end{align*}
+  because the pairwise $\X_i$ and $\Y_i$ are independent (but not the whole $\X$ and $\Y$).
+
+  Then, let $\rv R$ be the random variable $\log p(x,y)$ with probability $p(x,y)$
+  and let $\rv R_1,\dotsc,\rv R_n \sim \rv R$.
+  Observe that $\sum \rv R_i$ has the same distribution as $\log \Pr[(\X,\Y)=(\tilde X,\tilde Y)]$.
+  We can then apply the central limit theorem to say
+  \[ \Pr[\abs{\frac1n\sum_{i=1}^n \rv R_i - \E[\rv R]} > \varepsilon] \leq \varepsilon' \]
+  % By definition of joint entropy, $\E[\rv R] = -H(x,y)$, so we have
+  % \[ \Pr[\sum_{i=1}^n \rv R_i - (-H(x,y))n]\]
+  % which is equivalent to saying
+  % \[ \Pr_{X,Y}\qty[\frac{\Pr_{\X,\Y}[(\X,\Y)=(X,Y)]}{2^{H(x,y)n}} \not\in [2^{-\varepsilon H(x,y)n},2^{\varepsilon H(x,y) n}]] \leq \varepsilon' \]
+  % The consequences of this CLT application are:
+  % \begin{enumerate}[(i)]
+  %   \item $\Pr[(\X,\Y) \in \XX\YY_\varepsilon^{(n)}] = 1-o(1)$
+  %   \item $\abs{\XX\YY_\varepsilon^{(n)}} \approx 2^{H(x,y)n}$
+  %   \item $\Pr_{(x,y),x'}[(\X',\Y) \in \XX\YY_\varepsilon^{(n)}] \approx \frac{2^{H(x,y)n}}{2^{(H(x)+H(y))n}} = 2^{-I(x:y)n}$
+  % \end{enumerate}
+
+  For a codeword $X \in \XX^n$, define its \term*{neighbourhood} by
+  \[ \neigh(X) = \{Y \in \YY^n : (X,Y) \in \XX\YY_{\varepsilon}^{(n)}\} \]
+  and now by (some combination of corollaries from the CLT discussion),
+  \[ \Pr_{(\X,\Y)}[\Y \not\in \neigh(\X)] \leq \varepsilon' \]
+  and $(\X,\Y)$ is nearly uniform within the neighbourhood.
+
+  Now, specify the decoding scheme.
+  \begin{quote}
+    Find any $\X_i$ in our list of codewords
+    such that the received $Y \in \neigh(\X_i)$
+    and return the message underlying $i$.
+  \end{quote}
+  Fix a codeword $\X_i$.
+  Notice that $\abs{\neigh(\X_i)} \leq \abs{\XX\YY_\varepsilon^{(n)}} = 2^{H(x,y)n}$.
+  Also, we can bound
+  \begin{align*}
+    \E_{\X_1,\dotsc,\X_n}\Pr_{(\X_i,\Y)}[\Y \in \neigh(\X_i)] \leq \frac{2^{(H(x,y)-\varepsilon) n}}{2^{(H(x)+H(y))n}} \leq 2^{-(I(x:y)+\varepsilon)n}
+  \end{align*}
+  and 
+  \begin{align*}
+    \E_{\X_1,\dotsc,\X_n}\Pr_{(\X_i,\Y)}[\Y \in \neigh(\X_j)] \leq \frac{2^k}{2^{(I(x:y) + \varepsilon)n}} \leq 2^{-\varepsilon n}
+  \end{align*}
+  because $k < I(x:y) n$. 
+  Then, we can say that at most $2^{-\varepsilon n/2}$ of the $\X_i$'s have
+  \[
+    \E_{\X_1,\dotsc,\X_k} \Pr_{(\X_1,\Y)}[\Y \in \neigh(\E_j)] > \frac{1}{2^{\varepsilon n/2}}
+  \]
+\end{prf}
 
 \chapter{Parallel repetition}
 
