@@ -207,6 +207,7 @@
 % Fonts
 \newcommand{\bb}{\mathbb}
 \newcommand{\rv}{\mathsf} % random variable => sans-serif
+\newcommand{\rvb}{\mathbfsfup} % random vector => bold sans-serif
 \newcommand{\vv}{\mathsf} % algorithm variable => sans-serif
 \newcommand{\xx}{\mathtt} % hex literal => typewriter
 \newcommand{\sv}{\mathcal} % set variable => caligraphic

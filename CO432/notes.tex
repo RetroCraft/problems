@@ -1491,7 +1491,6 @@ Notice that all the $p(\X_i)$'s are identical since the $\X_i$'s are \iid.
 Then, $\E[\log_2\frac{1}{p(\X_i)}] = H(\X)$ so what we are really measuring
 is the difference between theoretical entropy and the ``entropy'' of the sample.
 
-\newcommand{\aeps}{A_{(\varepsilon)}^{(n)}}
 \begin{defn}
   Let
   \begin{align*}
@@ -1782,7 +1781,7 @@ Channel capacity characterizes the length of messages that can be sent.
   Fix $\varepsilon > 0$. For $n$ sufficiently large, if $\frac k n < C$,
   there exists $(E, D)$ such that $\perf(E,D) \geq 1-\varepsilon$.
 
-  If $\frac k n \geq C$, then no such $(E, D)$ exists.
+  If $\frac k n > C$, then no such $(E, D)$ exists.
 \end{theorem}
 \begin{prf}
   Consider the following encoding scheme:
@@ -1858,18 +1857,290 @@ Channel capacity characterizes the length of messages that can be sent.
   \begin{align*}
     \E_{\X_1,\dotsc,\X_n}\Pr_{(\X_i,\Y)}[\Y \in \neigh(\X_i)] \leq \frac{2^{(H(x,y)-\varepsilon) n}}{2^{(H(x)+H(y))n}} \leq 2^{-(I(x:y)+\varepsilon)n}
   \end{align*}
-  and 
+  and
   \begin{align*}
     \E_{\X_1,\dotsc,\X_n}\Pr_{(\X_i,\Y)}[\Y \in \neigh(\X_j)] \leq \frac{2^k}{2^{(I(x:y) + \varepsilon)n}} \leq 2^{-\varepsilon n}
   \end{align*}
-  because $k < I(x:y) n$. 
+  because $k < I(x:y) n$.
   Then, we can say that at most $2^{-\varepsilon n/2}$ of the $\X_i$'s have
   \[
     \E_{\X_1,\dotsc,\X_k} \Pr_{(\X_1,\Y)}[\Y \in \neigh(\E_j)] > \frac{1}{2^{\varepsilon n/2}}
   \]
+  \lecture{July 15}
+  TODO (finish the existence proof)
+
+  Now, consider a decoding pair $E : \bits{k} \to \XX^n$
+  and $D : \YY^n \to \bits{k}$ such that for all messages $m \in \bits{k}$,
+  the probability of mistaking $\Pr[D(\Ch(E(m))) \neq m] \leq \frac12$.
+
+  We must show that if $n$ is sufficiently large, then $\frac kn \leq C$.
+  A sketch of the argument:
+  \lecture{July 17}
+  \begin{itemize}
+    \item Organize encodings by frequency pattern and upper bound the number
+          of encodings for each frequency pattern.
+    \item For each frequency pattern $f \in [n]^{\XX}$,
+          we will show that for any $X \in \XX^n$ with frequency $f$,
+          there is a set $\NB(X) \subseteq \YY^n$ such that $\Y = \Ch(X)$
+          is nearly the uniform distribution over $\NB(X)$.
+    \item With high probability, any message whose encoding $E(m)$ has frequency $f$
+          will lie inside the typical set
+          \[ \Typ(\y^n_f) := \qty{ Y \in \YY^n : \Pr_{\Y \sim \y^n_f}[\Y = Y] \underset{2^{\pm \varepsilon n}}{=} 2^{H(\y_f)n} } \]
+          where $\x_f = x$ w.p. $\frac{f_x}{n}$ and $\y_f = \Ch(\x_f)$.
+    \item Geometrically, we can imagine partitioning the space by
+          nearest messages into some $\bigcup D_{m_i}$.
+          Then, each of the $\NB(E(m_i))$ approximate $D_{m_i}$.
+    \item The maximum number of encodings we can get for a frequency pattern $f$ is
+          \[
+            \frac{\abs{\Typ(\y_f^n)}}{\abs{\NB(\X_f)}}
+            = \frac{2^{H(\y_f)n}}{2^{H(\y_f \mid \x_f)n}}
+            = 2^{I(\y_f : \x_f)n}
+          \]
+  \end{itemize}
+  Now, what does $\NB(X)$ look like?
+
+  Suppose $x$ appears $f_x$ times and no other $x$'s appear.
+  Consider only the duplication $X = (x,x,\dotsc,x) \in \XX^{f_x}$.
+  Then, let $\Y_x = \Ch(X) \in \YY^{f_x}$.
+  This will be distributed according to $(\Y \mid \X = x)^{f_x}$,
+  i.e., \iid copies of some marginal distribution. The typical set is
+  \[
+    \Typ((\y \mid \x = x)^{f_x}) = \qty{
+      Y_x \in \YY^{f_x} : \Pr_{\Y_x \sim (\Y \mid \X = x)^{f_x}}[\Y_x = Y_x] \underset{2^{\pm \varepsilon n}}{=}
+      \frac{1}{2^{H(\y \mid \x=x)f_x}}
+    }
+  \]
+  and by the central limit theorem, $\Pr[\Y_x \in \Typ((\y \mid \x=x)^{f_x})] \geq 1-n^{-\Omega(1)}$.
+
+  Suppose instead $X_f \in \XX^n$ generically has frequency $f$.
+  Find a permutation $X$ from the equivalence class such that
+  \[ X = (\underbrace{x,\dotsc,x}_{\text{$f_x$ times}},\underbrace{x',\dotsc,x'}_{\text{$f_{x'}$ times}},\dotsc) \in \XX^n \]
+  and let $\Y = \Ch(X)$.
+  We will define $\NB(X_f)$ as $\Typ(\Y)$ which is
+  \[
+    \qty{
+      Y \in \YY^n :
+      \Pr[\Y=Y] \underset{2^{\pm \varepsilon\abs{\XX}n}}{=}
+      \frac{1}{2^{\sum_{x\in\XX} H(y \mid \x=x)f_x}}
+    }
+  \]
+  and we can observe that
+  \[ \sum_{x\in\XX} H(\y \mid \x=x)f_x = n\cdot H(\y_f \mid \x_f) \]
+  by definition assuming we define $\x \sim \x_f$.
+  Then, by the asymptotic equipartition discussion,
+  $\NB(X_f) = \abs{\Typ(\Y)} \approx 2^{H(\y_f \mid \x_f)\cdot n}$.
+  The number of different possible frequency patterns for any $X \in \XX^n$
+  is at most $n^{\abs{\XX}}$. Therefore, supposing that the number of noise balls
+  in the typical set is upper bounded by $2^{I(\x_f : \y_f)n}$, we have
+  \[
+    2^k \leq \sum_f 2^{I(\x_f : \y_f)n}
+    \leq n^{\abs{\XX}} \cdot 2^{\max_f I(\x_f : \y_f)n}
+    \leq n^{\abs{\XX}} \cdot 2^{\max_{\x} I(\x : \y)n}
+    = n^{\abs{\XX}} \cdot 2^{C n}
+  \]
+  so we get $k \leq \abs{\XX}\log n + C n$ and $\frac{k}{n} \leq C + \abs{\XX}\frac{\log n}{n}$.
+
+  To complete the proof, we will make a packing argument for a fixed frequency $f$.
+  Suppose $X_f$ has frequency $f$.
+  We must show $\Y = \Ch(X)$ lies in $\Typ(\y_f^n)$ with high probability.
+  First, remark that we can ignore the exact ordering of $X_f$
+  because we defined $\NB(X_f)$ as ignoring the ordering
+  and the channel noises each entry identically and independently.
+
+  \lecture{July 22}
+  Now, for any set of preimages $D_m$,
+  we can show that $\abs{D_m \cap \NB(E(m))} \geq \frac{\abs{\NB(E(m))}}{2}$.
+  Since the $D_m$'s are disjoint, the intersections are disjoint as well.
+
+  We want to show that
+  \[ \abs{\{m \in \bits{k} : \text{$E(m)$ has frequency $f$}\}} \leq 2^{I(\x_f:\y_f)n(1+\varepsilon')} \]
+  which would imply that
+  \begin{align*}
+    2^k       & = \abs{\bits{k}}                                             \\
+              & \leq \qty(\max 2^{I(x_f:y_f)n(1+\varepsilon')})n^{\abs{\XX}} \\
+              & \leq 2^{Cn(1+\varepsilon')}                                  \\
+    \frac k n & \leq C(1+\varepsilon')
+  \end{align*}
+  Now, claim that
+  \[ \abs{\Span_f(E)} = \abs{\bigcup_{\substack{\text{$E(m)$ has}\\\text{freq.~$f$}}} \NB(E(m))} \leq 2^{H(\y_f)n(1+\varepsilon'')}\]
+  A corollary of this would be that
+  the number of disjoint sets in $\Span_f(E)$ of size about at least
+  $≳ 2^{H(\y_f\mid\x_f)n(1-\varepsilon')}$ is at most
+  $2^{(H(\y_f)-H(\y_f\mid\x_f))n(1+\varepsilon''')} = 2^{I(\x_f:\y_f)n(1+\varepsilon''')}$.
+
+  Observe that $\rvb Y \sim \Ch(\X_f^n)$ is the same distribution as $\Y_f^n$.
+  We can therefore apply the usual typical set stuff to get
+  \[ \Pr_{\rvb Y \sim \X_f^n}[\rvb Y \in \Typ(\Y_f^n)] \geq 1-o(1) \]
+  with essentially uniform distribution within the typical set.
+  Then, naturally,
+  \[ \Pr_{\substack{\rvb Y = \Ch(\rvb X)\\\rvb X \sim \X_f^n}}[\rvb Y \in \NB(\rvb X)] \geq 1-o(1) \]
+  We don't want a random set here, so we can weaken to
+  \[ \Pr_{\substack{\rvb Y = \Ch(\rvb X)\\\rvb X \sim \X_f^n}}\qty[\rvb Y \in \bigcup_{\mathclap{\vb x \in \Typ(\X_f^n)}} \NB(\vb x)] \geq 1-o(1) \]
+  This means that $\rvb Y$ lies in the intersection
+  \[ \sv F = \Typ(\Y_f^n) \cap \bigcup_{\mathclap{\vb x \in \Typ(\X_f^n)}} \NB(\vb x) \]
+  with high probability.
+
+  Then, we can say that for any $E(\vb m)$,
+  \[ \Pr_{\rvb Y = \Ch(E(\vb m))}[\rvb Y \not\in \sv F \lor \rvb Y \not\in \NB(E(\vb m)) \lor \rvb Y \not\in D_{\vb m}] \leq \frac12 + o(1) + o(1) \]
+  using the union bound, which means that (letting $\sv S_{\vb m} = D_{\vb m}  \cap \NB(E(\vb m)) \cap \sv F$)
+  \begin{align*}
+    \Pr[\rvb Y \in \sv S_{\vb m}]
+     & = \sum_{\vb y \in \sv S_{\vb m}} \Pr[\rvb Y = \vb y]                                \\
+     & \geq \sum_{\vb y \in \sv S_{\vb m}} \frac{1}{2^{H(\Y_f \mid \X_f)n(1+\varepsilon)}} \\
+     & = \frac{\abs{\sv S_{\vb m}}}{2^{H(\Y_f \mid \X_f)n(1+\varepsilon)}}                 \\
+     & \geq \frac12
+  \end{align*}
+  and we can say that
+  \[ \abs{\sv S_{\vb m}} \geq 2^{H(\Y_f \mid \X_f)n(1+\varepsilon)} \]
+  and somehow???? this works?? and we get something???? idk
 \end{prf}
 
-\chapter{Parallel repetition}
+\chapter{Special topics}
+
+\section{Problems with local constraints}
+\lecture{July 29}
+
+Consider a bunch of problems from like CO 250.
+
+\begin{example}[$k$-colouring]
+  Given a graph $G = (E, V)$ on $\abs{V} = n$ vertices,
+  colour vertices using $k$ colours so that no edge has both endpoints of the same colour.
+
+  Given a colouring $c : V \to [k]$ and $p(c(u),c(v)) = 1$ if the colours are different,
+  we are trying to find
+  \[ \max_{c : V \to [k]} \sum_{uv \in E} p(c(u),c(v)) \]
+\end{example}
+
+\begin{example}[max-cut]
+  Given a graph $G = (E, V)$, partition $V$ using a cut $x : V \to \{0,1\}$
+  such that the most edges cross the cut:
+  \[ \max_{x:V\to\{0,1\}} \sum_{uv\in E}(x(u)-x(v))^2 \]
+\end{example}
+
+\begin{example}[max-IS]
+  Given a graph $G = (E, V)$, find the maximum independent set of the graph.
+\end{example}
+
+\begin{example}[3-SAT]
+  Given a boolean formula $\phi$ on $n$ variables of the form
+  \[ \phi = \bigwedge_{(i_1,i_2,i_3) \in [n]^3}(x_{i_1} \lor x_{i_2} \lor x_{i_3}) \]
+  find assignments $x : [n] \to \{0,1\}$ that satisfy:
+  \[ \max_{x : [n] \to \{0,1\}} \sum_{(i_1,i_2,i_3)} (x(i_1) \lor x(i_2) \lor x(i_3)) \]
+\end{example}
+
+These all have the same general form.
+
+\begin{defn}
+  A \term{constraint satsifaction problem} is given by a predicate
+  $p : \Sigma^k \to \{0,1\}$ where $\Sigma$ is a finite alphabet and $k$ is the
+  \term*{locality parameter}.
+
+  An \term*{instance} $I \subseteq [n]^k$ of the problem is a set of $k$-tuples,
+  and goal is to find
+  \[ \max_{x : [n] \to \Sigma} V_I(x) = \max_{x : [n] \to \Sigma} \sum_{(i_1,\dotsc,i_k)\in I} p(x({i_1}),\dotsc,x({i_k})) \]
+\end{defn}
+
+Most of these problems are NP-hard, but we can approximate them.
+
+3-SAT can be ``approximated'' with randomly assigning bits,
+which on average achieves $\frac78$ of the constraints.
+Somehow, this is optimal assuming P$\neq$NP.
+
+Max-Cut can be approximated by embedding the $n$ vertices
+in $\R^n$ such that adjacent edges are far apart,
+then sampling a random hyperplane.
+This gets you 87.8\% success.
+
+\begin{theorem}[PCP (as 3-SAT)]
+  It is NP-hard, given instance $\phi$ of 3-SAT, to distinguish between
+  \begin{itemize}[nosep]
+    \item $\exists x : [n] \to \{0,1\}$ satisfying $\phi$
+    \item $\forall x : [n] \to \{0,1\}$ violate at least 0.1\% of constraints
+  \end{itemize}
+\end{theorem}
+
+\begin{theorem}[PCP (as proof verifier)]
+  There exists a sufficiently large finite alphabet $\Sigma$
+  a poly-time algorithm $A : \text{proofs} \to \Sigma^n$,
+  and a distribution $D$ on $[n]^2$
+  such that on any input proof $P$,
+  a verifier can query two random symbols in $A(P)$
+  drawn according to $D$, run a test,
+  and accept/reject with 99\% accuracy.
+\end{theorem}
+
+We might imagine this as saying that $A$ ``amplifies errors''
+so that a small error in $P$ may be easily detected by randomly peeking in $A(P)$.
+
+This is useful in cryptography.
+Consider the zero-knowledge proof setup for a graph colouring $(G, \phi)$.
+The PCP theorem allows you to construct the protocol required
+to send a small $\order{1}$ amount of information about the colouring to verify it.
+
+\section{Parallel repetition and gap amplification}
+
+We will construct a special tensor product $I_1 \otimes I_2$
+on the problem space such that the quality of the approximate solutions multiply.
+
+\begin{defn}[parallel repetition]
+  A \term*{$t$-fold parallel repetition} of an instance $I$,
+  denoted $I^{\otimes t}$, is the instance
+  \[ \{(I_1,\dotsc,I_t) : I_\ell \in I, \forall \ell \in [t]\} \]
+  on the variable set $\XX : [n]^t \to \Sigma$.
+\end{defn}
+
+We can do an example.
+
+\begin{problem}
+  Given a square matrix $A \in \F^{n\times n}$,
+  find the maximum singular value $\sigma_1$ of $A$.
+\end{problem}
+
+We can in fact express this as
+\[ \max_{x,y \in S^{n-1}} x\trans A y = \max_{x,y\in S^{n-1}} \sum_i\sum_j A_{ij}x_iy_j \]
+
+\begin{defn}
+  The tensor product of a matrix with itself $A^{\otimes 2} \in \F^{n^2 \times n^2}$ is
+  \[
+    \begin{bmatrix}
+      A_{11} A & A_{12} A & \cdots & A_{1n} \\
+      A_{21} A & A_{22} A & \cdots & A_{2n} \\
+      \vdots   & \vdots   & \ddots & \vdots \\
+      A_{n1} A & A_{n2} A & \cdots & A_{nn}
+    \end{bmatrix}
+  \]
+\end{defn}
+
+\begin{lemma}
+  Somehow, it turns out that
+  \[ \max_{X,Y\in S^{n^2-1}} X\trans A^{\otimes 2}Y = (\sigma_1)^2 \]
+\end{lemma}
+\begin{prf}
+  Consider $X = (X^1, X^2,\dotsc, X^n)$ and $Y = (Y^1, Y^2,\dotsc, Y^n)$
+  for $n$-dimensional vectors $X^i$ and $Y^j$. Then,
+  \begin{align*}
+    X\trans A^{\otimes 2}Y & = \sum_i\sum_j (X^i)\trans (A_{ij}A)(Y^j) \\
+    & \leq \sum_i\sum_j \abs{A_{ij}}\sigma_1\norm{X^i}_2\norm{Y^j}_2 \\
+    & = \sigma_1 \sum_i\sum_j \abs{A_{ij}}\norm{X^i}_2\norm{Y^j}_2
+  \end{align*}
+  because $x\trans A y \leq \sigma_1 \norm{x}_2\norm{y}_2$.
+  Let $x' = (\norm{X^i}_2)$ and $y' = (\norm{Y^j}_2)$.
+  Then, we get $\sigma_1 (x')\trans A y' \leq (\sigma_1)^2$.
+\end{prf}
+
+In general, whenever $V(I^{\otimes t}) = V(I)^t$, we can do cool shit.
+If we have an $\alpha$-approximation of $I^{\otimes t}$,
+then we can $\alpha^{1/t}$-approximate $I$.
+
+Therefore, if we have an approximation algorithm for arbitrary instances,
+we can establish bounds.
+
+For example, if it could be shown a problem cannot be approximated
+with some constant approximation factor,
+then it would not be able to be approximated with any approximation factor.
+
+In practice, this basically never happens.
+We instead get $V(I^{\otimes t}) = V(I)^{t/\log\Sigma}$, but the effect is the same.
 
 \pagebreak
 \phantomsection\addcontentsline{toc}{chapter}{Back Matter}
